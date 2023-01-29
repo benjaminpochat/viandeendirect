@@ -1,0 +1,52 @@
+openapi: '3.0.2'
+info:
+  title: viandeendirect.eu
+  description: This API allows selling and buying food through the shortest path between farmers and customers.
+  version: 0.0.1
+paths:
+  /deliveries:
+    get: 
+      summary: Get all deliveries
+      description: Retreive the deliveries available for buying food. The past deliveries are excluded.
+      responses:
+        "200":
+          description: The deliveries are retreived
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Delivery'
+                               
+components:
+  schemas:
+    Address:
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "adresses")'
+      properties:
+        id:
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+          type: UUID
+        name:
+          type: string
+        city:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        addressLine4:
+          type: string
+
+    Delivery:
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "deliveries")'
+      properties:
+        id:
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        name:
+          type: string
+        deliveryAddress:
+          type: Address
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
