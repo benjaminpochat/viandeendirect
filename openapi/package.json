@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "generate:api-front": "npx @openapitools/openapi-generator-cli generate -g javascript -i openapi.yml -o ./api-front --additional-properties=usePromises=true,projectName=@viandeendirect/api",
+    "install:api-front": "npm install && npm link"
+
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2"
+  }
+}

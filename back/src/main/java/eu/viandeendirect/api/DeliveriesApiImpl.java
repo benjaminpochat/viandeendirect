@@ -14,7 +14,7 @@ public class DeliveriesApiImpl implements DeliveriesApiDelegate {
     @Override
     public ResponseEntity<List<Delivery>> deliveriesGet() {
         var delivery = new Delivery();
-        delivery.setId(UUID.fromString("1234"));
+        delivery.setId(UUID.randomUUID());
         delivery.setName("Hello !");
         return ResponseEntity.of(Optional.of(List.of(delivery)));
     }
