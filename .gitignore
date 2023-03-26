@@ -3,7 +3,7 @@
 **/*.iml
 **/node_modules
 
-back/target/
-back/.openapi-generator/
+backend/target/
+backend/.openapi-generator/
 
 data
