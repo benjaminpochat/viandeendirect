@@ -1,7 +1,0 @@
-services:
-
-  back:
-    image: benjaminpochat/viandeendirect-back:${DOCKER_IMAGE_TAG:-latest}
-    ports:
-#      - ${backend_port}:8080
-      - 8080:8080

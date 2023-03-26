@@ -1,7 +1,0 @@
-services:
-
-  back:
-    build:
-      context: "."
-      dockerfile: ./back/Dockerfile
-    image: benjaminpochat/viandeendirect-back:${DOCKER_IMAGE_TAG:-latest}

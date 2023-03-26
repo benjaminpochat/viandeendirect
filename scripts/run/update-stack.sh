@@ -1,2 +1,2 @@
-docker-compose -f docker-compose-run.yml pull
-docker stack deploy -c docker-compose-run.yml viandeendirect
+docker compose -f docker-compose.yml pull
+docker compose -f docker-compose.yml up viandeendirect
