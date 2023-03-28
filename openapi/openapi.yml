@@ -1,54 +1,361 @@
-openapi: '3.0.2'
-servers:
-  - url: http://localhost:8080
+---
+openapi: 3.0.2
 info:
-  title: viandeendirect.eu
-  description: This API allows selling and buying food through the shortest path between farmers and customers.
-  version: 0.0.1
+  title: viandeendirect
+  version: 1.0.0
 paths:
-  /deliveries:
-    get: 
-      summary: Get all deliveries
-      description: Retreive the deliveries available for buying food. The past deliveries are excluded.
+  /sales:
+    summary: Path used to manage the list of sales.
+    description: "The REST endpoint/path used to list and create zero or more `sale`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
       responses:
         "200":
-          description: The deliveries are retreived
           content:
-            application/json: 
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Delivery'
-                               
+                  $ref: '#/components/schemas/Sale'
+          description: Successful response - returns an array of `sale` entities.
+      operationId: getsales
+      summary: List All sales
+      description: Gets a list of all `sale` entities.
+    post:
+      requestBody:
+        description: A new `sale` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createsale
+      summary: Create a sale
+      description: Creates a new instance of a `sale`.
+  /sales/{saleId}:
+    summary: Path used to manage a single sale.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `sale`.  This path contains `GET`, `PUT`, and `DELETE` operations used\
+      \ to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+          description: Successful response - returns a single `sale`.
+      operationId: getsale
+      summary: Get a sale
+      description: Gets the details of a single instance of a `sale`.
+    put:
+      requestBody:
+        description: Updated `sale` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updatesale
+      summary: Update a sale
+      description: Updates an existing `sale`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deletesale
+      summary: Delete a sale
+      description: Deletes an existing `sale`.
+    parameters:
+    - name: saleId
+      description: A unique identifier for a `sale`.
+      schema:
+        type: string
+      in: path
+      required: true
+  /productions:
+    summary: Path used to manage the list of productions.
+    description: "The REST endpoint/path used to list and create zero or more `production`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Production'
+          description: Successful response - returns an array of `production` entities.
+      operationId: getproductions
+      summary: List All productions
+      description: Gets a list of all `production` entities.
+    post:
+      requestBody:
+        description: A new `production` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Production'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createproduction
+      summary: Create a production
+      description: Creates a new instance of a `production`.
+  /productions/{productionId}:
+    summary: Path used to manage a single production.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `production`.  This path contains `GET`, `PUT`, and `DELETE` operations\
+      \ used to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Production'
+          description: Successful response - returns a single `production`.
+      operationId: getproduction
+      summary: Get a production
+      description: Gets the details of a single instance of a `production`.
+    put:
+      requestBody:
+        description: Updated `production` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Production'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateproduction
+      summary: Update a production
+      description: Updates an existing `production`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteproduction
+      summary: Delete a production
+      description: Deletes an existing `production`.
+    parameters:
+    - name: productionId
+      description: A unique identifier for a `production`.
+      schema:
+        type: string
+      in: path
+      required: true
+  /orders:
+    summary: Path used to manage the list of orders.
+    description: "The REST endpoint/path used to list and create zero or more `Order`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: Successful response - returns an array of `Order` entities.
+      operationId: getOrders
+      summary: List All Orders
+      description: Gets a list of all `Order` entities.
+    post:
+      requestBody:
+        description: A new `Order` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createOrder
+      summary: Create a Order
+      description: Creates a new instance of a `Order`.
+  /orders/{orderId}:
+    summary: Path used to manage a single Order.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `Order`.  This path contains `GET`, `PUT`, and `DELETE` operations used\
+      \ to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: Successful response - returns a single `Order`.
+      operationId: getOrder
+      summary: Get a Order
+      description: Gets the details of a single instance of a `Order`.
+    put:
+      requestBody:
+        description: Updated `Order` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateOrder
+      summary: Update a Order
+      description: Updates an existing `Order`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteOrder
+      summary: Delete a Order
+      description: Deletes an existing `Order`.
+    parameters:
+    - name: orderId
+      description: A unique identifier for a `Order`.
+      schema:
+        type: string
+      in: path
+      required: true
 components:
   schemas:
-    Address:
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "adresses")'
+    Grower:
+      description: ""
+      type: object
       properties:
-        id:
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-          type: UUID
-        name:
-          type: string
-        city:
-          type: string
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        addressLine4:
-          type: string
-
+        user:
+          $ref: '#/components/schemas/User'
+          description: ""
     Delivery:
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "deliveries")'
+      description: ""
+      type: object
       properties:
-        id:
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-        name:
+        orders:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        start:
+          description: ""
+        end:
+          description: ""
+    Production:
+      description: ""
+      type: object
+      properties:
+        sales:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Sale'
+        grower:
+          $ref: '#/components/schemas/Grower'
+          description: ""
+        lots:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Lot'
+    Sale:
+      description: ""
+      type: object
+      properties:
+        productions:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Production'
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+          description: ""
+    Product:
+      description: ""
+      type: object
+      properties:
+        description:
+          description: ""
           type: string
-        deliveryAddress:
-          type: Address
-          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        netWeight:
+          description: ""
+          type: number
+        unitPrice:
+          description: |-
+            Price per unit (weight unit).
+            Must be multiplied by the weight to get the total price for one product.
+            Includes taxes.
+    Lot:
+      description: ""
+      required:
+      - product
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+          description: ""
+    Order:
+      description: ""
+      required:
+      - customer
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/Invoice'
+          description: ""
+        items:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        customer:
+          $ref: '#/components/schemas/Customer'
+          description: ""
+    User:
+      description: ""
+      type: object
+    Customer:
+      description: ""
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+          description: ""
+    OrderItem:
+      description: ""
+      required:
+      - product
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+          description: ""
+        unitPrice:
+          description: |-
+            Price per unit ordered.
+            Must be multiplied per quantity to get the total price.
+            Includes taxes.
+        quantity:
+          description: ""
+    Invoice:
+      description: ""
+      required:
+      - order
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+          description: ""
