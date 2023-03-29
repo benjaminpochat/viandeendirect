@@ -1,9 +1,0 @@
-src/main/java/eu/viandeendirect/api/ApiUtil.java
-src/main/java/eu/viandeendirect/api/DeliveriesApi.java
-src/main/java/eu/viandeendirect/api/DeliveriesApiController.java
-src/main/java/eu/viandeendirect/api/DeliveriesApiDelegate.java
-src/main/java/eu/viandeendirect/api/configuration/HomeController.java
-src/main/java/eu/viandeendirect/api/configuration/SpringDocConfiguration.java
-src/main/java/eu/viandeendirect/model/Address.java
-src/main/java/eu/viandeendirect/model/Delivery.java
-src/test/java/eu/viandeendirect/OpenApiGeneratorApplicationTests.java
