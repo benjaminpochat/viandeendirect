@@ -1,8 +1,10 @@
 ---
 openapi: 3.0.2
 info:
-  title: viandeendirect
-  version: 1.0.0
+  title: viandeendirect.eu
+  version: 0.0.1
+  description: This API allows selling and buying food through the shortest path between
+    farmers and customers.
 paths:
   /sales:
     summary: Path used to manage the list of sales.
