@@ -282,12 +282,17 @@ components:
             $ref: '#/components/schemas/Order'
         start:
           description: ""
+          type: string
         end:
           description: ""
+          type: string
         id:
           description: ""
           type: UUID
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        name:
+          description: ""
+          type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "deliveries")'
     Grower:
