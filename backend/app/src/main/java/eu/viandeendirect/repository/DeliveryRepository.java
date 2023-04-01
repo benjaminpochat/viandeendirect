@@ -1,7 +1,6 @@
-package eu.viandeendirect.model;
+package eu.viandeendirect.repository;
 
 import eu.viandeendirect.model.Delivery;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

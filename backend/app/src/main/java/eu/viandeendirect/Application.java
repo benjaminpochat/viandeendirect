@@ -21,7 +21,6 @@ public class Application {
         return new JsonNullableModule();
     }
 
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
