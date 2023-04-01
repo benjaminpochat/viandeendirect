@@ -236,132 +236,6 @@ paths:
       required: true
 components:
   schemas:
-    Order:
-      description: ""
-      required:
-      - customer
-      - id
-      type: object
-      properties:
-        invoice:
-          $ref: '#/components/schemas/Invoice'
-          description: ""
-        items:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderItem'
-        customer:
-          $ref: '#/components/schemas/Customer'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "orders")'
-    Customer:
-      description: ""
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "customers")'
-    Delivery:
-      description: ""
-      type: object
-      properties:
-        orders:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-        start:
-          description: ""
-          type: string
-        end:
-          description: ""
-          type: string
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-        name:
-          description: ""
-          type: string
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "deliveries")'
-    Grower:
-      description: ""
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "growers")'
-    Invoice:
-      description: ""
-      required:
-      - order
-      type: object
-      properties:
-        order:
-          $ref: '#/components/schemas/Order'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "invoices")'
-    Lot:
-      description: ""
-      required:
-      - product
-      type: object
-      properties:
-        product:
-          $ref: '#/components/schemas/Product'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "lots")'
-    OrderItem:
-      description: ""
-      required:
-      - product
-      type: object
-      properties:
-        product:
-          $ref: '#/components/schemas/Product'
-          description: ""
-        unitPrice:
-          description: |-
-            Price per unit ordered.
-            Must be multiplied per quantity to get the total price.
-            Includes taxes.
-        quantity:
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "orderItems")'
     Product:
       description: ""
       type: object
@@ -383,47 +257,6 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "products")'
-    Production:
-      description: ""
-      type: object
-      properties:
-        sales:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/Sale'
-        grower:
-          $ref: '#/components/schemas/Grower'
-          description: ""
-        lots:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/Lot'
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "productions")'
-    Sale:
-      description: ""
-      type: object
-      properties:
-        productions:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/Production'
-        delivery:
-          $ref: '#/components/schemas/Delivery'
-          description: ""
-        id:
-          description: ""
-          type: UUID
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "sales")'
     User:
       description: ""
       type: object
@@ -434,3 +267,184 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "users")'
+    Customer:
+      description: ""
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "customers")'
+    Invoice:
+      description: ""
+      required:
+      - order
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "invoices")'
+    Production:
+      description: ""
+      type: object
+      properties:
+        sales:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Sale'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        grower:
+          $ref: '#/components/schemas/Grower'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        lots:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Lot'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "productions")'
+    OrderItem:
+      description: ""
+      required:
+      - product
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        unitPrice:
+          description: |-
+            Price per unit ordered.
+            Must be multiplied per quantity to get the total price.
+            Includes taxes.
+        quantity:
+          description: ""
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "orderItems")'
+    Order:
+      description: ""
+      required:
+      - customer
+      - id
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/Invoice'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        items:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        customer:
+          $ref: '#/components/schemas/Customer'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "orders")'
+    Sale:
+      description: ""
+      type: object
+      properties:
+        productions:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Production'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "sales")'
+    Lot:
+      description: ""
+      required:
+      - product
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "lots")'
+    Grower:
+      description: ""
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "growers")'
+    Delivery:
+      description: ""
+      type: object
+      properties:
+        orders:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        start:
+          description: ""
+          type: string
+        end:
+          description: ""
+          type: string
+        id:
+          description: ""
+          type: UUID
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        name:
+          description: ""
+          type: string
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "deliveries")'
