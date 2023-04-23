@@ -33,7 +33,11 @@ class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/deliveries")
+                .requestMatchers("/swagger-ui")
+                .anonymous()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/sales")
                 .hasRole("customer")
                 .anyRequest()
                 .permitAll();

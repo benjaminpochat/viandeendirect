@@ -19,21 +19,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-<!--    <properties>-->
-<!--        <java.version>17</java.version>-->
-<!--        <maven.compiler.source>${java.version}</maven.compiler.source>-->
-<!--        <maven.compiler.target>${java.version}</maven.compiler.target>-->
-<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-<!--        <springdoc.version>2.0.0-M3</springdoc.version>-->
-<!--        <swagger-ui.version>4.8.1</swagger-ui.version>-->
-<!--    </properties>-->
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>3.0.0-M3</version>-->
-<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-<!--    </parent>-->
-
     <repositories>
         <repository>
             <id>repository.spring.milestone</id>
@@ -87,6 +72,7 @@
                                 <modelPackage>eu.viandeendirect.model</modelPackage>
                                 <apiPackage>eu.viandeendirect.api</apiPackage>
                                 <configPackage>eu.viandeendirect.api.configuration</configPackage>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -1,5 +1,3 @@
 pom.xml
 src/main/java/eu/viandeendirect/OpenApiGeneratorApplication.java
-#README.md
-#src/main/java/eu/viandeendirect/*.java
-#src/main/resources/*
+resources/
