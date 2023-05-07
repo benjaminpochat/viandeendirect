@@ -32,13 +32,15 @@ class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors();
         http.authorizeHttpRequests()
                 .requestMatchers("/swagger-ui")
                 .anonymous()
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/sales")
-                .hasRole("customer")
+//                .hasRole("customer")
+                .authenticated()
                 .anyRequest()
                 .permitAll();
         http.oauth2Login()

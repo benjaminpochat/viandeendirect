@@ -3,17 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-keycloak/web": "^3.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "keycloak-js": "^21.1.1",
+    "querystring": "^0.2.1",
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "viandeendirect_eu": "file:../gen",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "update:api": "npm link ../openapi/api-front",
+    "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g javascript -o ../gen --skip-validate-spec",
+    "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
+    "install:api": "rm -Rf ./node_modules/viandeendirect_eu && npm install ../gen",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -32,12 +38,13 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
       "last 1 firefox version",
+      "last 1 chrome version",
       "last 1 safari version"
     ]
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.6.0",
     "react-app-rewired": "^2.2.1"
   }
 }

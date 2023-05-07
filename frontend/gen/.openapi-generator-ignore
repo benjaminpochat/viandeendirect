@@ -1,5 +1,0 @@
-.travis.yml
-git_push.sh
-.gitignore
-package.json
-openapitools.json

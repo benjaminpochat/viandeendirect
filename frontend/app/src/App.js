@@ -1,36 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ReactKeycloakProvider, useKeycloak } from '@react-keycloak/web'
+import keycloak from './keycloak';
+import Authentication from './Authentication';
+import Sales from './Sales';
+
+
 
 function App() {
 
-  useEffect(() => {
-    var ViandeendirectApi = require('@viandeendirect/api');
-    var api = new ViandeendirectApi.DefaultApi()
-    api.deliveriesGet().then(function(data) {
-      console.log('API called successfully. Returned data: ' + data);
-    }, function(error) {
-      console.error(error);
-    });
-  })
+
+
+const keycloakInitOptions = {
+  checkLoginIframe: false,
+  onLoad: 'check-sso',
+  silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+}
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ReactKeycloakProvider authClient={keycloak} initOptions={keycloakInitOptions}>
+      <div className="App">
+        <header className="App-header">
+          <Authentication></Authentication>
+          <Sales></Sales>
+        </header>
+      </div>
+    </ReactKeycloakProvider>
   );
 }
 

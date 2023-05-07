@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface DeliveryRepository extends CrudRepository<Delivery, UUID> {
+public interface DeliveryRepository extends CrudRepository<Delivery, Long> {
 }
