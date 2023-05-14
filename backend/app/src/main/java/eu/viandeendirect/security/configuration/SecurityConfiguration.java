@@ -33,16 +33,22 @@ class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors();
-        http.authorizeHttpRequests()
+        http
+                .authorizeHttpRequests()
                 .requestMatchers("/swagger-ui")
                 .anonymous()
-                .and()
+            .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/sales")
-//                .hasRole("customer")
-                .authenticated()
-                .anyRequest()
-                .permitAll();
+                .anonymous()
+            .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/productions")
+                .hasRole("GROWER")
+            .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/orders")
+                .authenticated();
         http.oauth2Login()
                 .and()
                 .logout()
