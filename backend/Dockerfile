@@ -1,4 +1,4 @@
-FROM maven:3.9.0-eclipse-temurin-17
+FROM maven:3.9.2
 
 RUN chmod -R a+rwx /usr/share/maven
 
@@ -7,14 +7,15 @@ RUN useradd --create-home viandeendirect
 WORKDIR /home/viandeendirect
 
 COPY ./backend/pom.xml ./backend/pom.xml
+COPY ./backend/gen/pom.xml ./backend/gen/pom.xml
+COPY ./backend/app/pom.xml ./backend/app/pom.xml
 
 RUN mvn -s /usr/share/maven/ref/settings-docker.xml -f ./backend/pom.xml dependency:go-offline
 
-COPY ./backend ./backend
-COPY ./openapi ./openapi
-
-RUN mvn clean install spring-boot:repackage -s /usr/share/maven/ref/settings-docker.xml -f ./backend/pom.xml
+COPY ./backend/gen/src ./backend/gen/src
+COPY ./backend/app/src ./backend/app/src
+RUN mvn -s /usr/share/maven/ref/settings-docker.xml -f ./backend/pom.xml clean install
 
 USER viandeendirect
 
-ENTRYPOINT java -jar ./backend/target/viandeendirect-backend.jar
+ENTRYPOINT java -jar ./backend/app/target/viandeendirect-backend-app.jar

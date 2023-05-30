@@ -1,24 +1,23 @@
-import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
-import { Typography } from '@mui/material';
 
-function SideMenu({open, onClose}) {
-
-    const width = 240;
+function SideMenu({width, open, onClose, selectItem}) {
 
     function sideMenuContent() {
         return (
-            <>
+            <Box>
                 <Toolbar/>
-                <Divider />
                 <List>
+                    <ListItem key='Dashboard' disablePadding>
+                        <ListItemButton onClick={() => selectItem('DASHBOARD')}>
+                            <ListItemText primary='Tableau de bord'/>
+                        </ListItemButton>
+                    </ListItem>
                     <ListItem key='Sales' disablePadding>
                         <ListItemButton>
                             <ListItemText primary='Ventes'/>
@@ -35,12 +34,12 @@ function SideMenu({open, onClose}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Account' disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => selectItem('GROWER_ACCOUNT')}>
                             <ListItemText primary='Compte'/>
                         </ListItemButton>
                     </ListItem>
                 </List>
-            </>
+            </Box>
         )
     }
 
@@ -67,6 +66,8 @@ function SideMenu({open, onClose}) {
                         xs: 'none', 
                         sm: 'block',
                     },
+                    width: width,
+                    flexShrink: 0,
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: width },
                 }}
             >

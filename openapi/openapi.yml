@@ -468,6 +468,11 @@ components:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        status:
+          $ref: '#/components/schemas/GrowerStatus'
+        salesCredits:
+          description: "the number of sales available"
+          type: number
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "growers")'
     Delivery:
@@ -495,3 +500,6 @@ components:
           type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "deliveries")'
+    GrowerStatus:
+      type: string
+      enum: [ON_BOARDING, ACTIVE]

@@ -1,3 +1,4 @@
 pom.xml
 src/main/java/eu/viandeendirect/OpenApiGeneratorApplication.java
+src/test/java/eu/viandeendirect/OpenApiGeneratorApplicationTests.java
 resources/

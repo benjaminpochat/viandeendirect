@@ -17,7 +17,11 @@ services:
       - ${postgres_port:-5432}:5432
 
   identity:
-    image: quay.io/keycloak/keycloak:21.0.1
+    #image: quay.io/keycloak/keycloak:21.0.1
+    build:
+      context: "."
+      dockerfile: ./identity/Dockerfile
+    image: benjaminpochat/viandeendirect-identity:${DOCKER_IMAGE_TAG:-latest}
     depends_on:
       - database
     environment:

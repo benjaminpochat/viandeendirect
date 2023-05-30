@@ -35,50 +35,6 @@
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
-        <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>src</directory>
-                            <includes>
-                                <include>**</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../../openapi/openapi.yml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <output>${project.basedir}</output>
-                            <configOptions>
-                                <sourceFolder>src/main/java</sourceFolder>
-                                <delegatePattern>true</delegatePattern>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <basePackage>eu.viandeendirect</basePackage>
-                                <modelPackage>eu.viandeendirect.model</modelPackage>
-                                <apiPackage>eu.viandeendirect.api</apiPackage>
-                                <configPackage>eu.viandeendirect.api.configuration</configPackage>
-                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
     <dependencies>
         <dependency>
@@ -137,4 +93,57 @@
             <artifactId>h2</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>generator</id>
+            <build>
+                <!-- open api generation is not always triggered until issue https://github.com/OpenAPITools/openapi-generator/pull/5312 is solved -->
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src</directory>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <version>6.2.1</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/../../openapi/openapi.yml</inputSpec>
+                                    <generatorName>spring</generatorName>
+                                    <output>${project.basedir}</output>
+                                    <configOptions>
+                                        <sourceFolder>src/main/java</sourceFolder>
+                                        <delegatePattern>true</delegatePattern>
+                                        <useSpringBoot3>true</useSpringBoot3>
+                                        <basePackage>eu.viandeendirect</basePackage>
+                                        <modelPackage>eu.viandeendirect.model</modelPackage>
+                                        <apiPackage>eu.viandeendirect.api</apiPackage>
+                                        <configPackage>eu.viandeendirect.api.configuration</configPackage>
+                                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
