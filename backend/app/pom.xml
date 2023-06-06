@@ -31,15 +31,32 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
+    <dependencies>
         <!-- internal compile dependencies-->
         <dependency>
             <groupId>eu.viandeendirect</groupId>
             <artifactId>backend-gen</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <!-- spring / spring-boot compile dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -64,22 +81,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>${project.name}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

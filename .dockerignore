@@ -1,0 +1,4 @@
+frontend/app/node_modules
+frontend/gen/node_modules
+backend/app/target
+backend/gen/target

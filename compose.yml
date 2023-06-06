@@ -1,0 +1,81 @@
+services:
+
+  database:
+    build:
+      context: "."
+      dockerfile: ./database/Dockerfile
+    image: benjaminpochat/viandeendirect-database:${DOCKER_IMAGE_TAG:-latest}
+    volumes:
+      - ${postgres_datafile_path:-./data}:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U viandeendirect"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${postgres_password:-p4ssw0rd}
+      - VIANDEENDIRECT_PASSWORD=${backend_database_password:-vndndrct-db-p4ssw0rd}
+      - IDENTITY_PASSWORD=${identity_database_password:-dntt-db-p4ssw0rd}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - ${postgres_port:-5432}:5432
+    network_mode: "host"
+
+  identity:
+    build:
+      context: "."
+      dockerfile: ./identity/Dockerfile
+    image: benjaminpochat/viandeendirect-identity:${DOCKER_IMAGE_TAG:-latest}
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=${keycloak_admin_password:-admin}
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/identity
+      - KC_DB_USERNAME=identity
+      - KC_DB_PASSWORD=${identity_database_password:-dntt-db-p4ssw0rd}
+      - KC_HOSTNAME=localhost
+      - KC_HTTP_PORT=8180
+      - KC_HEALTH_ENABLED=true
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8180/health || exit 1" ]
+      interval: 5s
+      timeout: 60s
+      retries: 5
+    command: start-dev
+    ports:
+      - ${keycloak_port:-8180}:8180
+    network_mode: "host"
+
+  backend:
+    build:
+      context: "."
+      dockerfile: ./backend/Dockerfile
+    image: benjaminpochat/viandeendirect-backend:${DOCKER_IMAGE_TAG:-latest}
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/viandeendirect
+      - SPRING_DATASOURCE_USERNAME=viandeendirect
+      - SPRING_DATASOURCE_PASSWORD=${backend_database_password:-vndndrct-db-p4ssw0rd}
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://localhost:${keycloak_port:-8180}/realms/viandeendirect
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:${keycloak_port:-8180}/realms/viandeendirect
+    depends_on:
+      database:
+        condition: service_healthy
+      identity:
+        condition: service_healthy
+    ports:
+      - ${backend_port:-8080}:8080
+    network_mode: "host"
+
+  frontend:
+    build:
+      context: "."
+      dockerfile: ./frontend/Dockerfile
+    image: benjaminpochat/viandeendirect-frontend:${DOCKER_IMAGE_TAG:-latest}
+    ports:
+      - ${frontend_port:-3000}:3000
+    network_mode: "host"

@@ -14,6 +14,7 @@ RUN mvn -s /usr/share/maven/ref/settings-docker.xml -f ./backend/pom.xml depende
 
 COPY ./backend/gen/src ./backend/gen/src
 COPY ./backend/app/src ./backend/app/src
+
 RUN mvn -s /usr/share/maven/ref/settings-docker.xml -f ./backend/pom.xml clean install
 
 USER viandeendirect

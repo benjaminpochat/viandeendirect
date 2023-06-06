@@ -8,6 +8,7 @@ backend/gen/.openapi-generator/**
 backend/gen/src/**
 
 frontend/gen/*
+frontend/app/build
 
 #TODO : delete the following line after
 # - issue https://github.com/OpenAPITools/openapi-generator/pull/5312 will be resolved
