@@ -13,7 +13,7 @@ function Sales() {
         var ViandeendirectEu = require('viandeendirect_eu');
         let apiClient = ViandeendirectEu.ApiClient.instance;
         apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token;
-        apiClient.basePath = 'http://localhost:8080'
+        apiClient.basePath = process.env.REACT_APP_BACKEND_URL
         var api = new ViandeendirectEu.DefaultApi(apiClient)
         api.getSales().then(function(data) {
             console.log('API called successfully. Returned data: ' + data);

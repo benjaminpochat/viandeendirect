@@ -9,6 +9,7 @@ backend/gen/src/**
 
 frontend/gen/*
 frontend/app/build
+frontend/app/public/config
 
 #TODO : delete the following line after
 # - issue https://github.com/OpenAPITools/openapi-generator/pull/5312 will be resolved

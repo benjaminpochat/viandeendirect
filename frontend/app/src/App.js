@@ -1,9 +1,11 @@
 import './App.css';
 import { ReactKeycloakProvider } from '@react-keycloak/web'
-import keycloakClient from "./keycloak"
+import Keycloak from 'keycloak-js'
 import LayoutWrapper from './layout/LayoutWrapper';
 
 function App() {
+
+  const keycloakClient = new Keycloak(window.location.origin + '/config/keycloak.json')
 
   const keycloakInitOptions = {
     checkLoginIframe: false,

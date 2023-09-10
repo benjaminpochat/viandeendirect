@@ -1,0 +1,3 @@
+- ajouter la configuration du realm dans la config Docker de Keycloak
+- revoir l'openapi.json pour renommer end en stop (erreur dans les ddl car end mot clé sql)
+    - puis rajouter les annotations OneToOne :(

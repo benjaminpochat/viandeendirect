@@ -24,9 +24,9 @@
     "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g javascript -o ../gen --skip-validate-spec",
     "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
     "install:api": "rm -Rf ./node_modules/viandeendirect_eu && npm install ../gen",
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -48,7 +48,6 @@
     ]
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.6.0",
-    "react-app-rewired": "^2.2.1"
+    "@openapitools/openapi-generator-cli": "^2.6.0"
   }
 }

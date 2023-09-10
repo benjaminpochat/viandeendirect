@@ -33,6 +33,7 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=${keycloak_admin_password:-admin}
+      #- KEYCLOAK_IMPORT=/opt/keycloak/realm/realm.json
       - KC_DB=postgres
       - KC_DB_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/identity
       - KC_DB_USERNAME=identity
@@ -75,7 +76,13 @@ services:
     build:
       context: "."
       dockerfile: ./frontend/Dockerfile
+      args:
+        #REACT_APP_FRONTEND_URL: https://sandbox.viandeendirect.eu
+        REACT_APP_BACKEND_URL: https://sandbox.viandeendirect.eu:8080
+        #REACT_APP_IDENTITY_URL: https://sandbox.identity.viandeendirect.eu
     image: benjaminpochat/viandeendirect-frontend:${DOCKER_IMAGE_TAG:-latest}
+    volumes:
+      - ${frontend_config_path:-./frontend-config}:/usr/local/apache2/htdocs/config
     ports:
-      - ${frontend_port:-3000}:3000
+      - ${frontend_port:-80}:80
     network_mode: "host"
