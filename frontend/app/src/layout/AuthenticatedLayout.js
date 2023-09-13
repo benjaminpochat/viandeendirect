@@ -4,8 +4,11 @@ import { useState } from 'react';
 import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 import {Close, Logout, Menu} from '@mui/icons-material'
 
-import GrowerAccount from '../components/GrowerAccount'
 import Dashboard from '../components/Dashboard';
+import Customers from '../components/Customers';
+import GrowerAccount from '../components/GrowerAccount'
+import Productions from '../components/Productions'
+import Sales from '../components/Sales'
 import SideMenu from './SideMenu'
 
 
@@ -28,6 +31,9 @@ function AuthenticatedLayout() {
     function renderMainContent() {
         switch (mainContent) {
           case 'DASHBOARD' : return <Dashboard></Dashboard>
+          case 'SALES' : return <Sales></Sales>
+          case 'PRODUCTIONS' : return <Productions></Productions>
+          case 'CUSTOMERS' : return <Customers></Customers>
           case 'GROWER_ACCOUNT' : return <GrowerAccount></GrowerAccount>
         }
     }

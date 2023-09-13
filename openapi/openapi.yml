@@ -330,24 +330,24 @@ components:
         = "customers")'
     Invoice:
       description: ""
-      required:
-      - order
       type: object
       properties:
-        order:
-          $ref: '#/components/schemas/Order'
-          description: ""
-          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         id:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "invoices")'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "invoices")'
     Production:
       description: ""
       type: object
       properties:
+        productionType:
+          type: string
+          enum: ['BeefProduction']
+        id:
+          description: ""
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
         sales:
           description: ""
           type: array
@@ -364,12 +364,33 @@ components:
           items:
             $ref: '#/components/schemas/Lot'
           x-field-extra-annotation: '@jakarta.persistence.OneToMany'
-        id:
-          description: ""
+      discriminator:
+        propertyName: 'productionType'
+        mapping:
+          'BeefProduction': '#/components/schemas/BeefProduction'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Inheritance(strategy = jakarta.persistence.InheritanceType.TABLE_PER_CLASS)'
+    BeefProduction:
+      allOf:
+        - $ref: '#/components/schemas/Production'
+      description: ""
+      type: object
+      properties:
+        animalIdentifier:
+          description: "official identifier of the animal"
+          type: string
+        animalLiveWeight:
+          description: "weight of the animal before being killed, in kilograms"
           type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "productions")'
+        slaughterDate:
+          description: "date when the animal has being killed"
+          type: string
+        birthDate:
+          description: "date when the animal is born"
+          type: string
+        birthPlace:
+          description: "place where the animal is born"
+          type: string
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "beef_productions")'
     OrderItem:
       description: ""
       required:
@@ -488,7 +509,7 @@ components:
         start:
           description: ""
           type: string
-        end:
+        stop:
           description: ""
           type: string
         id:

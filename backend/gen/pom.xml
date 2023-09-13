@@ -19,13 +19,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <repositories>
-        <repository>
-            <id>repository.spring.milestone</id>
-            <name>Spring Milestone Repository</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>spring-milestones</id>
@@ -37,6 +30,11 @@
         <sourceDirectory>src/main/java</sourceDirectory>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>eu.viandeendirect</groupId>
+            <artifactId>backend-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

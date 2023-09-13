@@ -19,17 +19,17 @@ function SideMenu({width, open, onClose, selectItem}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Sales' disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => selectItem('SALES')}>
                             <ListItemText primary='Ventes'/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Productions' disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => selectItem('PRODUCTIONS')}>
                             <ListItemText primary='Productions'/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Customers' disablePadding>
-                        <ListItemButton>
+                    <ListItemButton onClick={() => selectItem('CUSTOMERS')}>
                             <ListItemText primary='Clients'/>
                         </ListItemButton>
                     </ListItem>

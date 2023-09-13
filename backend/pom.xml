@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>model</module>
         <module>gen</module>
         <module>app</module>
     </modules>
