@@ -48,7 +48,11 @@ class SecurityConfiguration {
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/orders")
-                .authenticated();
+                .authenticated()
+            .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/error")
+                .permitAll();
         http.oauth2Login()
                 .and()
                 .logout()

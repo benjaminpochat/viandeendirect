@@ -30,7 +30,8 @@ public class KeycloakJwtAuthenticationConverter implements Converter<Jwt, Abstra
                         defaultGrantedAuthoritiesConverter.convert(source).stream(),
                         extractResourceRoles(source, resourceId).stream())
                 .collect(Collectors.toSet());
-        return new JwtAuthenticationToken(source, authorities);
+        JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(source, authorities);
+        return jwtAuthenticationToken;
     }
 
     private static Collection<? extends GrantedAuthority> extractResourceRoles(final Jwt jwt, final String resourceId) {
@@ -40,7 +41,7 @@ public class KeycloakJwtAuthenticationConverter implements Converter<Jwt, Abstra
         if (resourceAccess != null && (resource = (Map<String, Object>) resourceAccess.get(resourceId)) != null &&
                 (resourceRoles = (Collection<String>) resource.get("roles")) != null)
             return resourceRoles.stream()
-                    .map(resourceRole -> new SimpleGrantedAuthority("ROLE_" + resourceRole))
+                    .map(resourceRole -> new SimpleGrantedAuthority("ROLE_" + resourceRole.toUpperCase()))
                     .collect(Collectors.toSet());
         return Collections.emptySet();
     }
