@@ -8,6 +8,10 @@ import eu.viandeendirect.model.Order;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -40,6 +44,8 @@ public class Delivery {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "delivery_id_generator")
+  @SequenceGenerator(name="delivery_id_generator", sequenceName = "delivery_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   @JsonProperty("name")

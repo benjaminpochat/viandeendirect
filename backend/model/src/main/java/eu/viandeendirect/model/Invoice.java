@@ -5,6 +5,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -26,6 +30,8 @@ public class Invoice {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_id_generator")
+  @SequenceGenerator(name="invoice_id_generator", sequenceName = "invoice_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   public Invoice id(BigDecimal id) {

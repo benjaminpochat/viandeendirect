@@ -10,7 +10,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -41,6 +44,8 @@ public class Sale {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sale_id_generator")
+  @SequenceGenerator(name="sale_id_generator", sequenceName = "sale_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   public Sale productions(List<Production> productions) {

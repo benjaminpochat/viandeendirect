@@ -5,6 +5,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -26,7 +30,18 @@ public class User {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+  @SequenceGenerator(name="user_id_generator", sequenceName = "user_id_seq", allocationSize = 1)
   private BigDecimal id;
+
+  @JsonProperty("email")
+  private String email;
+
+  @JsonProperty("firstName")
+  private String firstName;
+
+  @JsonProperty("lastName")
+  private String lastName;
 
   public User id(BigDecimal id) {
     this.id = id;
@@ -47,6 +62,63 @@ public class User {
     this.id = id;
   }
 
+  public User email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  /**
+   * Get email
+   * @return email
+  */
+
+  @Schema(name = "email", required = false)
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public User firstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
+
+  /**
+   * Get firstName
+   * @return firstName
+  */
+
+  @Schema(name = "firstName", required = false)
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public User lastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
+
+  /**
+   * Get lastName
+   * @return lastName
+  */
+
+  @Schema(name = "lastName", required = false)
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -56,12 +128,15 @@ public class User {
       return false;
     }
     User user = (User) o;
-    return Objects.equals(this.id, user.id);
+    return Objects.equals(this.id, user.id) &&
+        Objects.equals(this.email, user.email) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(id, email, firstName, lastName);
   }
 
   @Override
@@ -69,6 +144,9 @@ public class User {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
+    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

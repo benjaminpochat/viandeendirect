@@ -17,11 +17,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets GrowerStatus
+ * Gets or Sets ProducerStatus
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public enum GrowerStatus {
+public enum ProducerStatus {
   
   ON_BOARDING("ON_BOARDING"),
   
@@ -29,7 +29,7 @@ public enum GrowerStatus {
 
   private String value;
 
-  GrowerStatus(String value) {
+  ProducerStatus(String value) {
     this.value = value;
   }
 
@@ -44,8 +44,8 @@ public enum GrowerStatus {
   }
 
   @JsonCreator
-  public static GrowerStatus fromValue(String value) {
-    for (GrowerStatus b : GrowerStatus.values()) {
+  public static ProducerStatus fromValue(String value) {
+    for (ProducerStatus b : ProducerStatus.values()) {
       if (b.value.equals(value)) {
         return b;
       }

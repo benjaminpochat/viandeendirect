@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Grower;
 import eu.viandeendirect.model.Lot;
+import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
 import java.math.BigDecimal;
@@ -174,8 +174,8 @@ public class BeefProduction extends Production {
     return this;
   }
 
-  public BeefProduction grower(Grower grower) {
-    super.setGrower(grower);
+  public BeefProduction producer(Producer producer) {
+    super.setProducer(producer);
     return this;
   }
 

@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Product;
 import java.math.BigDecimal;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -33,6 +36,8 @@ public class Lot {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lot_id_generator")
+  @SequenceGenerator(name="lot_id_generator", sequenceName = "lot_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   public Lot product(Product product) {

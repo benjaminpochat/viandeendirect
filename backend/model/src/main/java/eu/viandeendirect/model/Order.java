@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -47,6 +46,8 @@ public class Order {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
+  @SequenceGenerator(name="order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   public Order invoice(Invoice invoice) {

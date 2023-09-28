@@ -8,7 +8,10 @@ import eu.viandeendirect.model.Product;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.util.NoSuchElementException;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -42,6 +45,8 @@ public class OrderItem {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_item_id_generator")
+  @SequenceGenerator(name="order_item_id_generator", sequenceName = "order_item_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   public OrderItem product(Product product) {

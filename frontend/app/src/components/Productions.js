@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Button, Typography } from "@mui/material"
-import ProductionForm from './ProductionForm';
+import BeefProductionForm from './BeefProductionForm';
 
 function Productions() {
 
@@ -12,14 +12,14 @@ function Productions() {
     function getContent() {
         switch(currentAction) {
             case 'NONE' : return productionsList()
-            case 'CREATION' : return <ProductionForm setProductionsCurrentAction={setCurrentAction}/>
+            case 'BEEF_PRODUCTION_CREATION' : return <BeefProductionForm setProductionsCurrentAction={setCurrentAction}/>
        }
     }
 
     function productionsList() {
         return <>
             <Typography>Productions</Typography>
-            <Button variant="contained" size="small" onClick={() => setCurrentAction('CREATION')}>Créer une production</Button>
+            <Button variant="contained" size="small" onClick={() => setCurrentAction('BEEF_PRODUCTION_CREATION')}>Ajouter un abattage bovin</Button>
         </>
     }
 }

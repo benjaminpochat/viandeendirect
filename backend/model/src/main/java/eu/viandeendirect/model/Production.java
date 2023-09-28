@@ -9,14 +9,17 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Grower;
 import eu.viandeendirect.model.Lot;
+import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -83,6 +86,8 @@ public abstract class Production {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "production_id_generator")
+  @SequenceGenerator(name="production_id_generator", sequenceName = "production_id_seq", allocationSize = 1)
   private BigDecimal id;
 
   @JsonProperty("sales")
@@ -90,9 +95,9 @@ public abstract class Production {
   @Valid
   private List<Sale> sales = null;
 
-  @JsonProperty("grower")
+  @JsonProperty("producer")
   @ManyToOne
-  private Grower grower;
+  private Producer producer;
 
   @JsonProperty("lots")
   @jakarta.persistence.OneToMany
@@ -164,23 +169,23 @@ public abstract class Production {
     this.sales = sales;
   }
 
-  public Production grower(Grower grower) {
-    this.grower = grower;
+  public Production producer(Producer producer) {
+    this.producer = producer;
     return this;
   }
 
   /**
-   * Get grower
-   * @return grower
+   * Get producer
+   * @return producer
   */
   @Valid
-  @Schema(name = "grower", required = false)
-  public Grower getGrower() {
-    return grower;
+  @Schema(name = "producer", required = false)
+  public Producer getProducer() {
+    return producer;
   }
 
-  public void setGrower(Grower grower) {
-    this.grower = grower;
+  public void setProducer(Producer producer) {
+    this.producer = producer;
   }
 
   public Production lots(List<Lot> lots) {
@@ -222,13 +227,13 @@ public abstract class Production {
     return Objects.equals(this.productionType, production.productionType) &&
         Objects.equals(this.id, production.id) &&
         Objects.equals(this.sales, production.sales) &&
-        Objects.equals(this.grower, production.grower) &&
+        Objects.equals(this.producer, production.producer) &&
         Objects.equals(this.lots, production.lots);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productionType, id, sales, grower, lots);
+    return Objects.hash(productionType, id, sales, producer, lots);
   }
 
   @Override
@@ -238,7 +243,7 @@ public abstract class Production {
     sb.append("    productionType: ").append(toIndentedString(productionType)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    sales: ").append(toIndentedString(sales)).append("\n");
-    sb.append("    grower: ").append(toIndentedString(grower)).append("\n");
+    sb.append("    producer: ").append(toIndentedString(producer)).append("\n");
     sb.append("    lots: ").append(toIndentedString(lots)).append("\n");
     sb.append("}");
     return sb.toString();

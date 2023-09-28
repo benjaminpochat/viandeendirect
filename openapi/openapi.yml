@@ -312,6 +312,12 @@ components:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "users")'
     Customer:
@@ -354,10 +360,10 @@ components:
           items:
             $ref: '#/components/schemas/Sale'
           x-field-extra-annotation: '@jakarta.persistence.OneToMany'
-        grower:
-          $ref: '#/components/schemas/Grower'
+        producer:
+          $ref: '#/components/schemas/Producer'
           description: ""
-          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
         lots:
           description: ""
           type: array
@@ -477,7 +483,7 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "lots")'
-    Grower:
+    Producer:
       description: ""
       type: object
       properties:
@@ -490,12 +496,17 @@ components:
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
         status:
-          $ref: '#/components/schemas/GrowerStatus'
+          $ref: '#/components/schemas/ProducerStatus'
         salesCredits:
           description: "the number of sales available"
           type: number
+        productions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Production'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "growers")'
+        = "producers")'
     Delivery:
       description: ""
       type: object
@@ -521,6 +532,6 @@ components:
           type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "deliveries")'
-    GrowerStatus:
+    ProducerStatus:
       type: string
       enum: [ON_BOARDING, ACTIVE]
