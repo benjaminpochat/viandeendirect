@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductionsService implements ProductionsApiDelegate {
 
@@ -29,11 +31,23 @@ public class ProductionsService implements ProductionsApiDelegate {
 
     @Override
     public ResponseEntity<Void> createProduction(Production production) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = ((JwtAuthenticationToken)authentication).getToken().getClaimAsString("email");
-        Producer producer = producerRepository.findByEmail(email).orElseThrow();
+        Producer producer = getAuthenticatedProducer();
         production.setProducer(producer);
         productionRepository.save(production);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Production>> getProductions() {
+        Producer producer = getAuthenticatedProducer();
+        List<Production> productions = productionRepository.findByProducer(producer);
+        return new ResponseEntity<>(productions, HttpStatus.OK);
+    }
+
+    private Producer getAuthenticatedProducer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((JwtAuthenticationToken)authentication).getToken().getClaimAsString("email");
+        Producer producer = producerRepository.findByEmail(email).orElseThrow();
+        return producer;
     }
 }

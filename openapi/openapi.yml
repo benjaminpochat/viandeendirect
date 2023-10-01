@@ -184,6 +184,48 @@ paths:
         type: string
       in: path
       required: true
+  /beefProductions/{beefProductionId}:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeefProduction'
+          description: Successful response - returns a single `beenProduction`.
+      operationId: getBeefProduction
+      summary: Get a beef production
+      description: Gets the details of a single instance of a `beenProduction`.
+    parameters:
+    - name: beefProductionId
+      description: A unique identifier for a `beefProduction`.
+      schema:
+        type: string
+      in: path
+      required: true
+  /honneyProductions/{honneyProductionId}:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HonneyProduction'
+          description: Successful response - returns a single `honneyProduction`.
+      operationId: getHonneyProduction
+      summary: Get a honney production
+      description: Gets the details of a single instance of a `honneyProduction`.
+    parameters:
+    - name: honneyProductionId
+      description: A unique identifier for a `honneyProduction`.
+      schema:
+        type: string
+      in: path
+      required: true
   /orders:
     summary: Path used to manage the list of orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\
@@ -349,7 +391,7 @@ components:
       properties:
         productionType:
           type: string
-          enum: ['BeefProduction']
+          enum: ['BeefProduction', 'HonneyProduction']
         id:
           description: ""
           type: number
@@ -378,7 +420,7 @@ components:
     BeefProduction:
       allOf:
         - $ref: '#/components/schemas/Production'
-      description: ""
+      description: "a production a beef meet, obtained by slaughtering and cutting an entire animal"
       type: object
       properties:
         animalIdentifier:
@@ -397,6 +439,23 @@ components:
           description: "place where the animal is born"
           type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "beef_productions")'
+    HonneyProduction:
+      allOf:
+        - $ref: '#/components/schemas/Production'
+      description: "a production of honney"
+      type: object
+      properties: 
+        totalWeight:
+          description: "total weight of honney produced"
+          type: number
+        honeyDescription:
+          description: "type of honney, type of flowers nectar gathered"
+          type: string
+      discriminator:
+        propertyName: 'productionType'
+        mapping:
+          'HonneyProduction': '#/components/schemas/HonneyProduction'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "honney_productions")'
     OrderItem:
       description: ""
       required:

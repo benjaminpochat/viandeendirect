@@ -2,12 +2,8 @@ package eu.viandeendirect.model;
 
 import java.net.URI;
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import com.fasterxml.jackson.annotation.*;
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Lot;
 import eu.viandeendirect.model.Producer;
@@ -41,7 +37,8 @@ import jakarta.annotation.Generated;
 )
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "productionType", visible = true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = BeefProduction.class, name = "BeefProduction")
+  @JsonSubTypes.Type(value = BeefProduction.class, name = "BeefProduction"),
+  @JsonSubTypes.Type(value = HonneyProduction.class, name = "HonneyProduction")
 })
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
@@ -52,7 +49,9 @@ public abstract class Production {
    * Gets or Sets productionType
    */
   public enum ProductionTypeEnum {
-    BEEFPRODUCTION("BeefProduction");
+    BEEFPRODUCTION("BeefProduction"),
+
+    HONNEYPRODUCTION("HonneyProduction");
 
     private String value;
 
@@ -97,6 +96,7 @@ public abstract class Production {
 
   @JsonProperty("producer")
   @ManyToOne
+  @JsonBackReference
   private Producer producer;
 
   @JsonProperty("lots")

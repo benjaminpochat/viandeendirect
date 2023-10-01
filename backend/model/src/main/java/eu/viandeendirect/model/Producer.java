@@ -2,6 +2,8 @@ package eu.viandeendirect.model;
 
 import java.net.URI;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.ProducerStatus;
@@ -49,6 +51,7 @@ public class Producer {
   private BigDecimal salesCredits;
 
   @JsonProperty("productions")
+  @JsonManagedReference
   @jakarta.persistence.OneToMany(mappedBy = "producer")
   @Valid
   private List<Production> productions = null;
