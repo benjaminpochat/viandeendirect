@@ -29,6 +29,7 @@
     "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
     "install:api": "rm -Rf ./node_modules/viandeendirect_eu && npm install ../gen",
     "start": "react-scripts start",
+    "start:mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

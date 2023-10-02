@@ -346,6 +346,27 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "products")'
+    ProductTemplate:
+      description: ""
+      type: object
+      properties:
+        description:
+          description: ""
+          type: string
+        netWeight:
+          description: ""
+          type: number
+        unitPrice:
+          description: |-
+            Price per unit (weight unit).
+            Must be multiplied by the weight to get the total price for one product.
+            Includes taxes.
+        id:
+          description: ""
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "product_templates")'
     User:
       description: ""
       type: object

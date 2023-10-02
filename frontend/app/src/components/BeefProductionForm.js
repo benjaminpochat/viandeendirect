@@ -45,10 +45,10 @@ function BeefProductionForm({ callback }) {
         authenticayedApiBuilder.invokeAuthenticatedApi(() => {
             api.createProduction(production, (error, data, response) => {
                 if (error) {
-                    console.error(error);
+                    console.error(error)
                 } else {
-                    console.log('API called successfully. Returned data: ' + data);
-                    callback('NONE');
+                    console.log('API called successfully. Returned data: ' + data)
+                    callback('NONE')
                 }
             })
         }, keycloak);

@@ -8,7 +8,12 @@ function LayoutWrapper() {
 
     const { keycloak, initialized } = useKeycloak()
 
-    return keycloak.authenticated ? <AuthenticatedLayout/> : <AnonymousLayout/>
+    if(process.env.REACT_APP_MOCK_API) {
+        return <AuthenticatedLayout/>
+    } else {
+        return keycloak.authenticated ? <AuthenticatedLayout/> : <AnonymousLayout/>
+    }
+    
 }
 
 export default LayoutWrapper

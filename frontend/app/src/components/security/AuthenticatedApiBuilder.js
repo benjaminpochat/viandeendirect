@@ -1,5 +1,6 @@
-import ApiClient from 'viandeendirect_eu/dist/ApiClient';
-import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi';
+import ApiClient from 'viandeendirect_eu/dist/ApiClient'
+import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
+import { MockApi } from '../../api/MockApi'
 
 export class AuthenticatedApiBuilder {
     /**
@@ -8,11 +9,16 @@ export class AuthenticatedApiBuilder {
      * @returns {DefaultApi} 
      */
     getAuthenticatedApi(keycloak) {
-        let apiClient = ApiClient.instance;
-        apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token;
-        apiClient.basePath = '.';
-        var api = new DefaultApi(apiClient);
-        return api;
+        if(process.env.REACT_APP_MOCK_API) {
+            return new MockApi()
+        } else {
+            let apiClient = ApiClient.instance
+            apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token
+            apiClient.basePath = '.'
+            var api = new DefaultApi(apiClient)
+            return api
+    
+        }
     }
 
     /**
@@ -21,11 +27,15 @@ export class AuthenticatedApiBuilder {
      * @param {Keycloak} keycloak 
      */
      invokeAuthenticatedApi(apiFunction, keycloak) {
-        keycloak.updateToken(30).then(function () {
+        if(process.env.REACT_APP_MOCK_API) {
             apiFunction()
-        }).catch(function (error) {
-            console.log('Failed to refresh token');
-            console.log(error);
-        })
+        } else {
+            keycloak.updateToken(30).then(function () {
+                apiFunction()
+            }).catch(function (error) {
+                console.log('Failed to refresh token');
+                console.log(error);
+            })
+        }
     }
 }

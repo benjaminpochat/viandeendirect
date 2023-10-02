@@ -15,9 +15,8 @@ function App() {
 
   return (
     <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
-      <LayoutWrapper/>
+      <LayoutWrapper />
     </ReactKeycloakProvider>
-  );
-
+  )
 }
 export default App
