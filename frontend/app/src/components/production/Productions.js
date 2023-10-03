@@ -3,7 +3,7 @@ import { Button } from "@mui/material"
 import BeefProductionForm from './BeefProductionForm'
 import BeefProductionCard from './BeefProductionCard'
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from './security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
 import Production from 'viandeendirect_eu/dist/model/Production'
 import BeefProduction from 'viandeendirect_eu/dist/model/BeefProduction'
 
@@ -46,7 +46,9 @@ function Productions() {
 
     function productionsList() {
         return <>
+            <div className='card-list'>
             {getProductionCards()}
+            </div>
             <Button variant="contained" size="small" onClick={() => setCurrentAction('BEEF_PRODUCTION_CREATION')}>Ajouter un abattage bovin</Button>
         </>
     }

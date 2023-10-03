@@ -7,7 +7,7 @@ import {Close, Logout, Menu} from '@mui/icons-material'
 import Dashboard from '../components/Dashboard';
 import Customers from '../components/Customers';
 import GrowerAccount from '../components/GrowerAccount'
-import Productions from '../components/Productions'
+import Productions from '../components/production/Productions'
 import Sales from '../components/Sales'
 import SideMenu from './SideMenu'
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from './security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
+import dayjs from 'dayjs'
 
 function BeefProductionCard({ production }) {
 
@@ -30,7 +31,7 @@ function BeefProductionCard({ production }) {
                 Abattage bovin
                 </Typography>
                 <Typography variant="h5" component="div">
-                {beefProduction.slaughterDate}
+                Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
                 </Typography>
                 <Typography component="div">
                 Poids vif estimé : {beefProduction.animalLiveWeight} kg
