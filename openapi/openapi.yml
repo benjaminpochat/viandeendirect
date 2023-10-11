@@ -548,7 +548,7 @@ components:
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "sales")'
     Lot:
-      description: ""
+      description: "a lot of products"
       required:
       - product
       type: object
