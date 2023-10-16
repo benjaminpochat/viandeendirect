@@ -5,12 +5,18 @@ export class MockApi {
         callback()
     }
 
-    getProductions(callback) {
+    getProductions(options, callback) {
         const production1 = {
             productionType: 'BeefProduction',
             id: 1
         }
-        callback(undefined, [production1])
+
+        const production2 = {
+            productionType: 'BeefProduction',
+            id: 2
+        }
+
+        callback(undefined, [production1, production2])
     }
 
     getBeefProduction(id, callback) {

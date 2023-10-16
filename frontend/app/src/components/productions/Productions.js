@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Button } from "@mui/material"
 import BeefProductionForm from './BeefProductionForm'
-import BeefProductionCard from './BeefProductionCard'
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
-import Production from 'viandeendirect_eu/dist/model/Production'
-import BeefProduction from 'viandeendirect_eu/dist/model/BeefProduction'
+import ProductionCard from './ProductionCard'
+import BeefProductionCard from './BeefProductionCard'
 
-function Productions() {
+export default function Productions() {
 
     const [currentAction, setCurrentAction] = useState('NONE')
     const [productions, setProductions] = useState([])
@@ -23,7 +22,7 @@ function Productions() {
     function loadProductions() {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getProductions((error, data, response) => {
+            api.getProductions({}, (error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {
@@ -54,28 +53,6 @@ function Productions() {
     }
 
     function getProductionCards() {
-        return productions.map(production => getProductionCard(production))
-    }
-
-    /**
-     * @param {Production} production 
-     */
-    function getProductionCard(production) {
-        switch (production.productionType) {
-            case 'BeefProduction':
-                return getBeefProductionCard(production)
-                break
-        }
-    }
-
-    /**
-     * @param {BeefProduction} beefProduction 
-     */
-    function getBeefProductionCard(beefProduction) {
-        return (
-            <BeefProductionCard production={beefProduction}></BeefProductionCard>
-        )
+        return productions.map(production => <ProductionCard production={production} showActions={true}></ProductionCard>)
     }
 }
-
-export default Productions

@@ -4,7 +4,7 @@ import { Button, Card, CardActions, CardContent, Typography } from "@mui/materia
 import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
 import dayjs from 'dayjs'
 
-function BeefProductionCard({ production }) {
+export default function BeefProductionCard({production: production, showActions: showActions}) {
 
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
@@ -28,21 +28,24 @@ function BeefProductionCard({ production }) {
         <Card>
             <CardContent>
                 <Typography color="text.secondary" gutterBottom>
-                Abattage bovin
+                    Abattage bovin
                 </Typography>
                 <Typography variant="h5" component="div">
-                Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
+                    Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
                 </Typography>
                 <Typography component="div">
-                Poids vif estimé : {beefProduction.animalLiveWeight} kg
+                    Poids vif estimé : {beefProduction.animalLiveWeight} kg
                 </Typography>
             </CardContent>
-            <CardActions>
+            {getActions()}
+        </Card>
+    )
+    function getActions() {
+        if (showActions) {
+            return <CardActions>
                 <Button size="small">Mettre en vente</Button>
                 <Button size="small">Ajuster le poids vif</Button>
             </CardActions>
-        </Card>
-    )
+        }
+    }
 }
-
-export default BeefProductionCard

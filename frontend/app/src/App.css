@@ -6,3 +6,7 @@
     margin: 1rem;
 }
 
+.card-clickable > *:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}

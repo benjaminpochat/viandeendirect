@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Typography, Button } from "@mui/material"
+import SaleForm from './SaleForm'
 
-function Sales() {
+export default function Sales() {
 
     const [currentAction, setCurrentAction] = useState('NONE')
 
@@ -25,10 +26,9 @@ function Sales() {
     function saleCreationForm() {
         return <>
             <Typography>Nouvelle vente</Typography>
+            <SaleForm></SaleForm>
             <Button variant="contained" size="small" onClick={() => setCurrentAction('NONE')}>Annuler</Button>
         </>
     }
 
 }
-
-export default Sales

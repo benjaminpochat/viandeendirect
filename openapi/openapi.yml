@@ -118,6 +118,13 @@ paths:
       operationId: getProductions
       summary: List All productions
       description: Gets a list of all `production` entities.
+      parameters:
+        - in: query
+          name: forSale
+          schema: 
+            type: boolean
+            default: false
+          description: "true to get only productions ready to be put on sale"
     post:
       security:
         - oAuth2ForViandeEnDirect: [write]
@@ -561,6 +568,12 @@ components:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        quantity:
+          description: "the quantity of products for this batch initially on sale"
+          type: number
+        quantitySold:
+          description: "the quantity of products for this batch already sold"
+          type: number
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "lots")'
     Producer:
