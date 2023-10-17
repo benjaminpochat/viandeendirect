@@ -5,7 +5,7 @@ import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/ma
 import {Close, Logout, Menu} from '@mui/icons-material'
 
 import Dashboard from '../components/Dashboard';
-import Customers from '../components/Customers';
+import Customers from '../components/customers/Customers';
 import GrowerAccount from '../components/GrowerAccount'
 import Productions from '../components/productions/Productions'
 import Sales from '../components/sales/Sales'

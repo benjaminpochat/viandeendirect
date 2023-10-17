@@ -1,11 +1,19 @@
-import { useEffect, useState } from 'react';
 import BeefProductionCard from "./BeefProductionCard"
 
-export default function ProductionCard({production: production, showActions: showActions}) {
+export default function ProductionCard({
+    production: production, 
+    showActions: showActions,
+    setPackageModificationLayoutContent: setPackageModificationLayoutContent
+}) {
 
     switch (production.productionType) {
         case 'BeefProduction':
-            return <BeefProductionCard key={production.id} production={production} showActions={showActions}></BeefProductionCard>
+            return <BeefProductionCard 
+                        key={production.id} 
+                        production={production} 
+                        showActions={showActions}
+                        setPackageModificationLayoutContent={setPackageModificationLayoutContent}>
+                    </BeefProductionCard>
         default :
             return <></>
     }

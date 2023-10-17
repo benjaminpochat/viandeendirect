@@ -18,14 +18,14 @@ function SideMenu({width, open, onClose, selectItem}) {
                             <ListItemText primary='Tableau de bord'/>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem key='Sales' disablePadding>
-                        <ListItemButton onClick={() => selectItem('SALES')}>
-                            <ListItemText primary='Ventes'/>
-                        </ListItemButton>
-                    </ListItem>
                     <ListItem key='Productions' disablePadding>
                         <ListItemButton onClick={() => selectItem('PRODUCTIONS')}>
                             <ListItemText primary='Productions'/>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem key='Sales' disablePadding>
+                        <ListItemButton onClick={() => selectItem('SALES')}>
+                            <ListItemText primary='Ventes'/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Customers' disablePadding>

@@ -10,3 +10,91 @@
     background-color: lightgrey;
     cursor: pointer;
 }
+
+
+
+
+
+
+
+.lot {
+    border-top: 1px solid lightgrey;
+    display: flex;
+  }
+  
+  .lot__package {
+    width: 35%;
+    display: grid;
+    grid-template-areas: "name        name"
+                         "description description"
+                         "netWeight   price";
+    align-items: center;
+  }
+  
+  .lot__package__name {
+    grid-area: name;
+  }
+  
+  .lot__package:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+  }
+  
+  .lot__package__actions {
+    grid-area: actions;
+  }
+  
+  .lot__package__description {
+    font-size: x-small;
+    grid-area: description;
+  }
+  
+  .lot__package__net-weight {
+    font-size: small;
+    grid-area: netWeight;
+  }
+  
+  .lot__package__unit-price {
+    font-size: small;
+    grid-area: price;
+  }
+  
+  .lot__quantity-actions-add,
+  .lot__quantity-actions-remove {
+    display: flex;
+    flex-direction: column;
+    padding: 0.2rem;
+    justify-content: space-around;
+    gap: 0.2rem;
+  }
+  
+  .lot__summary {
+    display: grid;
+    grid-template-areas: "number   number"
+                         "label    label"
+                         "quantity price";
+    width: 30%;
+    align-content: center;
+    text-align: center;
+  }
+  
+  .lot__summary__package-number {
+    grid-area: number;
+    font-size: xx-large;
+  }
+  
+  .lot__summary__label {
+    grid-area: label;
+    font-size: x-small;
+  }
+  
+  
+  .lot__summary__total-quantity {
+    grid-area: quantity;
+    font-size: small;
+  }
+  
+  .lot__summary__total-price {
+    grid-area: price;
+    font-size: small;
+  }

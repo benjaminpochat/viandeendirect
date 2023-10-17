@@ -4,7 +4,10 @@ import { Button, Card, CardActions, CardContent, Typography } from "@mui/materia
 import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
 import dayjs from 'dayjs'
 
-export default function BeefProductionCard({production: production, showActions: showActions}) {
+export default function BeefProductionCard({
+    production: production, 
+    showActions: showActions, 
+    setPackageModificationLayoutContent: setPackageModificationLayoutContent}) {
 
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
@@ -40,11 +43,13 @@ export default function BeefProductionCard({production: production, showActions:
             {getActions()}
         </Card>
     )
+
     function getActions() {
         if (showActions) {
             return <CardActions>
                 <Button size="small">Mettre en vente</Button>
                 <Button size="small">Ajuster le poids vif</Button>
+                <Button size="small" onClick={() => setPackageModificationLayoutContent(production)}>Modifier les produits</Button>
             </CardActions>
         }
     }
