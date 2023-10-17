@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
-import Production from 'viandeendirect_eu/dist/model/Production'
 import ProductionCard from '../productions/ProductionCard'
 
-export default function SaleProductionSelector(production) {
+export default function SaleProductionSelector({selectProduction: selectProduction}) {
 
     const { keycloak, initialized } = useKeycloak()
     const [productionsForSale, setProductionsForSale] = useState([])
@@ -29,7 +27,17 @@ export default function SaleProductionSelector(production) {
         }, keycloak)
     }
 
+    function handleProductSelection(production) {
+        selectProduction(production)
+    }
+
     return productionsForSale.map(production => {
-        return <div className='card-clickable'><ProductionCard key={'production-card-' + production.id} production={production} showActions={false}></ProductionCard></div>
+        return <div className='card-clickable' onClick={() => handleProductSelection(production)}>
+                    <ProductionCard 
+                        key={'production-card-' + production.id} 
+                        production={production} 
+                        showActions={false}>
+                    </ProductionCard>
+                </div>
     })
 }
