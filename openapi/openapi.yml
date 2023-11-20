@@ -191,6 +191,26 @@ paths:
         type: string
       in: path
       required: true
+  /productions/{productionId}/percentageSold:
+    summary: Path used to get the percentage sold for a given production.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: number
+          description: Successful response - returns a single `production`.
+      operationId: getProductionPercentageSold
+      parameters:
+      - name: beefProductionId
+        description: A unique identifier for a `beefProduction`.
+        schema:
+          type: string
+        in: path
+        required: true
   /beefProductions/{beefProductionId}:
     get:
       security:
@@ -279,7 +299,7 @@ paths:
           description: Successful response - returns an array of `Customer` entities.
       operationId: getCustomers
       summary: List All Customers
-      description: Gets a list of all `Customer` entities.      
+      description: Gets a list of all `Customer` entities.
   /orders:
     summary: Path used to manage orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\
@@ -486,13 +506,13 @@ components:
       description: ""
       type: object
       properties:
-        productionType:
-          type: string
-          enum: ['BeefProduction', 'HonneyProduction']
         id:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        productionType:
+          type: string
+          enum: ['BeefProduction', 'HonneyProduction']
         sales:
           description: ""
           type: array
@@ -522,6 +542,9 @@ components:
       properties:
         animalIdentifier:
           description: "official identifier of the animal"
+          type: string
+        animalType:
+          description: "type of animal"
           type: string
         animalLiveWeight:
           description: "weight of the animal before being killed, in kilograms"
@@ -559,7 +582,11 @@ components:
       - package
       type: object
       properties:
-        package:
+        id:
+          description: ""
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        packageLot:
           $ref: '#/components/schemas/PackageLot'
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
@@ -570,10 +597,7 @@ components:
             Includes taxes.
         quantity:
           description: ""
-        id:
-          description: ""
           type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "orderItems")'
     Order:

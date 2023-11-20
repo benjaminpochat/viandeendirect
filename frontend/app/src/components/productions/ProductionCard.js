@@ -9,7 +9,7 @@ export default function ProductionCard({
     switch (production.productionType) {
         case 'BeefProduction':
             return <BeefProductionCard 
-                        key={production.id} 
+                        key={production.id}
                         production={production} 
                         showActions={showActions}
                         setPackageModificationLayoutContent={setPackageModificationLayoutContent}>

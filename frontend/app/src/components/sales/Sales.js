@@ -21,8 +21,7 @@ export default function Sales() {
         loadSales()
     }, [keycloak])
 
-    return <>{getContent()}
-    </>
+    return getContent()
 
     function getContent() {
         switch (currentAction) {
