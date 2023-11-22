@@ -5,8 +5,6 @@ import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-gri
 
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
-import { MockApi } from '../../api/MockApi';
-import Customer from 'viandeendirect_eu/dist/model/Customer';
 
 export default function CustomersList() {
 
@@ -40,28 +38,28 @@ export default function CustomersList() {
             email: customer.user.email
         }
     })
-      
+
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Nom', flex: 1, disableColumnMenu: true },
         { field: 'phone', headerName: 'Téléphone', flex: 1, disableColumnMenu: true },
         { field: 'email', headerName: 'Email', flex: 1, disableColumnMenu: true },
     ]
-      
+
     return (<>
-            <Typography>Clients</Typography>
-            <DataGrid 
-                rows={rows} 
-                columns={columns} 
-                slots={{ toolbar: GridToolbar }}
-                disableColumnFilter
+        <Typography>Clients</Typography>
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            slots={{ toolbar: GridToolbar }}
+            disableColumnFilter
             disableColumnSelector
             disableDensitySelector
-                slotProps={{
-                    toolbar: {
-                        showQuickFilter: true,
-                    },
-                }}/>
-        </>
+            slotProps={{
+                toolbar: {
+                    showQuickFilter: true,
+                },
+            }} />
+    </>
     )
 
 }

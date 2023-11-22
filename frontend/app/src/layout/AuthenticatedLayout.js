@@ -8,7 +8,7 @@ import Dashboard from '../components/Dashboard';
 import Customers from '../components/customers/Customers';
 import GrowerAccount from '../components/GrowerAccount'
 import Productions from '../components/productions/Productions'
-import Sales from '../components/sales/Sales'
+import Sales from '../components/sales/Sales.tsx'
 import SideMenu from './SideMenu'
 
 

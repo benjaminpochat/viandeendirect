@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder.js'
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.js';
 
-export default function SaleCard({ sale: rawSale }) {
-
-    const [sale, setSale] = useState(rawSale)
-    const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrdersCallback}) {
 
     return (
         <Card>
@@ -56,7 +52,7 @@ export default function SaleCard({ sale: rawSale }) {
             <CardActions>
                 <ButtonGroup>
                     <Button size="small">Publier la vente</Button>
-                    <Button size="small">Gérer les commandes</Button>
+                    <Button size="small" onClick={() => manageOrdersCallback(sale)}>Gérer les commandes</Button>
                     <Button size="small">Préparer la livraison</Button>
                 </ButtonGroup>
             </CardActions>
