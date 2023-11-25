@@ -4,7 +4,7 @@ import { Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
 
 export default function CustomersList() {
 

@@ -4,11 +4,11 @@ import { useState } from 'react';
 import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 import {Close, Logout, Menu} from '@mui/icons-material'
 
-import Dashboard from '../components/Dashboard';
-import Customers from '../components/customers/Customers';
-import GrowerAccount from '../components/GrowerAccount'
-import Productions from '../components/productions/Productions'
-import Sales from '../components/sales/Sales.tsx'
+import Dashboard from '../domains/dashboard/Dashboard.js';
+import CustomerController from '../domains/customer/CustomerController.js';
+import GrowerAccount from '../domains/producer/ProducerAccount.js'
+import ProductionController from '../domains/production/ProductionController.js'
+import SaleController from '../domains/sale/SaleController.tsx'
 import SideMenu from './SideMenu'
 
 
@@ -31,9 +31,9 @@ function AuthenticatedLayout() {
     function renderMainContent() {
         switch (mainContent) {
           case 'DASHBOARD' : return <Dashboard></Dashboard>
-          case 'SALES' : return <Sales></Sales>
-          case 'PRODUCTIONS' : return <Productions></Productions>
-          case 'CUSTOMERS' : return <Customers></Customers>
+          case 'SALES' : return <SaleController></SaleController>
+          case 'PRODUCTIONS' : return <ProductionController></ProductionController>
+          case 'CUSTOMERS' : return <CustomerController></CustomerController>
           case 'GROWER_ACCOUNT' : return <GrowerAccount></GrowerAccount>
         }
     }

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Button } from "@mui/material"
-import BeefProductionForm from './BeefProductionForm'
+import BeefProductionForm from './views/BeefProductionForm'
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
-import ProductionCard from './ProductionCard'
-import { PackageLotsCreator } from './PackageLotsCreator'
+import { AuthenticatedApiBuilder } from '../../api/AuthenticatedApiBuilder'
+import ProductionCard from './components/ProductionCard'
+import { PackageLotsCreator } from './views/PackageLotsCreator'
 
-export default function Productions() {
+export default function ProductionController() {
 
     const BEEF_PRODUCTION_CREATION = 'BEEF_PRODUCTION_CREATION'
     const BEEF_PRODUCTION_PACKAGE_MODIFICATION = 'BEEF_PRODUCTION_PACKAGE_MODIFICATION'

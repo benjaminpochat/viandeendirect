@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
 import dayjs from 'dayjs'
 
 export default function BeefProductionCard({

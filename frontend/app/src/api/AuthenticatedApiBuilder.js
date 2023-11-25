@@ -1,6 +1,6 @@
 import ApiClient from 'viandeendirect_eu/dist/ApiClient'
 import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
-import { MockApi } from '../../api/MockApi'
+import { MockApi } from './MockApi'
 
 export class AuthenticatedApiBuilder {
     /**

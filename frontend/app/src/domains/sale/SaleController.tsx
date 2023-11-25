@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { Typography, Button } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
+import { AuthenticatedApiBuilder } from '../../api/AuthenticatedApiBuilder.js'
 
-import SaleForm from './SaleForm.js'
-import SaleCard from './SaleCard.tsx'
-import OrdersList from './OrdersList.tsx'
+import SaleForm from './views/SaleForm.js'
+import SaleCard from './components/SaleCard.tsx'
+import OrdersList from './views/OrdersList.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 
-export default function Sales() {
+export default function SaleController() {
 
     const NONE = 'NONE'
     const SALE_CREATION = 'SALE_CREATION'

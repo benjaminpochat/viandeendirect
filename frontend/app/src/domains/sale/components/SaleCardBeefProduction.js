@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../security/AuthenticatedApiBuilder'
-import { AnimalTypeUtils } from '../../enum/AnimalType.ts';
+import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import styles from './SaleCard.css'
 
 export default function SaleCardBeefProduction({production: production}) {
