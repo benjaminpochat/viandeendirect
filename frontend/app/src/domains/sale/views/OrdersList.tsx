@@ -1,29 +1,66 @@
-import { Button, Typography } from "@mui/material"
+import React from 'react'
+import { useEffect, useState } from 'react'
+
+import { Button, ButtonGroup, Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import dayjs from 'dayjs'
 
+import { useKeycloak } from '@react-keycloak/web'
+import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+
 import Order from "viandeendirect_eu/dist/model/Order"
 
-export default function OrdersList({sale: sale, returnCallback: returnCallback}) {
+export default function OrdersList({
+    sale: sale, 
+    returnCallback: returnCallback, 
+    viewOrderCallback: viewOrderCallback,
+    createOrderCallback: createOrderCallback}) {
 
-    //TODO : charger les commandes et leur grappe
+    const { keycloak, initialized } = useKeycloak()
+    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
 
-    const rows: GridRowsProp = sale.orders.map((order: Order) => {
+    const [orders, setOrders] = useState([])
+
+    useEffect(() => {
+        loadOrders()
+    }, [keycloak])
+
+    function loadOrders() {
+        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
+        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+            api.getSaleOrders(sale.id, (error, data, response) => {
+                if (error) {
+                    console.error(error)
+                } else {
+                    console.log('api.getSaleOrders called successfully. Returned data: ' + data)
+                    setOrders(data)
+                }
+            })
+        }, keycloak)
+    }
+
+    const columns: GridColDef[] = [
+        { field: 'id', headerName: 'Référence', flex: 0.5, disableColumnMenu: true },
+        { field: 'customerName', headerName: 'Nom du client', flex: 1, disableColumnMenu: true },
+        {
+            field: 'actions',
+            headerName: '',
+            renderCell: (param) => <Button variant="contained" size="small" onClick={() => viewOrderCallback({id: param.row.id}, sale)}>Détails</Button>,
+            disableColumnMenu: true,
+            disableReorder: true
+          }
+    ]
+
+    const rows: GridRowsProp = orders.map((order: Order) => {
         return {
             id: order.id,
-            //customerName: order.customer.user.lastName + ' ' + order.customer.user.name
-            customerName: 'Bob'
-            //items: order.items.map
+            customerName: order.customer.user.lastName + ' ' + order.customer.user.firstName,
         }
     })
       
-    const columns: GridColDef[] = [
-        { field: 'id', headerName: 'Numéro de commande', flex: 1, disableColumnMenu: true },
-        { field: 'customerName', headerName: 'Nom du client', flex: 1, disableColumnMenu: true }
-    ]
 
     return <>
-        <Typography>Vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
+        <Typography>Commandes pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
         <DataGrid
             rows={rows}
             columns={columns}
@@ -34,8 +71,13 @@ export default function OrdersList({sale: sale, returnCallback: returnCallback})
             slotProps={{
                 toolbar: {
                     showQuickFilter: true,
+                    printOptions: { disableToolbarButton: true },
+                    csvOptions: { disableToolbarButton: true },
                 },
             }} />
-        <Button size="small" onClick={() => returnCallback()}>Retour aux ventes</Button>
+        <ButtonGroup>
+            <Button variant="contained" size="small" onClick={createOrderCallback}>Saisir une commande</Button>
+            <Button size="small" onClick={returnCallback}>Retour aux ventes</Button>
+        </ButtonGroup>
     </>
 }

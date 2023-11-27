@@ -19,7 +19,7 @@ const steps = ['Choisir une production', 'Définir le lieu et l\'heure', 'Choisi
  * @param {Production} production 
  * @returns 
  */
-export default function SaleForm({callback}) {
+export default function SaleForm({returnCallback: returnCallback}) {
 
     const SELECT_PRODUCTION_STEP = 'SELECT_PRODUCTION_STEP'
     const SET_DELIVERY_DATE_STEP = 'SET_DELIVERY_DATE_STEP'
@@ -191,10 +191,10 @@ export default function SaleForm({callback}) {
     }
 
     function validate() {
-        callback()
+        returnCallback()
     }
 
     function cancel() {
-        callback()
+        returnCallback()
     }
 }

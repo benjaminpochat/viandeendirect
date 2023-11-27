@@ -98,11 +98,40 @@ paths:
         type: string
       in: path
       required: true
+  /sales/{saleId}/orders:
+    summary: Path used to manage orders for a particular sale.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: Successful response - returns orderes for a single `sale`.
+      operationId: getSaleOrders
+      summary: Get orders for a particular sale
+  /sales/{saleId}/productions:
+    summary: Path used to manage productions for a particular sale.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Production'
+          description: Successful response - returns productions for a single `sale`.
+      operationId: getSaleProductins
+      summary: Get orders for a particular sale
   /productions:
     summary: Path used to manage the list of productions.
-    description: "The REST endpoint/path used to list and create zero or more `production`\
-      \ entities.  This path contains a `GET` and `POST` operation to perform the\
-      \ list and create tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -143,9 +172,6 @@ paths:
       description: Creates a new instance of a `production`.
   /productions/{productionId}:
     summary: Path used to manage a single production.
-    description: "The REST endpoint/path used to get, update, and delete single instances\
-      \ of an `production`.  This path contains `GET`, `PUT`, and `DELETE` operations\
-      \ used to perform the get, update, and delete tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -338,9 +364,6 @@ paths:
       description: Creates a new instance of a `Order`.
   /orders/{orderId}:
     summary: Path used to manage a single Order.
-    description: "The REST endpoint/path used to get, update, and delete single instances\
-      \ of an `Order`.  This path contains `GET`, `PUT`, and `DELETE` operations used\
-      \ to perform the get, update, and delete tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -404,7 +427,6 @@ components:
       type: object
       properties:
         id:
-          description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
         label:

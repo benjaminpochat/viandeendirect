@@ -1,68 +1,17 @@
-export class MockApi {
-    createProduction(production, callback) {
-        callback()
-    }
+import Order from "viandeendirect_eu/dist/model/Order";
+import Sale from "viandeendirect_eu/dist/model/Sale";
+import Production from "viandeendirect_eu/dist/model/Production";
 
-    getProductions(options, callback) {
-        const production1 = {
-            productionType: 'BeefProduction',
-            id: 1
-        }
+export class MockApiSales {
 
-        const production2 = {
-            productionType: 'BeefProduction',
-            id: 2
-        }
-
-        callback(undefined, [production1, production2])
-    }
-
-    getProductionPercentageSold(options, callback) {
-        callback(undefined, Math.floor(Math.random() * 100))
-    }
-
-    getBeefProduction(id, callback) {
-        const beefProduction1 = {
-            slaughterDate: '2023-10-01T10:00:00',
-            animalLiveWeight: 450,
-            id: 1
-        }
-        callback(undefined, beefProduction1)
-    }
-
-    getPackageTemplates(options, callback) {
-        const template1 = {
-            label: 'Le coli tradition',
-            description: 'Un coli avec un peu de tout',
-            unitPrice: 16.5,
-            netWeight: 10,
-            id: 1
-        }
-        const template2 = {
-            label: 'Le coli cuisson rapide',
-            description: 'Un coli avec surtout des steaks ',
-            unitPrice: 16.5,
-            netWeight: 10,
-            id: 2
-        }
-        const template3 = {
-            label: 'Le petit coli steaks',
-            description: 'Un coli avec que des steaks ',
-            unitPrice: 16.5,
-            netWeight: 5,
-            id: 3
-        }
-
-        callback(undefined, [template1, template2, template3])
-    }
-
-    getSales(options, callback) {
+    getSales(): Array<Sale> {
         const sale1 = {
             id: 1,
             deliveryStart: '2023-11-15T18:00:00',
             deliveryStop: '2023-11-15T20:00:00',
             deliveryAddressName: 'ESL Rémilly',
             deliveryAddressLine1: '1 rue De Gaulle',
+            deliveryAddressLine2: undefined,
             deliveryCity: 'Rémilly',
             deliveryZipCode: '57580',
             productions: [
@@ -259,67 +208,172 @@ export class MockApi {
                 }
             ]
         }
-
-        callback(undefined, [sale1, sale2, sale3])
+        return [sale1, sale2, sale3]
     }
 
-    getAddresses(options, callback) {
-        const address1 = {
-            id: 1,
-            name: 'Parking ESL Rémilly',
-            addressLine1: '1 rue De Gaule',
-            zipCode: '57580',
-            city: 'Rémilly'
+    getSaleOrders(): Array<Order> {
+        const order1: Order = {
+            id: 21,
+            customer: {
+                id: 1,
+                user: {
+                    id: 1,
+                    lastName: 'Oscar',
+                    firstName: 'Petterson'
+                }
+            },
+            items: [
+                {
+                    id: 211,
+                    unitPrice: 80,
+                    quantity: 2,
+                    packageLot: {
+                        id: 1,
+                        label: 'Petit colis steaks',
+                        netWeight: 5
+                    }
+                }
+            ],
+            invoice: undefined
         }
 
-        const address2 = {
-            id: 2,
-            name: 'Place de l\'Etoile',
-            addressLine1: 'Place de l\'Etoile',
-            addressLine2: 'derrière l\'Arc de Triomphe',
-            zipCode: '75001',
-            city: 'Paris'
+        const order2: Order = {
+            id: 22,
+            customer: {
+                id: 2,
+                user: {
+                    id: 2,
+                    lastName: 'Davis',
+                    firstName: 'Miles'
+                }
+            },
+            items: [
+                {
+                    id: 221,
+                    unitPrice: 20,
+                    quantity: 2,
+                    packageLot: {
+                        id: 3,
+                        label: 'Filet',
+                        netWeight: 0.5
+                    }
+                }, {
+                    id: 222,
+                    unitPrice: 160,
+                    quantity: 1,
+                    packageLot: {
+                        id: 2,
+                        label: 'Colis tradition',
+                        netWeight: 10
+                    }
+                }
+            ],
+            invoice: undefined
+        }
+        const order3: Order = {
+            id: 23,
+            customer: {
+                id: 3,
+                user: {
+                    id: 3,
+                    lastName: 'Pettrucciani',
+                    firstName: 'Michel'
+                }
+            },
+            items: [
+                {
+                    id: 231,
+                    unitPrice: 160,
+                    quantity: 1,
+                    packageLot: {
+                        id: 2,
+                        label: 'Colis tradition',
+                        netWeight: 10
+                    }
+                }
+            ],
+            invoice: undefined
         }
 
-        const address3 = {
-            id: 3,
-            name: 'Bonlieu Annecy',
-            addressLine1: '1 rue du Président Farvre',
-            zipCode: '74000',
-            city: 'Annecy'
-        }
-
-        callback(undefined, [address1, address2, address3])
+        return [order1, order2, order3]
     }
 
-    getCustomers(options, callback) {
-        const customer1 = {
-            id: 1,
-            user: {
-                name: 'Bob',
-                lastName: 'Sinclair',
-                email: 'bob.sinclair@gmail.com',
-                phone: '01 02 03 04 05'
-            }
+    getOrder(): Order {
+        return {
+            id: 22,
+            customer: {
+                id: 2,
+                user: {
+                    id: 2,
+                    firstName: 'Miles',
+                    lastName: 'Davis'
+                }
+            },
+            items: [
+                {
+                    id: 221,
+                    unitPrice: 20,
+                    quantity: 2,
+                    packageLot: {
+                        id: 3,
+                        label: 'Filet',
+                        netWeight: 0.5
+                    }
+                }, {
+                    id: 222,
+                    unitPrice: 160,
+                    quantity: 1,
+                    packageLot: {
+                        id: 2,
+                        label: 'Colis tradition',
+                        netWeight: 10
+                    }
+                }
+            ],
+            invoice: undefined
         }
-        const customer2 = {
-            id: 2,
-            user: {
-                name: 'Amélie',
-                lastName: 'Poulain',
-                email: 'amelie.poulain@hotmail.com',
-                phone: '06 02 03 04 05'
+    }
+
+    getSaleProductions(): Array<Production> {
+        return [
+            {
+                id: 1,
+                productionType: 'BeefProduction',
+                producer: undefined,
+                lots: [
+                    {
+                        id: 1,
+                        label: 'Le coli tradition',
+                        description: 'Un coli avec un peu de tout',
+                        unitPrice: 16.5,
+                        netWeight: 10,
+                        photo: undefined,
+                        quantity: 15,
+                        quantitySold: 10
+                    },
+                    {
+                        id: 2,
+                        label: 'Le petit coli steaks',
+                        description: 'Un coli avec surtout des steaks',
+                        unitPrice: 16.5,
+                        netWeight: 5,
+                        photo: undefined,
+                        quantity: 10,
+                        quantitySold: 10
+                    },
+                    {
+                        id: 3,
+                        label: 'Filet',
+                        description: 'Un filet de boeuf',
+                        unitPrice: 40,
+                        netWeight: 0.5,
+                        photo: undefined,
+                        quantity: 10,
+                        quantitySold: 9
+                    }
+                ],
+                sales: undefined
             }
-        }
-        const customer3 = {
-            id: 3,
-            user: {
-                name: 'François',
-                lastName: 'Pinion',
-                email: 'francois.pinion@free.fr',
-                phone: '07 02 03 04 05'
-            }
-        }
-        callback(undefined, [customer1, customer2, customer3])
+        ]
     }
 }

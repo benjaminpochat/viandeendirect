@@ -1,78 +1,63 @@
-import { useEffect, useState } from 'react'
-import { Typography, Button } from "@mui/material"
+import React from 'react'
+import { useState } from 'react'
 
-import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../api/AuthenticatedApiBuilder.js'
-
+import SalesList from './views/SalesList.tsx'
 import SaleForm from './views/SaleForm.js'
-import SaleCard from './components/SaleCard.tsx'
 import OrdersList from './views/OrdersList.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
+import Order from 'viandeendirect_eu/dist/model/Order'
+import OrderView from './views/OrderView.tsx'
+import OrderForm from './views/OrderForm.tsx'
 
 export default function SaleController() {
 
-    const NONE = 'NONE'
-    const SALE_CREATION = 'SALE_CREATION'
-    const ORDERS_LIST = 'ORDERS_LIST'
+    const SALES_LIST_VIEW = 'SALES_LIST_VIEW'
+    const SALE_CREATION_VIEW = 'SALE_CREATION_VIEW'
+    const ORDERS_LIST_VIEW = 'ORDERS_LIST_VEW'
+    const ORDER_VIEW = 'ORDER_VIEW'
+    const ORDER_CREATION_VIEW = 'ORDER_CREATION_VIEW'
 
-    const [currentAction, setCurrentAction] = useState(NONE)
-    const [sales, setSales] = useState([])
-    const [currentSale, setCurrentSale] = useState(undefined)
-    const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const [currentView, setCurrentView] = useState(SALES_LIST_VIEW)
+    const [context, setContext] = useState(undefined)
 
-    useEffect(() => {
-        loadSales()
-    }, [keycloak])
+    return getCurrentView()
 
-    return getContent()
-
-    function getContent() {
-        switch (currentAction) {
-            case NONE: return salesList()
-            case SALE_CREATION: return saleCreationForm()
-            case ORDERS_LIST: return ordersList(currentSale)
+    function getCurrentView() {
+        switch (currentView) {
+            case SALES_LIST_VIEW: return <SalesList createSaleCallback={displaySaleCreationForm} manageSaleOrdersCallback={displayOrdersList}/>
+            case SALE_CREATION_VIEW: return <SaleForm returnCallback={displaySalesList}></SaleForm>
+            case ORDERS_LIST_VIEW: return <OrdersList sale={context} returnCallback={displaySalesList} viewOrderCallback={displayOrder} createOrderCallback={() => createOrder(context)}/>
+            case ORDER_VIEW: return <OrderView order={context.order} sale={context.sale} returnCallback={displayOrdersList}/>
+            case ORDER_CREATION_VIEW: return <OrderForm sale={context} returnCallback={displayOrdersList}/>
         }
     }
 
-    function loadSales() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getSales({}, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getSales called successfully. Returned data: ' + data)
-                    setSales(data)
-                }
-            })
-        }, keycloak)        
+    function displayOrdersList(sale: Sale) {
+        setContext(sale)
+        setCurrentView(ORDERS_LIST_VIEW)
     }
 
-    function salesList() {
-        return <>
-            <Typography>Ventes</Typography>
-            {sales.map(sale => <SaleCard sale={sale} manageOrdersCallback={(aSale: Sale) => manageOrders(aSale)}/>)}
-            <Button variant="contained" size="small" onClick={() => setCurrentAction('SALE_CREATION')}>Créer une vente</Button>
-        </>
+    function displaySaleCreationForm() {
+        setContext(undefined)
+        setCurrentView(SALE_CREATION_VIEW)
     }
 
-    function saleCreationForm() {
-        return <>
-            <SaleForm callback={() => setCurrentAction('NONE')}></SaleForm>
-        </>
+    function displaySalesList() {
+        setContext(undefined)
+        setCurrentView(SALES_LIST_VIEW)
     }
 
-    function manageOrders(sale: Sale) {
-        setCurrentSale(sale)
-        setCurrentAction(ORDERS_LIST)
+    function displayOrder(order: Order, sale: Sale) {
+        const orderContext = {
+            order: order,
+            sale: sale
+        }
+        setContext(orderContext)
+        setCurrentView(ORDER_VIEW)
     }
 
-    function ordersList(sale: Sale) {
-        return <OrdersList sale={sale} returnCallback={() => {
-            setCurrentSale(undefined)
-            setCurrentAction(NONE)}
-        }/>
+    function createOrder(sale: Sale) {
+        setContext(sale)
+        setCurrentView(ORDER_CREATION_VIEW)
     }
-
 }
