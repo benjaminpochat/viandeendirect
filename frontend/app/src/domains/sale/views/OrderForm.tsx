@@ -7,7 +7,6 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
 
-import Order from "viandeendirect_eu/dist/model/Order"
 import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import Production from "viandeendirect_eu/dist/model/Production"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
@@ -50,7 +49,7 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
             <Step active={activeStep === SET_ITEMS_STEP}>
                 <StepLabel>Sélectionner les produits commandés</StepLabel>
                 <StepContent>
-                    <div>
+                    <div className='packages-list'>
                         {products()}
                     </div>
                     <div>

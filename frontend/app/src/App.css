@@ -1,100 +1,236 @@
 .card-list {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form > div {
-    margin: 1rem;
+  margin: 1rem;
 }
 
 .card-clickable > *:hover {
-    background-color: lightgrey;
-    cursor: pointer;
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+.lot {
+  border-top: 1px solid lightgrey;
+  display: flex;
+}
+
+.lot__package {
+  width: 35%;
+  display: grid;
+  grid-template-areas: "name        name"
+    "description description"
+    "netWeight   price";
+  align-items: center;
+}
+
+.lot__package__name {
+  grid-area: name;
+}
+
+.lot__package:hover {
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+.lot__package__actions {
+  grid-area: actions;
+}
+
+.lot__package__description {
+  font-size: x-small;
+  grid-area: description;
+}
+
+.lot__package__net-weight {
+  font-size: small;
+  grid-area: netWeight;
+}
+
+.lot__package__unit-price {
+  font-size: small;
+  grid-area: price;
+}
+
+.lot__quantity-actions-add,
+.lot__quantity-actions-remove {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem;
+  justify-content: space-around;
+  gap: 0.2rem;
+}
+
+.lot__summary {
+  display: grid;
+  grid-template-areas: "number   number"
+    "label    label"
+    "quantity price";
+  width: 30%;
+  align-content: center;
+  text-align: center;
+}
+
+.lot__summary__package-number {
+  grid-area: number;
+  font-size: xx-large;
+}
+
+.lot__summary__label {
+  grid-area: label;
+  font-size: x-small;
 }
 
 
+.lot__summary__total-quantity {
+  grid-area: quantity;
+  font-size: small;
+}
+
+.lot__summary__total-price {
+  grid-area: price;
+  font-size: small;
+}
+
+.packages-list {
+  display: flex;
+}
+
+/*
+ * FONTS
+ */
+
+/* https://fonts.google.com/specimen/Acme */
+@font-face {
+  font-family: "Acme";
+  src: url("resources/fonts/acme/Acme-Regular.ttf");
+}
+
+/* https://fonts.google.com/specimen/Lato */
+@font-face {
+  font-family: "Lato-Regular";
+  src: url("resources/fonts/lato/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lato-Italic";
+  src: url("resources/fonts/lato/Lato-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Lato-Bold";
+  src: url("resources/fonts/lato/Lato-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Lato-BoldItalic";
+  src: url("resources/fonts/lato/Lato-BoldItalic.ttf");
+}
+
+@font-face {
+  font-family: "Lato-Light";
+  src: url("resources/fonts/lato/Lato-Light.ttf");
+}
+
+@font-face {
+  font-family: "Lato-LightItalic";
+  src: url("resources/fonts/lato/Lato-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: "Lato-Thin";
+  src: url("resources/fonts/lato/Lato-Thin.ttf");
+}
+
+@font-face {
+  font-family: "Lato-ThinItalic";
+  src: url("resources/fonts/lato/Lato-ThinItalic.ttf");
+}
+
+@font-face {
+  font-family: "Lato-Black";
+  src: url("resources/fonts/lato/Lato-Black.ttf");
+}
+
+@font-face {
+  font-family: "Lato-BlackItalic";
+  src: url("resources/fonts/lato/Lato-BlackItalic.ttf");
+}
 
 
+/*
+ * ICONS
+ */
 
+.icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  display: inline-block;
+}
 
+.placeholder-icon {
+  background: url(resources/images/icons/svg/placeholder.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
-.lot {
-    border-top: 1px solid lightgrey;
-    display: flex;
-  }
-  
-  .lot__package {
-    width: 35%;
-    display: grid;
-    grid-template-areas: "name        name"
-                         "description description"
-                         "netWeight   price";
-    align-items: center;
-  }
-  
-  .lot__package__name {
-    grid-area: name;
-  }
-  
-  .lot__package:hover {
-    cursor: pointer;
-    background-color: whitesmoke;
-  }
-  
-  .lot__package__actions {
-    grid-area: actions;
-  }
-  
-  .lot__package__description {
-    font-size: x-small;
-    grid-area: description;
-  }
-  
-  .lot__package__net-weight {
-    font-size: small;
-    grid-area: netWeight;
-  }
-  
-  .lot__package__unit-price {
-    font-size: small;
-    grid-area: price;
-  }
-  
-  .lot__quantity-actions-add,
-  .lot__quantity-actions-remove {
-    display: flex;
-    flex-direction: column;
-    padding: 0.2rem;
-    justify-content: space-around;
-    gap: 0.2rem;
-  }
-  
-  .lot__summary {
-    display: grid;
-    grid-template-areas: "number   number"
-                         "label    label"
-                         "quantity price";
-    width: 30%;
-    align-content: center;
-    text-align: center;
-  }
-  
-  .lot__summary__package-number {
-    grid-area: number;
-    font-size: xx-large;
-  }
-  
-  .lot__summary__label {
-    grid-area: label;
-    font-size: x-small;
-  }
-  
-  
-  .lot__summary__total-quantity {
-    grid-area: quantity;
-    font-size: small;
-  }
-  
-  .lot__summary__total-price {
-    grid-area: price;
-    font-size: small;
-  }
+.time-icon {
+  background: url(resources/images/icons/svg/time.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.calendar-icon {
+  background: url(resources/images/icons/svg/calendar.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cow-icon {
+  background: url(resources/images/icons/svg/cow.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.euro-icon {
+  background: url(resources/images/icons/svg/euro.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.steak-icon {
+  background: url(resources/images/icons/svg/steak.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.farm-icon {
+  background: url(resources/images/icons/svg/farm.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.weight-icon {
+  background: url(resources/images/icons/svg/weight.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.label-icon {
+  background: url(resources/images/icons/svg/label.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.certified-label-rouge-icon {
+  background: url(resources/images/icons/svg/label_rouge.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.certified-agriculture-biologique-icon {
+  background: url(resources/images/icons/svg/agriculture_biologique.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}

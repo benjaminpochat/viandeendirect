@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.js';
 
@@ -36,7 +33,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
                             {getQuantitySold()} kg commandés
                         </Typography>
                         <Typography>
-                            {getAmountSold()} €TTC commandés
+                            {getAmountSold()} €<sup>TTC</sup> commandés
                         </Typography>
                     </div>
                 </div>

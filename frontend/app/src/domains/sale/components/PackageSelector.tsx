@@ -10,13 +10,15 @@ export default function PackageSelector({ lot: lot, orderItems: orderItems, upda
     const quantityOrderedForLot = quantityOrdered(lot)
     const isIncreasePossibleForLot = isIncreaseQuantityPossible(lot, quantityOrderedForLot)
     const isAddToOrderDisplayed = quantityOrderedForLot === 0
-    
+        
     return <>
-        <div className="product-selector">
+        <div>
             <div>{lot.label}</div>
             <div>{lot.description}</div>
-            <div>{lot.unitPrice * lot.netWeight} €</div>
-            <div>{lot.unitPrice} €/kg</div>
+            <span className='icon euro-icon'></span>
+            <div>{lot.unitPrice * lot.netWeight} €<sup>TTC</sup></div>
+            <div>{lot.unitPrice} €<sup>TTC</sup>/kg</div>
+            <span className='icon weight-icon'></span>
             <div>~{lot.netWeight} kg</div>
             {isAddToOrderDisplayed ? getAddToOrderButton() : getChangeQuantityActions()}
         </div>
