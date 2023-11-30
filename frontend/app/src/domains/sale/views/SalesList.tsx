@@ -33,8 +33,10 @@ export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCal
     }
 
     return <>
-        <Typography>Ventes</Typography>
-        {sales.map(sale => <SaleCard sale={sale} manageOrdersCallback={manageSaleOrdersCallback} />)}
+        <Typography variant='h6'>Ventes</Typography>
+        <div className='card-list'>
+            {sales.map(sale => <SaleCard sale={sale} manageOrdersCallback={manageSaleOrdersCallback} />)}
+        </div>
         <Button variant="contained" size="small" onClick={createSaleCallback}>Créer une vente</Button>
     </>
 }

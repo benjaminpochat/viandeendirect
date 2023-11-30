@@ -48,7 +48,7 @@ export default function SaleForm({returnCallback: returnCallback}) {
     }, [keycloak])
 
     return <>
-        <Typography>Nouvelle vente</Typography>
+        <Typography variant='h6'>Nouvelle vente</Typography>
         <Stepper activeStep={activeStep} orientation="vertical">
             <Step active={activeStep === SELECT_PRODUCTION_STEP}>
                 <StepLabel>Choisir une production</StepLabel>

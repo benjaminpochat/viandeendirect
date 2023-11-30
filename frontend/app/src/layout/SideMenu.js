@@ -15,27 +15,27 @@ function SideMenu({width, open, onClose, selectItem}) {
                 <List>
                     <ListItem key='Dashboard' disablePadding>
                         <ListItemButton onClick={() => selectItem('DASHBOARD')}>
-                            <ListItemText primary='Tableau de bord'/>
+                            <ListItemText primary='Tableau de bord' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Productions' disablePadding>
                         <ListItemButton onClick={() => selectItem('PRODUCTIONS')}>
-                            <ListItemText primary='Productions'/>
+                            <ListItemText primary='Productions' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Sales' disablePadding>
                         <ListItemButton onClick={() => selectItem('SALES')}>
-                            <ListItemText primary='Ventes'/>
+                            <ListItemText primary='Ventes' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Customers' disablePadding>
                     <ListItemButton onClick={() => selectItem('CUSTOMERS')}>
-                            <ListItemText primary='Clients'/>
+                            <ListItemText primary='Clients' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Account' disablePadding>
                         <ListItemButton onClick={() => selectItem('GROWER_ACCOUNT')}>
-                            <ListItemText primary='Compte'/>
+                            <ListItemText primary='Compte' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                 </List>

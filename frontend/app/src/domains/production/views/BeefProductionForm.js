@@ -6,7 +6,7 @@ import { useKeycloak } from '@react-keycloak/web'
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useState } from "react"
-import { PackageLotsCreator } from "./PackageLotsCreator"
+import PackageLotsCreator from "./PackageLotsCreator"
 import 'dayjs/locale/fr'
 
 export default function BeefProductionForm({ callback }) {
@@ -19,7 +19,7 @@ export default function BeefProductionForm({ callback }) {
     const authenticayedApiBuilder = new AuthenticatedApiBuilder()
 
     return <>
-            <Typography>Nouvel abattage bovin</Typography>
+            <Typography variant="h6">Nouvel abattage bovin</Typography>
             <Stepper activeStep={activeStep} orientation="vertical">
                 <Step active={activeStep === SET_PRODUCTION_PROPERTIES_STEP}>
                     <StepLabel>Définir les caractéristiques de l'abattage</StepLabel>
@@ -93,13 +93,13 @@ export default function BeefProductionForm({ callback }) {
                     console.error(error)
                 } else {
                     console.log('API called successfully. Returned data: ' + data)
-                    callback('NONE')
+                    callback('PRODUCTIONS_LIST')
                 }
             })
         }, keycloak);
     }
 
     function cancel() {
-        callback('NONE')
+        callback('PRODUCTIONS_LIST')
     }
 }

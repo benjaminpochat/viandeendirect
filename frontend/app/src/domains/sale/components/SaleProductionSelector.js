@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
-import ProductionCard from '../../production/components/ProductionCard'
+import ProductionCard from '../../production/components/ProductionCard.tsx'
 
 export default function SaleProductionSelector({selectProduction: selectProduction}) {
 

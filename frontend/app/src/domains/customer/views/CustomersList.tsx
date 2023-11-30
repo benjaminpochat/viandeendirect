@@ -46,7 +46,7 @@ export default function CustomersList() {
     ]
 
     return (<>
-        <Typography>Clients</Typography>
+        <Typography variant='h6'>Clients</Typography>
         <DataGrid
             rows={rows}
             columns={columns}

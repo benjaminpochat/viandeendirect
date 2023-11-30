@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
-import { PackageLotsConfigurator } from "../components/PackageLotConfigurator"
+import PackageLotsConfigurator from "../components/PackageLotConfigurator"
 
 
-export function PackageLotsCreator() {
+export default function PackageLotsCreator() {
 
     const { keycloak, initialized } = useKeycloak()
     const [packageLots, setPackageLots] = useState([])

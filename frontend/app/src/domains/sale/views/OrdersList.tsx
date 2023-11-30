@@ -60,7 +60,7 @@ export default function OrdersList({
       
 
     return <>
-        <Typography>Commandes pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
+        <Typography variant='h6'>Commandes pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
         <DataGrid
             rows={rows}
             columns={columns}

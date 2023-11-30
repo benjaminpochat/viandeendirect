@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.js';
@@ -7,7 +9,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
     return (
         <Card>
             <CardContent>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom>
                     Vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}
                 </Typography>
                 <div className='sale-card-line-1'>

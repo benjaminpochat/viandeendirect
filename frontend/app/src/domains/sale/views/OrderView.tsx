@@ -35,6 +35,7 @@ export default function OrderView({order: rawOrder, sale: sale, returnCallback: 
     }
 
     return <>
+        <Typography variant='h6'>Détails de la commande</Typography>
         <div>
             <div>
                 <Typography color="text.secondary">Référence de la commande</Typography>

@@ -1,67 +1,25 @@
-import { useEffect, useState } from 'react'
-import { Button } from "@mui/material"
+import { useState } from 'react'
 import BeefProductionForm from './views/BeefProductionForm'
-import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../api/AuthenticatedApiBuilder'
-import ProductionCard from './components/ProductionCard'
-import { PackageLotsCreator } from './views/PackageLotsCreator'
+import PackageLotsCreator from './views/PackageLotsCreator'
+import ProductionsList from './views/ProductionsList.tsx'
 
 export default function ProductionController() {
 
     const BEEF_PRODUCTION_CREATION = 'BEEF_PRODUCTION_CREATION'
     const BEEF_PRODUCTION_PACKAGE_MODIFICATION = 'BEEF_PRODUCTION_PACKAGE_MODIFICATION'
-    const NONE = 'NONE'
+    const PRODUCTIONS_LIST = 'PRODUCTIONS_LIST'
 
-    const [currentAction, setCurrentAction] = useState(NONE)
-    const [productions, setProductions] = useState([])
-    const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
-
-    useEffect(() => {
-        loadProductions()
-    }, [keycloak])
+    const [currentAction, setCurrentAction] = useState(PRODUCTIONS_LIST)
 
     return <>{getContent()}</>
 
-    function loadProductions() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getProductions({}, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getProductions called successfully. Returned data: ' + data)
-                    setProductions(data)
-                }
-            })
-        }, keycloak)
-    }
-
     function getContent() {
         switch (currentAction) {
-            case NONE: return productionsList()
+            case PRODUCTIONS_LIST: return <ProductionsList createBeefProductionCallback={() => setCurrentAction(BEEF_PRODUCTION_CREATION)}></ProductionsList>
             case BEEF_PRODUCTION_CREATION: return <BeefProductionForm callback={(action) => {
                 setCurrentAction(action)
-                loadProductions()
             }} />
             case BEEF_PRODUCTION_PACKAGE_MODIFICATION: return <PackageLotsCreator></PackageLotsCreator>
         }
-    }
-
-    function productionsList() {
-        return <>
-            <div className='card-list'>
-            {getProductionCards()}
-            </div>
-            <Button variant="contained" size="small" onClick={() => setCurrentAction(BEEF_PRODUCTION_CREATION)}>Ajouter un abattage bovin</Button>
-        </>
-    }
-
-    function getProductionCards() {
-        return productions.map(production => <ProductionCard 
-                                                production={production} 
-                                                showActions={true} 
-                                                setPackageModificationLayoutContent={() => setCurrentAction(BEEF_PRODUCTION_PACKAGE_MODIFICATION)}>    
-                                            </ProductionCard>)
     }
 }

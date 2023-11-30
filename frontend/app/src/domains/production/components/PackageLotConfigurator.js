@@ -7,7 +7,7 @@ import { Button } from "@mui/material"
  * @param {PackageLot} lot 
  * @returns 
  */
-export function PackageLotsConfigurator({packageLot: packageLot}) {
+export default function PackageLotsConfigurator({packageLot: packageLot}) {
     const [quantity, setQuantity] = useState(packageLot.quantity)
 
     return <div>

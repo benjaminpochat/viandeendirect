@@ -43,7 +43,7 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }
 
     return <>
-        <Typography>Creation d'une commande pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
+        <Typography variant='h6'>Creation d'une commande pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
 
         <Stepper activeStep={activeStep} orientation="vertical">
             <Step active={activeStep === SET_ITEMS_STEP}>
