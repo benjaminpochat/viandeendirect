@@ -1,9 +1,13 @@
 import React from 'react'
 
-import { Button } from "@mui/material"
+import { Button, Fab } from "@mui/material"
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
+
+import './PackageSelector.css'
 
 export default function PackageSelector({ lot: lot, orderItems: orderItems, updateItemsCallback: updateItemsCallback }) {
 
@@ -12,15 +16,15 @@ export default function PackageSelector({ lot: lot, orderItems: orderItems, upda
     const isAddToOrderDisplayed = quantityOrderedForLot === 0
         
     return <>
-        <div>
-            <div>{lot.label}</div>
-            <div>{lot.description}</div>
-            <span className='icon euro-icon'></span>
-            <div>{lot.unitPrice * lot.netWeight} €<sup>TTC</sup></div>
-            <div>{lot.unitPrice} €<sup>TTC</sup>/kg</div>
-            <span className='icon weight-icon'></span>
-            <div>~{lot.netWeight} kg</div>
-            {isAddToOrderDisplayed ? getAddToOrderButton() : getChangeQuantityActions()}
+        <div className='package-selector'>
+            <div className='package-selector__label'>{lot.label}</div>
+            <div className='package-selector__description'>{lot.description}</div>
+            <span className='icon euro-icon package-selector__icon'></span>
+            <div className='package-selector__total_price'>{lot.unitPrice * lot.netWeight} €<sup>TTC</sup></div>
+            <div className='package-selector__unit_price'>({lot.unitPrice} €<sup>TTC</sup>/kg)</div>
+            <span className='icon weight-icon package-selector__icon'></span>
+            <div className='package-selector__weight'>~{lot.netWeight} kg</div>
+            <div className='package-selector__actions'>{isAddToOrderDisplayed ? getAddToOrderButton() : getChangeQuantityActions()}</div>
         </div>
     </>
 
@@ -33,9 +37,9 @@ export default function PackageSelector({ lot: lot, orderItems: orderItems, upda
 
     function getChangeQuantityActions() {
         return <>
-            <Button variant="outlined" size='small' onClick={() => increaseQuantity(lot, -1)}>-</Button>
+            <Fab color='primary' size='small' onClick={() => increaseQuantity(lot, -1)}><RemoveIcon/></Fab>
             {`${quantityOrderedForLot} coli${quantityOrderedForLot > 1 ? 's' : ''}`}
-            <Button variant="contained" size='small' onClick={() => increaseQuantity(lot, 1)} disabled={!isIncreasePossibleForLot}>+</Button>
+            <Fab color='primary' size='small' onClick={() => increaseQuantity(lot, 1)} disabled={!isIncreasePossibleForLot}><AddIcon/></Fab>
         </>
     }
 

@@ -95,6 +95,7 @@
 
 .packages-list {
   display: flex;
+  flex-flow: wrap;
 }
 
 /*
