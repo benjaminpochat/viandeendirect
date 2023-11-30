@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 
-import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography } from "@mui/material"
+import { Button, Stepper, Step, StepLabel, StepContent, Typography } from "@mui/material"
 import dayjs from 'dayjs'
 
 import { useKeycloak } from '@react-keycloak/web'
@@ -11,6 +11,7 @@ import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import Production from "viandeendirect_eu/dist/model/Production"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 import PackageSelector from '../components/PackageSelector.tsx'
+import CustomerSelector from '../components/CustomerSelector.tsx'
 
 export default function OrderForm({ sale: sale, returnCallback: returnCallback }) {
 
@@ -50,12 +51,10 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
                 <StepLabel>Sélectionner les produits commandés</StepLabel>
                 <StepContent>
                     <div className='packages-list'>
-                        {products()}
+                        {packageLots()}
                     </div>
                     <div>
-                        <ButtonGroup>
-                            {itemsValidationButton()}
-                        </ButtonGroup>
+                        {itemsValidationButton()}
                     </div>
                 </StepContent>
             </Step>
@@ -64,9 +63,10 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
                 <StepContent>
                     <div></div>
                     <div>
-                        <ButtonGroup>
-                            <Button type='submit' variant="contained" size="small" onClick={validateOrder}>Valider</Button>
-                        </ButtonGroup>
+                        <div>
+                            <CustomerSelector callback={validateOrder}></CustomerSelector>
+                        </div>
+                        <Button type='submit' variant="contained" size="small" onClick={validateOrder}>Valider</Button>
                     </div>
                 </StepContent>
             </Step>
@@ -74,7 +74,7 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
         <Button size="small" onClick={() => returnCallback(sale)}>Abandonner</Button>
     </>
 
-    function products() {
+    function packageLots() {
         return productions.flatMap(production => production.lots).map(lot => packageSelector(lot))
     }
 
