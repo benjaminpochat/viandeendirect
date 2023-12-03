@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
+import { frFR } from '@mui/material/locale';
 
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
@@ -50,7 +50,7 @@ function App() {
         fontWeight: 'bold'
       }
     }
-  });
+  }, frFR);
 
   return (
     <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>

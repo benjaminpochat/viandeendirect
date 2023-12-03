@@ -6,8 +6,7 @@ import { Button, Typography } from '@mui/material'
 import { useKeycloak } from '@react-keycloak/web'
 import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
 
-import Order from 'viandeendirect_eu/dist/model/Order'
-import OrderItem from 'viandeendirect_eu/dist/model/OrderItem'
+import OrderSummary from '../components/OrderSummary.tsx'
 
 export default function OrderView({order: rawOrder, sale: sale, returnCallback: returnCallback}) {
     
@@ -36,27 +35,7 @@ export default function OrderView({order: rawOrder, sale: sale, returnCallback: 
 
     return <>
         <Typography variant='h6'>Détails de la commande</Typography>
-        <div>
-            <div>
-                <Typography color="text.secondary">Référence de la commande</Typography>
-                <Typography>{order.id}</Typography>
-            </div>
-            <div>
-                <Typography color="text.secondary">Nom du client</Typography>
-                <Typography>{order.customer?.user.lastName + ' ' + order.customer?.user.firstName}</Typography>
-            </div>
-            <div>
-                <Typography color="text.secondary">Liste des articles</Typography>
-                <ul>
-                    {order.items?.map(item => <li>{itemDescription(item)}</li>)}
-                </ul>
-            </div>
-
-        </div>
+        <OrderSummary order={order}></OrderSummary>
         <Button onClick={() => returnCallback(sale)}>Retour aux commandes</Button>
     </>
-
-    function itemDescription(item: OrderItem){
-        return `${item.quantity}x ${item.packageLot.label}`
-    }
 }

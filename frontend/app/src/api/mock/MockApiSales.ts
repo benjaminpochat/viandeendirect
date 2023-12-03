@@ -376,4 +376,8 @@ export class MockApiSales {
             }
         ]
     }
+
+    createOrder(order: Order) {
+        return {...order, id: 999}
+    }
 }

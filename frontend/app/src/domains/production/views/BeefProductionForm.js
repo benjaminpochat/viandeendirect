@@ -8,12 +8,11 @@ import { useKeycloak } from '@react-keycloak/web'
 
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useState } from "react"
-import PackageLotsCreator from "./PackageLotsCreator"
+
 import 'dayjs/locale/fr'
 
 import { BeefProduction } from 'viandeendirect_eu';
-import { PackageLotsCreator } from "./PackageLotsCreator"
+import PackageLotsCreator from "./PackageLotsCreator"
 
 export default function BeefProductionForm({ callback }) {
 

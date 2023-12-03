@@ -2,11 +2,12 @@ import React from 'react'
 import { useState } from 'react'
 
 import { Switch, Autocomplete, TextField, Button } from "@mui/material"
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
+import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
 
 import Customer from "viandeendirect_eu/dist/model/Customer"
+import User from "viandeendirect_eu/dist/model/User"
 
-export default function CustomerSelector({ callback: callback }) {
+export default function CustomerSelector({ customers: customers, callback: callback }) {
 
     const [newCustomer, setNewCustomer] = useState<boolean>(false)
 
@@ -23,19 +24,19 @@ export default function CustomerSelector({ callback: callback }) {
 
     function newCustomerForm() {
         return <>
-            <FormContainer onSuccess={callback}>
+            <FormContainer onSuccess={defineNewCustomer}>
                 <div className="form">
                     <div>
-                        <TextFieldElement required name="lastName" label="Nom" variant="standard" />
+                        <TextFieldElement name="lastName" label="Nom" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
                     </div>
                     <div>
-                        <TextFieldElement required name="firstName" label="Prénom" variant="standard" />
+                        <TextFieldElement name="firstName" label="Prénom" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
                     </div>
                     <div>
-                        <TextFieldElement required name="email" label="email" variant="standard" />
+                        <TextFieldElement name="email" label="email" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
                     </div>
                     <div>
-                        <TextFieldElement required name="phone" label="Téléphone" variant="standard" />
+                        <TextFieldElement name="phone" label="Téléphone" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
                     </div>
                     <div>
                         <Button type='submit' variant="contained" size="small">Valider</Button>
@@ -47,13 +48,42 @@ export default function CustomerSelector({ callback: callback }) {
 
     function existingCustomerSelection() {
         return <>
-            <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={['Bob', 'Bill']}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Client" />}
-            />
+            <FormContainer onSuccess={defineExistingCustomer}>
+                <div>
+                    <AutocompleteElement
+                        name="customer"
+                        options={customers.map(getCustomerOption)}
+                        required
+                    />
+                </div>
+                <div>
+                    <Button type='submit' variant="contained" size="small">Valider</Button>
+                </div>
+            </FormContainer>
         </>
+
+        function getCustomerOption(customer: Customer){
+            return {
+                id: customer.id,
+                label: `${customer.user.lastName} ${customer.user.firstName}`
+            }
+        }
+    }
+
+    function defineNewCustomer(newCustomerFormData: FormData){
+        const createdCustomer = new Customer()
+        createdCustomer.user = new User()
+        createdCustomer.user.lastName = newCustomerFormData['lastName']
+        createdCustomer.user.firstName = newCustomerFormData['firstName']
+        createdCustomer.user.email = newCustomerFormData['email']
+        createdCustomer.user.phone = newCustomerFormData['phone']
+        callback(createdCustomer)
+    }
+
+    function defineExistingCustomer(existingCustomerFormData: FormData){
+        const customerId = existingCustomerFormData['customer'].id
+        const selectedCustomer = customers.filter(customer => customer.id === customerId)[0]
+        console.log(selectedCustomer)
+        callback(selectedCustomer)
     }
 }

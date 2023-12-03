@@ -5,7 +5,7 @@ export class MockApiCustomers {
         const customer1 = {
             id: 1,
             user: {
-                name: 'Bob',
+                firstName: 'Bob',
                 lastName: 'Sinclair',
                 email: 'bob.sinclair@gmail.com',
                 phone: '01 02 03 04 05'
@@ -14,7 +14,7 @@ export class MockApiCustomers {
         const customer2 = {
             id: 2,
             user: {
-                name: 'Amélie',
+                firstName: 'Amélie',
                 lastName: 'Poulain',
                 email: 'amelie.poulain@hotmail.com',
                 phone: '06 02 03 04 05'
@@ -23,12 +23,16 @@ export class MockApiCustomers {
         const customer3 = {
             id: 3,
             user: {
-                name: 'François',
+                firstName: 'François',
                 lastName: 'Pinion',
                 email: 'francois.pinion@free.fr',
                 phone: '07 02 03 04 05'
             }
         }
         return [customer1, customer2, customer3]
+    }
+
+    createCustomer(customer: Customer) {
+        return {...customer, id: 999}
     }
 }

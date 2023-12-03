@@ -326,6 +326,18 @@ paths:
       operationId: getCustomers
       summary: List All Customers
       description: Gets a list of all `Customer` entities.
+    post:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: Successful response - returns the `Customer` entity created.
+      operationId: createCustomer
+      summary: Create a new customers
   /orders:
     summary: Path used to manage orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\
@@ -647,6 +659,10 @@ components:
           $ref: '#/components/schemas/Customer'
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        sale:
+          $ref: '#/components/schemas/Sale'
+          description: ""
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "orders")'
     Sale:

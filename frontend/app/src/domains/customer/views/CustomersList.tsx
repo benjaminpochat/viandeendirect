@@ -33,7 +33,7 @@ export default function CustomersList() {
     const rows: GridRowsProp = customers.map(customer => {
         return {
             id: customer.id,
-            name: customer.user.lastName + ' ' + customer.user.name,
+            name: customer.user.lastName + ' ' + customer.user.firstName,
             phone: customer.user.phone,
             email: customer.user.email
         }

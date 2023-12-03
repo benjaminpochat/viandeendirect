@@ -38,6 +38,10 @@ export class MockApi {
         callback(undefined, this.mockApiCustomers.getCustomers())
     }
 
+    getCutomer(customer, callback){
+        callback(undefined, this.mockApiCustomers.createCustomer(customer))
+    }
+
     getSales(options, callback) {
         callback(undefined, this.mockApiSales.getSales())
     }
@@ -52,5 +56,9 @@ export class MockApi {
 
     getOrder(option, callback) {
         callback(undefined, this.mockApiSales.getOrder())
+    }
+
+    createOrder(order, callback) {
+        callback(undefined, this.mockApiSales.createOrder(order))
     }
 }
