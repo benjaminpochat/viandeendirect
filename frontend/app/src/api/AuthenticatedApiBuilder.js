@@ -1,12 +1,12 @@
 import ApiClient from 'viandeendirect_eu/dist/ApiClient'
 import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
-import { MockApi } from '../../api/MockApi'
+import { MockApi } from './mock/MockApi.ts'
 
 export class AuthenticatedApiBuilder {
     /**
      * 
      * @param {*} keycloak 
-     * @returns {DefaultApi} 
+     * @returns {DefaultApi | MockApi} 
      */
     getAuthenticatedApi(keycloak) {
         if(process.env.REACT_APP_MOCK_API) {
@@ -17,7 +17,6 @@ export class AuthenticatedApiBuilder {
             apiClient.basePath = '.'
             var api = new DefaultApi(apiClient)
             return api
-    
         }
     }
 

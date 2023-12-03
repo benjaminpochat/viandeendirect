@@ -1,0 +1,22 @@
+.sale-card-line-1, .sale-card-line-2 {
+    display: flex;
+    gap: 2rem;
+}
+
+.sale-card-line-2 {
+    margin-top: 1rem;
+}
+
+.sale-card-production {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.pie-chart {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+}

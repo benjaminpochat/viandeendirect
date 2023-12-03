@@ -1,0 +1,36 @@
+.package-selector {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.package-selector__label {
+  font-size: large;
+  grid-column: 1/-1;
+}
+
+.package-selector__description {
+  font-size: smaller;
+  grid-column: 1/-1;
+}
+
+.package-selector__icon {
+  grid-column: 1;
+}
+
+.package-selector__total_price,
+.package-selector__unit_price,
+.package-selector__weight {
+  grid-column: 2/-1;
+}
+
+.package-selector__unit_price {
+  font-size: smaller;
+}
+
+.package-selector__actions {
+  grid-column: 1/-1;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}

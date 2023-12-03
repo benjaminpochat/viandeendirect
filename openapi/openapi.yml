@@ -30,7 +30,7 @@ paths:
                   $ref: '#/components/schemas/Sale'
           description: Successful response - returns an array of `sale` entities.
       operationId: getSales
-      summary: List All sales
+      summary: List all sales for the current user
       description: Gets a list of all `sale` entities.
     post:
       security:
@@ -98,11 +98,40 @@ paths:
         type: string
       in: path
       required: true
+  /sales/{saleId}/orders:
+    summary: Path used to manage orders for a particular sale.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: Successful response - returns orderes for a single `sale`.
+      operationId: getSaleOrders
+      summary: Get orders for a particular sale
+  /sales/{saleId}/productions:
+    summary: Path used to manage productions for a particular sale.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Production'
+          description: Successful response - returns productions for a single `sale`.
+      operationId: getSaleProductins
+      summary: Get orders for a particular sale
   /productions:
     summary: Path used to manage the list of productions.
-    description: "The REST endpoint/path used to list and create zero or more `production`\
-      \ entities.  This path contains a `GET` and `POST` operation to perform the\
-      \ list and create tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -118,6 +147,13 @@ paths:
       operationId: getProductions
       summary: List All productions
       description: Gets a list of all `production` entities.
+      parameters:
+        - in: query
+          name: forSale
+          schema: 
+            type: boolean
+            default: false
+          description: "true to get only productions ready to be put on sale"
     post:
       security:
         - oAuth2ForViandeEnDirect: [write]
@@ -136,9 +172,6 @@ paths:
       description: Creates a new instance of a `production`.
   /productions/{productionId}:
     summary: Path used to manage a single production.
-    description: "The REST endpoint/path used to get, update, and delete single instances\
-      \ of an `production`.  This path contains `GET`, `PUT`, and `DELETE` operations\
-      \ used to perform the get, update, and delete tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -184,6 +217,26 @@ paths:
         type: string
       in: path
       required: true
+  /productions/{productionId}/percentageSold:
+    summary: Path used to get the percentage sold for a given production.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: number
+          description: Successful response - returns a single `production`.
+      operationId: getProductionPercentageSold
+      parameters:
+      - name: beefProductionId
+        description: A unique identifier for a `beefProduction`.
+        schema:
+          type: string
+        in: path
+        required: true
   /beefProductions/{beefProductionId}:
     get:
       security:
@@ -205,6 +258,36 @@ paths:
         type: string
       in: path
       required: true
+  /packageTemplates:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageTemplate'
+          description: Successful response - returns all package template
+      operationId: getPackageTemplates
+      summary: Get all package templates
+      description: Get all package templates
+  /addresses:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+          description: Successful response - returns all addresses
+      operationId: getAddresses
+      summary: Get all addresses
+      description: Get all addresses
   /honneyProductions/{honneyProductionId}:
     get:
       security:
@@ -226,8 +309,37 @@ paths:
         type: string
       in: path
       required: true
+  /customers:
+    summary: Path used to manage customers
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+          description: Successful response - returns an array of `Customer` entities.
+      operationId: getCustomers
+      summary: List All Customers
+      description: Gets a list of all `Customer` entities.
+    post:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: Successful response - returns the `Customer` entity created.
+      operationId: createCustomer
+      summary: Create a new customers
   /orders:
-    summary: Path used to manage the list of orders.
+    summary: Path used to manage orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\
       \ entities.  This path contains a `GET` and `POST` operation to perform the\
       \ list and create tasks, respectively."
@@ -264,9 +376,6 @@ paths:
       description: Creates a new instance of a `Order`.
   /orders/{orderId}:
     summary: Path used to manage a single Order.
-    description: "The REST endpoint/path used to get, update, and delete single instances\
-      \ of an `Order`.  This path contains `GET`, `PUT`, and `DELETE` operations used\
-      \ to perform the get, update, and delete tasks, respectively."
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -325,12 +434,21 @@ components:
             write: Grants write access
             admin: Grants access to admin operations
   schemas:
-    Product:
-      description: ""
+    PackageLot:
+      description: "A lot of packages"
       type: object
       properties:
+        id:
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        label:
+          description: "Short label of the package template"
+          type: string
         description:
-          description: ""
+          description: "Long description of the package template"
+          type: string
+        photo:
+          description: "The photo of the package template, encoded as base64"
           type: string
         netWeight:
           description: ""
@@ -338,20 +456,33 @@ components:
         unitPrice:
           description: |-
             Price per unit (weight unit).
-            Must be multiplied by the weight to get the total price for one product.
+            Must be multiplied by the weight to get the total price for one package.
             Includes taxes.
+          type: number
+        quantity:
+          description: "the quantity of packages for this batch initially on sale"
+          type: number
+        quantitySold:
+          description: "the quantity of packages for this batch already sold"
+          type: number
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
+        = "packages")'
+    PackageTemplate:
+      description: ""
+      type: object
+      properties:
         id:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "products")'
-    ProductTemplate:
-      description: ""
-      type: object
-      properties:
+        label:
+          description: "Short label of the package template"
+          type: string
         description:
-          description: ""
+          description: "Long description of the package template"
+          type: string
+        photo:
+          description: "The photo of the package template, encoded as base64"
           type: string
         netWeight:
           description: ""
@@ -359,14 +490,11 @@ components:
         unitPrice:
           description: |-
             Price per unit (weight unit).
-            Must be multiplied by the weight to get the total price for one product.
+            Must be multiplied by the weight to get the total price for one package.
             Includes taxes.
-        id:
-          description: ""
           type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "product_templates")'
+        = "package_templates")'
     User:
       description: ""
       type: object
@@ -376,6 +504,8 @@ components:
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
         email:
+          type: string
+        phone:
           type: string
         firstName:
           type: string
@@ -410,13 +540,13 @@ components:
       description: ""
       type: object
       properties:
-        productionType:
-          type: string
-          enum: ['BeefProduction', 'HonneyProduction']
         id:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        productionType:
+          type: string
+          enum: ['BeefProduction', 'HonneyProduction']
         sales:
           description: ""
           type: array
@@ -431,7 +561,7 @@ components:
           description: ""
           type: array
           items:
-            $ref: '#/components/schemas/Lot'
+            $ref: '#/components/schemas/PackageLot'
           x-field-extra-annotation: '@jakarta.persistence.OneToMany'
       discriminator:
         propertyName: 'productionType'
@@ -446,6 +576,9 @@ components:
       properties:
         animalIdentifier:
           description: "official identifier of the animal"
+          type: string
+        animalType:
+          description: "type of animal"
           type: string
         animalLiveWeight:
           description: "weight of the animal before being killed, in kilograms"
@@ -480,11 +613,15 @@ components:
     OrderItem:
       description: ""
       required:
-      - product
+      - package
       type: object
       properties:
-        product:
-          $ref: '#/components/schemas/Product'
+        id:
+          description: ""
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        packageLot:
+          $ref: '#/components/schemas/PackageLot'
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         unitPrice:
@@ -494,10 +631,7 @@ components:
             Includes taxes.
         quantity:
           description: ""
-        id:
-          description: ""
           type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "orderItems")'
     Order:
@@ -507,6 +641,10 @@ components:
       - id
       type: object
       properties:
+        id:
+          description: ""
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
         invoice:
           $ref: '#/components/schemas/Invoice'
           description: ""
@@ -521,48 +659,49 @@ components:
           $ref: '#/components/schemas/Customer'
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
-        id:
+        sale:
+          $ref: '#/components/schemas/Sale'
           description: ""
-          type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "orders")'
     Sale:
       description: ""
       type: object
       properties:
+        id:
+          type: number
+          x-field-extra-annotation: '@jakarta.persistence.Id'
         productions:
           description: ""
           type: array
           items:
             $ref: '#/components/schemas/Production'
           x-field-extra-annotation: '@jakarta.persistence.OneToMany'
-        delivery:
-          $ref: '#/components/schemas/Delivery'
+        orders:
           description: ""
-          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
-        id:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+        deliveryStart:
           description: ""
-          type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
+          type: string
+        deliveryStop:
+          description: ""
+          type: string
+        deliveryAddressName:
+          type: string
+        deliveryAddressLine1:
+          type: string
+        deliveryAddressLine2:
+          type: string
+        deliveryCity:
+          type: string
+        deliveryZipCode:
+          type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "sales")'
-    Lot:
-      description: ""
-      required:
-      - product
-      type: object
-      properties:
-        product:
-          $ref: '#/components/schemas/Product'
-          description: ""
-          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
-        id:
-          description: ""
-          type: number
-          x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "lots")'
     Producer:
       description: ""
       type: object
@@ -587,31 +726,27 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.OneToMany'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "producers")'
-    Delivery:
-      description: ""
+    Address:
+      description: "an address for delivering orders"
       type: object
       properties:
-        orders:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
-        start:
-          description: ""
-          type: string
-        stop:
-          description: ""
-          type: string
-        id:
-          description: ""
+        id: 
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
         name:
-          description: ""
+          description: "the name of the address"
           type: string
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "deliveries")'
+        city:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        zipCode: 
+          type: string
+        owner:
+          $ref: '#/components/schemas/Producer'
+          description: "the producer who owns the delivery address"
     ProducerStatus:
       type: string
       enum: [ON_BOARDING, ACTIVE]

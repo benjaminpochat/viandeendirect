@@ -21,8 +21,12 @@
     "react-hook-form": "^7.46.1",
     "react-hook-form-mui": "^6.5.2",
     "react-scripts": "5.0.1",
+    "typescript": "^5.2.2",
     "viandeendirect_eu": "file:../gen",
     "web-vitals": "^2.1.4"
+  },
+  "overrides": {
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g javascript -o ../gen --skip-validate-spec",
@@ -54,6 +58,12 @@
     ]
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.6.0"
+    "@mui/x-data-grid": "^6.18.1",
+    "@openapitools/openapi-generator-cli": "^2.6.0",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.2",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "typescript": "^5.2.2"
   }
 }
