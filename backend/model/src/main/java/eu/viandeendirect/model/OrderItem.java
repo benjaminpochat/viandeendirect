@@ -4,14 +4,11 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import eu.viandeendirect.model.Product;
+import eu.viandeendirect.model.PackageLot;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.util.NoSuchElementException;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -33,39 +30,58 @@ import jakarta.annotation.Generated;
 @jakarta.persistence.Entity @jakarta.persistence.Table(name = "orderItems")
 public class OrderItem {
 
-  @JsonProperty("product")
-  @OneToOne
-  private Product product;
-
-  @JsonProperty("unitPrice")
-  private JsonNullable<Object> unitPrice = JsonNullable.undefined();
-
-  @JsonProperty("quantity")
-  private JsonNullable<Object> quantity = JsonNullable.undefined();
-
   @JsonProperty("id")
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_item_id_generator")
   @SequenceGenerator(name="order_item_id_generator", sequenceName = "order_item_id_seq", allocationSize = 1)
   private BigDecimal id;
 
-  public OrderItem product(Product product) {
-    this.product = product;
+  @JsonProperty("packageLot")
+  @ManyToOne
+  private PackageLot packageLot;
+
+  @JsonProperty("unitPrice")
+  private JsonNullable<Object> unitPrice = JsonNullable.undefined();
+
+  @JsonProperty("quantity")
+  private BigDecimal quantity;
+
+  public OrderItem id(BigDecimal id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get product
-   * @return product
+   *
+   * @return id
   */
-  @NotNull @Valid 
-  @Schema(name = "product", required = true)
-  public Product getProduct() {
-    return product;
+  @Valid
+  @Schema(name = "id", description = "", required = false)
+  public BigDecimal getId() {
+    return id;
   }
 
-  public void setProduct(Product product) {
-    this.product = product;
+  public void setId(BigDecimal id) {
+    this.id = id;
+  }
+
+  public OrderItem packageLot(PackageLot packageLot) {
+    this.packageLot = packageLot;
+    return this;
+  }
+
+  /**
+   * Get packageLot
+   * @return packageLot
+  */
+  @Valid
+  @Schema(name = "packageLot", required = false)
+  public PackageLot getPackageLot() {
+    return packageLot;
+  }
+
+  public void setPackageLot(PackageLot packageLot) {
+    this.packageLot = packageLot;
   }
 
   public OrderItem unitPrice(Object unitPrice) {
@@ -87,8 +103,8 @@ public class OrderItem {
     this.unitPrice = unitPrice;
   }
 
-  public OrderItem quantity(Object quantity) {
-    this.quantity = JsonNullable.of(quantity);
+  public OrderItem quantity(BigDecimal quantity) {
+    this.quantity = quantity;
     return this;
   }
 
@@ -96,33 +112,14 @@ public class OrderItem {
    * 
    * @return quantity
   */
-  
+  @Valid
   @Schema(name = "quantity", description = "", required = false)
-  public JsonNullable<Object> getQuantity() {
+  public BigDecimal getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(JsonNullable<Object> quantity) {
+  public void setQuantity(BigDecimal quantity) {
     this.quantity = quantity;
-  }
-
-  public OrderItem id(BigDecimal id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * 
-   * @return id
-  */
-  @Valid 
-  @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
-    return id;
-  }
-
-  public void setId(BigDecimal id) {
-    this.id = id;
   }
 
   @Override
@@ -134,10 +131,10 @@ public class OrderItem {
       return false;
     }
     OrderItem orderItem = (OrderItem) o;
-    return Objects.equals(this.product, orderItem.product) &&
+    return Objects.equals(this.id, orderItem.id) &&
+        Objects.equals(this.packageLot, orderItem.packageLot) &&
         equalsNullable(this.unitPrice, orderItem.unitPrice) &&
-        equalsNullable(this.quantity, orderItem.quantity) &&
-        Objects.equals(this.id, orderItem.id);
+        Objects.equals(this.quantity, orderItem.quantity);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -146,7 +143,7 @@ public class OrderItem {
 
   @Override
   public int hashCode() {
-    return Objects.hash(product, hashCodeNullable(unitPrice), hashCodeNullable(quantity), id);
+    return Objects.hash(id, packageLot, hashCodeNullable(unitPrice), quantity);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -160,10 +157,10 @@ public class OrderItem {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderItem {\n");
-    sb.append("    product: ").append(toIndentedString(product)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    packageLot: ").append(toIndentedString(packageLot)).append("\n");
     sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -114,6 +114,13 @@ paths:
           description: Successful response - returns orderes for a single `sale`.
       operationId: getSaleOrders
       summary: Get orders for a particular sale
+    parameters:
+    - name: saleId
+      description: A unique identifier for a `sale`.
+      schema:
+        type: string
+      in: path
+      required: true
   /sales/{saleId}/productions:
     summary: Path used to manage productions for a particular sale.
     get:
@@ -130,6 +137,13 @@ paths:
           description: Successful response - returns productions for a single `sale`.
       operationId: getSaleProductins
       summary: Get orders for a particular sale
+    parameters:
+    - name: saleId
+      description: A unique identifier for a `sale`.
+      schema:
+        type: string
+      in: path
+      required: true
   /productions:
     summary: Path used to manage the list of productions.
     get:
@@ -237,6 +251,13 @@ paths:
           type: string
         in: path
         required: true
+    parameters:
+    - name: productionId
+      description: A unique identifier for a `production`.
+      schema:
+        type: string
+      in: path
+      required: true
   /beefProductions/{beefProductionId}:
     get:
       security:

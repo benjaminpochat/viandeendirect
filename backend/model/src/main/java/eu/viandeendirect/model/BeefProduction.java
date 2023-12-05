@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Lot;
+import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
@@ -47,6 +47,9 @@ public class BeefProduction extends Production {
   @JsonProperty("animalIdentifier")
   private String animalIdentifier;
 
+  @JsonProperty("animalType")
+  private String animalType;
+
   @JsonProperty("animalLiveWeight")
   private BigDecimal animalLiveWeight;
 
@@ -76,6 +79,25 @@ public class BeefProduction extends Production {
 
   public void setAnimalIdentifier(String animalIdentifier) {
     this.animalIdentifier = animalIdentifier;
+  }
+
+  public BeefProduction animalType(String animalType) {
+    this.animalType = animalType;
+    return this;
+  }
+
+  /**
+   * type of animal
+   * @return animalType
+  */
+
+  @Schema(name = "animalType", description = "type of animal", required = false)
+  public String getAnimalType() {
+    return animalType;
+  }
+
+  public void setAnimalType(String animalType) {
+    this.animalType = animalType;
   }
 
   public BeefProduction animalLiveWeight(BigDecimal animalLiveWeight) {
@@ -154,13 +176,13 @@ public class BeefProduction extends Production {
     this.birthPlace = birthPlace;
   }
 
-  public BeefProduction productionType(ProductionTypeEnum productionType) {
-    super.setProductionType(productionType);
+  public BeefProduction id(BigDecimal id) {
+    super.setId(id);
     return this;
   }
 
-  public BeefProduction id(BigDecimal id) {
-    super.setId(id);
+  public BeefProduction productionType(ProductionTypeEnum productionType) {
+    super.setProductionType(productionType);
     return this;
   }
 
@@ -179,12 +201,12 @@ public class BeefProduction extends Production {
     return this;
   }
 
-  public BeefProduction lots(List<Lot> lots) {
+  public BeefProduction lots(List<PackageLot> lots) {
     super.setLots(lots);
     return this;
   }
 
-  public BeefProduction addLotsItem(Lot lotsItem) {
+  public BeefProduction addLotsItem(PackageLot lotsItem) {
     super.addLotsItem(lotsItem);
     return this;
   }
@@ -199,6 +221,7 @@ public class BeefProduction extends Production {
     }
     BeefProduction beefProduction = (BeefProduction) o;
     return Objects.equals(this.animalIdentifier, beefProduction.animalIdentifier) &&
+        Objects.equals(this.animalType, beefProduction.animalType) &&
         Objects.equals(this.animalLiveWeight, beefProduction.animalLiveWeight) &&
         Objects.equals(this.slaughterDate, beefProduction.slaughterDate) &&
         Objects.equals(this.birthDate, beefProduction.birthDate) &&
@@ -208,7 +231,7 @@ public class BeefProduction extends Production {
 
   @Override
   public int hashCode() {
-    return Objects.hash(animalIdentifier, animalLiveWeight, slaughterDate, birthDate, birthPlace, super.hashCode());
+    return Objects.hash(animalIdentifier, animalType, animalLiveWeight, slaughterDate, birthDate, birthPlace, super.hashCode());
   }
 
   @Override
@@ -217,6 +240,7 @@ public class BeefProduction extends Production {
     sb.append("class BeefProduction {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    animalIdentifier: ").append(toIndentedString(animalIdentifier)).append("\n");
+    sb.append("    animalType: ").append(toIndentedString(animalType)).append("\n");
     sb.append("    animalLiveWeight: ").append(toIndentedString(animalLiveWeight)).append("\n");
     sb.append("    slaughterDate: ").append(toIndentedString(slaughterDate)).append("\n");
     sb.append("    birthDate: ").append(toIndentedString(birthDate)).append("\n");

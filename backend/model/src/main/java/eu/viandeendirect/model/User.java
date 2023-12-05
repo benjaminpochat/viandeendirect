@@ -37,6 +37,9 @@ public class User {
   @JsonProperty("email")
   private String email;
 
+  @JsonProperty("phone")
+  private String phone;
+
   @JsonProperty("firstName")
   private String firstName;
 
@@ -79,6 +82,25 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public User phone(String phone) {
+    this.phone = phone;
+    return this;
+  }
+
+  /**
+   * Get phone
+   * @return phone
+  */
+
+  @Schema(name = "phone", required = false)
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
   }
 
   public User firstName(String firstName) {
@@ -130,13 +152,14 @@ public class User {
     User user = (User) o;
     return Objects.equals(this.id, user.id) &&
         Objects.equals(this.email, user.email) &&
+        Objects.equals(this.phone, user.phone) &&
         Objects.equals(this.firstName, user.firstName) &&
         Objects.equals(this.lastName, user.lastName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, firstName, lastName);
+    return Objects.hash(id, email, phone, firstName, lastName);
   }
 
   @Override
@@ -145,6 +168,7 @@ public class User {
     sb.append("class User {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("}");

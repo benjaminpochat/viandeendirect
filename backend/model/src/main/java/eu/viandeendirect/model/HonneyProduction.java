@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import eu.viandeendirect.model.HonneyProduction;
-import eu.viandeendirect.model.Lot;
+import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
@@ -88,13 +88,13 @@ public class HonneyProduction extends Production {
     this.honeyDescription = honeyDescription;
   }
 
-  public HonneyProduction productionType(ProductionTypeEnum productionType) {
-    super.setProductionType(productionType);
+  public HonneyProduction id(BigDecimal id) {
+    super.setId(id);
     return this;
   }
 
-  public HonneyProduction id(BigDecimal id) {
-    super.setId(id);
+  public HonneyProduction productionType(ProductionTypeEnum productionType) {
+    super.setProductionType(productionType);
     return this;
   }
 
@@ -113,12 +113,12 @@ public class HonneyProduction extends Production {
     return this;
   }
 
-  public HonneyProduction lots(List<Lot> lots) {
+  public HonneyProduction lots(List<PackageLot> lots) {
     super.setLots(lots);
     return this;
   }
 
-  public HonneyProduction addLotsItem(Lot lotsItem) {
+  public HonneyProduction addLotsItem(PackageLot lotsItem) {
     super.addLotsItem(lotsItem);
     return this;
   }

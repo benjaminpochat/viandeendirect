@@ -5,7 +5,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.*;
 import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Lot;
+import eu.viandeendirect.model.HonneyProduction;
+import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
 import java.math.BigDecimal;
@@ -45,6 +46,12 @@ import jakarta.annotation.Generated;
 @jakarta.persistence.Entity @jakarta.persistence.Inheritance(strategy = jakarta.persistence.InheritanceType.TABLE_PER_CLASS)
 public abstract class Production {
 
+  @JsonProperty("id")
+  @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "production_id_generator")
+  @SequenceGenerator(name="production_id_generator", sequenceName = "production_id_seq", allocationSize = 1)
+  private BigDecimal id;
+
   /**
    * Gets or Sets productionType
    */
@@ -83,12 +90,6 @@ public abstract class Production {
   @JsonProperty("productionType")
   private ProductionTypeEnum productionType;
 
-  @JsonProperty("id")
-  @jakarta.persistence.Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "production_id_generator")
-  @SequenceGenerator(name="production_id_generator", sequenceName = "production_id_seq", allocationSize = 1)
-  private BigDecimal id;
-
   @JsonProperty("sales")
   @jakarta.persistence.OneToMany
   @Valid
@@ -102,26 +103,7 @@ public abstract class Production {
   @JsonProperty("lots")
   @jakarta.persistence.OneToMany
   @Valid
-  private List<Lot> lots = null;
-
-  public Production productionType(ProductionTypeEnum productionType) {
-    this.productionType = productionType;
-    return this;
-  }
-
-  /**
-   * Get productionType
-   * @return productionType
-  */
-
-  @Schema(name = "productionType", required = false)
-  public ProductionTypeEnum getProductionType() {
-    return productionType;
-  }
-
-  public void setProductionType(ProductionTypeEnum productionType) {
-    this.productionType = productionType;
-  }
+  private List<PackageLot> lots = null;
 
   public Production id(BigDecimal id) {
     this.id = id;
@@ -140,6 +122,25 @@ public abstract class Production {
 
   public void setId(BigDecimal id) {
     this.id = id;
+  }
+
+  public Production productionType(ProductionTypeEnum productionType) {
+    this.productionType = productionType;
+    return this;
+  }
+
+  /**
+   * Get productionType
+   * @return productionType
+  */
+
+  @Schema(name = "productionType", required = false)
+  public ProductionTypeEnum getProductionType() {
+    return productionType;
+  }
+
+  public void setProductionType(ProductionTypeEnum productionType) {
+    this.productionType = productionType;
   }
 
   public Production sales(List<Sale> sales) {
@@ -188,12 +189,12 @@ public abstract class Production {
     this.producer = producer;
   }
 
-  public Production lots(List<Lot> lots) {
+  public Production lots(List<PackageLot> lots) {
     this.lots = lots;
     return this;
   }
 
-  public Production addLotsItem(Lot lotsItem) {
+  public Production addLotsItem(PackageLot lotsItem) {
     if (this.lots == null) {
       this.lots = new ArrayList<>();
     }
@@ -207,11 +208,11 @@ public abstract class Production {
   */
   @Valid
   @Schema(name = "lots", description = "", required = false)
-  public List<Lot> getLots() {
+  public List<PackageLot> getLots() {
     return lots;
   }
 
-  public void setLots(List<Lot> lots) {
+  public void setLots(List<PackageLot> lots) {
     this.lots = lots;
   }
 
@@ -224,8 +225,8 @@ public abstract class Production {
       return false;
     }
     Production production = (Production) o;
-    return Objects.equals(this.productionType, production.productionType) &&
-        Objects.equals(this.id, production.id) &&
+    return Objects.equals(this.id, production.id) &&
+        Objects.equals(this.productionType, production.productionType) &&
         Objects.equals(this.sales, production.sales) &&
         Objects.equals(this.producer, production.producer) &&
         Objects.equals(this.lots, production.lots);
@@ -233,15 +234,15 @@ public abstract class Production {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productionType, id, sales, producer, lots);
+    return Objects.hash(id, productionType, sales, producer, lots);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Production {\n");
-    sb.append("    productionType: ").append(toIndentedString(productionType)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    productionType: ").append(toIndentedString(productionType)).append("\n");
     sb.append("    sales: ").append(toIndentedString(sales)).append("\n");
     sb.append("    producer: ").append(toIndentedString(producer)).append("\n");
     sb.append("    lots: ").append(toIndentedString(lots)).append("\n");

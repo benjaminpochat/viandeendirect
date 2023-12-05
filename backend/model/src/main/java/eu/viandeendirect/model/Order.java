@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Invoice;
 import eu.viandeendirect.model.OrderItem;
+import eu.viandeendirect.model.Sale;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,12 @@ import jakarta.annotation.Generated;
 @jakarta.persistence.Entity @jakarta.persistence.Table(name = "orders")
 public class Order {
 
+  @JsonProperty("id")
+  @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
+  @SequenceGenerator(name="order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
+  private BigDecimal id;
+
   @JsonProperty("invoice")
   @OneToOne
   private Invoice invoice;
@@ -44,11 +51,28 @@ public class Order {
   @ManyToOne
   private Customer customer;
 
-  @JsonProperty("id")
-  @jakarta.persistence.Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
-  @SequenceGenerator(name="order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  @JsonProperty("sale")
+  @ManyToOne
+  private Sale sale;
+
+  public Order id(BigDecimal id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   *
+   * @return id
+  */
+  @NotNull @Valid
+  @Schema(name = "id", description = "", required = true)
+  public BigDecimal getId() {
+    return id;
+  }
+
+  public void setId(BigDecimal id) {
+    this.id = id;
+  }
 
   public Order invoice(Invoice invoice) {
     this.invoice = invoice;
@@ -115,23 +139,23 @@ public class Order {
     this.customer = customer;
   }
 
-  public Order id(BigDecimal id) {
-    this.id = id;
+  public Order sale(Sale sale) {
+    this.sale = sale;
     return this;
   }
 
   /**
-   * 
-   * @return id
+   * Get sale
+   * @return sale
   */
-  @NotNull @Valid 
-  @Schema(name = "id", description = "", required = true)
-  public BigDecimal getId() {
-    return id;
+  @Valid
+  @Schema(name = "sale", required = false)
+  public Sale getSale() {
+    return sale;
   }
 
-  public void setId(BigDecimal id) {
-    this.id = id;
+  public void setSale(Sale sale) {
+    this.sale = sale;
   }
 
   @Override
@@ -143,25 +167,27 @@ public class Order {
       return false;
     }
     Order order = (Order) o;
-    return Objects.equals(this.invoice, order.invoice) &&
+    return Objects.equals(this.id, order.id) &&
+        Objects.equals(this.invoice, order.invoice) &&
         Objects.equals(this.items, order.items) &&
         Objects.equals(this.customer, order.customer) &&
-        Objects.equals(this.id, order.id);
+        Objects.equals(this.sale, order.sale);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(invoice, items, customer, id);
+    return Objects.hash(id, invoice, items, customer, sale);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Order {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    invoice: ").append(toIndentedString(invoice)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("    customer: ").append(toIndentedString(customer)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    sale: ").append(toIndentedString(sale)).append("\n");
     sb.append("}");
     return sb.toString();
   }

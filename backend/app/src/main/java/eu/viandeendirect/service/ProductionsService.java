@@ -26,9 +26,6 @@ public class ProductionsService implements ProductionsApiDelegate {
     @Autowired
     ProducerRepository producerRepository;
 
-    @Autowired
-    ProducerRepository growerRepository;
-
     @Override
     public ResponseEntity<Void> createProduction(Production production) {
         Producer producer = getAuthenticatedProducer();
@@ -38,7 +35,7 @@ public class ProductionsService implements ProductionsApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<Production>> getProductions() {
+    public ResponseEntity<List<Production>> getProductions(Boolean forSale) {
         Producer producer = getAuthenticatedProducer();
         List<Production> productions = productionRepository.findByProducer(producer);
         return new ResponseEntity<>(productions, HttpStatus.OK);
