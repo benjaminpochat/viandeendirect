@@ -371,21 +371,6 @@ paths:
     description: "The REST endpoint/path used to list and create zero or more `Order`\
       \ entities.  This path contains a `GET` and `POST` operation to perform the\
       \ list and create tasks, respectively."
-    get:
-      security:
-        - oAuth2ForViandeEnDirect: [read]
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
-          description: Successful response - returns an array of `Order` entities.
-      operationId: getOrders
-      summary: List All Orders
-      description: Gets a list of all `Order` entities.
     post:
       security:
         - oAuth2ForViandeEnDirect: [write]
@@ -398,6 +383,10 @@ paths:
         required: true
       responses:
         "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
           description: Successful response.
       operationId: createOrder
       summary: Create a Order
@@ -417,31 +406,6 @@ paths:
       operationId: getOrder
       summary: Get a Order
       description: Gets the details of a single instance of a `Order`.
-    put:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      requestBody:
-        description: Updated `Order` information.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        required: true
-      responses:
-        "202":
-          description: Successful response.
-      operationId: updateOrder
-      summary: Update a Order
-      description: Updates an existing `Order`.
-    delete:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      responses:
-        "204":
-          description: Successful response.
-      operationId: deleteOrder
-      summary: Delete a Order
-      description: Deletes an existing `Order`.
     parameters:
     - name: orderId
       description: A unique identifier for a `Order`.

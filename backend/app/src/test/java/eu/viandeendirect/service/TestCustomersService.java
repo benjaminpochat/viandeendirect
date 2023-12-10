@@ -79,7 +79,5 @@ class TestCustomersService {
         assertThat(customers).hasSize(1);
         Customer customer1 = customers.get(0);
         assertThat(customer1.getId().longValue()).isEqualTo(3000);
-
-
     }
 }

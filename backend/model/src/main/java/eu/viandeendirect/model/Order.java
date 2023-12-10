@@ -117,6 +117,7 @@ public class Order {
   }
 
   public void setItems(List<OrderItem> items) {
+    items.stream().forEach(item -> item.setOrder(this));
     this.items = items;
   }
 

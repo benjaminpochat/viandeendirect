@@ -6,9 +6,9 @@
 
 AddressesApiDelegate.java           x           x
 BeefProductionsApiDelegate.java     x           x
-CustomersApiDelegate.java           (x)
+CustomersApiDelegate.java           x           x
 HonneyProductionsApiDelegate.java   x
-OrdersApiDelegate.java              (x)
+OrdersApiDelegate.java              x           x
 PackageTemplatesApiDelegate.java    (x)
 ProductionsApiDelegate.java         (x)
 SalesApiDelegate.java               (x)

@@ -2,9 +2,11 @@ package eu.viandeendirect.service;
 
 import eu.viandeendirect.api.CustomersApiDelegate;
 import eu.viandeendirect.model.Customer;
+import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.User;
 import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.UserRepository;
+import eu.viandeendirect.service.specs.ProducerServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,10 @@ public class CustomersService implements CustomersApiDelegate {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProducerServiceSpecs producerService;
+
+
     @Override
     public ResponseEntity<Customer> createCustomer(Customer customer) {
         userRepository.save(customer.getUser());
@@ -29,7 +35,8 @@ public class CustomersService implements CustomersApiDelegate {
 
     @Override
     public ResponseEntity<List<Customer>> getCustomers() {
-        return CustomersApiDelegate.super.getCustomers();
+        Producer producer = producerService.getAuthenticatedProducer();
+        return new ResponseEntity<>(customerRepository.findByProducer(producer), HttpStatus.OK);
     }
 
 
