@@ -1,5 +1,5 @@
 insert into producers (id, user_id)
-values (1, 1);
+values (1000, 1000);
 
 insert into producers (id, user_id)
-values (2, 2);
+values (2000, 2000);

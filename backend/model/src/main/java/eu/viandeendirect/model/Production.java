@@ -91,7 +91,7 @@ public abstract class Production {
   private ProductionTypeEnum productionType;
 
   @JsonProperty("sales")
-  @jakarta.persistence.OneToMany
+  @jakarta.persistence.ManyToMany(mappedBy = "productions")
   @Valid
   private List<Sale> sales = null;
 
@@ -101,7 +101,7 @@ public abstract class Production {
   private Producer producer;
 
   @JsonProperty("lots")
-  @jakarta.persistence.OneToMany
+  @jakarta.persistence.OneToMany(mappedBy = "production")
   @Valid
   private List<PackageLot> lots = null;
 

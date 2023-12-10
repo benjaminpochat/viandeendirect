@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -39,6 +40,26 @@ public class ProductionsService implements ProductionsApiDelegate {
         Producer producer = getAuthenticatedProducer();
         List<Production> productions = productionRepository.findByProducer(producer);
         return new ResponseEntity<>(productions, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteProduction(String productionId) {
+        return ProductionsApiDelegate.super.deleteProduction(productionId);
+    }
+
+    @Override
+    public ResponseEntity<Production> getProduction(String productionId) {
+        return ProductionsApiDelegate.super.getProduction(productionId);
+    }
+
+    @Override
+    public ResponseEntity<BigDecimal> getProductionPercentageSold(String productionId, String beefProductionId) {
+        return ProductionsApiDelegate.super.getProductionPercentageSold(productionId, beefProductionId);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateProduction(String productionId, Production production) {
+        return ProductionsApiDelegate.super.updateProduction(productionId, production);
     }
 
     private Producer getAuthenticatedProducer() {

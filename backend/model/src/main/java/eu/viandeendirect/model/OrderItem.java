@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.PackageLot;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -36,12 +37,16 @@ public class OrderItem {
   @SequenceGenerator(name="order_item_id_generator", sequenceName = "order_item_id_seq", allocationSize = 1)
   private BigDecimal id;
 
+  @JsonProperty("order")
+  @ManyToOne
+  private Order order;
+
   @JsonProperty("packageLot")
   @ManyToOne
   private PackageLot packageLot;
 
   @JsonProperty("unitPrice")
-  private JsonNullable<Object> unitPrice = JsonNullable.undefined();
+  private BigDecimal unitPrice;
 
   @JsonProperty("quantity")
   private BigDecimal quantity;
@@ -65,6 +70,25 @@ public class OrderItem {
     this.id = id;
   }
 
+  public OrderItem order(Order order) {
+    this.order = order;
+    return this;
+  }
+
+  /**
+   * Get order
+   * @return order
+  */
+  @Valid
+  @Schema(name = "order", required = false)
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
   public OrderItem packageLot(PackageLot packageLot) {
     this.packageLot = packageLot;
     return this;
@@ -84,8 +108,8 @@ public class OrderItem {
     this.packageLot = packageLot;
   }
 
-  public OrderItem unitPrice(Object unitPrice) {
-    this.unitPrice = JsonNullable.of(unitPrice);
+  public OrderItem unitPrice(BigDecimal unitPrice) {
+    this.unitPrice = unitPrice;
     return this;
   }
 
@@ -93,13 +117,13 @@ public class OrderItem {
    * Price per unit ordered. Must be multiplied per quantity to get the total price. Includes taxes.
    * @return unitPrice
   */
-  
+  @Valid
   @Schema(name = "unitPrice", description = "Price per unit ordered. Must be multiplied per quantity to get the total price. Includes taxes.", required = false)
-  public JsonNullable<Object> getUnitPrice() {
+  public BigDecimal getUnitPrice() {
     return unitPrice;
   }
 
-  public void setUnitPrice(JsonNullable<Object> unitPrice) {
+  public void setUnitPrice(BigDecimal unitPrice) {
     this.unitPrice = unitPrice;
   }
 
@@ -132,8 +156,9 @@ public class OrderItem {
     }
     OrderItem orderItem = (OrderItem) o;
     return Objects.equals(this.id, orderItem.id) &&
+        Objects.equals(this.order, orderItem.order) &&
         Objects.equals(this.packageLot, orderItem.packageLot) &&
-        equalsNullable(this.unitPrice, orderItem.unitPrice) &&
+        Objects.equals(this.unitPrice, orderItem.unitPrice) &&
         Objects.equals(this.quantity, orderItem.quantity);
   }
 
@@ -143,14 +168,7 @@ public class OrderItem {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, packageLot, hashCodeNullable(unitPrice), quantity);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(id, order, packageLot, unitPrice, quantity);
   }
 
   @Override
@@ -158,6 +176,7 @@ public class OrderItem {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderItem {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("    packageLot: ").append(toIndentedString(packageLot)).append("\n");
     sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");

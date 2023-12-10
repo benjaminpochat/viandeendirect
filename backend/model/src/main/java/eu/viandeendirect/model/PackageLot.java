@@ -4,7 +4,10 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.viandeendirect.model.Production;
 import java.math.BigDecimal;
+
+import jakarta.persistence.ManyToOne;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -28,6 +31,10 @@ public class PackageLot {
   @JsonProperty("id")
   @jakarta.persistence.Id
   private BigDecimal id;
+
+  @JsonProperty("production")
+  @ManyToOne
+  private Production production;
 
   @JsonProperty("label")
   private String label;
@@ -67,6 +74,25 @@ public class PackageLot {
 
   public void setId(BigDecimal id) {
     this.id = id;
+  }
+
+  public PackageLot production(Production production) {
+    this.production = production;
+    return this;
+  }
+
+  /**
+   * Get production
+   * @return production
+  */
+  @Valid
+  @Schema(name = "production", required = false)
+  public Production getProduction() {
+    return production;
+  }
+
+  public void setProduction(Production production) {
+    this.production = production;
   }
 
   public PackageLot label(String label) {
@@ -212,6 +238,7 @@ public class PackageLot {
     }
     PackageLot packageLot = (PackageLot) o;
     return Objects.equals(this.id, packageLot.id) &&
+        Objects.equals(this.production, packageLot.production) &&
         Objects.equals(this.label, packageLot.label) &&
         Objects.equals(this.description, packageLot.description) &&
         Objects.equals(this.photo, packageLot.photo) &&
@@ -223,7 +250,7 @@ public class PackageLot {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, label, description, photo, netWeight, unitPrice, quantity, quantitySold);
+    return Objects.hash(id, production, label, description, photo, netWeight, unitPrice, quantity, quantitySold);
   }
 
   @Override
@@ -231,6 +258,7 @@ public class PackageLot {
     StringBuilder sb = new StringBuilder();
     sb.append("class PackageLot {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    production: ").append(toIndentedString(production)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    photo: ").append(toIndentedString(photo)).append("\n");

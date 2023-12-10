@@ -43,7 +43,7 @@ public class Order {
   private Invoice invoice;
 
   @JsonProperty("items")
-  @jakarta.persistence.OneToMany
+  @jakarta.persistence.OneToMany(mappedBy = "order")
   @Valid
   private List<OrderItem> items = null;
 

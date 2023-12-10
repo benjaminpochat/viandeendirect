@@ -350,6 +350,13 @@ paths:
     post:
       security:
         - oAuth2ForViandeEnDirect: [read]
+      requestBody:
+        description: A new `customer` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        required: true
       responses:
         "200":
           content:
@@ -462,6 +469,10 @@ components:
         id:
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        production:
+          $ref: '#/components/schemas/Production'
+          description: "The production from which the packages are prepared"
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
         label:
           description: "Short label of the package template"
           type: string
@@ -537,6 +548,7 @@ components:
     Customer:
       description: ""
       type: object
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "customers")'
       properties:
         user:
           $ref: '#/components/schemas/User'
@@ -546,8 +558,6 @@ components:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "customers")'
     Invoice:
       description: ""
       type: object
@@ -573,7 +583,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Sale'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+          x-field-extra-annotation: '@jakarta.persistence.ManyToMany(mappedBy = "productions")'
         producer:
           $ref: '#/components/schemas/Producer'
           description: ""
@@ -601,6 +611,7 @@ components:
         animalType:
           description: "type of animal"
           type: string
+          enum: ['BeefProduction', 'HonneyProduction']
         animalLiveWeight:
           description: "weight of the animal before being killed, in kilograms"
           type: number
@@ -641,15 +652,18 @@ components:
           description: ""
           type: number
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        order:
+          $ref: '#/components/schemas/Order'
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
         packageLot:
           $ref: '#/components/schemas/PackageLot'
-          description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         unitPrice:
           description: |-
             Price per unit ordered.
             Must be multiplied per quantity to get the total price.
             Includes taxes.
+          type: number
         quantity:
           description: ""
           type: number
@@ -698,13 +712,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Production'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
         orders:
           description: ""
           type: array
           items:
             $ref: '#/components/schemas/Order'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
         deliveryStart:
           description: ""
           type: string
@@ -750,6 +762,7 @@ components:
     Address:
       description: "an address for delivering orders"
       type: object
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "addresses")'
       properties:
         id: 
           type: number

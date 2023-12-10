@@ -47,8 +47,43 @@ public class BeefProduction extends Production {
   @JsonProperty("animalIdentifier")
   private String animalIdentifier;
 
+  /**
+   * type of animal
+   */
+  public enum AnimalTypeEnum {
+    BEEFPRODUCTION("BeefProduction"),
+
+    HONNEYPRODUCTION("HonneyProduction");
+
+    private String value;
+
+    AnimalTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static AnimalTypeEnum fromValue(String value) {
+      for (AnimalTypeEnum b : AnimalTypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("animalType")
-  private String animalType;
+  private AnimalTypeEnum animalType;
 
   @JsonProperty("animalLiveWeight")
   private BigDecimal animalLiveWeight;
@@ -81,7 +116,7 @@ public class BeefProduction extends Production {
     this.animalIdentifier = animalIdentifier;
   }
 
-  public BeefProduction animalType(String animalType) {
+  public BeefProduction animalType(AnimalTypeEnum animalType) {
     this.animalType = animalType;
     return this;
   }
@@ -92,11 +127,11 @@ public class BeefProduction extends Production {
   */
 
   @Schema(name = "animalType", description = "type of animal", required = false)
-  public String getAnimalType() {
+  public AnimalTypeEnum getAnimalType() {
     return animalType;
   }
 
-  public void setAnimalType(String animalType) {
+  public void setAnimalType(AnimalTypeEnum animalType) {
     this.animalType = animalType;
   }
 

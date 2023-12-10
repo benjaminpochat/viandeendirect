@@ -40,12 +40,12 @@ public class Sale {
   private BigDecimal id;
 
   @JsonProperty("productions")
-  @jakarta.persistence.OneToMany
+  @jakarta.persistence.ManyToMany
   @Valid
   private List<Production> productions = null;
 
   @JsonProperty("orders")
-  @jakarta.persistence.OneToMany
+  @jakarta.persistence.OneToMany(mappedBy = "sale")
   @Valid
   private List<Order> orders = null;
 

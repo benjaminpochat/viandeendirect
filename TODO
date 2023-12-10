@@ -1,3 +1,14 @@
 - ajouter la configuration du realm dans la config Docker de Keycloak
-- revoir l'openapi.json pour renommer end en stop (erreur dans les ddl car end mot clé sql)
-    - puis rajouter les annotations OneToOne :(
+
+- implémentation des services REST :
+
+                                    Implem      JUnit
+
+AddressesApiDelegate.java           x           x
+BeefProductionsApiDelegate.java     x           x
+CustomersApiDelegate.java           (x)
+HonneyProductionsApiDelegate.java   x
+OrdersApiDelegate.java              (x)
+PackageTemplatesApiDelegate.java    (x)
+ProductionsApiDelegate.java         (x)
+SalesApiDelegate.java               (x)
