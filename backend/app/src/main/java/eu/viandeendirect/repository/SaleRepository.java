@@ -1,7 +1,14 @@
 package eu.viandeendirect.repository;
 
+import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-public interface SaleRepository extends CrudRepository<Sale, Long> {
+import java.util.List;
+
+public interface SaleRepository extends CrudRepository<Sale, Integer> {
+    @Query("select s from Sale s where s.seller = :seller")
+    List<Sale> findBySeller(@Param("seller") Producer seller);
 }

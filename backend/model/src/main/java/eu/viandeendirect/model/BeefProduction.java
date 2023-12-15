@@ -13,9 +13,10 @@ import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -86,13 +87,15 @@ public class BeefProduction extends Production {
   private AnimalTypeEnum animalType;
 
   @JsonProperty("animalLiveWeight")
-  private BigDecimal animalLiveWeight;
+  private Integer animalLiveWeight;
 
   @JsonProperty("slaughterDate")
-  private String slaughterDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate slaughterDate;
 
   @JsonProperty("birthDate")
-  private String birthDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate birthDate;
 
   @JsonProperty("birthPlace")
   private String birthPlace;
@@ -135,7 +138,7 @@ public class BeefProduction extends Production {
     this.animalType = animalType;
   }
 
-  public BeefProduction animalLiveWeight(BigDecimal animalLiveWeight) {
+  public BeefProduction animalLiveWeight(Integer animalLiveWeight) {
     this.animalLiveWeight = animalLiveWeight;
     return this;
   }
@@ -144,17 +147,17 @@ public class BeefProduction extends Production {
    * weight of the animal before being killed, in kilograms
    * @return animalLiveWeight
   */
-  @Valid 
+
   @Schema(name = "animalLiveWeight", description = "weight of the animal before being killed, in kilograms", required = false)
-  public BigDecimal getAnimalLiveWeight() {
+  public Integer getAnimalLiveWeight() {
     return animalLiveWeight;
   }
 
-  public void setAnimalLiveWeight(BigDecimal animalLiveWeight) {
+  public void setAnimalLiveWeight(Integer animalLiveWeight) {
     this.animalLiveWeight = animalLiveWeight;
   }
 
-  public BeefProduction slaughterDate(String slaughterDate) {
+  public BeefProduction slaughterDate(LocalDate slaughterDate) {
     this.slaughterDate = slaughterDate;
     return this;
   }
@@ -163,17 +166,17 @@ public class BeefProduction extends Production {
    * date when the animal has being killed
    * @return slaughterDate
   */
-  
+  @Valid
   @Schema(name = "slaughterDate", description = "date when the animal has being killed", required = false)
-  public String getSlaughterDate() {
+  public LocalDate getSlaughterDate() {
     return slaughterDate;
   }
 
-  public void setSlaughterDate(String slaughterDate) {
+  public void setSlaughterDate(LocalDate slaughterDate) {
     this.slaughterDate = slaughterDate;
   }
 
-  public BeefProduction birthDate(String birthDate) {
+  public BeefProduction birthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
     return this;
   }
@@ -182,13 +185,13 @@ public class BeefProduction extends Production {
    * date when the animal is born
    * @return birthDate
   */
-  
+  @Valid
   @Schema(name = "birthDate", description = "date when the animal is born", required = false)
-  public String getBirthDate() {
+  public LocalDate getBirthDate() {
     return birthDate;
   }
 
-  public void setBirthDate(String birthDate) {
+  public void setBirthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
   }
 
@@ -211,7 +214,7 @@ public class BeefProduction extends Production {
     this.birthPlace = birthPlace;
   }
 
-  public BeefProduction id(BigDecimal id) {
+  public BeefProduction id(Integer id) {
     super.setId(id);
     return this;
   }

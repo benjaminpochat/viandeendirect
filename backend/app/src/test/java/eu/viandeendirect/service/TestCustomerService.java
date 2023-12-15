@@ -50,13 +50,11 @@ class TestCustomerService {
 
         // then
         assertThat(savedCustomer.getId()).isNotNull();
-        Long customerId = savedCustomer.getId().longValue();
-        Customer reloadedCustomer = customerRepository.findById(customerId).get();
+        Customer reloadedCustomer = customerRepository.findById(savedCustomer.getId()).get();
         assertThat(reloadedCustomer.getUser()).isNotNull();
 
         assertThat(reloadedCustomer.getUser().getId()).isNotNull();
-        Long userId = reloadedCustomer.getUser().getId().longValue();
-        User reloadedUser = userRepository.findById(userId).get();
+        User reloadedUser = userRepository.findById(reloadedCustomer.getUser().getId()).get();
         assertThat(reloadedUser.getEmail()).isEqualTo("thom.york@address.mail");
         assertThat(reloadedUser.getFirstName()).isEqualTo("Thom");
         assertThat(reloadedUser.getLastName()).isEqualTo("YORK");

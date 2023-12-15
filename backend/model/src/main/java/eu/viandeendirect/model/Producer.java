@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.ProducerStatus;
 import eu.viandeendirect.model.Production;
+import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.model.User;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,19 +42,25 @@ public class Producer {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "producer_id_generator")
   @SequenceGenerator(name="producer_id_generator", sequenceName = "producer_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
   @JsonProperty("status")
   private ProducerStatus status;
 
   @JsonProperty("salesCredits")
-  private BigDecimal salesCredits;
+  private Integer salesCredits;
 
   @JsonProperty("productions")
   @JsonManagedReference
   @jakarta.persistence.OneToMany(mappedBy = "producer")
   @Valid
   private List<Production> productions = null;
+
+  @JsonProperty("sales")
+  @JsonManagedReference
+  @jakarta.persistence.OneToMany(mappedBy = "seller")
+  @Valid
+  private List<Sale> sales = null;
 
   public Producer user(User user) {
     this.user = user;
@@ -75,22 +81,22 @@ public class Producer {
     this.user = user;
   }
 
-  public Producer id(BigDecimal id) {
+  public Producer id(Integer id) {
     this.id = id;
     return this;
   }
 
   /**
-   * 
+   * Get id
    * @return id
   */
-  @Valid 
-  @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+
+  @Schema(name = "id", required = false)
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -113,7 +119,7 @@ public class Producer {
     this.status = status;
   }
 
-  public Producer salesCredits(BigDecimal salesCredits) {
+  public Producer salesCredits(Integer salesCredits) {
     this.salesCredits = salesCredits;
     return this;
   }
@@ -122,13 +128,13 @@ public class Producer {
    * the number of sales available
    * @return salesCredits
   */
-  @Valid 
+
   @Schema(name = "salesCredits", description = "the number of sales available", required = false)
-  public BigDecimal getSalesCredits() {
+  public Integer getSalesCredits() {
     return salesCredits;
   }
 
-  public void setSalesCredits(BigDecimal salesCredits) {
+  public void setSalesCredits(Integer salesCredits) {
     this.salesCredits = salesCredits;
   }
 
@@ -159,6 +165,33 @@ public class Producer {
     this.productions = productions;
   }
 
+  public Producer sales(List<Sale> sales) {
+    this.sales = sales;
+    return this;
+  }
+
+  public Producer addSalesItem(Sale salesItem) {
+    if (this.sales == null) {
+      this.sales = new ArrayList<>();
+    }
+    this.sales.add(salesItem);
+    return this;
+  }
+
+  /**
+   * Get sales
+   * @return sales
+  */
+  @Valid
+  @Schema(name = "sales", required = false)
+  public List<Sale> getSales() {
+    return sales;
+  }
+
+  public void setSales(List<Sale> sales) {
+    this.sales = sales;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -172,12 +205,13 @@ public class Producer {
         Objects.equals(this.id, producer.id) &&
         Objects.equals(this.status, producer.status) &&
         Objects.equals(this.salesCredits, producer.salesCredits) &&
-        Objects.equals(this.productions, producer.productions);
+        Objects.equals(this.productions, producer.productions) &&
+        Objects.equals(this.sales, producer.sales);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, id, status, salesCredits, productions);
+    return Objects.hash(user, id, status, salesCredits, productions, sales);
   }
 
   @Override
@@ -189,6 +223,7 @@ public class Producer {
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    salesCredits: ").append(toIndentedString(salesCredits)).append("\n");
     sb.append("    productions: ").append(toIndentedString(productions)).append("\n");
+    sb.append("    sales: ").append(toIndentedString(sales)).append("\n");
     sb.append("}");
     return sb.toString();
   }

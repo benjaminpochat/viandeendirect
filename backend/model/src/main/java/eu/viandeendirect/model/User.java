@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.math.BigDecimal;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +31,7 @@ public class User {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
   @SequenceGenerator(name="user_id_generator", sequenceName = "user_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
   @JsonProperty("email")
   private String email;
@@ -46,7 +45,7 @@ public class User {
   @JsonProperty("lastName")
   private String lastName;
 
-  public User id(BigDecimal id) {
+  public User id(Integer id) {
     this.id = id;
     return this;
   }
@@ -55,13 +54,13 @@ public class User {
    * 
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -74,7 +73,7 @@ public class User {
    * Get email
    * @return email
   */
-
+  @Email
   @Schema(name = "email", required = false)
   public String getEmail() {
     return email;

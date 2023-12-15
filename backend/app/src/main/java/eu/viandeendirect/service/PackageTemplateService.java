@@ -22,6 +22,6 @@ public class PackageTemplateService implements PackageTemplatesApiDelegate {
     public ResponseEntity<List<PackageTemplate>> getPackageTemplates() {
         List<PackageTemplate> packageTemplates = new ArrayList<>();
         packageTemplateRepository.findAll().forEach(packageTemplates::add);
-        return new ResponseEntity<>(new ArrayList<>(packageTemplates), OK);
+        return new ResponseEntity<>(packageTemplates, OK);
     }
 }

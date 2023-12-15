@@ -21,8 +21,8 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
     ProducerServiceSpecs producerService;
 
     @Override
-    public ResponseEntity<BeefProduction> getBeefProduction(String beefProductionId) {
-        return new ResponseEntity(productionRepository.findById(Long.valueOf(beefProductionId)).get(), HttpStatus.OK);
+    public ResponseEntity<BeefProduction> getBeefProduction(Integer beefProductionId) {
+        return new ResponseEntity(productionRepository.findById(beefProductionId).get(), HttpStatus.OK);
     }
 
     @Override

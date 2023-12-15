@@ -37,7 +37,7 @@ class TestBeefProductionService {
     @Test
     void getBeefProduction_should_return_the_right_instance() {
         // when
-        BeefProduction beefProduction = beefProductionService.getBeefProduction("10").getBody();
+        BeefProduction beefProduction = beefProductionService.getBeefProduction(10).getBody();
 
         // then
         assertThat(beefProduction).isNotNull();
@@ -57,7 +57,7 @@ class TestBeefProductionService {
         // then
         assertThat(beefProductionCreated).isNotNull();
         assertThat(beefProductionCreated.getId()).isNotNull();
-        Production beefProductionFromDatabase = productionRepository.findById(beefProductionCreated.getId().longValue()).get();
+        Production beefProductionFromDatabase = productionRepository.findById(beefProductionCreated.getId()).get();
         assertThat(beefProductionFromDatabase)
                 .isNotNull()
                 .isInstanceOf(BeefProduction.class);

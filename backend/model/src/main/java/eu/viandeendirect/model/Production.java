@@ -9,7 +9,6 @@ import eu.viandeendirect.model.HonneyProduction;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public abstract class Production {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "production_id_generator")
   @SequenceGenerator(name="production_id_generator", sequenceName = "production_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
   /**
    * Gets or Sets productionType
@@ -105,7 +104,7 @@ public abstract class Production {
   @Valid
   private List<PackageLot> lots = null;
 
-  public Production id(BigDecimal id) {
+  public Production id(Integer id) {
     this.id = id;
     return this;
   }
@@ -114,13 +113,13 @@ public abstract class Production {
    *
    * @return id
   */
-  @Valid
+
   @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

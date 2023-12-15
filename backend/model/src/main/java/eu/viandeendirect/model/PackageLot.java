@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Production;
-import java.math.BigDecimal;
 
 import jakarta.persistence.ManyToOne;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -30,7 +29,7 @@ public class PackageLot {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
-  private BigDecimal id;
+  private Integer id;
 
   @JsonProperty("production")
   @ManyToOne
@@ -46,18 +45,18 @@ public class PackageLot {
   private String photo;
 
   @JsonProperty("netWeight")
-  private BigDecimal netWeight;
+  private Float netWeight;
 
   @JsonProperty("unitPrice")
-  private BigDecimal unitPrice;
+  private Float unitPrice;
 
   @JsonProperty("quantity")
-  private BigDecimal quantity;
+  private Integer quantity;
 
   @JsonProperty("quantitySold")
-  private BigDecimal quantitySold;
+  private Integer quantitySold;
 
-  public PackageLot id(BigDecimal id) {
+  public PackageLot id(Integer id) {
     this.id = id;
     return this;
   }
@@ -66,13 +65,13 @@ public class PackageLot {
    * Get id
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -152,7 +151,7 @@ public class PackageLot {
     this.photo = photo;
   }
 
-  public PackageLot netWeight(BigDecimal netWeight) {
+  public PackageLot netWeight(Float netWeight) {
     this.netWeight = netWeight;
     return this;
   }
@@ -161,17 +160,17 @@ public class PackageLot {
    * 
    * @return netWeight
   */
-  @Valid 
+
   @Schema(name = "netWeight", description = "", required = false)
-  public BigDecimal getNetWeight() {
+  public Float getNetWeight() {
     return netWeight;
   }
 
-  public void setNetWeight(BigDecimal netWeight) {
+  public void setNetWeight(Float netWeight) {
     this.netWeight = netWeight;
   }
 
-  public PackageLot unitPrice(BigDecimal unitPrice) {
+  public PackageLot unitPrice(Float unitPrice) {
     this.unitPrice = unitPrice;
     return this;
   }
@@ -180,17 +179,17 @@ public class PackageLot {
    * Price per unit (weight unit). Must be multiplied by the weight to get the total price for one package. Includes taxes.
    * @return unitPrice
   */
-  @Valid 
+
   @Schema(name = "unitPrice", description = "Price per unit (weight unit). Must be multiplied by the weight to get the total price for one package. Includes taxes.", required = false)
-  public BigDecimal getUnitPrice() {
+  public Float getUnitPrice() {
     return unitPrice;
   }
 
-  public void setUnitPrice(BigDecimal unitPrice) {
+  public void setUnitPrice(Float unitPrice) {
     this.unitPrice = unitPrice;
   }
 
-  public PackageLot quantity(BigDecimal quantity) {
+  public PackageLot quantity(Integer quantity) {
     this.quantity = quantity;
     return this;
   }
@@ -199,17 +198,17 @@ public class PackageLot {
    * the quantity of packages for this batch initially on sale
    * @return quantity
   */
-  @Valid 
+
   @Schema(name = "quantity", description = "the quantity of packages for this batch initially on sale", required = false)
-  public BigDecimal getQuantity() {
+  public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(BigDecimal quantity) {
+  public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 
-  public PackageLot quantitySold(BigDecimal quantitySold) {
+  public PackageLot quantitySold(Integer quantitySold) {
     this.quantitySold = quantitySold;
     return this;
   }
@@ -218,13 +217,13 @@ public class PackageLot {
    * the quantity of packages for this batch already sold
    * @return quantitySold
   */
-  @Valid 
+
   @Schema(name = "quantitySold", description = "the quantity of packages for this batch already sold", required = false)
-  public BigDecimal getQuantitySold() {
+  public Integer getQuantitySold() {
     return quantitySold;
   }
 
-  public void setQuantitySold(BigDecimal quantitySold) {
+  public void setQuantitySold(Integer quantitySold) {
     this.quantitySold = quantitySold;
   }
 

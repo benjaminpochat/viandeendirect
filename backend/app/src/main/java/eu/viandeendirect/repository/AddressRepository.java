@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface AddressRepository extends CrudRepository<Address, Long> {
+public interface AddressRepository extends CrudRepository<Address, Integer> {
     @Query("SELECT a FROM Address a WHERE a.owner = :owner")
     List<Address> findByOwner(@Param("owner") Producer owner);
 }

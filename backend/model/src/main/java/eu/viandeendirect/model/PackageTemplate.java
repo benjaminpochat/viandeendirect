@@ -4,7 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.math.BigDecimal;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -26,7 +28,9 @@ public class PackageTemplate {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
-  private BigDecimal id;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_template_id_generator")
+  @SequenceGenerator(name="package_template_id_generator", sequenceName = "package_template_id_seq", allocationSize = 1)
+  private Integer id;
 
   @JsonProperty("label")
   private String label;
@@ -38,12 +42,12 @@ public class PackageTemplate {
   private String photo;
 
   @JsonProperty("netWeight")
-  private BigDecimal netWeight;
+  private Float netWeight;
 
   @JsonProperty("unitPrice")
-  private BigDecimal unitPrice;
+  private Float unitPrice;
 
-  public PackageTemplate id(BigDecimal id) {
+  public PackageTemplate id(Integer id) {
     this.id = id;
     return this;
   }
@@ -52,13 +56,13 @@ public class PackageTemplate {
    * 
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -119,7 +123,7 @@ public class PackageTemplate {
     this.photo = photo;
   }
 
-  public PackageTemplate netWeight(BigDecimal netWeight) {
+  public PackageTemplate netWeight(Float netWeight) {
     this.netWeight = netWeight;
     return this;
   }
@@ -128,17 +132,17 @@ public class PackageTemplate {
    * 
    * @return netWeight
   */
-  @Valid 
+
   @Schema(name = "netWeight", description = "", required = false)
-  public BigDecimal getNetWeight() {
+  public Float getNetWeight() {
     return netWeight;
   }
 
-  public void setNetWeight(BigDecimal netWeight) {
+  public void setNetWeight(Float netWeight) {
     this.netWeight = netWeight;
   }
 
-  public PackageTemplate unitPrice(BigDecimal unitPrice) {
+  public PackageTemplate unitPrice(Float unitPrice) {
     this.unitPrice = unitPrice;
     return this;
   }
@@ -147,13 +151,13 @@ public class PackageTemplate {
    * Price per unit (weight unit). Must be multiplied by the weight to get the total price for one package. Includes taxes.
    * @return unitPrice
   */
-  @Valid 
+
   @Schema(name = "unitPrice", description = "Price per unit (weight unit). Must be multiplied by the weight to get the total price for one package. Includes taxes.", required = false)
-  public BigDecimal getUnitPrice() {
+  public Float getUnitPrice() {
     return unitPrice;
   }
 
-  public void setUnitPrice(BigDecimal unitPrice) {
+  public void setUnitPrice(Float unitPrice) {
     this.unitPrice = unitPrice;
   }
 

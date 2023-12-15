@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ProducerRepository extends CrudRepository<Producer, Long> {
+public interface ProducerRepository extends CrudRepository<Producer, Integer> {
 
     @Query("""
             SELECT p FROM Producer p

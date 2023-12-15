@@ -5,9 +5,11 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Producer;
-import java.math.BigDecimal;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -30,7 +32,9 @@ public class Address {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
-  private BigDecimal id;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_generator")
+  @SequenceGenerator(name="address_id_generator", sequenceName = "address_id_seq", allocationSize = 1)
+  private Integer id;
 
   @JsonProperty("name")
   private String name;
@@ -51,7 +55,7 @@ public class Address {
   @ManyToOne
   private Producer owner;
 
-  public Address id(BigDecimal id) {
+  public Address id(Integer id) {
     this.id = id;
     return this;
   }
@@ -60,13 +64,13 @@ public class Address {
    * Get id
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

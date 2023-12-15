@@ -13,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,15 +44,15 @@ public class TestOrderService {
     @Test
     void createOrder_should_persist_order_in_database() {
         // given
-        Sale sale = saleRepository.findById(1000L).get();
-        Customer customer = customerRepository.findById(3000L).get();
-        PackageLot packageLot = packageLotRepository.findById(10001L).get();
+        Sale sale = saleRepository.findById(1000).get();
+        Customer customer = customerRepository.findById(3000).get();
+        PackageLot packageLot = packageLotRepository.findById(10001).get();
         Order order = new Order();
         order.setCustomer(customer);
         order.setSale(sale);
         OrderItem item = new OrderItem();
-        item.setQuantity(BigDecimal.ONE);
-        item.setUnitPrice(BigDecimal.valueOf(16));
+        item.setQuantity(1);
+        item.setUnitPrice(16f);
         item.setPackageLot(packageLot);
         order.setItems(List.of(item));
 
@@ -70,7 +69,7 @@ public class TestOrderService {
     @Test
     void getOrder_should_return_the_right_object(){
         // when
-        Order order = orderService.getOrder("4000").getBody();
+        Order order = orderService.getOrder(4000).getBody();
 
         // then
         assertThat(order).isNotNull();

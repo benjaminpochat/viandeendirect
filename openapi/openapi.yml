@@ -44,7 +44,11 @@ paths:
         required: true
       responses:
         "201":
-          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+          description: Successful response - returns the created `sale`.
       operationId: createSale
       summary: Create a sale
       description: Creates a new instance of a `sale`.
@@ -66,36 +70,11 @@ paths:
       operationId: getSale
       summary: Get a sale
       description: Gets the details of a single instance of a `sale`.
-    put:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      requestBody:
-        description: Updated `sale` information.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Sale'
-        required: true
-      responses:
-        "202":
-          description: Successful response.
-      operationId: updateSale
-      summary: Update a sale
-      description: Updates an existing `sale`.
-    delete:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      responses:
-        "204":
-          description: Successful response.
-      operationId: deleteSale
-      summary: Delete a sale
-      description: Deletes an existing `sale`.
     parameters:
     - name: saleId
       description: A unique identifier for a `sale`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /sales/{saleId}/orders:
@@ -118,7 +97,7 @@ paths:
     - name: saleId
       description: A unique identifier for a `sale`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /sales/{saleId}/productions:
@@ -135,13 +114,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/Production'
           description: Successful response - returns productions for a single `sale`.
-      operationId: getSaleProductins
+      operationId: getSaleProductions
       summary: Get orders for a particular sale
     parameters:
     - name: saleId
       description: A unique identifier for a `sale`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /productions:
@@ -178,14 +157,14 @@ paths:
           content:
             application/json:
               schema:
-                type: number
+                type: integer
           description: Successful response - returns a single `production`.
       operationId: getProductionPercentageSold
     parameters:
     - name: productionId
       description: A unique identifier for a `production`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /beefProductions:
@@ -226,7 +205,7 @@ paths:
     - name: beefProductionId
       description: A unique identifier for a `beefProduction`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /packageTemplates:
@@ -279,7 +258,7 @@ paths:
     - name: honneyProductionId
       description: A unique identifier for a `honneyProduction`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
   /customers:
@@ -362,7 +341,7 @@ paths:
     - name: orderId
       description: A unique identifier for a `Order`.
       schema:
-        type: string
+        type: integer
       in: path
       required: true
 components:
@@ -383,7 +362,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         production:
           $ref: '#/components/schemas/Production'
@@ -401,18 +380,20 @@ components:
         netWeight:
           description: ""
           type: number
+          format: float
         unitPrice:
           description: |-
             Price per unit (weight unit).
             Must be multiplied by the weight to get the total price for one package.
             Includes taxes.
           type: number
+          format: float
         quantity:
           description: "the quantity of packages for this batch initially on sale"
-          type: number
+          type: integer
         quantitySold:
           description: "the quantity of packages for this batch already sold"
-          type: number
+          type: integer
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "packages")'
     PackageTemplate:
@@ -421,7 +402,7 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         label:
           description: "Short label of the package template"
@@ -435,12 +416,14 @@ components:
         netWeight:
           description: ""
           type: number
+          format: float
         unitPrice:
           description: |-
             Price per unit (weight unit).
             Must be multiplied by the weight to get the total price for one package.
             Includes taxes.
           type: number
+          format: float
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
         = "package_templates")'
     User:
@@ -449,10 +432,11 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         email:
           type: string
+          format: email
         phone:
           type: string
         firstName:
@@ -472,7 +456,7 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
     Invoice:
       description: ""
@@ -480,7 +464,7 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "invoices")'
     Production:
@@ -489,7 +473,7 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         productionType:
           type: string
@@ -509,7 +493,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PackageLot'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "production")'
       discriminator:
         propertyName: 'productionType'
         mapping:
@@ -530,13 +514,15 @@ components:
           enum: ['BeefProduction', 'HonneyProduction']
         animalLiveWeight:
           description: "weight of the animal before being killed, in kilograms"
-          type: number
+          type: integer
         slaughterDate:
           description: "date when the animal has being killed"
           type: string
+          format: date
         birthDate:
           description: "date when the animal is born"
           type: string
+          format: date
         birthPlace:
           description: "place where the animal is born"
           type: string
@@ -550,6 +536,7 @@ components:
         totalWeight:
           description: "total weight of honney produced"
           type: number
+          format: float
         honeyDescription:
           description: "type of honney, type of flowers nectar gathered"
           type: string
@@ -566,7 +553,7 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         order:
           $ref: '#/components/schemas/Order'
@@ -580,11 +567,11 @@ components:
             Must be multiplied per quantity to get the total price.
             Includes taxes.
           type: number
+          format: float
         quantity:
           description: ""
-          type: number
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "orderItems")'
+          type: integer
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "orderItems")'
     Order:
       description: ""
       required:
@@ -594,7 +581,7 @@ components:
       properties:
         id:
           description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         invoice:
           $ref: '#/components/schemas/Invoice'
@@ -605,7 +592,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderItem'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "order")'
         customer:
           $ref: '#/components/schemas/Customer'
           description: ""
@@ -614,31 +601,37 @@ components:
           $ref: '#/components/schemas/Sale'
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "orders")'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "orders")'
     Sale:
       description: ""
       type: object
       properties:
         id:
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
+        seller:
+          $ref: '#/components/schemas/Producer'
+          x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
         productions:
           description: ""
           type: array
           items:
             $ref: '#/components/schemas/Production'
+            x-field-extra-annotation: '@jakarta.persistence.ManyToMany'
         orders:
           description: ""
           type: array
           items:
             $ref: '#/components/schemas/Order'
+            x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "sale")'
         deliveryStart:
           description: ""
           type: string
+          format: date-time
         deliveryStop:
           description: ""
           type: string
+          format: date-time
         deliveryAddressName:
           type: string
         deliveryAddressLine1:
@@ -649,8 +642,7 @@ components:
           type: string
         deliveryZipCode:
           type: string
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "sales")'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "sales")'
     Producer:
       description: ""
       type: object
@@ -660,28 +652,31 @@ components:
           description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         id:
-          description: ""
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         status:
           $ref: '#/components/schemas/ProducerStatus'
         salesCredits:
           description: "the number of sales available"
-          type: number
+          type: integer
         productions:
           type: array
           items:
             $ref: '#/components/schemas/Production'
-          x-field-extra-annotation: '@jakarta.persistence.OneToMany'
-      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name
-        = "producers")'
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "producer")'
+        sales:
+          type: array
+          items:
+            $ref: "#/components/schemas/Sale"
+          x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "seller")'
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")'
     Address:
       description: "an address for delivering orders"
       type: object
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "addresses")'
       properties:
         id: 
-          type: number
+          type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
         name:
           description: "the name of the address"

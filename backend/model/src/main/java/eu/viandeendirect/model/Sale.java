@@ -5,15 +5,13 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Order;
+import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
-import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.persistence.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -37,7 +35,11 @@ public class Sale {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sale_id_generator")
   @SequenceGenerator(name="sale_id_generator", sequenceName = "sale_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
+
+  @JsonProperty("seller")
+  @ManyToOne
+  private Producer seller;
 
   @JsonProperty("productions")
   @jakarta.persistence.ManyToMany
@@ -50,10 +52,12 @@ public class Sale {
   private List<Order> orders = null;
 
   @JsonProperty("deliveryStart")
-  private String deliveryStart;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private OffsetDateTime deliveryStart;
 
   @JsonProperty("deliveryStop")
-  private String deliveryStop;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private OffsetDateTime deliveryStop;
 
   @JsonProperty("deliveryAddressName")
   private String deliveryAddressName;
@@ -70,7 +74,7 @@ public class Sale {
   @JsonProperty("deliveryZipCode")
   private String deliveryZipCode;
 
-  public Sale id(BigDecimal id) {
+  public Sale id(Integer id) {
     this.id = id;
     return this;
   }
@@ -79,14 +83,33 @@ public class Sale {
    * Get id
    * @return id
   */
-  @Valid
+
   @Schema(name = "id", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
+  }
+
+  public Sale seller(Producer seller) {
+    this.seller = seller;
+    return this;
+  }
+
+  /**
+   * Get seller
+   * @return seller
+  */
+  @Valid
+  @Schema(name = "seller", required = false)
+  public Producer getSeller() {
+    return seller;
+  }
+
+  public void setSeller(Producer seller) {
+    this.seller = seller;
   }
 
   public Sale productions(List<Production> productions) {
@@ -143,7 +166,7 @@ public class Sale {
     this.orders = orders;
   }
 
-  public Sale deliveryStart(String deliveryStart) {
+  public Sale deliveryStart(OffsetDateTime deliveryStart) {
     this.deliveryStart = deliveryStart;
     return this;
   }
@@ -152,17 +175,17 @@ public class Sale {
    *
    * @return deliveryStart
   */
-
+  @Valid
   @Schema(name = "deliveryStart", description = "", required = false)
-  public String getDeliveryStart() {
+  public OffsetDateTime getDeliveryStart() {
     return deliveryStart;
   }
 
-  public void setDeliveryStart(String deliveryStart) {
+  public void setDeliveryStart(OffsetDateTime deliveryStart) {
     this.deliveryStart = deliveryStart;
   }
 
-  public Sale deliveryStop(String deliveryStop) {
+  public Sale deliveryStop(OffsetDateTime deliveryStop) {
     this.deliveryStop = deliveryStop;
     return this;
   }
@@ -171,13 +194,13 @@ public class Sale {
    *
    * @return deliveryStop
   */
-
+  @Valid
   @Schema(name = "deliveryStop", description = "", required = false)
-  public String getDeliveryStop() {
+  public OffsetDateTime getDeliveryStop() {
     return deliveryStop;
   }
 
-  public void setDeliveryStop(String deliveryStop) {
+  public void setDeliveryStop(OffsetDateTime deliveryStop) {
     this.deliveryStop = deliveryStop;
   }
 
@@ -286,6 +309,7 @@ public class Sale {
     }
     Sale sale = (Sale) o;
     return Objects.equals(this.id, sale.id) &&
+        Objects.equals(this.seller, sale.seller) &&
         Objects.equals(this.productions, sale.productions) &&
         Objects.equals(this.orders, sale.orders) &&
         Objects.equals(this.deliveryStart, sale.deliveryStart) &&
@@ -299,7 +323,7 @@ public class Sale {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode);
+    return Objects.hash(id, seller, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode);
   }
 
   @Override
@@ -307,6 +331,7 @@ public class Sale {
     StringBuilder sb = new StringBuilder();
     sb.append("class Sale {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    seller: ").append(toIndentedString(seller)).append("\n");
     sb.append("    productions: ").append(toIndentedString(productions)).append("\n");
     sb.append("    orders: ").append(toIndentedString(orders)).append("\n");
     sb.append("    deliveryStart: ").append(toIndentedString(deliveryStart)).append("\n");

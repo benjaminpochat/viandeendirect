@@ -29,8 +29,8 @@ public class OrderService implements OrdersApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Order> getOrder(String orderId) {
-        Order order = orderRepository.findById(Long.valueOf(orderId)).get();
+    public ResponseEntity<Order> getOrder(Integer orderId) {
+        Order order = orderRepository.findById(orderId).get();
         List<OrderItem> items = orderItemRepository.findByOrder(order);
         order.setItems(items);
         return new ResponseEntity<>(order, HttpStatus.OK);

@@ -8,7 +8,6 @@ import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Invoice;
 import eu.viandeendirect.model.OrderItem;
 import eu.viandeendirect.model.Sale;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class Order {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
   @SequenceGenerator(name="order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
   @JsonProperty("invoice")
   @OneToOne
@@ -55,7 +54,7 @@ public class Order {
   @ManyToOne
   private Sale sale;
 
-  public Order id(BigDecimal id) {
+  public Order id(Integer id) {
     this.id = id;
     return this;
   }
@@ -64,13 +63,13 @@ public class Order {
    *
    * @return id
   */
-  @NotNull @Valid
+  @NotNull
   @Schema(name = "id", description = "", required = true)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

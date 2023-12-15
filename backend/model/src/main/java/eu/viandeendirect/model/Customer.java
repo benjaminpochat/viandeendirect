@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.User;
-import java.math.BigDecimal;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,7 +37,7 @@ public class Customer {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_generator")
   @SequenceGenerator(name="customer_id_generator", sequenceName = "customer_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
   public Customer user(User user) {
     this.user = user;
@@ -59,7 +58,7 @@ public class Customer {
     this.user = user;
   }
 
-  public Customer id(BigDecimal id) {
+  public Customer id(Integer id) {
     this.id = id;
     return this;
   }
@@ -68,13 +67,13 @@ public class Customer {
    * 
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

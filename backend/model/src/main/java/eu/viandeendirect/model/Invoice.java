@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.math.BigDecimal;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +31,9 @@ public class Invoice {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_id_generator")
   @SequenceGenerator(name="invoice_id_generator", sequenceName = "invoice_id_seq", allocationSize = 1)
-  private BigDecimal id;
+  private Integer id;
 
-  public Invoice id(BigDecimal id) {
+  public Invoice id(Integer id) {
     this.id = id;
     return this;
   }
@@ -43,13 +42,13 @@ public class Invoice {
    * 
    * @return id
   */
-  @Valid 
+
   @Schema(name = "id", description = "", required = false)
-  public BigDecimal getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

@@ -13,7 +13,6 @@ import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -45,12 +44,12 @@ import jakarta.annotation.Generated;
 public class HonneyProduction extends Production {
 
   @JsonProperty("totalWeight")
-  private BigDecimal totalWeight;
+  private Float totalWeight;
 
   @JsonProperty("honeyDescription")
   private String honeyDescription;
 
-  public HonneyProduction totalWeight(BigDecimal totalWeight) {
+  public HonneyProduction totalWeight(Float totalWeight) {
     this.totalWeight = totalWeight;
     return this;
   }
@@ -59,13 +58,13 @@ public class HonneyProduction extends Production {
    * total weight of honney produced
    * @return totalWeight
   */
-  @Valid 
+
   @Schema(name = "totalWeight", description = "total weight of honney produced", required = false)
-  public BigDecimal getTotalWeight() {
+  public Float getTotalWeight() {
     return totalWeight;
   }
 
-  public void setTotalWeight(BigDecimal totalWeight) {
+  public void setTotalWeight(Float totalWeight) {
     this.totalWeight = totalWeight;
   }
 
@@ -88,7 +87,7 @@ public class HonneyProduction extends Production {
     this.honeyDescription = honeyDescription;
   }
 
-  public HonneyProduction id(BigDecimal id) {
+  public HonneyProduction id(Integer id) {
     super.setId(id);
     return this;
   }

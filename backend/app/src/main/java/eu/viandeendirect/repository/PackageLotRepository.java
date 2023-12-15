@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PackageLotRepository extends CrudRepository<PackageLot, Long> {
+public interface PackageLotRepository extends CrudRepository<PackageLot, Integer> {
     @Query("SELECT l FROM PackageLot l WHERE l.production = :production")
     List<PackageLot> findByProduction(@Param("production") Production production);
 }

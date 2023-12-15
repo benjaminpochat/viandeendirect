@@ -4,7 +4,6 @@ import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Production;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
-import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -43,7 +41,7 @@ public class TestProductionService {
     @Test
     void getProductionPercentageSold_should_return_the_right_percentage() {
         // when
-        BigDecimal percentage = productionService.getProductionPercentageSold("1000").getBody();
+        Integer percentage = productionService.getProductionPercentageSold(1000).getBody();
 
         // then
         Assertions.assertThat(percentage.floatValue()).isCloseTo(24f, Offset.offset(0.1f));

@@ -13,7 +13,7 @@ public class HonneyProductionService implements HonneyProductionsApiDelegate {
     ProductionRepository productionRepository;
 
     @Override
-    public ResponseEntity<HonneyProduction> getHonneyProduction(String honneyProductionId) {
-        return new ResponseEntity(productionRepository.findById(Long.valueOf(honneyProductionId)).get(), HttpStatus.OK);
+    public ResponseEntity<HonneyProduction> getHonneyProduction(Integer honneyProductionId) {
+        return new ResponseEntity(productionRepository.findById(honneyProductionId).get(), HttpStatus.OK);
     }
 }
