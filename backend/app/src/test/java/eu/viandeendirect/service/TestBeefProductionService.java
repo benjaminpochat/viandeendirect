@@ -37,11 +37,11 @@ class TestBeefProductionService {
     @Test
     void getBeefProduction_should_return_the_right_instance() {
         // when
-        BeefProduction beefProduction = beefProductionService.getBeefProduction(10).getBody();
+        BeefProduction beefProduction = beefProductionService.getBeefProduction(1000).getBody();
 
         // then
         assertThat(beefProduction).isNotNull();
-        assertThat(beefProduction.getAnimalLiveWeight().floatValue()).isEqualTo(400f);
+        assertThat(beefProduction.getAnimalLiveWeight()).isEqualTo(400);
     }
 
     @Test
