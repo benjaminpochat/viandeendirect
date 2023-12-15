@@ -16,20 +16,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest
 @ActiveProfiles(value = "test")
 @ExtendWith({SpringExtension.class})
-@Sql(value = {
-        "/sql/create/users_test_data.sql",
-        "/sql/create/producers_test_data.sql",
-        "/sql/create/customers_test_data.sql",
-        "/sql/create/addresses_test_data.sql",
-        "/sql/create/productions_test_data.sql",
-        "/sql/create/sales_test_data.sql",
-        "/sql/create/sales_productions_test_data.sql",
-        "/sql/create/orders_test_data.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
 class TestCustomersService {
 
     @Autowired

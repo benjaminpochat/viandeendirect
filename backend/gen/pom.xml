@@ -143,5 +143,36 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>exclude-model-source-generated</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>remove-model-generated</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <configuration>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>src/main/java/eu/viandeendirect/model</directory>
+                                            <includes>
+                                                <include>**</include>
+                                            </includes>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>

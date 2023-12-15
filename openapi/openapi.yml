@@ -288,7 +288,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PackageTemplate'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageTemplate'
           description: Successful response - returns all package template
       operationId: getPackageTemplates
       summary: Get all package templates

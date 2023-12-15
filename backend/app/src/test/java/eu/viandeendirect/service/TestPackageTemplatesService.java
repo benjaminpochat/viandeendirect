@@ -1,17 +1,18 @@
 package eu.viandeendirect.service;
 
-import eu.viandeendirect.model.Address;
+import eu.viandeendirect.model.PackageTemplate;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
@@ -20,18 +21,20 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @ExtendWith({SpringExtension.class})
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
-public class TestAddressesService {
+public class TestPackageTemplatesService {
+
     @Autowired
-    private AddressesService addressesService;
+    PackageTemplatesService packageTemplatesService;
 
     @Test
-    void getAddresses_should_return_addresses() {
+    void getPackageTemplates_should_return_the_right_packages() {
         // when
-        List<Address> addresses = addressesService.getAddresses().getBody();
+        List<PackageTemplate> packageTemplates = packageTemplatesService.getPackageTemplates().getBody();
 
         // then
-        assertThat(addresses).hasSize(2);
-        assertThat(addresses).anyMatch(address -> "Toulouse Centre".equals(address.getName()));
-        assertThat(addresses).anyMatch(address -> "Toulouse Mirail".equals(address.getName()));
+        Assertions.assertThat(packageTemplates)
+                .hasSize(2)
+                .anyMatch(packageTemplate -> packageTemplate.getLabel().equals("Le coli tradition"))
+                .anyMatch(packageTemplate -> packageTemplate.getLabel().equals("Le coli cuisson rapide"));
     }
 }

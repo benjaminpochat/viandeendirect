@@ -1,0 +1,10 @@
+delete from order_items;
+delete from orders;
+delete from sales_productions;
+delete from sales;
+delete from package_lots;
+delete from beef_productions;
+delete from addresses;
+delete from customers;
+delete from producers;
+delete from users;

@@ -9,6 +9,6 @@ BeefProductionsApiDelegate.java     x           x
 CustomersApiDelegate.java           x           x
 HonneyProductionsApiDelegate.java   x
 OrdersApiDelegate.java              x           x
-PackageTemplatesApiDelegate.java    (x)
+PackageTemplatesApiDelegate.java    x           x
 ProductionsApiDelegate.java         (x)
 SalesApiDelegate.java               (x)
