@@ -10,5 +10,5 @@ CustomersApiDelegate.java           x           x
 HonneyProductionsApiDelegate.java   x
 OrdersApiDelegate.java              x           x
 PackageTemplatesApiDelegate.java    x           x
-ProductionsApiDelegate.java         (x)
+ProductionsApiDelegate.java         x           x
 SalesApiDelegate.java               (x)

@@ -10,7 +10,7 @@ export class MockApi {
     mockApiCustomers: MockApiCustomers = new MockApiCustomers()
     mockApiSales: MockApiSales = new MockApiSales()
 
-    createProduction(production, callback) {
+    createBeefProduction(beefProduction, callback) {
         callback()
     }
 

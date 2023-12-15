@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OrdersService implements OrdersApiDelegate {
+public class OrderService implements OrdersApiDelegate {
 
     @Autowired
     OrderRepository orderRepository;

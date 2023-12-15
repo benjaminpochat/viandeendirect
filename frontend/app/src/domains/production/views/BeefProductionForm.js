@@ -93,7 +93,7 @@ export default function BeefProductionForm({ callback }) {
     function validate(production) {
         var api = authenticayedApiBuilder.getAuthenticatedApi(keycloak);
         authenticayedApiBuilder.invokeAuthenticatedApi(() => {
-            api.createProduction(production, (error, data, response) => {
+            api.createBeefProduction(production, (error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {

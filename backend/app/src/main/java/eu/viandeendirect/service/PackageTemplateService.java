@@ -4,7 +4,6 @@ import eu.viandeendirect.api.PackageTemplatesApiDelegate;
 import eu.viandeendirect.model.PackageTemplate;
 import eu.viandeendirect.repository.PackageTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class PackageTemplatesService implements PackageTemplatesApiDelegate {
+public class PackageTemplateService implements PackageTemplatesApiDelegate {
 
     @Autowired
     PackageTemplateRepository packageTemplateRepository;

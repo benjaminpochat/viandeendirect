@@ -3,7 +3,6 @@ package eu.viandeendirect.service;
 import eu.viandeendirect.api.CustomersApiDelegate;
 import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.model.User;
 import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.UserRepository;
 import eu.viandeendirect.service.specs.ProducerServiceSpecs;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomersService implements CustomersApiDelegate {
+public class CustomerService implements CustomersApiDelegate {
 
     @Autowired
     CustomerRepository customerRepository;

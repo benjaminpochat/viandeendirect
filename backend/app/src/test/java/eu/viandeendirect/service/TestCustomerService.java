@@ -4,7 +4,6 @@ import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.User;
 import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,10 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @ExtendWith({SpringExtension.class})
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
-class TestCustomersService {
+class TestCustomerService {
 
     @Autowired
-    CustomersService customersService;
+    CustomerService customerService;
 
     @Autowired
     CustomerRepository customerRepository;
@@ -47,7 +46,7 @@ class TestCustomersService {
         customer.setUser(user);
 
         // when
-        Customer savedCustomer = customersService.createCustomer(customer).getBody();
+        Customer savedCustomer = customerService.createCustomer(customer).getBody();
 
         // then
         assertThat(savedCustomer.getId()).isNotNull();
@@ -67,7 +66,7 @@ class TestCustomersService {
     @Test
     void getCustomers_should_return_all_customers_with_orders_related_to_current_producer() {
         // when
-        List<Customer> customers = customersService.getCustomers().getBody();
+        List<Customer> customers = customerService.getCustomers().getBody();
 
         // then
         assertThat(customers).hasSize(1);

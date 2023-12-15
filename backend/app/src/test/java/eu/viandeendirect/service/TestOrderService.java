@@ -25,10 +25,10 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @ExtendWith({SpringExtension.class})
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
-public class TestOrdersService {
+public class TestOrderService {
 
     @Autowired
-    OrdersService ordersService;
+    OrderService orderService;
 
     @Autowired
     SaleRepository saleRepository;
@@ -58,7 +58,7 @@ public class TestOrdersService {
         order.setItems(List.of(item));
 
         // when
-        Order orderCreated = ordersService.createOrder(order).getBody();
+        Order orderCreated = orderService.createOrder(order).getBody();
 
         // then
         assertThat(orderCreated).isNotNull();
@@ -70,7 +70,7 @@ public class TestOrdersService {
     @Test
     void getOrder_should_return_the_right_object(){
         // when
-        Order order = ordersService.getOrder("4000").getBody();
+        Order order = orderService.getOrder("4000").getBody();
 
         // then
         assertThat(order).isNotNull();

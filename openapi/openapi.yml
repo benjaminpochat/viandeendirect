@@ -168,69 +168,6 @@ paths:
             type: boolean
             default: false
           description: "true to get only productions ready to be put on sale"
-    post:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      requestBody:
-        description: A new `production` to be created.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Production'
-        required: true
-      responses:
-        "201":
-          description: Successful response.
-      operationId: createProduction
-      summary: Create a production
-      description: Creates a new instance of a `production`.
-  /productions/{productionId}:
-    summary: Path used to manage a single production.
-    get:
-      security:
-        - oAuth2ForViandeEnDirect: [read]
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Production'
-          description: Successful response - returns a single `production`.
-      operationId: getProduction
-      summary: Get a production
-      description: Gets the details of a single instance of a `production`.
-    put:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      requestBody:
-        description: Updated `production` information.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Production'
-        required: true
-      responses:
-        "202":
-          description: Successful response.
-      operationId: updateProduction
-      summary: Update a production
-      description: Updates an existing `production`.
-    delete:
-      security:
-        - oAuth2ForViandeEnDirect: [write]
-      responses:
-        "204":
-          description: Successful response.
-      operationId: deleteProduction
-      summary: Delete a production
-      description: Deletes an existing `production`.
-    parameters:
-    - name: productionId
-      description: A unique identifier for a `production`.
-      schema:
-        type: string
-      in: path
-      required: true
   /productions/{productionId}/percentageSold:
     summary: Path used to get the percentage sold for a given production.
     get:
@@ -244,13 +181,6 @@ paths:
                 type: number
           description: Successful response - returns a single `production`.
       operationId: getProductionPercentageSold
-      parameters:
-      - name: beefProductionId
-        description: A unique identifier for a `beefProduction`.
-        schema:
-          type: string
-        in: path
-        required: true
     parameters:
     - name: productionId
       description: A unique identifier for a `production`.
@@ -258,6 +188,26 @@ paths:
         type: string
       in: path
       required: true
+  /beefProductions:
+    post:
+      requestBody:
+        description: A new `beefProduction` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeefProduction'
+        required: true
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeefProduction'          
+          description: Successful response - returns the `beefProduction`created.
+      operationId: createBeefProduction
+      summary: Create a new beef production
   /beefProductions/{beefProductionId}:
     get:
       security:
@@ -268,10 +218,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BeefProduction'
-          description: Successful response - returns a single `beenProduction`.
+          description: Successful response - returns a single `beefProduction`.
       operationId: getBeefProduction
       summary: Get a beef production
-      description: Gets the details of a single instance of a `beenProduction`.
+      description: Gets the details of a single instance of a `beefProduction`.
     parameters:
     - name: beefProductionId
       description: A unique identifier for a `beefProduction`.
@@ -360,7 +310,7 @@ paths:
               $ref: '#/components/schemas/Customer'
         required: true
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:

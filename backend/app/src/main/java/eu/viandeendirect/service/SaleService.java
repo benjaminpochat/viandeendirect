@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class SalesService implements SalesApiDelegate {
+public class SaleService implements SalesApiDelegate {
 
     @Autowired
     SaleRepository saleRepository;

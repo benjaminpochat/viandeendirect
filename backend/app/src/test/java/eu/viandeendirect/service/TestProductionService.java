@@ -1,16 +1,19 @@
 package eu.viandeendirect.service;
 
-import eu.viandeendirect.model.PackageTemplate;
+import eu.viandeendirect.model.BeefProduction;
+import eu.viandeendirect.model.Production;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.data.Offset;
+import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestComponent;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -21,20 +24,28 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @ExtendWith({SpringExtension.class})
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
-public class TestPackageTemplatesService {
+public class TestProductionService {
 
     @Autowired
-    PackageTemplatesService packageTemplatesService;
+    ProductionService productionService;
 
     @Test
-    void getPackageTemplates_should_return_the_right_packages() {
+    void getProduction_should_return_all_productions_owned_by_current_producer() {
         // when
-        List<PackageTemplate> packageTemplates = packageTemplatesService.getPackageTemplates().getBody();
+        List<Production> productions = productionService.getProductions(true).getBody();
 
         // then
-        Assertions.assertThat(packageTemplates)
+        Assertions.assertThat(productions)
                 .hasSize(2)
-                .anyMatch(packageTemplate -> packageTemplate.getLabel().equals("Le coli tradition"))
-                .anyMatch(packageTemplate -> packageTemplate.getLabel().equals("Le coli cuisson rapide"));
+                .allMatch(production -> production instanceof BeefProduction);
+    }
+
+    @Test
+    void getProductionPercentageSold_should_return_the_right_percentage() {
+        // when
+        BigDecimal percentage = productionService.getProductionPercentageSold("1000").getBody();
+
+        // then
+        Assertions.assertThat(percentage.floatValue()).isCloseTo(24f, Offset.offset(0.1f));
     }
 }
