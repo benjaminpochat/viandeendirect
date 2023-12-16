@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build model module with Maven
-      run: mvn clean install --file backend/model/pom.xml
+      run: mvn clean install --file backend/pom.xml --projects model
     - name: Generate java code from openapi
       run: bash scripts/dev/generate-server-code-from-openapi.sh
     - name: Build whole app with Maven
