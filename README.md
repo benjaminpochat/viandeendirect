@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/benjaminpochat/viandeendirect/actions/workflows/maven.yml/badge.svg)](https://github.com/benjaminpochat/viandeendirect/actions/workflows/maven.yml)
+
 # viandeendirect
 
 ## Notes for developping
