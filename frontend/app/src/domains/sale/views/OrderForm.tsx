@@ -55,7 +55,7 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     function loadCustomers() {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getCustomers(undefined, (error, data, response) => {
+            api.getCustomers((error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {

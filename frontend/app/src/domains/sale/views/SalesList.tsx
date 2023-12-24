@@ -21,7 +21,7 @@ export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCal
     function loadSales() {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getSales({}, (error, data, response) => {
+            api.getSales((error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {

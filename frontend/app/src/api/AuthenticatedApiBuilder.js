@@ -14,7 +14,7 @@ export class AuthenticatedApiBuilder {
         } else {
             let apiClient = ApiClient.instance
             apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token
-            apiClient.basePath = '.'
+            apiClient.basePath = 'http://localhost:8080'
             var api = new DefaultApi(apiClient)
             return api
         }

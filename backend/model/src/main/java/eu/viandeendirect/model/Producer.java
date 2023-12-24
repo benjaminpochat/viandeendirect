@@ -3,9 +3,7 @@ package eu.viandeendirect.model;
 import java.net.URI;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.*;
 import eu.viandeendirect.model.ProducerStatus;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
@@ -51,13 +49,13 @@ public class Producer {
   private Integer salesCredits;
 
   @JsonProperty("productions")
-  @JsonManagedReference
+  @JsonIgnore
   @jakarta.persistence.OneToMany(mappedBy = "producer")
   @Valid
   private List<Production> productions = null;
 
   @JsonProperty("sales")
-  @JsonManagedReference
+  @JsonManagedReference("salesSeller")
   @jakarta.persistence.OneToMany(mappedBy = "seller")
   @Valid
   private List<Sale> sales = null;

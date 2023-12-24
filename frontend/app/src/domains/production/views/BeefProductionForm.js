@@ -21,6 +21,7 @@ export default function BeefProductionForm({ callback }) {
 
     const { keycloak, initialized } = useKeycloak()
     const [ activeStep, setActiveStep ] = useState(SET_PRODUCTION_PROPERTIES_STEP)
+    const [ beefProduction, setBeefProduction] = useState(new BeefProduction())
     const authenticayedApiBuilder = new AuthenticatedApiBuilder()
 
     return <>
@@ -80,20 +81,21 @@ export default function BeefProductionForm({ callback }) {
 
     function validateProductionProperties(productionFormData) {
         console.log(productionFormData)
-        const production = new BeefProduction()
-        production.productionType = "BeefProduction"
-        production.animalIdentifier = productionFormData.animalIdentifier
-        production.animalLiveWeight = productionFormData.animalLiveWeight
-        production.birthDate = productionFormData.birthDate
-        production.slaughterDate = productionFormData.slaughterDate
-        production.birthPlace = productionFormData.birthPlace
+        setBeefProduction({...beefProduction, 
+            productionType: "BeefProduction",
+            animalIdentifier: productionFormData.animalIdentifier,
+            animalLiveWeight: productionFormData.animalLiveWeight,
+            birthDate: productionFormData.birthDate,
+            slaughterDate: productionFormData.slaughterDate,
+            birthPlace: productionFormData.birthPlace,
+        })
         setActiveStep(SET_PRODUCTS_STEP)
     }
 
-    function validate(production) {
+    function validate() {
         var api = authenticayedApiBuilder.getAuthenticatedApi(keycloak);
         authenticayedApiBuilder.invokeAuthenticatedApi(() => {
-            api.createBeefProduction(production, (error, data, response) => {
+            api.createBeefProduction(beefProduction, (error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {

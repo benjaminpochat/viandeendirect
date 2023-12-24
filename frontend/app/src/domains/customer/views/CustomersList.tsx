@@ -19,7 +19,7 @@ export default function CustomersList() {
     function loadCustomers() {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getCustomers({}, (error, data, response) => {
+            api.getCustomers((error, data, response) => {
                 if (error) {
                     console.error(error)
                 } else {

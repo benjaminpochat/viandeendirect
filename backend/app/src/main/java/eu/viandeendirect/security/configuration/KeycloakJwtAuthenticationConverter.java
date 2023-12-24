@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;

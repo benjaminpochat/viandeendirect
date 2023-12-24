@@ -26,24 +26,24 @@ export class MockApi {
         callback(undefined, this.mockApiProductions.getBeefProduction())
     }
 
-    getPackageTemplates(options, callback) {
-        callback(undefined, this.mockApiProductions.getPackageTemplates())
+    getPackageTemplates(callback) {
+        callback(this.mockApiProductions.getPackageTemplates())
     }
 
-    getAddresses(options, callback) {
-        callback(undefined, this.mockApiAddresses.getAddresses())
+    getAddresses(callback) {
+        callback(this.mockApiAddresses.getAddresses())
     }
 
-    getCustomers(options, callback) {
-        callback(undefined, this.mockApiCustomers.getCustomers())
+    getCustomers(callback) {
+        callback(this.mockApiCustomers.getCustomers())
     }
 
     getCutomer(customer, callback){
         callback(undefined, this.mockApiCustomers.createCustomer(customer))
     }
 
-    getSales(options, callback) {
-        callback(undefined, this.mockApiSales.getSales())
+    getSales(callback) {
+        callback(this.mockApiSales.getSales())
     }
 
     getSaleOrders(options, callback) {

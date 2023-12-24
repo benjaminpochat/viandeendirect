@@ -36,7 +36,7 @@ export default function SaleForm({returnCallback: returnCallback}) {
     useEffect(() => {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getAddresses({}, (error, data, response) => {
+            api.getAddresses((error, data, response) => {
                 if (error) {
                     console.error(error);
                 } else {

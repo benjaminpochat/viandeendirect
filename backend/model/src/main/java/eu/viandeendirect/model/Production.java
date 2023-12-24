@@ -1,30 +1,14 @@
 package eu.viandeendirect.model;
 
-import java.net.URI;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.*;
-import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.HonneyProduction;
-import eu.viandeendirect.model.PackageLot;
-import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.model.Sale;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import jakarta.annotation.Generated;
+import java.util.Objects;
 
 /**
  *
@@ -90,13 +74,13 @@ public abstract class Production {
   private ProductionTypeEnum productionType;
 
   @JsonProperty("sales")
+  @JsonIgnore
   @jakarta.persistence.ManyToMany(mappedBy = "productions")
   @Valid
   private List<Sale> sales = null;
 
-  @JsonProperty("producer")
   @ManyToOne
-  @JsonBackReference
+  @JsonProperty("producer")
   private Producer producer;
 
   @JsonProperty("lots")

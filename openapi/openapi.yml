@@ -5,6 +5,8 @@ info:
   version: 0.0.1
   description: This API allows selling and buying food through the shortest path between
     farmers and customers.
+servers:
+  - url: http://localhost:8080
 
 security:
   - oAuth2ForViandeEnDirect:

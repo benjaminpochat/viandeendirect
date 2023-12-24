@@ -15,7 +15,7 @@ export default function PackageLotsCreator() {
     useEffect(() => {
         let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
         authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getPackageTemplates({}, (error, data, response) => {
+            api.getPackageTemplates((error, data, response) => {
                 if (error) {
                     console.error(error);
                 } else {
