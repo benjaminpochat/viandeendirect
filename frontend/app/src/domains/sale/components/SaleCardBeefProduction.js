@@ -17,17 +17,18 @@ export default function SaleCardBeefProduction({production: production}) {
 
 
     function loadProductionPercentageSold() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getProductionPercentageSold(production.id, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getProductionPercentageSold called successfully. Returned data: ' + data)
-                    setProductionPercentageSold(data)
-                }
-            })
-        }, keycloak)        
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getProductionPercentageSold(production.id, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getProductionPercentageSold called successfully. Returned data: ' + data)
+                        setProductionPercentageSold(data)
+                    }
+                })
+            }, keycloak)        
+        })
     }
 
     return <>

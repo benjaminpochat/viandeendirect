@@ -38,17 +38,18 @@ services:
       - KC_DB_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/identity
       - KC_DB_USERNAME=identity
       - KC_DB_PASSWORD=${identity_database_password:-dntt-db-p4ssw0rd}
-      - KC_HOSTNAME=localhost
-      - KC_HTTP_PORT=8180
+      - KC_HOSTNAME_URL=${identity_url:-http://localhost:8180}
+      - KC_HOSTNAME_ADMIN_URL=${identity_url:-http://localhost:8180}
       - KC_HEALTH_ENABLED=true
+      - KC_PROXY=edge
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8180/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
       interval: 5s
       timeout: 60s
       retries: 5
     command: start-dev
     ports:
-      - ${keycloak_port:-8180}:8180
+      - ${identity_port:-8180}:8080
     network_mode: "host"
 
   backend:
@@ -58,11 +59,12 @@ services:
     image: benjaminpochat/viandeendirect-backend:${DOCKER_IMAGE_TAG:-latest}
     environment:
       - SERVER_PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/viandeendirect
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/viandeendirect
       - SPRING_DATASOURCE_USERNAME=viandeendirect
       - SPRING_DATASOURCE_PASSWORD=${backend_database_password:-vndndrct-db-p4ssw0rd}
-      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://localhost:${keycloak_port:-8180}/realms/viandeendirect
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:${keycloak_port:-8180}/realms/viandeendirect
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=${identity_url:-http://localhost:8180}/realms/viandeendirect
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=${identity_url:-http://localhost:8180}/realms/viandeendirect
+      - SPRING_PROFILES_ACTIVE=oauth,postgre
     depends_on:
       database:
         condition: service_healthy
@@ -76,10 +78,6 @@ services:
     build:
       context: "."
       dockerfile: ./frontend/Dockerfile
-      args:
-        #REACT_APP_FRONTEND_URL: https://sandbox.viandeendirect.eu
-        REACT_APP_BACKEND_URL: https://sandbox.viandeendirect.eu:8080
-        #REACT_APP_IDENTITY_URL: https://sandbox.identity.viandeendirect.eu
     image: benjaminpochat/viandeendirect-frontend:${DOCKER_IMAGE_TAG:-latest}
     volumes:
       - ${frontend_config_path:-./frontend-config}:/usr/local/apache2/htdocs/config

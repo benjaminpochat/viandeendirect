@@ -20,17 +20,18 @@ export default function OrderView({order: rawOrder, sale: sale, returnCallback: 
     }, [keycloak])
 
     function loadOrder() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getOrder(rawOrder.id, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getOrder called successfully. Returned data: ' + data)
-                    setOrder(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getOrder(rawOrder.id, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getOrder called successfully. Returned data: ' + data)
+                        setOrder(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     return <>

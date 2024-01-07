@@ -17,17 +17,18 @@ export default function CustomersList() {
     }, [keycloak])
 
     function loadCustomers() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getCustomers((error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getSales called successfully. Returned data: ' + data)
-                    setCustomers(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getCustomers((error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getSales called successfully. Returned data: ' + data)
+                        setCustomers(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     const rows: GridRowsProp = customers.map(customer => {

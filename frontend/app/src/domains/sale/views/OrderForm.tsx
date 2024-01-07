@@ -39,31 +39,33 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }, [keycloak])
 
     function loadProductions() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getSaleProductions(sale.id, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getSaleProductions called successfully. Returned data: ' + data)
-                    setProductions(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getSaleProductions(sale.id, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getSaleProductions called successfully. Returned data: ' + data)
+                        setProductions(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     function loadCustomers() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getCustomers((error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getCustomers called successfully. Returned data: ' + data)
-                    setCustomers(data)
-                }
-            })
-        }, keycloak)        
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getCustomers((error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getCustomers called successfully. Returned data: ' + data)
+                        setCustomers(data)
+                    }
+                })
+            }, keycloak)        
+        })
     }
 
     return <>
@@ -139,29 +141,31 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }
 
     function createCustomer(customer: Customer){
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.createCustomer(customer, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.createCustomer called successfully. Returned data: ' + data)
-                    setOrder({...order, customer: data})
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.createCustomer(customer, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.createCustomer called successfully. Returned data: ' + data)
+                        setOrder({...order, customer: data})
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     function createOrder(order: Order) {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.createOrder(order, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.createOrder called successfully. Returned data: ' + data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.createOrder(order, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.createOrder called successfully. Returned data: ' + data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 }

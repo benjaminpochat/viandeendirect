@@ -22,7 +22,7 @@ export default function BeefProductionForm({ callback }) {
     const { keycloak, initialized } = useKeycloak()
     const [ activeStep, setActiveStep ] = useState(SET_PRODUCTION_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState(new BeefProduction())
-    const authenticayedApiBuilder = new AuthenticatedApiBuilder()
+    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
 
     return <>
             <Typography variant="h6">Nouvel abattage bovin</Typography>
@@ -93,17 +93,18 @@ export default function BeefProductionForm({ callback }) {
     }
 
     function validate() {
-        var api = authenticayedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticayedApiBuilder.invokeAuthenticatedApi(() => {
-            api.createBeefProduction(beefProduction, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('API called successfully. Returned data: ' + data)
-                    callback('PRODUCTIONS_LIST')
-                }
-            })
-        }, keycloak);
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.createBeefProduction(beefProduction, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('API called successfully. Returned data: ' + data)
+                        callback('PRODUCTIONS_LIST')
+                    }
+                })
+            }, keycloak)
+        });
     }
 
     function cancel() {

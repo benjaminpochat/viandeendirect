@@ -26,17 +26,18 @@ export default function OrdersList({
     }, [keycloak])
 
     function loadOrders() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getSaleOrders(sale.id, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getSaleOrders called successfully. Returned data: ' + data)
-                    setOrders(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getSaleOrders(sale.id, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getSaleOrders called successfully. Returned data: ' + data)
+                        setOrders(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     const columns: GridColDef[] = [

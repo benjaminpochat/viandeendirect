@@ -34,17 +34,18 @@ export default function SaleForm({returnCallback: returnCallback}) {
     const authenticatedApiBuilder = new AuthenticatedApiBuilder()
 
     useEffect(() => {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getAddresses((error, data, response) => {
-                if (error) {
-                    console.error(error);
-                } else {
-                    console.log('api.getAddresses called successfully. Returned data: ' + data);
-                    setAddresses(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getAddresses((error, data, response) => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log('api.getAddresses called successfully. Returned data: ' + data);
+                        setAddresses(data)
+                    }
+                })
+            }, keycloak)
+        })
     }, [keycloak])
 
     return <>

@@ -13,28 +13,29 @@ export default function PackageLotsCreator() {
     const authenticatedApiBuilder = new AuthenticatedApiBuilder()
 
     useEffect(() => {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getPackageTemplates((error, data, response) => {
-                if (error) {
-                    console.error(error);
-                } else {
-                    console.log('api.getPackageTemplates called successfully. Returned data: ' + data);
-                    const lots = []
-                    data.map(template => {
-                        let lot = new PackageLot()
-                        lot.label = template.label
-                        lot.description = template.description
-                        lot.unitPrice = template.unitPrice
-                        lot.netWeight = template.netWeight
-                        lot.quantity = 0
-                        lot.quantitySold = 0
-                        lots.push(lot)
-                    })
-                    setPackageLots(lots)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getPackageTemplates((error, data, response) => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log('api.getPackageTemplates called successfully. Returned data: ' + data);
+                        const lots = []
+                        data.map(template => {
+                            let lot = new PackageLot()
+                            lot.label = template.label
+                            lot.description = template.description
+                            lot.unitPrice = template.unitPrice
+                            lot.netWeight = template.netWeight
+                            lot.quantity = 0
+                            lot.quantitySold = 0
+                            lots.push(lot)
+                        })
+                        setPackageLots(lots)
+                    }
+                })
+            }, keycloak)
+        })
     }, [keycloak])
 
     return <>

@@ -14,17 +14,18 @@ export default function SaleProductionSelector({selectProduction: selectProducti
     }, [keycloak])
 
     function loadProductionsForSale() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getProductions({ 'forSale': true }, (error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getProductions called successfully. Returned data: ' + data)
-                    setProductionsForSale(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getProductions({ 'forSale': true }, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getProductions called successfully. Returned data: ' + data)
+                        setProductionsForSale(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     function handleProductSelection(production) {

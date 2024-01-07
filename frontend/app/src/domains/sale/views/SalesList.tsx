@@ -19,17 +19,18 @@ export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCal
     }, [keycloak])
 
     function loadSales() {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak)
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getSales((error, data, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    console.log('api.getSales called successfully. Returned data: ' + data)
-                    setSales(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getSales((error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('api.getSales called successfully. Returned data: ' + data)
+                        setSales(data)
+                    }
+                })
+            }, keycloak)
+        })
     }
 
     return <>

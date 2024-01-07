@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
@@ -14,17 +15,18 @@ export default function BeefProductionCard({
     const authenticatedApiBuilder = new AuthenticatedApiBuilder()
 
     useEffect(() => {
-        let api = authenticatedApiBuilder.getAuthenticatedApi(keycloak);
-        authenticatedApiBuilder.invokeAuthenticatedApi(() => {
-            api.getBeefProduction(production.id, (error, data, response) => {
-                if (error) {
-                    console.error(error);
-                } else {
-                    console.log('api.getBeefProduction called successfully. Returned data: ' + data);
-                    setBeefProduction(data)
-                }
-            })
-        }, keycloak)
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.getBeefProduction(production.id, (error, data, response) => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log('api.getBeefProduction called successfully. Returned data: ' + data);
+                        setBeefProduction(data)
+                    }
+                })
+            }, keycloak)
+        })
     }, [keycloak])
 
     return (

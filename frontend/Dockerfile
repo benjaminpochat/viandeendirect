@@ -9,9 +9,6 @@ COPY ./frontend /frontend
 COPY ./openapi /openapi
 WORKDIR /frontend/app
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
-
 RUN npm run generate:api
 RUN npm run build:api
 RUN npm run install:api

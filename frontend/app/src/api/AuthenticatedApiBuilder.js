@@ -3,18 +3,30 @@ import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
 import { MockApi } from './mock/MockApi.ts'
 
 export class AuthenticatedApiBuilder {
+
+    backendUrl = undefined
+
+    async getBackendUrl() {
+        if (!this.backendUrl) {
+            let response = await fetch(window.location.origin + '/config/viandeendirect.json')
+            let config = await response.json()
+            this.backendUrl = config.backendUrl
+        }
+        return this.backendUrl        
+    }
+
     /**
      * 
      * @param {*} keycloak 
-     * @returns {DefaultApi | MockApi} 
+     * @returns {Promise< DefaultApi | MockApi>} 
      */
-    getAuthenticatedApi(keycloak) {
+    async getAuthenticatedApi(keycloak) {
         if(process.env.REACT_APP_MOCK_API) {
             return new MockApi()
         } else {
             let apiClient = ApiClient.instance
             apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token
-            apiClient.basePath = 'http://localhost:8080'
+            apiClient.basePath = await this.getBackendUrl()
             var api = new DefaultApi(apiClient)
             return api
         }
