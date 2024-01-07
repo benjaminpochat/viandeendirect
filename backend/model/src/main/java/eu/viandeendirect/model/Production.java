@@ -81,6 +81,7 @@ public abstract class Production {
 
   @ManyToOne
   @JsonProperty("producer")
+  @JsonIgnore
   private Producer producer;
 
   @JsonProperty("lots")

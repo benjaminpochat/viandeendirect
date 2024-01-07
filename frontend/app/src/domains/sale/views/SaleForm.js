@@ -192,7 +192,18 @@ export default function SaleForm({returnCallback: returnCallback}) {
     }
 
     function validate() {
-        returnCallback()
+        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+                api.createSale(sale, (error, data, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        console.log('API called successfully. Returned data: ' + data)
+                        returnCallback()
+                    }
+                })
+            }, keycloak)
+        });
     }
 
     function cancel() {

@@ -72,13 +72,13 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
         return sale.orders
             .flatMap(order => order.items)
             .map(item => item.packageLot.netWeight * item.quantity)
-            .reduce((totalQuantity, orderItemQuantity) => totalQuantity + orderItemQuantity)
+            .reduce((totalQuantity, orderItemQuantity) => totalQuantity + orderItemQuantity, 0)
     }
 
     function getAmountSold() {
         return sale.orders
             .flatMap(order => order.items)
             .map(item => item.unitPrice * item.quantity)
-            .reduce((totalAmout, orderItemAmout) => totalAmout + orderItemAmout)
+            .reduce((totalAmout, orderItemAmout) => totalAmout + orderItemAmout, 0)
     }
 }

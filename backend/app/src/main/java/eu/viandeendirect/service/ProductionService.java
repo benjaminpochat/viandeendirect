@@ -40,10 +40,10 @@ public class ProductionService implements ProductionsApiDelegate {
         List<PackageLot> lots = packageLotRepository.findByProduction(production);
         Float initialQuantityToSell = lots.stream()
                 .map(lot -> lot.getQuantity() * lot.getNetWeight())
-                .reduce((quantity1, quantity2) -> quantity1 + quantity2).get();
+                .reduce((quantity1, quantity2) -> quantity1 + quantity2).orElse(0f);
         Float quantitySold = lots.stream()
                 .map(lot -> lot.getQuantitySold() * lot.getNetWeight())
-                .reduce((quantity1, quantity2) -> quantity1 + quantity2).get();
+                .reduce((quantity1, quantity2) -> quantity1 + quantity2).orElse(0f);
         Float percentageSold = quantitySold / initialQuantityToSell * 100;
         Integer roundedPercentageSold = Math.round(percentageSold);
         return new ResponseEntity<>(roundedPercentageSold, OK);
