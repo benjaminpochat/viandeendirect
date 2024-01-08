@@ -5,7 +5,8 @@ import { frFR } from '@mui/material/locale';
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
 
-import LayoutWrapper from './layout/LayoutWrapper';
+import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
+import CustomerLayoutWrapper from './layouts/customer/LayoutWrapper';
 
 import './App.css';
 
@@ -52,10 +53,20 @@ function App() {
     }
   }, frFR);
 
+  function getLayoutWrapper() {
+    if(process.env.REACT_APP_MODE === 'CUSTOMER') {
+      return <CustomerLayoutWrapper/>
+    }
+    if(process.env.REACT_APP_MODE === 'PRODUCER') {
+      return <ProducerLayoutWrapper/>
+    }
+    return <div>Configuration du mode client ou producteur absent ou non reconnu</div>
+  }
+
   return (
     <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
       <ThemeProvider theme={theme}>
-        <LayoutWrapper />
+        {getLayoutWrapper()}
       </ThemeProvider>
     </ReactKeycloakProvider>
   )

@@ -12,7 +12,10 @@ WORKDIR /frontend/app
 RUN npm run generate:api
 RUN npm run build:api
 RUN npm run install:api
-RUN npm run build
+
+ARG REACT_APP_MODE
+
+RUN export REACT_APP_MODE=$REACT_APP_MODE && npm run build
 
 FROM httpd:2.4.57
 

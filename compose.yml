@@ -35,7 +35,7 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=${keycloak_admin_password:-admin}
       #- KEYCLOAK_IMPORT=/opt/keycloak/realm/realm.json
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://localhost:${postgres_port:-5432}/identity
+      - KC_DB_URL=jdbc:postgresql://database:5432/identity
       - KC_DB_USERNAME=identity
       - KC_DB_PASSWORD=${identity_database_password:-dntt-db-p4ssw0rd}
       - KC_HOSTNAME_URL=${identity_url:-http://localhost:8180}
@@ -74,13 +74,28 @@ services:
       - ${backend_port:-8080}:8080
     network_mode: "host"
 
-  frontend:
+  frontend-producer:
     build:
       context: "."
       dockerfile: ./frontend/Dockerfile
-    image: benjaminpochat/viandeendirect-frontend:${DOCKER_IMAGE_TAG:-latest}
+      args:
+        REACT_APP_MODE: PRODUCER
+    image: benjaminpochat/viandeendirect-frontend-producer:${DOCKER_IMAGE_TAG:-latest}
     volumes:
-      - ${frontend_config_path:-./frontend-config}:/usr/local/apache2/htdocs/config
+      - ${frontend_producer_config_path:-./frontend-producer-config}:/usr/local/apache2/htdocs/config
     ports:
-      - ${frontend_port:-80}:80
+      - ${frontend_producer_port:-81}:80
+    network_mode: "host"
+
+  frontend-customer:
+    build:
+      context: "."
+      dockerfile: ./frontend/Dockerfile
+      args:
+        REACT_APP_MODE: CUSTOMER
+    image: benjaminpochat/viandeendirect-frontend-customer:${DOCKER_IMAGE_TAG:-latest}
+    volumes:
+      - ${frontend_customer_config_path:-./frontend-customer-config}:/usr/local/apache2/htdocs/config
+    ports:
+      - ${frontend_customer_port:-80}:80
     network_mode: "host"

@@ -4,12 +4,12 @@ import { useState } from 'react';
 import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 import {Close, Logout, Menu} from '@mui/icons-material'
 
-import Dashboard from '../domains/dashboard/Dashboard.js';
-import CustomerController from '../domains/customer/CustomerController.js';
-import GrowerAccount from '../domains/producer/ProducerAccount.js'
-import ProductionController from '../domains/production/ProductionController.js'
-import SaleController from '../domains/sale/SaleController.tsx'
-import SideMenu from './SideMenu'
+import Dashboard from '../../domains/dashboard/Dashboard.js';
+import CustomerController from '../../domains/customer/CustomerController.js';
+import GrowerAccount from '../../domains/producer/ProducerAccount.js'
+import ProductionController from '../../domains/production/ProductionController.js'
+import SaleController from '../../domains/sale/SaleController.tsx'
+import SideMenu from './SideMenu.js'
 
 
 function AuthenticatedLayout() {

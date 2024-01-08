@@ -4,7 +4,7 @@ import AuthenticatedLayout from './AuthenticatedLayout'
 import AnonymousLayout from './AnonymousLayout';
 
 
-function LayoutWrapper() {
+export default function ProducerLayoutWrapper() {
 
     const { keycloak, initialized } = useKeycloak()
 
@@ -15,5 +15,3 @@ function LayoutWrapper() {
     }
     
 }
-
-export default LayoutWrapper
