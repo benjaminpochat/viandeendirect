@@ -1,14 +1,31 @@
-import { useKeycloak } from '@react-keycloak/web'
+
+import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 
 export default function CustomerLayoutWrapper() {
 
-    const { keycloak, initialized } = useKeycloak()
 
-    if(process.env.REACT_APP_MOCK_API) {
-        return <div>Page client authentifié</div>
-    } else {
-        return keycloak.authenticated ? <div>Page client authentifié</div> : <div>Page client anonmye</div>
-    }
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+            >
+                <Toolbar>
+                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        Viande en direct
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Box
+                component="main"
+                sx={{ flexGrow: 1, p: 3 }}>
+                <Toolbar />
+                <Typography>Bienvenu dans l'espace client de ViandeEnDirect.eu</Typography>
+            </Box>
+        </Box>
+    )
     
 }
-
