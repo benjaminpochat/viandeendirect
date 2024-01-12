@@ -4,21 +4,21 @@ import { Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 export default function CustomersList() {
 
     const [customers, setCustomers] = useState([])
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
         loadCustomers()
     }, [keycloak])
 
     function loadCustomers() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getCustomers((error, data, response) => {
                     if (error) {
                         console.error(error)

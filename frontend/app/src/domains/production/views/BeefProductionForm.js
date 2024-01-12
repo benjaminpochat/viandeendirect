@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button, ButtonGroup, Typography, Stepper, Step, StepLabel, StepContent } from "@mui/material"
 import { DatePickerElement, FormContainer, SliderElement, TextFieldElement } from 'react-hook-form-mui'
 
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { useKeycloak } from '@react-keycloak/web'
 
 import { LocalizationProvider } from "@mui/x-date-pickers"
@@ -22,7 +22,7 @@ export default function BeefProductionForm({ callback }) {
     const { keycloak, initialized } = useKeycloak()
     const [ activeStep, setActiveStep ] = useState(SET_PRODUCTION_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState(new BeefProduction())
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     return <>
             <Typography variant="h6">Nouvel abattage bovin</Typography>
@@ -93,8 +93,8 @@ export default function BeefProductionForm({ callback }) {
     }
 
     function validate() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.createBeefProduction(beefProduction, (error, data, response) => {
                     if (error) {
                         console.error(error)

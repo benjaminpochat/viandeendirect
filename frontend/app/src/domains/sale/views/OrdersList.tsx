@@ -6,7 +6,7 @@ import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-gri
 import dayjs from 'dayjs'
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import Order from "viandeendirect_eu/dist/model/Order"
 
@@ -17,7 +17,7 @@ export default function OrdersList({
     createOrderCallback: createOrderCallback}) {
 
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     const [orders, setOrders] = useState([])
 
@@ -26,8 +26,8 @@ export default function OrdersList({
     }, [keycloak])
 
     function loadOrders() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getSaleOrders(sale.id, (error, data, response) => {
                     if (error) {
                         console.error(error)

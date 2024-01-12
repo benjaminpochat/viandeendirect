@@ -2,7 +2,7 @@ import ApiClient from 'viandeendirect_eu/dist/ApiClient'
 import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
 import { MockApi } from './mock/MockApi.ts'
 
-export class AuthenticatedApiBuilder {
+export class ApiBuilder {
 
     backendUrl = undefined
 
@@ -32,6 +32,14 @@ export class AuthenticatedApiBuilder {
         }
     }
 
+    async getAnonymousApi() {
+        if(process.env.REACT_APP_MOCK_API) {
+            return new MockApi()
+        } else {
+            return new DefaultApi(ApiClient.instance)
+        }
+    }
+
     /**
      * 
      * @param {*} apiFunction 
@@ -48,5 +56,9 @@ export class AuthenticatedApiBuilder {
                 console.log(error);
             })
         }
+    }
+
+    invokeAnonymousApi(apiFunction) {
+        apiFunction()
     }
 }

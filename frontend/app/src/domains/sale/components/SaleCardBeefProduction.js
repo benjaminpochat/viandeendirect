@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import styles from './SaleCard.css'
 
@@ -9,7 +9,7 @@ export default function SaleCardBeefProduction({production: production}) {
 
     const [productionPercentageSold, setProductionPercentageSold] = useState([])
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
         loadProductionPercentageSold()
@@ -17,8 +17,8 @@ export default function SaleCardBeefProduction({production: production}) {
 
 
     function loadProductionPercentageSold() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getProductionPercentageSold(production.id, (error, data, response) => {
                     if (error) {
                         console.error(error)

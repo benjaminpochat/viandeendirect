@@ -27,15 +27,15 @@ export class MockApi {
     }
 
     getPackageTemplates(callback) {
-        callback(this.mockApiProductions.getPackageTemplates())
+        callback(undefined, this.mockApiProductions.getPackageTemplates())
     }
 
     getAddresses(callback) {
-        callback(this.mockApiAddresses.getAddresses())
+        callback(undefined, this.mockApiAddresses.getAddresses())
     }
 
     getCustomers(callback) {
-        callback(this.mockApiCustomers.getCustomers())
+        callback(undefined, this.mockApiCustomers.getCustomers())
     }
 
     getCutomer(customer, callback){
@@ -43,7 +43,7 @@ export class MockApi {
     }
 
     getSales(callback) {
-        callback(this.mockApiSales.getSales())
+        callback(undefined, this.mockApiSales.getSales())
     }
 
     getSaleOrders(options, callback) {

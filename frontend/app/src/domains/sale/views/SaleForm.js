@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete } from "@mui/material"
 import { LocalizationProvider } from "@mui/x-date-pickers"
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
 
 import Production from 'viandeendirect_eu/dist/model/Production'
@@ -31,11 +31,11 @@ export default function SaleForm({returnCallback: returnCallback}) {
     const [sale, setSale] = useState(new Sale())
     const [addresses, setAddresses] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(undefined)
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getAddresses((error, data, response) => {
                     if (error) {
                         console.error(error);
@@ -192,8 +192,8 @@ export default function SaleForm({returnCallback: returnCallback}) {
     }
 
     function validate() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.createSale(sale, (error, data, response) => {
                     if (error) {
                         console.error(error)

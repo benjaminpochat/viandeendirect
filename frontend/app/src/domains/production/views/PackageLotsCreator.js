@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react"
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 import PackageLotsConfigurator from "../components/PackageLotConfigurator"
 
@@ -10,11 +10,11 @@ export default function PackageLotsCreator() {
 
     const { keycloak, initialized } = useKeycloak()
     const [packageLots, setPackageLots] = useState([])
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getPackageTemplates((error, data, response) => {
                     if (error) {
                         console.error(error);

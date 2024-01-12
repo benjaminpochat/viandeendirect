@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react'
 import { Button, Typography } from '@mui/material'
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import OrderSummary from '../components/OrderSummary.tsx'
 
 export default function OrderView({order: rawOrder, sale: sale, returnCallback: returnCallback}) {
     
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     const [order, setOrder] = useState([])
 
@@ -20,8 +20,8 @@ export default function OrderView({order: rawOrder, sale: sale, returnCallback: 
     }, [keycloak])
 
     function loadOrder() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getOrder(rawOrder.id, (error, data, response) => {
                     if (error) {
                         console.error(error)

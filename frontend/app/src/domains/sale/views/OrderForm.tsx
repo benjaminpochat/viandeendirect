@@ -5,7 +5,7 @@ import { Button, Stepper, Step, StepLabel, StepContent, Typography } from "@mui/
 import dayjs from 'dayjs'
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import Customer from "viandeendirect_eu/dist/model/Customer"
 import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
@@ -25,7 +25,7 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     const CONFIRMATION_STEP = 3
 
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     const [productions, setProductions] = useState<Array<Production>>([])
     const [customers, setCustomers] = useState<Array<Customer>>([])
@@ -39,8 +39,8 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }, [keycloak])
 
     function loadProductions() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getSaleProductions(sale.id, (error, data, response) => {
                     if (error) {
                         console.error(error)
@@ -54,8 +54,8 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }
 
     function loadCustomers() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getCustomers((error, data, response) => {
                     if (error) {
                         console.error(error)
@@ -141,8 +141,8 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }
 
     function createCustomer(customer: Customer){
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.createCustomer(customer, (error, data, response) => {
                     if (error) {
                         console.error(error)
@@ -156,8 +156,8 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }
 
     function createOrder(order: Order) {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.createOrder(order, (error, data, response) => {
                     if (error) {
                         console.error(error)

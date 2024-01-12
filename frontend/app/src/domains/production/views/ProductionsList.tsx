@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import { Button, Typography } from "@mui/material"
 
@@ -12,15 +12,15 @@ export default function ProductionsList({createBeefProductionCallback: createBee
 
     const [productions, setProductions] = useState([])
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
         loadProductions()
     }, [keycloak])
 
     function loadProductions() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getProductions({}, (error, data, response) => {
                     if (error) {
                         console.error(error)

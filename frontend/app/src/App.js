@@ -6,7 +6,7 @@ import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
 
 import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
-import CustomerLayoutWrapper from './layouts/customer/LayoutWrapper';
+import CustomerLayout from './layouts/customer/CustomerLayout';
 
 import './App.css';
 
@@ -55,7 +55,7 @@ function App() {
 
   function getLayoutWrapper() {
     if(process.env.REACT_APP_MODE === 'CUSTOMER') {
-      return <CustomerLayoutWrapper/>
+      return <CustomerLayout/>
     }
     if(process.env.REACT_APP_MODE === 'PRODUCER') {
       return <ProducerLayoutWrapper/>

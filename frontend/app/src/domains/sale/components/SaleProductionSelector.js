@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import ProductionCard from '../../production/components/ProductionCard.tsx'
 
 export default function SaleProductionSelector({selectProduction: selectProduction}) {
 
     const { keycloak, initialized } = useKeycloak()
     const [productionsForSale, setProductionsForSale] = useState([])
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
         loadProductionsForSale()
     }, [keycloak])
 
     function loadProductionsForSale() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getProductions({ 'forSale': true }, (error, data, response) => {
                     if (error) {
                         console.error(error)

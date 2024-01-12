@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react'
 import { Typography, Button } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder.js'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import SaleCard from '../components/SaleCard.tsx'
 
 export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCallback, createSaleCallback: createSaleCallback}) {
 
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     const [sales, setSales] = useState([])
 
@@ -19,8 +19,8 @@ export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCal
     }, [keycloak])
 
     function loadSales() {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getSales((error, data, response) => {
                     if (error) {
                         console.error(error)

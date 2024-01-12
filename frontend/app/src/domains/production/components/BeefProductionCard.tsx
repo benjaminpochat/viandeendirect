@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
-import { AuthenticatedApiBuilder } from '../../../api/AuthenticatedApiBuilder'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import dayjs from 'dayjs'
 
 export default function BeefProductionCard({
@@ -12,11 +12,11 @@ export default function BeefProductionCard({
 
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
-    const authenticatedApiBuilder = new AuthenticatedApiBuilder()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
-        authenticatedApiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            authenticatedApiBuilder.invokeAuthenticatedApi(() => {
+        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+            apiBuilder.invokeAuthenticatedApi(() => {
                 api.getBeefProduction(production.id, (error, data, response) => {
                     if (error) {
                         console.error(error);
