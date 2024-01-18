@@ -1,0 +1,49 @@
+.sale-customer-card {
+  margin: 0.5rem;
+  background-color: floralwhite;
+  border-style: solid;
+  border-width: 2px;
+  border-color: darkolivegreen;
+}
+
+.sale-customer-card__title {
+  font-family: acme;
+  font-size: 1.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sale-customer-card__general-information {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+
+.sale-customer-card__product-batch-list {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: left;
+}
+
+.sale-customer-card__product-information {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: acme;
+  font-size: 1.8rem;
+  height: 2rem;
+}
+
+
+.sale-customer-card__address,
+.sale-customer-card__date,
+.sale-customer-card__animal,
+.sale-customer-card__animal-id,
+.sale-customer-card__farm,
+.sale-customer-card__quantity-sold,
+.sale-customer-card__certification-logo {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  padding: 0.3rem;
+}

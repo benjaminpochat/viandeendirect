@@ -101,6 +101,12 @@
   flex-flow: wrap;
 }
 
+.certified-label-rouge-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+
 /*
  * FONTS
  */

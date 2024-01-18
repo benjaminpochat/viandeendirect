@@ -1,0 +1,33 @@
+.pie-chart {
+    font-size: 1.2rem;
+    width: 4rem;
+    height: 4rem;
+}
+
+.pie-chart > div {
+    position: absolute;
+
+}
+
+.pie-chart__graphic {
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+}
+
+.pie-chart__description {
+    width: inherit;
+    height: inherit;
+}
+
+.pie-chart__description > div {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.pie-chart__description > div > div:nth-child(n+2) {
+    font-size: small;
+}

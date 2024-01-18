@@ -23,7 +23,8 @@ export class MockApi {
     }
 
     getBeefProduction(id, callback) {
-        callback(undefined, this.mockApiProductions.getBeefProduction())
+        let mockApi = this
+        callback(undefined, mockApi.mockApiProductions.getBeefProduction())
     }
 
     getPackageTemplates(callback) {

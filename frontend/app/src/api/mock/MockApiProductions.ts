@@ -27,7 +27,8 @@ export class MockApiProductions {
         return {
             id: 1,
             slaughterDate: '2023-10-01T10:00:00',
-            animalLiveWeight: 450
+            animalLiveWeight: 450,
+            animalType: 'BEEF_COW'
         }
     }
 

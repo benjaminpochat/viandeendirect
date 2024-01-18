@@ -1,3 +1,4 @@
+import React from 'react'
 import BeefProductionCard from "./BeefProductionCard.tsx"
 
 export default function ProductionCard({

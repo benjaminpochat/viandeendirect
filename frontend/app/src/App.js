@@ -6,7 +6,7 @@ import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
 
 import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
-import CustomerLayout from './layouts/customer/CustomerLayout';
+import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
 
 import './App.css';
 

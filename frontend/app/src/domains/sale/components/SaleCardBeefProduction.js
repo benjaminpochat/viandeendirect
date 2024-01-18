@@ -3,6 +3,7 @@ import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
+import PieChart from '../../commons/components/PieChart.tsx'
 import styles from './SaleCard.css'
 
 export default function SaleCardBeefProduction({production: production}) {
@@ -50,13 +51,8 @@ export default function SaleCardBeefProduction({production: production}) {
             </div>
             <div>
                 <div>{productionPercentageSold}% vendu</div>
-                <div className="pie-chart" style={{ backgroundImage: getPieChartBackgroundImage()}}></div>
+                <PieChart percentage={productionPercentageSold}></PieChart>
             </div>
         </div>
     </>
-
-    function getPieChartBackgroundImage() {
-        const angle = 360 * productionPercentageSold / 100
-        return 'conic-gradient(#1976d2 ' + angle + 'deg , lightgrey ' + angle + 'deg 360deg)'
-    }
 }

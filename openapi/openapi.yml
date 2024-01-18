@@ -513,7 +513,7 @@ components:
         animalType:
           description: "type of animal"
           type: string
-          enum: ['BeefProduction', 'HonneyProduction']
+          enum: ['BEEF_COW', 'BEEF_HEIFER', 'BEEF_BULL', 'BEEF_VEAL']
         animalLiveWeight:
           description: "weight of the animal before being killed, in kilograms"
           type: integer
