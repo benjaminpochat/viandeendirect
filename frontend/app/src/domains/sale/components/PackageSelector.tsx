@@ -7,6 +7,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 
+import PackageLotDescription from '../../production/components/PackageLotDescription.tsx';
 import './PackageSelector.css'
 
 export default function PackageSelector({ lot: lot, orderItems: orderItems, updateItemsCallback: updateItemsCallback }) {
@@ -17,13 +18,7 @@ export default function PackageSelector({ lot: lot, orderItems: orderItems, upda
         
     return <>
         <div className='package-selector'>
-            <div className='package-selector__label'>{lot.label}</div>
-            <div className='package-selector__description'>{lot.description}</div>
-            <span className='icon euro-icon package-selector__icon'></span>
-            <div className='package-selector__total_price'>{lot.unitPrice * lot.netWeight} €<sup>TTC</sup></div>
-            <div className='package-selector__unit_price'>({lot.unitPrice} €<sup>TTC</sup>/kg)</div>
-            <span className='icon weight-icon package-selector__icon'></span>
-            <div className='package-selector__weight'>~{lot.netWeight} kg</div>
+            <PackageLotDescription lot={lot}></PackageLotDescription>
             <div className='package-selector__actions'>{isAddToOrderDisplayed ? getAddToOrderButton() : getChangeQuantityActions()}</div>
         </div>
     </>

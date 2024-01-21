@@ -4,14 +4,17 @@ import { useEffect, useState } from 'react'
 import { Typography } from "@mui/material"
 
 import BeefProduction from 'viandeendirect_eu/dist/model/BeefProduction.js'
+import PackageLot from 'viandeendirect_eu/dist/model/PackageLot.js'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import PieChart from '../../commons/components/PieChart.tsx'
+import PackageLotDescription from './PackageLotDescription.tsx'
 
 export default function BeefProductionCustomerCard({production: production}) {
 
     const [beefProduction, setBeefProduction] = useState<BeefProduction>({})
     const [percentageSold, setPercentageSold] = useState(0)
+    const [lots, setLots]= useState([])
     const apiInvoker = new ApiInvoker()
 
     useEffect(() => {
@@ -48,8 +51,12 @@ export default function BeefProductionCustomerCard({production: production}) {
             </div>
         </div>
         <div className="sale-customer-card__product-batch-list">
-            getProducts()
+            {beefProduction.lots?.map(getLot)}
         </div>
     </>
+
+    function getLot(lot: PackageLot) {
+        return <PackageLotDescription lot={lot}></PackageLotDescription>
+    }
 }
 
