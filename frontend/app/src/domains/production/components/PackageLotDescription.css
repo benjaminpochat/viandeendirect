@@ -1,0 +1,29 @@
+.package-lot {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.package-lot__label {
+  font-size: large;
+  grid-column: 1/-1;
+}
+
+.package-lot__description {
+  font-size: smaller;
+  grid-column: 1/-1;
+}
+
+.package-lot__icon {
+  grid-column: 1;
+}
+
+.package-lot__total_price,
+.package-lot__unit_price,
+.package-lot__weight {
+  grid-column: 2/-1;
+}
+
+.package-lot__unit_price {
+  font-size: smaller;
+}
