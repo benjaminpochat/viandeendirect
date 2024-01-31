@@ -8,7 +8,7 @@ import './SaleCustomerCard.css'
 import ProductionCustomerCard from '../../production/components/ProductionCustomerCard.tsx';
 
 
-export default function SaleCustomerCard({ sale: sale }) {
+export default function SaleCustomerCard({ sale: sale, createOrderCallback: createOrderCallBack }) {
     return <Card className="sale-customer-card">
         <CardContent>
             <div className="sale-customer-card__title">
@@ -33,7 +33,7 @@ export default function SaleCustomerCard({ sale: sale }) {
             {sale.productions.map(getProductionContent)}
         </CardContent>
         <CardActions>
-            <Button>Je commande</Button>
+            <Button onClick={createOrderCallBack}>Je commande</Button>
             <Button>Je visite la ferme</Button>
         </CardActions>
     </Card>

@@ -1,20 +1,30 @@
 import React from 'react'
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { ApiBuilder } from '../../api/ApiBuilder.ts'
+import Welcome from '../../domains/welcome/Welcome.tsx'
+import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale.js'
-import SaleCustomerCard from '../../domains/sale/components/SaleCustomerCard.tsx'
-import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
 export default function CustomerLayout() {
 
-    const [sales, setSales] = useState([])
-    const apiInvoker = new ApiInvoker()
+    const WELCOME = 'WELCOME'
+    const ORDER_CREATION = 'ORDER_CREATION'
 
-    useEffect(() => {
-        apiInvoker.callApiAnonymously(api => api.getSales, null, setSales)
-    }, [])
+    const [mainContent, setMainContent] = useState(WELCOME)
+    const [context, setContext] = useState(undefined)
+
+    function renderMainContent() {
+        switch (mainContent) {
+          case 'WELCOME' : return <Welcome createOrderCallback={sale => createOrder(sale)}></Welcome>
+          case 'ORDER_CREATION' : return <CustomerOrderForm returnCallback={() => setMainContent(WELCOME)} sale={context} ></CustomerOrderForm>
+        }
+    }
+  
+    function createOrder(sale: Sale) {
+        setContext(sale)
+        setMainContent(ORDER_CREATION)
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -31,20 +41,7 @@ export default function CustomerLayout() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
-                <Typography>Bienvenu dans l'espace client de ViandeEnDirect.eu</Typography>
-                {sales.map(getSaleCard)}
-            </Box>
+            {renderMainContent()}
         </Box>
     )
-
-    function getSaleCard(sale: Sale) {
-        return <SaleCustomerCard sale={sale}></SaleCustomerCard>
-    }
-
-
-
 }
