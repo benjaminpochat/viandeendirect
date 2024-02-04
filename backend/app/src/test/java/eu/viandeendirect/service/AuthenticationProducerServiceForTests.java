@@ -1,13 +1,13 @@
 package eu.viandeendirect.service;
 
 import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.service.specs.ProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Profile("test")
-public class ProducerServiceForTests implements ProducerServiceSpecs {
+public class AuthenticationProducerServiceForTests implements AuthenticationProducerServiceSpecs {
 
     @Override
     public Producer getAuthenticatedProducer() {

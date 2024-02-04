@@ -1,10 +1,11 @@
 import React from 'react'
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Welcome from '../../domains/welcome/Welcome.tsx'
 import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale.js'
+import { useCookies } from 'react-cookie'
 
 export default function CustomerLayout() {
 
@@ -13,6 +14,15 @@ export default function CustomerLayout() {
 
     const [mainContent, setMainContent] = useState(WELCOME)
     const [context, setContext] = useState(undefined)
+
+    const [cookies, setCookie, removeCookie] = useCookies(['pendingOrder']);
+
+    useEffect(() => {
+        if (cookies.pendingOrder) {
+            createOrder({id: cookies.pendingOrder.sale.id})
+        }
+    }, [])
+
 
     function renderMainContent() {
         switch (mainContent) {

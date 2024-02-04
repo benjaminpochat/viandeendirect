@@ -3,8 +3,6 @@ package eu.viandeendirect.service;
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.repository.ProductionRepository;
-import eu.viandeendirect.service.specs.ProducerServiceSpecs;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-import java.util.Optional;
-
-import static eu.viandeendirect.model.Production.ProductionTypeEnum.BEEFPRODUCTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;

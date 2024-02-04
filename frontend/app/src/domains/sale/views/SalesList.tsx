@@ -7,7 +7,7 @@ import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import SaleCard from '../components/SaleCard.tsx'
 
-export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCallback, createSaleCallback: createSaleCallback}) {
+export default function SalesList({producer: producer, manageSaleOrdersCallback: manageSaleOrdersCallback, createSaleCallback: createSaleCallback}) {
 
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
@@ -21,7 +21,7 @@ export default function SalesList({manageSaleOrdersCallback: manageSaleOrdersCal
     function loadSales() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
             apiBuilder.invokeAuthenticatedApi(() => {
-                api.getSales((error, data, response) => {
+                api.getProducerSales(producer.id, (error, data, response) => {
                     if (error) {
                         console.error(error)
                     } else {

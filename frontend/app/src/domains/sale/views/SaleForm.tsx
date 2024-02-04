@@ -8,7 +8,7 @@ import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement }
 import Production from 'viandeendirect_eu/dist/model/Production'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 
-import SaleProductionSelector from '../components/SaleProductionSelector'
+import SaleProductionSelector from '../components/SaleProductionSelector.js'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/fr';
 import dayjs from 'dayjs'
@@ -19,7 +19,7 @@ const steps = ['Choisir une production', 'Définir le lieu et l\'heure', 'Choisi
  * @param {Production} production 
  * @returns 
  */
-export default function SaleForm({returnCallback: returnCallback}) {
+export default function SaleForm({producer: producer, returnCallback: returnCallback}) {
 
     const SELECT_PRODUCTION_STEP = 'SELECT_PRODUCTION_STEP'
     const SET_DELIVERY_DATE_STEP = 'SET_DELIVERY_DATE_STEP'
@@ -194,7 +194,7 @@ export default function SaleForm({returnCallback: returnCallback}) {
     function validate() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
             apiBuilder.invokeAuthenticatedApi(() => {
-                api.createSale(sale, (error, data, response) => {
+                api.createProducerSale(producer.id, sale, (error, data, response) => {
                     if (error) {
                         console.error(error)
                     } else {

@@ -2,6 +2,6 @@ package eu.viandeendirect.service.specs;
 
 import eu.viandeendirect.model.Producer;
 
-public interface ProducerServiceSpecs {
+public interface AuthenticationProducerServiceSpecs {
     Producer getAuthenticatedProducer();
 }

@@ -1,8 +1,10 @@
 import { useKeycloak } from '@react-keycloak/web'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 import {Close, Logout, Menu} from '@mui/icons-material'
+
+import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
 import Dashboard from '../../domains/dashboard/Dashboard.js';
 import CustomerController from '../../domains/customer/CustomerController.js';
@@ -10,13 +12,22 @@ import GrowerAccount from '../../domains/producer/ProducerAccount.js'
 import ProductionController from '../../domains/production/ProductionController.js'
 import SaleController from '../../domains/sale/SaleController.tsx'
 import SideMenu from './SideMenu.js'
+import Producer from 'viandeendirect_eu/dist/model/Producer.js';
+import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
 
 
 function AuthenticatedLayout() {
     const { keycloak, initialized } = useKeycloak()
-    const [sideMenuOpen, setSideMenuOpen] = useState(false);
+    const apiInvoker = new ApiInvoker()
+    const [sideMenuOpen, setSideMenuOpen] = useState(false)
     const [mainContent, setMainContent] = useState('DASHBOARD')
-  
+    const [producer, setProducer] = useState<Producer>()
+    const authenticationService = new AuthenticationService(keycloak)
+
+    useEffect(() => {
+      apiInvoker.callApiAuthenticatedly(api => api.getProducer, {'email': authenticationService.getCurrentUserEmail()}, setProducer, keycloak)
+    }, [keycloak])
+
     const sideMenuWidth = 240;
    
     const handleSideMenuToggle = () => {
@@ -31,7 +42,7 @@ function AuthenticatedLayout() {
     function renderMainContent() {
         switch (mainContent) {
           case 'DASHBOARD' : return <Dashboard></Dashboard>
-          case 'SALES' : return <SaleController></SaleController>
+          case 'SALES' : return <SaleController producer={producer}></SaleController>
           case 'PRODUCTIONS' : return <ProductionController></ProductionController>
           case 'CUSTOMERS' : return <CustomerController></CustomerController>
           case 'GROWER_ACCOUNT' : return <GrowerAccount></GrowerAccount>

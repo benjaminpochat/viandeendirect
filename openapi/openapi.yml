@@ -14,11 +14,18 @@ security:
     - write
 
 paths:
-  /sales:
-    summary: Path used to manage the list of sales.
+  /producers/{producerId}/sales:
+    summary: Path used to manage the list of sales related to a particular producer.
     description: "The REST endpoint/path used to list and create zero or more `sale`\
       \ entities.  This path contains a `GET` and `POST` operation to perform the\
       \ list and create tasks, respectively."
+    parameters:
+    - name: producerId
+      description: A unique identifier for a `producer`.
+      schema:
+        type: integer
+      in: path
+      required: true
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -31,8 +38,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Sale'
           description: Successful response - returns an array of `sale` entities.
-      operationId: getSales
-      summary: List all sales for the current user
+      operationId: getProducerSales
+      summary: List all sales owned by a spacific producer.
       description: Gets a list of all `sale` entities.
     post:
       security:
@@ -51,9 +58,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/Sale'
           description: Successful response - returns the created `sale`.
-      operationId: createSale
-      summary: Create a sale
+      operationId: createProducerSale
+      summary: Create a sale owned by a spacific producer.
       description: Creates a new instance of a `sale`.
+  /sales:
+    summary: Path used to manage the list of all public sales.
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+          description: a list of sales
+      operationId: getSales
+      summary: Get all the public sales
+      description: Gets the list of `sale` instances, that are published by producers.
   /sales/{saleId}:
     summary: Path used to manage a single sale.
     description: "The REST endpoint/path used to get, update, and delete single instances\
@@ -299,6 +323,27 @@ paths:
           description: Successful response - returns the `Customer` entity created.
       operationId: createCustomer
       summary: Create a new customers
+  /producers:
+    summary: Path used to manage producers
+    get:
+      parameters:
+        - in: query
+          name: email
+          schema: 
+            type: string
+          description: "the email of the Producer to load"
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producer'
+          description: Successful response - returns a `Producer` entities.
+      operationId: getProducer
+      summary: Get a producer identified by its login.
+      description: Gets a `Producer` entities.
   /orders:
     summary: Path used to manage orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\

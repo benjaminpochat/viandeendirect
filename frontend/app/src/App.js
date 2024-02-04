@@ -5,6 +5,8 @@ import { frFR } from '@mui/material/locale';
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
 
+import { CookiesProvider } from 'react-cookie';
+
 import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
 import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
 
@@ -64,11 +66,13 @@ function App() {
   }
 
   return (
-    <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
-      <ThemeProvider theme={theme}>
-        {getLayoutWrapper()}
-      </ThemeProvider>
-    </ReactKeycloakProvider>
+    <CookiesProvider>
+      <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
+        <ThemeProvider theme={theme}>
+          {getLayoutWrapper()}
+        </ThemeProvider>
+      </ReactKeycloakProvider>
+    </CookiesProvider>
   )
 }
 export default App

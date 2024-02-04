@@ -2,14 +2,14 @@ import React from 'react'
 import { useState } from 'react'
 
 import SalesList from './views/SalesList.tsx'
-import SaleForm from './views/SaleForm.js'
+import SaleForm from './views/SaleForm.tsx'
 import OrdersList from './views/OrdersList.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 import Order from 'viandeendirect_eu/dist/model/Order'
 import OrderView from './views/OrderView.tsx'
 import OrderForm from './views/OrderForm.tsx'
 
-export default function SaleController() {
+export default function SaleController({producer: producer}) {
 
     const SALES_LIST_VIEW = 'SALES_LIST_VIEW'
     const SALE_CREATION_VIEW = 'SALE_CREATION_VIEW'
@@ -24,8 +24,8 @@ export default function SaleController() {
 
     function getCurrentView() {
         switch (currentView) {
-            case SALES_LIST_VIEW: return <SalesList createSaleCallback={displaySaleCreationForm} manageSaleOrdersCallback={displayOrdersList}/>
-            case SALE_CREATION_VIEW: return <SaleForm returnCallback={displaySalesList}></SaleForm>
+            case SALES_LIST_VIEW: return <SalesList producer={producer} createSaleCallback={displaySaleCreationForm} manageSaleOrdersCallback={displayOrdersList}/>
+            case SALE_CREATION_VIEW: return <SaleForm producer={producer} returnCallback={displaySalesList}></SaleForm>
             case ORDERS_LIST_VIEW: return <OrdersList sale={context} returnCallback={displaySalesList} viewOrderCallback={displayOrder} createOrderCallback={() => createOrder(context)}/>
             case ORDER_VIEW: return <OrderView order={context.order} sale={context.sale} returnCallback={displayOrdersList}/>
             case ORDER_CREATION_VIEW: return <OrderForm sale={context} returnCallback={displayOrdersList}/>

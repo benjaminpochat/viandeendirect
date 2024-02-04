@@ -25,7 +25,7 @@ export default function BeefProductionCustomerCard({production: production}) {
 
     return <>
         <div className="sale-customer-card__product-information">
-            <Typography variant="h5">Abattage bovin</Typography>
+            <Typography variant="h5">Viande de boeuf</Typography>
             <PieChart percentage={percentageSold} description={<><div>{percentageSold}%</div><div>déjà vendu</div></>}></PieChart>
         </div>        
         <div className="sale-customer-card__general-information">

@@ -1,7 +1,7 @@
 import { useKeycloak } from '@react-keycloak/web'
 
-import AuthenticatedLayout from './AuthenticatedLayout'
-import AnonymousLayout from './AnonymousLayout';
+import AuthenticatedLayout from './AuthenticatedLayout.tsx'
+import AnonymousLayout from './AnonymousLayout.tsx';
 
 
 export default function ProducerLayoutWrapper() {

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -38,7 +39,11 @@ class SecurityConfiguration {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/swagger-ui")
-                .anonymous()
+                .permitAll()
+            .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/addresses", "/addresses/**")
+                .permitAll()
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/sales", "/sales/**")
@@ -50,11 +55,13 @@ class SecurityConfiguration {
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/productions", "/productions/**")
-                .hasRole("PRODUCER")
+                //.hasRole("PRODUCER")
+                .permitAll()
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/beefProductions", "/beefProductions/**")
-                .hasRole("PRODUCER")
+                //.hasRole("PRODUCER")
+                .permitAll()
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/honneyProductions", "/honneyProductions/**")
@@ -62,6 +69,10 @@ class SecurityConfiguration {
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/customers", "/customers/**")
+                .hasRole("PRODUCER")
+            .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/producers", "/producers/**")
                 .hasRole("PRODUCER")
             .and()
                 .authorizeHttpRequests()

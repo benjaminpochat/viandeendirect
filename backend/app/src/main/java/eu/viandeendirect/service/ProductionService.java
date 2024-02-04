@@ -6,7 +6,7 @@ import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.repository.PackageLotRepository;
 import eu.viandeendirect.repository.ProductionRepository;
-import eu.viandeendirect.service.specs.ProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class ProductionService implements ProductionsApiDelegate {
     PackageLotRepository packageLotRepository;
 
     @Autowired
-    ProducerServiceSpecs producerService;
+    AuthenticationProducerServiceSpecs producerService;
 
     @Override
     public ResponseEntity<List<Production>> getProductions(Boolean forSale) {

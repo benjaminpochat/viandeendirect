@@ -5,7 +5,7 @@ import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.UserRepository;
-import eu.viandeendirect.service.specs.ProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CustomerService implements CustomersApiDelegate {
     UserRepository userRepository;
 
     @Autowired
-    ProducerServiceSpecs producerService;
+    AuthenticationProducerServiceSpecs producerService;
 
 
     @Override

@@ -2,10 +2,8 @@ package eu.viandeendirect.service;
 
 import eu.viandeendirect.api.BeefProductionsApiDelegate;
 import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.model.Production;
 import eu.viandeendirect.repository.ProductionRepository;
-import eu.viandeendirect.service.specs.ProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,7 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
     ProductionRepository productionRepository;
 
     @Autowired
-    ProducerServiceSpecs producerService;
+    AuthenticationProducerServiceSpecs producerService;
 
     @Override
     public ResponseEntity<BeefProduction> getBeefProduction(Integer beefProductionId) {

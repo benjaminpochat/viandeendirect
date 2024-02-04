@@ -13,5 +13,5 @@ public interface ProductionRepository extends CrudRepository<Production, Integer
     List<Production> findByProducer(@Param("producer") Producer producer);
 
     @Query("select p from Sale s inner join s.productions p where s.id = :saleId")
-    List<Production> findBySalesId(@Param("saleId") Integer saleId);
+    List<Production> findBySaleId(@Param("saleId") Integer saleId);
 }

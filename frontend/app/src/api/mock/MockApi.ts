@@ -2,6 +2,7 @@ import { MockApiAddresses } from "./MockApiAddresses.ts"
 import { MockApiCustomers } from "./MockApiCustomers.ts"
 import { MockApiProductions } from "./MockApiProductions.ts"
 import { MockApiSales } from "./MockApiSales.ts"
+import { MockApiProducers } from "./MockApiProducers.ts"
 
 export class MockApi {
 
@@ -9,6 +10,7 @@ export class MockApi {
     mockApiAddresses: MockApiAddresses = new MockApiAddresses()
     mockApiCustomers: MockApiCustomers = new MockApiCustomers()
     mockApiSales: MockApiSales = new MockApiSales()
+    mockApiProducers: MockApiProducers = new MockApiProducers()
 
     createBeefProduction(beefProduction, callback) {
         callback()
@@ -43,6 +45,10 @@ export class MockApi {
         callback(undefined, this.mockApiCustomers.createCustomer(customer))
     }
 
+    getProducerSales(options, callback) {
+        callback(undefined, this.mockApiProducers.getProducerSales())
+    }
+
     getSales(callback) {
         callback(undefined, this.mockApiSales.getSales())
     }
@@ -61,5 +67,9 @@ export class MockApi {
 
     createOrder(order, callback) {
         callback(undefined, this.mockApiSales.createOrder(order))
+    }
+
+    getProducer(id, callback) {
+        callback(undefined, this.mockApiProducers.getProducer())
     }
 }
