@@ -4,7 +4,7 @@ import eu.viandeendirect.api.AddressesApiDelegate;
 import eu.viandeendirect.model.Address;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.repository.AddressRepository;
-import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class AddresseService implements AddressesApiDelegate {
     AddressRepository addressRepository;
 
     @Autowired
-    AuthenticationProducerServiceSpecs producerService;
+    AuthenticationServiceSpecs producerService;
 
     @Override
     public ResponseEntity<List<Address>> getAddresses() {

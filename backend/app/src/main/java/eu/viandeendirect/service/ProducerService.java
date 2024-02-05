@@ -1,12 +1,15 @@
 package eu.viandeendirect.service;
 
 import eu.viandeendirect.api.ProducersApiDelegate;
+import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
+import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.ProducerRepository;
 import eu.viandeendirect.repository.SaleRepository;
-import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,10 @@ public class ProducerService implements ProducersApiDelegate {
     SaleRepository saleRepository;
 
     @Autowired
-    AuthenticationProducerServiceSpecs producerService;
+    AuthenticationServiceSpecs producerService;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     @Override
     public ResponseEntity<Sale> createProducerSale(Integer producerId, Sale sale) {
@@ -52,5 +58,14 @@ public class ProducerService implements ProducersApiDelegate {
         List<Sale> sales = new ArrayList<>();
         saleRepository.findBySeller(producer).forEach(sales::add);;
         return new ResponseEntity<>(sales, OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Customer>> getProducerCustomers(Integer producerId) {
+        Producer producer = producerService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        return new ResponseEntity<>(customerRepository.findByProducer(producer), HttpStatus.OK);
     }
 }

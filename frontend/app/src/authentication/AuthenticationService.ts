@@ -9,7 +9,7 @@ export class AuthenticationService {
     }
 
     isAuthenticated(): boolean {
-        return (!!process.env.REACT_APP_MOCK_API && false) || (!!this.keycloak.authenticated)
+        return (!!process.env.REACT_APP_MOCK_API) || (!!this.keycloak.authenticated)
     }
 
     getCurrentUserName(): string | undefined {
@@ -28,6 +28,26 @@ export class AuthenticationService {
         }
         if (this.isAuthenticated()) {
             return this.keycloak.tokenParsed?.email
+        }
+        return undefined
+    }
+
+    getCurrentUserLastName(): string | undefined {
+        if(process.env.REACT_APP_MOCK_API) {
+            return "MARCEL"
+        }
+        if (this.isAuthenticated()) {
+            return this.keycloak.tokenParsed?.name
+        }
+        return undefined
+    }
+
+    getCurrentUserFirstName(): string | undefined {
+        if(process.env.REACT_APP_MOCK_API) {
+            return "Bob"
+        }
+        if (this.isAuthenticated()) {
+            return this.keycloak.tokenParsed?.firstName
         }
         return undefined
     }

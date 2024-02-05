@@ -37,16 +37,20 @@ export class MockApi {
         callback(undefined, this.mockApiAddresses.getAddresses())
     }
 
-    getCustomers(callback) {
-        callback(undefined, this.mockApiCustomers.getCustomers())
+    createCustomer(customer, callback){
+        callback(undefined, this.mockApiCustomers.createCustomer(customer))
     }
 
-    getCutomer(customer, callback){
-        callback(undefined, this.mockApiCustomers.createCustomer(customer))
+    getCustomer(options, callback){
+        callback(undefined, this.mockApiCustomers.getCustomer())
     }
 
     getProducerSales(options, callback) {
         callback(undefined, this.mockApiProducers.getProducerSales())
+    }
+
+    getProducerCustomers(callback) {
+        callback(undefined, this.mockApiProducers.getCustomers())
     }
 
     getSales(callback) {

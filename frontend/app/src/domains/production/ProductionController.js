@@ -16,9 +16,7 @@ export default function ProductionController() {
     function getContent() {
         switch (currentAction) {
             case PRODUCTIONS_LIST: return <ProductionsList createBeefProductionCallback={() => setCurrentAction(BEEF_PRODUCTION_CREATION)}></ProductionsList>
-            case BEEF_PRODUCTION_CREATION: return <BeefProductionForm callback={(action) => {
-                setCurrentAction(action)
-            }} />
+            case BEEF_PRODUCTION_CREATION: return <BeefProductionForm callback={(action) => {setCurrentAction(action)}} />
             case BEEF_PRODUCTION_PACKAGE_MODIFICATION: return <PackageLotsCreator></PackageLotsCreator>
         }
     }

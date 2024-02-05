@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     @Query("""
@@ -17,4 +18,10 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
             INNER JOIN pl.production p
             WHERE p.producer = :producer""")
     List<Customer> findByProducer(@Param("producer") Producer producer);
+
+    @Query("""
+            SELECT c FROM Customer c
+            INNER JOIN c.user u
+            WHERE u.email = :email""")
+    Optional<Customer> findByEmail(String email);
 }

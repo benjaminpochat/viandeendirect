@@ -3,7 +3,7 @@ package eu.viandeendirect.service;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.repository.SaleRepository;
-import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationServiceSpecs;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 public class TestProducerService {
 
     @Autowired
-    AuthenticationProducerServiceSpecs authenticationProducerService;
+    AuthenticationServiceSpecs authenticationProducerService;
 
     @Autowired
     SaleRepository saleRepository;

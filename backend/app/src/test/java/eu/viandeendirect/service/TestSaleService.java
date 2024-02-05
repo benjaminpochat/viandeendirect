@@ -4,8 +4,6 @@ import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
-import eu.viandeendirect.repository.SaleRepository;
-import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

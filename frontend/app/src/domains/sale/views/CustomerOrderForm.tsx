@@ -204,6 +204,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
 
     function payOrder() {
         //TODO : faire le truc qui paye
+        removeCookie('pendingOrder')
         returnCallback(sale)
     }
 }

@@ -12,6 +12,7 @@ export default function CustomersList() {
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
 
+    
     useEffect(() => {
         loadCustomers()
     }, [keycloak])

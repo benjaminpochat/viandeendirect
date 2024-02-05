@@ -5,7 +5,7 @@ import eu.viandeendirect.model.*;
 import eu.viandeendirect.repository.OrderRepository;
 import eu.viandeendirect.repository.ProductionRepository;
 import eu.viandeendirect.repository.SaleRepository;
-import eu.viandeendirect.service.specs.AuthenticationProducerServiceSpecs;
+import eu.viandeendirect.service.specs.AuthenticationServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class SaleService implements SalesApiDelegate {
     SaleRepository saleRepository;
 
     @Autowired
-    AuthenticationProducerServiceSpecs producerService;
+    AuthenticationServiceSpecs producerService;
 
     @Autowired
     private OrderRepository orderRepository;

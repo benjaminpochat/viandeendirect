@@ -59,8 +59,33 @@ paths:
                 $ref: '#/components/schemas/Sale'
           description: Successful response - returns the created `sale`.
       operationId: createProducerSale
-      summary: Create a sale owned by a spacific producer.
+      summary: Create a sale owned by a specific producer.
       description: Creates a new instance of a `sale`.
+  /producers/{producerId}/customers:
+    summary: Path used to manage the list of customers related to a particular producer.
+    description: "The REST endpoint/path used to list zero or more customers"
+    parameters:
+    - name: producerId
+      description: A unique identifier for a `producer`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+          description: Successful response - returns an array of `customer` entities.
+      operationId: getProducerCustomers
+      summary: List all customers who have bought anything to a specific producer.
+      description: Gets a list of all `customer` entities.
   /sales:
     summary: Path used to manage the list of all public sales.
     get:
@@ -290,6 +315,12 @@ paths:
   /customers:
     summary: Path used to manage customers
     get:
+      parameters:
+        - in: query
+          name: email
+          schema: 
+            type: string
+          description: "the email of the Customer to load"
       security:
         - oAuth2ForViandeEnDirect: [read]
       responses:
@@ -297,16 +328,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Customer'
-          description: Successful response - returns an array of `Customer` entities.
-      operationId: getCustomers
-      summary: List All Customers
-      description: Gets a list of all `Customer` entities.
+                $ref: '#/components/schemas/Customer'
+          description: Successful response - returns a `Customer` entities.
+      operationId: getCustomer
+      summary: Get a customer identified by its email.
+      description: Gets a `Customer` entities.
     post:
       security:
-        - oAuth2ForViandeEnDirect: [read]
+        - oAuth2ForViandeEnDirect: [write]
       requestBody:
         description: A new `customer` to be created.
         content:
@@ -322,7 +351,7 @@ paths:
                 $ref: '#/components/schemas/Customer'
           description: Successful response - returns the `Customer` entity created.
       operationId: createCustomer
-      summary: Create a new customers
+      summary: Create a new customer
   /producers:
     summary: Path used to manage producers
     get:
@@ -342,7 +371,7 @@ paths:
                 $ref: '#/components/schemas/Producer'
           description: Successful response - returns a `Producer` entities.
       operationId: getProducer
-      summary: Get a producer identified by its login.
+      summary: Get a producer identified by its email.
       description: Gets a `Producer` entities.
   /orders:
     summary: Path used to manage orders.
