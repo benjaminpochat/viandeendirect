@@ -12,8 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
@@ -24,6 +22,9 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
 class TestCustomerService {
+
+    @Autowired
+    ProducerService producerService;
 
     @Autowired
     CustomerService customerService;
@@ -59,16 +60,5 @@ class TestCustomerService {
         assertThat(reloadedUser.getFirstName()).isEqualTo("Thom");
         assertThat(reloadedUser.getLastName()).isEqualTo("YORK");
         assertThat(reloadedUser.getPhone()).isEqualTo("0609080706");
-    }
-
-    @Test
-    void getCustomers_should_return_all_customers_with_orders_related_to_current_producer() {
-        // when
-        List<Customer> customers = customerService.getCustomers().getBody();
-
-        // then
-        assertThat(customers).hasSize(1);
-        Customer customer1 = customers.get(0);
-        assertThat(customer1.getId().longValue()).isEqualTo(3000);
     }
 }

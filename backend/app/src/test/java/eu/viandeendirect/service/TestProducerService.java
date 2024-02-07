@@ -1,5 +1,6 @@
 package eu.viandeendirect.service;
 
+import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.repository.SaleRepository;
@@ -87,5 +88,16 @@ public class TestProducerService {
 
         // then
         assertThat(status).isEqualTo(HttpStatusCode.valueOf(403));
+    }
+
+    @Test
+    void getProducerCustomers_should_return_all_customers_with_orders_related_to_current_producer() {
+        // when
+        List<Customer> customers = producerService.getProducerCustomers(1000).getBody();
+
+        // then
+        assertThat(customers).hasSize(1);
+        Customer customer1 = customers.get(0);
+        assertThat(customer1.getId().longValue()).isEqualTo(3000);
     }
 }
