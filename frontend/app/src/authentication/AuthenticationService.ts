@@ -37,7 +37,7 @@ export class AuthenticationService {
             return "MARCEL"
         }
         if (this.isAuthenticated()) {
-            return this.keycloak.tokenParsed?.name
+            return this.keycloak.tokenParsed?.family_name
         }
         return undefined
     }
@@ -47,7 +47,7 @@ export class AuthenticationService {
             return "Bob"
         }
         if (this.isAuthenticated()) {
-            return this.keycloak.tokenParsed?.firstName
+            return this.keycloak.tokenParsed?.given_name
         }
         return undefined
     }

@@ -11,7 +11,7 @@ export default function CustomerCreationForm({returnCallback: returnCallback, cu
     const apiInvoker = new ApiInvoker()
 
     function storeUserData(userFormData) {
-        customer.user.lastName = userFormData.name
+        customer.user.lastName = userFormData.lastName
         customer.user.firstName = userFormData.firstName
         customer.user.email = userFormData.email
         customer.user.phone = userFormData.phone

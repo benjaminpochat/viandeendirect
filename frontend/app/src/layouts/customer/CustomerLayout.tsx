@@ -19,7 +19,7 @@ export default function CustomerLayout() {
     const CUSTOMER_CREATION = 'CUSTOMER_CREATION'
 
     const apiInvoker = new ApiInvoker()
-    const {keycloak} = useKeycloak()
+    const {keycloak, initialized} = useKeycloak()
     const authenticationService = new AuthenticationService(keycloak)
 
     const [mainContent, setMainContent] = useState(WELCOME)
@@ -28,10 +28,12 @@ export default function CustomerLayout() {
     const [customer, setCustomer] = useState(undefined)
 
     useEffect(() => {
-        if (authenticationService.isAuthenticated() && !customer) {
-            apiInvoker.callApiAuthenticatedly(api => api.getCustomer, authenticationService.getCurrentUserEmail(), aCustomer => initCustomer(aCustomer), keycloak)
+        if (initialized) {
+            if (authenticationService.isAuthenticated() && !customer) {
+                apiInvoker.callApiAuthenticatedly(api => api.getCustomer, {"email": authenticationService.getCurrentUserEmail()}, aCustomer => initCustomer(aCustomer), keycloak)
+            }
         }
-    }, [keycloak])
+    }, [initialized])
 
     function initCustomer(customer) {
         if (customer) {

@@ -69,7 +69,7 @@ class SecurityConfiguration {
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/customers", "/customers/**")
-                .hasRole("PRODUCER")
+                .authenticated()
             .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/producers", "/producers/**")

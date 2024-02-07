@@ -10,8 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 public class CustomerService implements CustomersApiDelegate {
@@ -36,9 +35,9 @@ public class CustomerService implements CustomersApiDelegate {
     public ResponseEntity<Customer> getCustomer(String email) {
         Customer customer = authenticationService.getAuthenticatedCustomer();
         if (customer == null) {
-            return new ResponseEntity<>(NOT_FOUND);
+            return new ResponseEntity<>(NO_CONTENT);
         }
-        if (customer.getUser().getEmail().equals(email)) {
+        if (!customer.getUser().getEmail().equals(email)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
         return new ResponseEntity<>(customer, HttpStatus.OK);

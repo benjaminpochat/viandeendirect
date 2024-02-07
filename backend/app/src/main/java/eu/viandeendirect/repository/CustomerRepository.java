@@ -23,5 +23,5 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
             SELECT c FROM Customer c
             INNER JOIN c.user u
             WHERE u.email = :email""")
-    Optional<Customer> findByEmail(String email);
+    Optional<Customer> findByEmail(@Param("email") String email);
 }
