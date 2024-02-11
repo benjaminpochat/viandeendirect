@@ -89,7 +89,7 @@ class SecurityConfiguration {
                 .logoutSuccessUrl("/");
         http.oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter("viandeendirect-frontend"));
+                .jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter());
         return http.build();
     }
 }

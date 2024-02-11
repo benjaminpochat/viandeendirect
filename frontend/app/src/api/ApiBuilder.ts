@@ -36,7 +36,9 @@ export class ApiBuilder {
         if(process.env.REACT_APP_MOCK_API) {
             return new MockApi()
         } else {
-            return new DefaultApi(ApiClient.instance)
+            let apiClient = ApiClient.instance
+            apiClient.basePath = await this.getBackendUrl()   
+            return new DefaultApi(apiClient)
         }
     }
 

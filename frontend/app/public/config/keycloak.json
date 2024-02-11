@@ -2,7 +2,7 @@
   "realm": "viandeendirect",
   "auth-server-url": "http://localhost:8180/",
   "ssl-required": "external",
-  "resource": "viandeendirect-frontend",
+  "resource": "viandeendirect-producer-frontend",
   "public-client": true,
   "confidential-port": 0
 }

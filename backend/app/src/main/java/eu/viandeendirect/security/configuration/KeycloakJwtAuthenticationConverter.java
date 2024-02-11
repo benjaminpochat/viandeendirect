@@ -19,32 +19,38 @@ import static java.util.stream.Collectors.toSet;
 
 public class KeycloakJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private final String resourceId;
-
-    public KeycloakJwtAuthenticationConverter(String resourceId) {
-        this.resourceId = resourceId;
-    }
+    public static final String CUSTOMER_FRONTEND_CLIENT_ID = "viandeendirect-customer-frontend";
+    public static final String PRODUCER_FRONTEND_CLIENT_ID = "viandeendirect-producer-frontend";
 
     @Override
     public AbstractAuthenticationToken convert(final Jwt source) {
         Collection<GrantedAuthority> authorities = Stream.concat(
                         defaultGrantedAuthoritiesConverter.convert(source).stream(),
-                        extractResourceRoles(source, resourceId).stream())
+                        extractResourceRoles(source).stream())
                 .collect(Collectors.toSet());
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(source, authorities);
         return jwtAuthenticationToken;
     }
 
-    private static Collection<? extends GrantedAuthority> extractResourceRoles(final Jwt jwt, final String resourceId) {
+    private static Collection<? extends GrantedAuthority> extractResourceRoles(final Jwt jwt) {
         Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
-        Map<String, Object> resource;
+        if (resourceAccess == null) {
+            return Collections.emptySet();
+        }
+        Map<String, Object> customerResourceAccess = (Map<String, Object>) resourceAccess.get(CUSTOMER_FRONTEND_CLIENT_ID);
+        Map<String, Object> producerResourceAccess = (Map<String, Object>) resourceAccess.get(PRODUCER_FRONTEND_CLIENT_ID);
         Collection<String> resourceRoles;
-        if (resourceAccess != null && (resource = (Map<String, Object>) resourceAccess.get(resourceId)) != null &&
-                (resourceRoles = (Collection<String>) resource.get("roles")) != null)
-            return resourceRoles.stream()
-                    .map(resourceRole -> new SimpleGrantedAuthority("ROLE_" + resourceRole.toUpperCase()))
-                    .collect(Collectors.toSet());
+        if (producerResourceAccess != null && (resourceRoles = (Collection<String>) producerResourceAccess.get("roles")) != null)
+            return getGrantedAuthorities(resourceRoles);
+        if (customerResourceAccess != null && (resourceRoles = (Collection<String>) customerResourceAccess.get("roles")) != null)
+            return getGrantedAuthorities(resourceRoles);
         return Collections.emptySet();
+    }
+
+    private static Set<SimpleGrantedAuthority> getGrantedAuthorities(Collection<String> resourceRoles) {
+        return resourceRoles.stream()
+                .map(resourceRole -> new SimpleGrantedAuthority("ROLE_" + resourceRole.toUpperCase()))
+                .collect(Collectors.toSet());
     }
 
     private final JwtGrantedAuthoritiesConverter defaultGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
