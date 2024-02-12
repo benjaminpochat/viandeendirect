@@ -34,19 +34,19 @@ export default function BeefProductionForm({ callback }) {
                             <FormContainer onSuccess={validateProductionProperties} defaultValues={{ "animalLiveWeight": 400 }} >
                                 <div className="form">
                                     <div>
-                                        <TextFieldElement required name="animalIdentifier" label="Numéro d'identification de l'animal" variant="standard" />
+                                        <TextFieldElement required validation={{ required: 'Champ obligatoire'}} name="animalIdentifier" label="Numéro d'identification de l'animal" variant="standard" />
                                     </div>
                                     <div>
-                                        <SliderElement min={100} max={1000} step={50} required name="animalLiveWeight" label="Poids vif" variant="standard" />
+                                        <SliderElement min={100} max={1000} step={50} required validation={{ required: 'Champ obligatoire'}} name="animalLiveWeight" label="Poids vif" variant="standard" />
                                     </div>
                                     <div>
-                                        <DatePickerElement required name="birthDate" label="Date de naissance" variant="standard" />
+                                        <DatePickerElement required validation={{ required: 'Champ obligatoire'}} name="birthDate" label="Date de naissance" variant="standard" />
                                     </div>
                                     <div>
-                                        <TextFieldElement required name="birthPlace" label="Lieu de naissance" variant="standard" />
+                                        <TextFieldElement required validation={{ required: 'Champ obligatoire'}} name="birthPlace" label="Lieu de naissance" variant="standard" />
                                     </div>
                                     <div>
-                                        <DatePickerElement required name="slaughterDate" label="Date de l'abattage" variant="standard" />
+                                        <DatePickerElement required validation={{ required: 'Champ obligatoire'}} name="slaughterDate" label="Date de l'abattage" variant="standard" />
                                     </div>
                                     <div>
                                         <ButtonGroup>
