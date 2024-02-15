@@ -48,9 +48,13 @@ public class BeefProduction extends Production {
    * type of animal
    */
   public enum AnimalTypeEnum {
-    BEEFPRODUCTION("BeefProduction"),
-
-    HONNEYPRODUCTION("HonneyProduction");
+    COW("BEEF_COW"),
+    
+    HEIFER("BEEF_HEIFER"),
+    
+    BULL("BEEF_BULL"),
+    
+    VEAL("BEEF_VEAL");
 
     private String value;
 
@@ -82,12 +86,43 @@ public class BeefProduction extends Production {
   @JsonProperty("animalType")
   private AnimalTypeEnum animalType;
 
-  @JsonProperty("animalLiveWeight")
-  private Integer animalLiveWeight;
+  /**
+   * breed of the animal
+   */
+  public enum CattleBreedEnum {
+    LIMOUSINE("LIMOUSINE"),
 
-  @JsonProperty("slaughterDate")
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-  private LocalDate slaughterDate;
+    CHAROLAISE("CHAROLAISE");
+
+    private String value;
+
+    CattleBreedEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static CattleBreedEnum fromValue(String value) {
+      for (CattleBreedEnum b : CattleBreedEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  @JsonProperty("cattleBreed")
+  private CattleBreedEnum cattleBreed;
 
   @JsonProperty("birthDate")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -95,6 +130,37 @@ public class BeefProduction extends Production {
 
   @JsonProperty("birthPlace")
   private String birthPlace;
+
+  @JsonProperty("birthFarm")
+  private String birthFarm;
+
+  @JsonProperty("warmCarcassWeight")
+  private Integer warmCarcassWeight;
+
+  @JsonProperty("meatWeight")
+  private Integer meatWeight;
+
+  @JsonProperty("slaughterDate")
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate slaughterDate;
+
+  @JsonProperty("slaughterPlace")
+  private String slaughterPlace;
+
+  @JsonProperty("slaughterHouse")
+  private String slaughterHouse;
+
+  @JsonProperty("cuttingDate")
+  private String cuttingDate;
+
+  @JsonProperty("cuttingPlace")
+  private String cuttingPlace;
+
+  @JsonProperty("cuttingButcher")
+  private String cuttingButcher;
+
+  @JsonProperty("labelRougeCertified")
+  private Boolean labelRougeCertified;
 
   public BeefProduction animalIdentifier(String animalIdentifier) {
     this.animalIdentifier = animalIdentifier;
@@ -134,42 +200,23 @@ public class BeefProduction extends Production {
     this.animalType = animalType;
   }
 
-  public BeefProduction animalLiveWeight(Integer animalLiveWeight) {
-    this.animalLiveWeight = animalLiveWeight;
+  public BeefProduction cattleBreed(CattleBreedEnum cattleBreed) {
+    this.cattleBreed = cattleBreed;
     return this;
   }
 
   /**
-   * weight of the animal before being killed, in kilograms
-   * @return animalLiveWeight
+   * breed of the animal
+   * @return cattleBreed
   */
 
-  @Schema(name = "animalLiveWeight", description = "weight of the animal before being killed, in kilograms", required = false)
-  public Integer getAnimalLiveWeight() {
-    return animalLiveWeight;
+  @Schema(name = "cattleBreed", description = "breed of the animal", required = false)
+  public CattleBreedEnum getCattleBreed() {
+    return cattleBreed;
   }
 
-  public void setAnimalLiveWeight(Integer animalLiveWeight) {
-    this.animalLiveWeight = animalLiveWeight;
-  }
-
-  public BeefProduction slaughterDate(LocalDate slaughterDate) {
-    this.slaughterDate = slaughterDate;
-    return this;
-  }
-
-  /**
-   * date when the animal has being killed
-   * @return slaughterDate
-  */
-  @Valid
-  @Schema(name = "slaughterDate", description = "date when the animal has being killed", required = false)
-  public LocalDate getSlaughterDate() {
-    return slaughterDate;
-  }
-
-  public void setSlaughterDate(LocalDate slaughterDate) {
-    this.slaughterDate = slaughterDate;
+  public void setCattleBreed(CattleBreedEnum cattleBreed) {
+    this.cattleBreed = cattleBreed;
   }
 
   public BeefProduction birthDate(LocalDate birthDate) {
@@ -208,6 +255,196 @@ public class BeefProduction extends Production {
 
   public void setBirthPlace(String birthPlace) {
     this.birthPlace = birthPlace;
+  }
+
+  public BeefProduction birthFarm(String birthFarm) {
+    this.birthFarm = birthFarm;
+    return this;
+  }
+
+  /**
+   * farming company where the animal is born
+   * @return birthFarm
+  */
+
+  @Schema(name = "birthFarm", description = "farming company where the animal is born", required = false)
+  public String getBirthFarm() {
+    return birthFarm;
+  }
+
+  public void setBirthFarm(String birthFarm) {
+    this.birthFarm = birthFarm;
+  }
+
+  public BeefProduction warmCarcassWeight(Integer warmCarcassWeight) {
+    this.warmCarcassWeight = warmCarcassWeight;
+    return this;
+  }
+
+  /**
+   * weight of the animal just after being killed, in kilograms
+   * @return warmCarcassWeight
+  */
+
+  @Schema(name = "warmCarcassWeight", description = "weight of the animal just after being killed, in kilograms", required = false)
+  public Integer getWarmCarcassWeight() {
+    return warmCarcassWeight;
+  }
+
+  public void setWarmCarcassWeight(Integer warmCarcassWeight) {
+    this.warmCarcassWeight = warmCarcassWeight;
+  }
+
+  public BeefProduction meatWeight(Integer meatWeight) {
+    this.meatWeight = meatWeight;
+    return this;
+  }
+
+  /**
+   * weight of meat predicted, in kilograms
+   * @return meatWeight
+  */
+
+  @Schema(name = "meatWeight", description = "weight of meat predicted, in kilograms", required = false)
+  public Integer getMeatWeight() {
+    return meatWeight;
+  }
+
+  public void setMeatWeight(Integer meatWeight) {
+    this.meatWeight = meatWeight;
+  }
+
+  public BeefProduction slaughterDate(LocalDate slaughterDate) {
+    this.slaughterDate = slaughterDate;
+    return this;
+  }
+
+  /**
+   * date when the animal has been killed
+   * @return slaughterDate
+  */
+  @Valid
+  @Schema(name = "slaughterDate", description = "date when the animal has been killed", required = false)
+  public LocalDate getSlaughterDate() {
+    return slaughterDate;
+  }
+
+  public void setSlaughterDate(LocalDate slaughterDate) {
+    this.slaughterDate = slaughterDate;
+  }
+
+  public BeefProduction slaughterPlace(String slaughterPlace) {
+    this.slaughterPlace = slaughterPlace;
+    return this;
+  }
+
+  /**
+   * the place where the animal has been killed
+   * @return slaughterPlace
+  */
+
+  @Schema(name = "slaughterPlace", description = "the place where the animal has been killed", required = false)
+  public String getSlaughterPlace() {
+    return slaughterPlace;
+  }
+
+  public void setSlaughterPlace(String slaughterPlace) {
+    this.slaughterPlace = slaughterPlace;
+  }
+
+  public BeefProduction slaughterHouse(String slaughterHouse) {
+    this.slaughterHouse = slaughterHouse;
+    return this;
+  }
+
+  /**
+   * the company where the animal has been killed
+   * @return slaughterHouse
+  */
+
+  @Schema(name = "slaughterHouse", description = "the company where the animal has been killed", required = false)
+  public String getSlaughterHouse() {
+    return slaughterHouse;
+  }
+
+  public void setSlaughterHouse(String slaughterHouse) {
+    this.slaughterHouse = slaughterHouse;
+  }
+
+  public BeefProduction cuttingDate(String cuttingDate) {
+    this.cuttingDate = cuttingDate;
+    return this;
+  }
+
+  /**
+   * date when the animal has been cutted
+   * @return cuttingDate
+  */
+
+  @Schema(name = "cuttingDate", description = "date when the animal has been cutted", required = false)
+  public String getCuttingDate() {
+    return cuttingDate;
+  }
+
+  public void setCuttingDate(String cuttingDate) {
+    this.cuttingDate = cuttingDate;
+  }
+
+  public BeefProduction cuttingPlace(String cuttingPlace) {
+    this.cuttingPlace = cuttingPlace;
+    return this;
+  }
+
+  /**
+   * the place where the animal has been cutted
+   * @return cuttingPlace
+  */
+
+  @Schema(name = "cuttingPlace", description = "the place where the animal has been cutted", required = false)
+  public String getCuttingPlace() {
+    return cuttingPlace;
+  }
+
+  public void setCuttingPlace(String cuttingPlace) {
+    this.cuttingPlace = cuttingPlace;
+  }
+
+  public BeefProduction cuttingButcher(String cuttingButcher) {
+    this.cuttingButcher = cuttingButcher;
+    return this;
+  }
+
+  /**
+   * butcher company where the animal has been cutted
+   * @return cuttingButcher
+  */
+
+  @Schema(name = "cuttingButcher", description = "butcher company where the animal has been cutted", required = false)
+  public String getCuttingButcher() {
+    return cuttingButcher;
+  }
+
+  public void setCuttingButcher(String cuttingButcher) {
+    this.cuttingButcher = cuttingButcher;
+  }
+
+  public BeefProduction labelRougeCertified(Boolean labelRougeCertified) {
+    this.labelRougeCertified = labelRougeCertified;
+    return this;
+  }
+
+  /**
+   * true if the animal breeding process matches the french 'label rouge certification
+   * @return labelRougeCertified
+  */
+
+  @Schema(name = "labelRougeCertified", description = "true if the animal breeding process matches the french 'label rouge certification", required = false)
+  public Boolean getLabelRougeCertified() {
+    return labelRougeCertified;
+  }
+
+  public void setLabelRougeCertified(Boolean labelRougeCertified) {
+    this.labelRougeCertified = labelRougeCertified;
   }
 
   public BeefProduction id(Integer id) {
@@ -256,16 +493,25 @@ public class BeefProduction extends Production {
     BeefProduction beefProduction = (BeefProduction) o;
     return Objects.equals(this.animalIdentifier, beefProduction.animalIdentifier) &&
         Objects.equals(this.animalType, beefProduction.animalType) &&
-        Objects.equals(this.animalLiveWeight, beefProduction.animalLiveWeight) &&
-        Objects.equals(this.slaughterDate, beefProduction.slaughterDate) &&
+        Objects.equals(this.cattleBreed, beefProduction.cattleBreed) &&
         Objects.equals(this.birthDate, beefProduction.birthDate) &&
         Objects.equals(this.birthPlace, beefProduction.birthPlace) &&
+        Objects.equals(this.birthFarm, beefProduction.birthFarm) &&
+        Objects.equals(this.warmCarcassWeight, beefProduction.warmCarcassWeight) &&
+        Objects.equals(this.meatWeight, beefProduction.meatWeight) &&
+        Objects.equals(this.slaughterDate, beefProduction.slaughterDate) &&
+        Objects.equals(this.slaughterPlace, beefProduction.slaughterPlace) &&
+        Objects.equals(this.slaughterHouse, beefProduction.slaughterHouse) &&
+        Objects.equals(this.cuttingDate, beefProduction.cuttingDate) &&
+        Objects.equals(this.cuttingPlace, beefProduction.cuttingPlace) &&
+        Objects.equals(this.cuttingButcher, beefProduction.cuttingButcher) &&
+        Objects.equals(this.labelRougeCertified, beefProduction.labelRougeCertified) &&
         super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(animalIdentifier, animalType, animalLiveWeight, slaughterDate, birthDate, birthPlace, super.hashCode());
+    return Objects.hash(animalIdentifier, animalType, cattleBreed, birthDate, birthPlace, birthFarm, warmCarcassWeight, meatWeight, slaughterDate, slaughterPlace, slaughterHouse, cuttingDate, cuttingPlace, cuttingButcher, labelRougeCertified, super.hashCode());
   }
 
   @Override
@@ -275,10 +521,19 @@ public class BeefProduction extends Production {
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    animalIdentifier: ").append(toIndentedString(animalIdentifier)).append("\n");
     sb.append("    animalType: ").append(toIndentedString(animalType)).append("\n");
-    sb.append("    animalLiveWeight: ").append(toIndentedString(animalLiveWeight)).append("\n");
-    sb.append("    slaughterDate: ").append(toIndentedString(slaughterDate)).append("\n");
+    sb.append("    cattleBreed: ").append(toIndentedString(cattleBreed)).append("\n");
     sb.append("    birthDate: ").append(toIndentedString(birthDate)).append("\n");
     sb.append("    birthPlace: ").append(toIndentedString(birthPlace)).append("\n");
+    sb.append("    birthFarm: ").append(toIndentedString(birthFarm)).append("\n");
+    sb.append("    warmCarcassWeight: ").append(toIndentedString(warmCarcassWeight)).append("\n");
+    sb.append("    meatWeight: ").append(toIndentedString(meatWeight)).append("\n");
+    sb.append("    slaughterDate: ").append(toIndentedString(slaughterDate)).append("\n");
+    sb.append("    slaughterPlace: ").append(toIndentedString(slaughterPlace)).append("\n");
+    sb.append("    slaughterHouse: ").append(toIndentedString(slaughterHouse)).append("\n");
+    sb.append("    cuttingDate: ").append(toIndentedString(cuttingDate)).append("\n");
+    sb.append("    cuttingPlace: ").append(toIndentedString(cuttingPlace)).append("\n");
+    sb.append("    cuttingButcher: ").append(toIndentedString(cuttingButcher)).append("\n");
+    sb.append("    labelRougeCertified: ").append(toIndentedString(labelRougeCertified)).append("\n");
     sb.append("}");
     return sb.toString();
   }

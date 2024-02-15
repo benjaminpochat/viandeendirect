@@ -588,13 +588,10 @@ components:
           description: "type of animal"
           type: string
           enum: ['BEEF_COW', 'BEEF_HEIFER', 'BEEF_BULL', 'BEEF_VEAL']
-        animalLiveWeight:
-          description: "weight of the animal before being killed, in kilograms"
-          type: integer
-        slaughterDate:
-          description: "date when the animal has being killed"
+        cattleBreed:
+          description: "breed of the animal"
           type: string
-          format: date
+          enum: ['LIMOUSINE', 'CHAROLAISE']
         birthDate:
           description: "date when the animal is born"
           type: string
@@ -602,6 +599,37 @@ components:
         birthPlace:
           description: "place where the animal is born"
           type: string
+        birthFarm:
+          description: "farming company where the animal is born"
+          type: string
+        warmCarcassWeight:
+          description: "weight of the animal just after being killed, in kilograms"
+          type: integer
+        meatWeight:
+          description: "weight of meat predicted, in kilograms"
+          type: integer
+        slaughterDate:
+          description: "date when the animal has been killed"
+          type: string
+          format: date
+        slaughterPlace:
+          description: "the place where the animal has been killed"
+          type: string
+        slaughterHouse:
+          description: "the company where the animal has been killed"
+          type: string
+        cuttingDate:
+          description: "date when the animal has been cutted"
+          type: string
+        cuttingPlace:
+          description: "the place where the animal has been cutted"
+          type: string
+        cuttingButcher:
+          description: "butcher company where the animal has been cutted"
+          type: string
+        labelRougeCertified:
+          description: "true if the animal breeding process matches the french 'label rouge certification"
+          type: boolean
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "beef_productions")'
     HonneyProduction:
       allOf:

@@ -36,7 +36,7 @@ class TestBeefProductionService {
 
         // then
         assertThat(beefProduction).isNotNull();
-        assertThat(beefProduction.getAnimalLiveWeight()).isEqualTo(400);
+        assertThat(beefProduction.getWarmCarcassWeight()).isEqualTo(400);
     }
 
     @Test
