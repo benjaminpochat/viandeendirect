@@ -39,7 +39,7 @@ export default function BeefProductionCard({
                     Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
                 </Typography>
                 <Typography component="div">
-                    Poids vif estimé : {beefProduction.animalLiveWeight} kg
+                    Poids de carcasse chaude : {beefProduction.warmCarcassWeight} kg
                 </Typography>
             </CardContent>
             {getActions()}

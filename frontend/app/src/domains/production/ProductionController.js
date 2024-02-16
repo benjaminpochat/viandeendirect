@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import BeefProductionForm from './views/BeefProductionForm'
+import BeefProductionForm from './views/BeefProductionForm.tsx'
 import PackageLotsCreator from './views/PackageLotsCreator'
 import ProductionsList from './views/ProductionsList.tsx'
 

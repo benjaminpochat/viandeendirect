@@ -28,7 +28,7 @@ export class MockApiProductions {
             id: 1,
             animalIdentifier: '1234',
             slaughterDate: '2023-10-01T10:00:00',
-            animalLiveWeight: 450,
+            warmCarcassWeight: 450,
             animalType: 'BEEF_COW',
             lots: [
                 {

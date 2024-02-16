@@ -1,3 +1,4 @@
+import React from "react"
 import { useState } from "react"
 
 import { Button, ButtonGroup, Typography, Stepper, Step, StepLabel, StepContent } from "@mui/material"
@@ -12,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/fr'
 
 import { BeefProduction } from 'viandeendirect_eu';
-import PackageLotsCreator from "./PackageLotsCreator"
+import PackageLotsCreator from "./PackageLotsCreator.js"
 
 export default function BeefProductionForm({ callback }) {
 
@@ -31,13 +32,16 @@ export default function BeefProductionForm({ callback }) {
                     <StepLabel>Définir les caractéristiques de l'abattage</StepLabel>
                     <StepContent>
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-                            <FormContainer onSuccess={validateProductionProperties} defaultValues={{ "animalLiveWeight": 400 }} >
+                            <FormContainer onSuccess={validateProductionProperties} defaultValues={{ "warmCarcassWeight": 400 }}>
                                 <div className="form">
                                     <div>
                                         <TextFieldElement required validation={{ required: 'Champ obligatoire'}} name="animalIdentifier" label="Numéro d'identification de l'animal" variant="standard" />
                                     </div>
                                     <div>
-                                        <SliderElement min={100} max={1000} step={50} required validation={{ required: 'Champ obligatoire'}} name="animalLiveWeight" label="Poids vif" variant="standard" />
+                                        <SliderElement value={beefProduction.warmCarcassWeight} onChange={updateProductionWeigth} min={100} max={1000} step={50} required validation={{ required: 'Champ obligatoire'}} name="warmCarcassWeight" label="Poids estimé de l'animal vif" variant="standard" />
+                                        <div>
+                                            <span>Poids de carcasse chaude : {beefProduction.warmCarcassWeight} kg</span>
+                                        </div>
                                     </div>
                                     <div>
                                         <DatePickerElement required validation={{ required: 'Champ obligatoire'}} name="birthDate" label="Date de naissance" variant="standard" />
@@ -78,13 +82,18 @@ export default function BeefProductionForm({ callback }) {
             </Stepper>
         </>            
 
+    function updateProductionWeigth(event, weight) {
+        console.log(weight)
+        setBeefProduction({...beefProduction, 
+            warmCarcassWeight: weight
+        })
+    }
 
     function validateProductionProperties(productionFormData) {
-        console.log(productionFormData)
         setBeefProduction({...beefProduction, 
             productionType: "BeefProduction",
             animalIdentifier: productionFormData.animalIdentifier,
-            animalLiveWeight: productionFormData.animalLiveWeight,
+            warmCarcassWeight: productionFormData.warmCarcassWeight,
             birthDate: productionFormData.birthDate,
             slaughterDate: productionFormData.slaughterDate,
             birthPlace: productionFormData.birthPlace,
