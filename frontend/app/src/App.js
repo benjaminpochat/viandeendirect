@@ -1,6 +1,8 @@
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
+import { LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
@@ -69,7 +71,9 @@ function App() {
     <CookiesProvider>
       <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
         <ThemeProvider theme={theme}>
-          {getLayoutWrapper()}
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+            {getLayoutWrapper()}
+          </LocalizationProvider>
         </ThemeProvider>
       </ReactKeycloakProvider>
     </CookiesProvider>

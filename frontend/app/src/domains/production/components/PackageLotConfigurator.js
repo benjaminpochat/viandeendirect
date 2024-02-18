@@ -7,7 +7,7 @@ import { Button } from "@mui/material"
  * @param {PackageLot} lot 
  * @returns 
  */
-export default function PackageLotsConfigurator({packageLot: packageLot}) {
+export default function PackageLotsConfigurator({packageLot: packageLot, changeCallback: changeCallback}) {
     const [quantity, setQuantity] = useState(packageLot.quantity)
 
     return <div>
@@ -41,6 +41,7 @@ export default function PackageLotsConfigurator({packageLot: packageLot}) {
     function addPackages(quantity) {
         packageLot.quantity += quantity
         setQuantity(packageLot.quantity)
+        changeCallback(packageLot)
     }
 
     /**
@@ -49,6 +50,7 @@ export default function PackageLotsConfigurator({packageLot: packageLot}) {
     function removePackages(quantity) {
         packageLot.quantity -= Math.min(quantity, packageLot.quantity)
         setQuantity(packageLot.quantity)
+        changeCallback(packageLot)
     }
 
 }

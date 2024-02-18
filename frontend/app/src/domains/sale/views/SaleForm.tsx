@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete } from "@mui/material"
-import { LocalizationProvider } from "@mui/x-date-pickers"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
 
@@ -9,7 +8,6 @@ import Production from 'viandeendirect_eu/dist/model/Production'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 
 import SaleProductionSelector from '../components/SaleProductionSelector.js'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/fr';
 import dayjs from 'dayjs'
 
@@ -111,27 +109,25 @@ export default function SaleForm({producer: producer, returnCallback: returnCall
                 <StepLabel>Définir l'heure de livraison</StepLabel>
                 <StepContent>
                     <div>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-                            <FormContainer onSuccess={validateDeliveryDate}>
-                                <div className="form">
-                                    <div>
-                                        <DatePickerElement required name="date" label="Date de la livraison" variant="standard" />
-                                    </div>
-                                    <div>
-                                        <TimePickerElement required name="startTime" label="Début de la livraison"/>
-                                    </div>
-                                    <div>
-                                        <TimePickerElement required name="stopTime" label="Fin de la livraison"/>
-                                    </div>
-                                    <div>
-                                        <ButtonGroup>
-                                            <Button type='submit' variant="contained" size="small">Valider</Button>
-                                            <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
-                                        </ButtonGroup>
-                                    </div>                                    
+                        <FormContainer onSuccess={validateDeliveryDate}>
+                            <div className="form">
+                                <div>
+                                    <DatePickerElement required name="date" label="Date de la livraison" variant="standard" />
                                 </div>
-                            </FormContainer>
-                        </LocalizationProvider>
+                                <div>
+                                    <TimePickerElement required name="startTime" label="Début de la livraison"/>
+                                </div>
+                                <div>
+                                    <TimePickerElement required name="stopTime" label="Fin de la livraison"/>
+                                </div>
+                                <div>
+                                    <ButtonGroup>
+                                        <Button type='submit' variant="contained" size="small">Valider</Button>
+                                        <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
+                                    </ButtonGroup>
+                                </div>                                    
+                            </div>
+                        </FormContainer>
                     </div>
                 </StepContent>
             </Step>

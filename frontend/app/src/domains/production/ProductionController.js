@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import BeefProductionForm from './views/BeefProductionForm.tsx'
+import BeefProductionCreator from './views/beefProductionCreator/BeefProductionCreator.tsx'
 import PackageLotsCreator from './views/PackageLotsCreator'
 import ProductionsList from './views/ProductionsList.tsx'
 
@@ -16,7 +16,7 @@ export default function ProductionController() {
     function getContent() {
         switch (currentAction) {
             case PRODUCTIONS_LIST: return <ProductionsList createBeefProductionCallback={() => setCurrentAction(BEEF_PRODUCTION_CREATION)}></ProductionsList>
-            case BEEF_PRODUCTION_CREATION: return <BeefProductionForm callback={(action) => {setCurrentAction(action)}} />
+            case BEEF_PRODUCTION_CREATION: return <BeefProductionCreator callback={(action) => {setCurrentAction(action)}} />
             case BEEF_PRODUCTION_PACKAGE_MODIFICATION: return <PackageLotsCreator></PackageLotsCreator>
         }
     }
