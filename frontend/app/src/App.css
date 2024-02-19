@@ -34,9 +34,11 @@
 
 .lot__package__name {
   grid-area: name;
+  display: flex;
+  justify-content: space-between;
 }
 
-.lot__package:hover {
+.lot__package__edit:hover {
   cursor: pointer;
   background-color: whitesmoke;
 }

@@ -1,8 +1,7 @@
 import React from "react"
 import { useState } from "react"
 
-import { Button, ButtonGroup, Typography, Stepper, Step, StepLabel, StepContent, Slider, StepButton, Alert } from "@mui/material"
-import { DatePickerElement, FormContainer, SelectElement, TextFieldElement, SliderElement, useForm } from 'react-hook-form-mui'
+import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton, Alert } from "@mui/material"
 
 import 'dayjs/locale/fr'
 
@@ -25,7 +24,8 @@ export default function BeefProductionCreator({ callback }) {
     const PRODUCTS_STEP = 3
 
     const { keycloak } = useKeycloak()
-    const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
+    //const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
+    const [ activeStep, setActiveStep ] = useState<number>(PRODUCTS_STEP)
     const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const apiBuilder = new ApiBuilder()

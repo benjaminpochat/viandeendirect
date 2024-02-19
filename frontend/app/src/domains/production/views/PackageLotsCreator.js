@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
-import PackageLotsConfigurator from "../components/PackageLotConfigurator"
+import PackageLotConfigurator from "../components/PackageLotConfigurator.tsx"
 
 
 export default function PackageLotsCreator({ production: production, changeProductionCallback: changeProductionCallback }) {
@@ -40,7 +40,7 @@ export default function PackageLotsCreator({ production: production, changeProdu
     }, [keycloak])
 
     return <>
-        {production.lots?.map(lot => <PackageLotsConfigurator packageLot={lot} changeCallback={changeLotConfiguration}></PackageLotsConfigurator>)}
+        {production.lots?.map(lot => <PackageLotConfigurator packageLot={lot} changeCallback={changeLotConfiguration}></PackageLotConfigurator>)}
     </>
 
     function changeLotConfiguration(lot) {

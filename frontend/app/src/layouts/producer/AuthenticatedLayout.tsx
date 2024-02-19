@@ -9,7 +9,7 @@ import { ApiInvoker } from '../../api/ApiInvoker.ts'
 import Dashboard from '../../domains/dashboard/Dashboard.js';
 import CustomerController from '../../domains/customer/CustomerController.js';
 import GrowerAccount from '../../domains/producer/ProducerAccount.js'
-import ProductionController from '../../domains/production/ProductionController.js'
+import ProductionController from '../../domains/production/ProductionController.tsx'
 import SaleController from '../../domains/sale/SaleController.tsx'
 import SideMenu from './SideMenu.js'
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
