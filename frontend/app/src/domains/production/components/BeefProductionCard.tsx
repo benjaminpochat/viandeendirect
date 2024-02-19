@@ -1,14 +1,14 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { Button, Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material"
+import { useEffect, useState } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import dayjs from 'dayjs'
 
 export default function BeefProductionCard({
     production: production, 
     showActions: showActions, 
-    setPackageModificationLayoutContent: setPackageModificationLayoutContent}) {
+    viewBeefProductionCallback: viewBeefProductionCallback}) {
 
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
@@ -31,17 +31,19 @@ export default function BeefProductionCard({
 
     return (
         <Card>
-            <CardContent>
-                <Typography color="text.secondary" gutterBottom>
-                    Abattage bovin
-                </Typography>
-                <Typography variant="subtitle1" component="div">
-                    Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
-                </Typography>
-                <Typography component="div">
-                    Poids de carcasse chaude : {beefProduction.warmCarcassWeight} kg
-                </Typography>
-            </CardContent>
+            <CardActionArea onClick={() => viewBeefProductionCallback(beefProduction)}>
+                <CardContent>
+                    <Typography color="text.secondary" gutterBottom>
+                        Abattage bovin
+                    </Typography>
+                    <Typography variant="subtitle1" component="div">
+                        Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
+                    </Typography>
+                    <Typography component="div">
+                        Poids de carcasse chaude : {beefProduction.warmCarcassWeight} kg
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
             {getActions()}
         </Card>
     )
@@ -51,7 +53,7 @@ export default function BeefProductionCard({
             return <CardActions>
                 <Button size="small">Mettre en vente</Button>
                 <Button size="small">Ajuster le poids vif</Button>
-                <Button size="small" onClick={() => setPackageModificationLayoutContent(production)}>Modifier les produits</Button>
+                <Button size="small" onClick={() => viewBeefProductionCallback(beefProduction)}>Modifier les produits</Button>
             </CardActions>
         }
     }

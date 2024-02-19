@@ -10,7 +10,7 @@ import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import { useKeycloak } from '@react-keycloak/web'
 
-import PackageLotsCreator from "../PackageLotsCreator.js"
+import PackageLotsCreator from "../PackageLotsCreator.tsx"
 import BreedingPropertiesForm from "./forms/BreedingPropertiesForm.tsx"
 import SlaughterPropertiesForm from "./forms/SlaughterPropertiesForm.tsx"
 import CuttingPropertiesForm from "./forms/CuttingPropertiesForm.tsx"
@@ -24,8 +24,7 @@ export default function BeefProductionCreator({ callback }) {
     const PRODUCTS_STEP = 3
 
     const { keycloak } = useKeycloak()
-    //const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
-    const [ activeStep, setActiveStep ] = useState<number>(PRODUCTS_STEP)
+    const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const apiBuilder = new ApiBuilder()

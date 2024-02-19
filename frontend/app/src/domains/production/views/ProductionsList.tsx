@@ -8,7 +8,9 @@ import { Button, Typography } from "@mui/material"
 
 import ProductionCard from '../components/ProductionCard.tsx'
 
-export default function ProductionsList({createBeefProductionCallback: createBeefProductionCallback}) {
+export default function ProductionsList({
+    createBeefProductionCallback: createBeefProductionCallback,
+    viewBeefProductionCallback: viewBeefProductionCallback}) {
 
     const [productions, setProductions] = useState([])
     const { keycloak, initialized } = useKeycloak()
@@ -46,7 +48,7 @@ export default function ProductionsList({createBeefProductionCallback: createBee
         return productions.map(production => <ProductionCard 
                                                 production={production} 
                                                 showActions={true} 
-                                                setPackageModificationLayoutContent={createBeefProductionCallback}>    
+                                                viewBeefProductionCallback={viewBeefProductionCallback}> 
                                             </ProductionCard>)
     }
 }

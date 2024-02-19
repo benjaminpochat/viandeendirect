@@ -6,11 +6,11 @@
 }
 
 .form > div {
-  margin: 1rem;
+  margin-top: 1rem;
 }
 
-.form-select-list {
-  width: 10rem;
+.popin-form > div {
+  margin-top: 1rem;
 }
 
 .card-clickable > *:hover {
@@ -50,6 +50,7 @@
 .lot__package__description {
   font-size: x-small;
   grid-area: description;
+  white-space:pre-wrap;
 }
 
 .lot__package__net-weight {

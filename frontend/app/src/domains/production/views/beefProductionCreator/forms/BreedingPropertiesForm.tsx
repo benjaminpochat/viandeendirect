@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from "@mui/material"
 import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui'
 
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
+import dayjs from "dayjs"
 
 export default function BreedingPropertiesForm({
     beefProduction: beefProduction, 
@@ -22,7 +23,12 @@ export default function BreedingPropertiesForm({
         { id: 'CHAROLAISE', label: 'charolaise' }
     ]
 
-    const form = useForm<BeefProduction>({defaultValues: beefProduction})
+    const form = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        birthDate: dayjs(beefProduction.birthDate),
+        slaughterDate: dayjs(beefProduction.slaughterDate),
+        cuttingDate: dayjs(beefProduction.cuttingDate)
+    }})
 
     return <FormContainer onSuccess={validFormCallback} formContext={form}>
 
@@ -57,7 +63,7 @@ export default function BreedingPropertiesForm({
             <div>
                 <SelectElement 
                     name='animalType'
-                    className="form-select-list" 
+                    fullWidth
                     validation={{ required: 'Champ obligatoire' }} 
                     label="Type d'animal" 
                     variant="standard" 
@@ -66,7 +72,7 @@ export default function BreedingPropertiesForm({
             <div>
                 <SelectElement 
                     name='cattleBreed' 
-                    className="form-select-list" 
+                    fullWidth
                     validation={{ required: 'Champ obligatoire' }} 
                     label="Race bovine" 
                     variant="standard" 

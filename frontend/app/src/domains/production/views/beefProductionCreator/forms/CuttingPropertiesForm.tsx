@@ -3,14 +3,20 @@ import { ButtonGroup, Button } from '@mui/material'
 import { FormContainer, DatePickerElement, TextFieldElement, useForm } from 'react-hook-form-mui'
 
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
+import dayjs from 'dayjs'
 
 export default function CuttingPropertiesForm({
     beefProduction: beefProduction, 
     validFormCallback: validFormCallback, 
     cancelFormCallback: cancelFormCallback}) {
 
-    const form = useForm<BeefProduction>({defaultValues: beefProduction})
-
+    const form = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        birthDate: dayjs(beefProduction.birthDate),
+        slaughterDate: dayjs(beefProduction.slaughterDate),
+        cuttingDate: dayjs(beefProduction.cuttingDate)
+    }})
+    
     return <FormContainer onSuccess={validFormCallback} formContext={form}>
         <div className="form">
             <div>

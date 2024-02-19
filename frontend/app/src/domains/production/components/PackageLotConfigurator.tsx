@@ -1,87 +1,96 @@
 import React from 'react'
 import { useState } from "react"
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
-import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
+import { FormContainer, TextFieldElement, TextareaAutosizeElement, useForm } from 'react-hook-form-mui';
 
 /**
  * 
  * @param {PackageLot} lot 
  * @returns 
  */
-export default function PackageLotConfigurator({packageLot: packageLot, changeCallback: changeCallback}) {
+export default function PackageLotConfigurator({ packageLot: packageLot, changeCallback: changeCallback }) {
     const [quantity, setQuantity] = useState<number>(packageLot.quantity)
     const [editionPopinOpen, setEditionPopinOpen] = useState<boolean>(false)
-    const form = useForm({defaultValues: packageLot})
+    const form = useForm({
+        defaultValues: {
+            label: packageLot.label,
+            description: packageLot.description,
+            netWeight: packageLot.netWeight,
+            unitPrice: packageLot.unitPrice
+        }
+    })
 
     return <div>
-        <div class="lot">
-            <div class="lot__package">
-                <div class="lot__package__name"><span>{packageLot.label}</span><EditIcon className="lot__package__edit" onClick={openEditionPopin}/></div>
-                <div class="lot__package__description">{packageLot.description}</div>
-                <div class="lot__package__net-weight">{packageLot.netWeight} kg</div>
-                <div class="lot__package__unit-price">{packageLot.unitPrice} € <sup>TTC</sup>/kg</div>
+        <div className="lot">
+            <div className="lot__package">
+                <div className="lot__package__name"><span>{packageLot.label}</span><EditIcon className="lot__package__edit" onClick={openEditionPopin} /></div>
+                <div className="lot__package__description">{packageLot.description}</div>
+                <div className="lot__package__net-weight">{packageLot.netWeight} kg</div>
+                <div className="lot__package__unit-price">{packageLot.unitPrice} € <sup>TTC</sup>/kg</div>
             </div>
-            <div class="lot__quantity-actions-remove">
+            <div className="lot__quantity-actions-remove">
                 <Button variant="contained" onClick={() => removePackages(10)}>-10</Button>
                 <Button variant="contained" onClick={() => removePackages(1)} > -1</Button>
             </div >
-            <div class="lot__summary">
-                <div class="lot__summary__package-number">{quantity}</div>
-                <div class="lot__summary__label">colis mis en vente</div>
-                <div class="lot__summary__total-quantity">{quantity * packageLot.netWeight} kg</div>
-                <div class="lot__summary__total-price">{quantity * packageLot.netWeight * packageLot.unitPrice} € <sup>TTC</sup></div>
+            <div className="lot__summary">
+                <div className="lot__summary__package-number">{quantity}</div>
+                <div className="lot__summary__label">colis mis en vente</div>
+                <div className="lot__summary__total-quantity">{quantity * packageLot.netWeight} kg</div>
+                <div className="lot__summary__total-price">{quantity * packageLot.netWeight * packageLot.unitPrice} € <sup>TTC</sup></div>
             </div>
-            <div class="lot__quantity-actions-add">
+            <div className="lot__quantity-actions-add">
                 <Button variant="contained" onClick={() => addPackages(10)}>+10</Button>
                 <Button variant="contained" onClick={() => addPackages(1)}> +1</Button >
             </div>
         </div>
         <Dialog
             open={editionPopinOpen}
-            onClose={closeEditionPopin}
-            PaperProps={{
-                component: 'form',
-                onSubmit: validForm,
-              }}>
-            <DialogTitle>Modification du colis</DialogTitle>
-            <DialogContent>
-                <FormContainer onSuccess={validForm} formContext={form}>
+            onClose={cancelForm}>
+            <FormContainer onSuccess={validForm} formContext={form}>
+                <DialogTitle>Caractéristiques du colis</DialogTitle>
+                <DialogContent>
                     <TextFieldElement
                         autoFocus
-                        required
+                        validation={{ required: 'Champ obligatoire' }}
                         name="label"
                         label="Nom du colis"
                         fullWidth
                         variant="standard"
+                        margin="normal"
                     />
-                    <TextFieldElement
-                        required
+                    <TextareaAutosizeElement
+                        validation={{ required: 'Champ obligatoire' }}
                         name="description"
                         label="Description du colis"
                         fullWidth
                         variant="standard"
+                        margin="normal"
                     />
                     <TextFieldElement
-                        required
+                        validation={{ required: 'Champ obligatoire' }}
                         name="unitPrice"
-                        label="prix au kilo"
+                        label="prix au kilo (€/kg)"
                         fullWidth
                         variant="standard"
+                        margin="normal"
                     />
                     <TextFieldElement
-                        required
+                        validation={{ required: 'Champ obligatoire' }}
                         name="netWeight"
-                        label="poids net"
+                        label="poids net (kg)"
                         fullWidth
                         variant="standard"
+                        margin="normal"
                     />
-                </FormContainer>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={closeEditionPopin}>Annuler</Button>
-                <Button type="submit">Valider</Button>
-            </DialogActions>
+                </DialogContent>
+                <DialogActions>
+                    <ButtonGroup>
+                        <Button variant="contained" size="small" type="submit">Valider</Button>
+                        <Button size="small" onClick={cancelForm}>Annuler</Button>
+                    </ButtonGroup>
+                </DialogActions>
+            </FormContainer>
         </Dialog>
     </div>
 
@@ -104,6 +113,7 @@ export default function PackageLotConfigurator({packageLot: packageLot, changeCa
     }
 
     function openEditionPopin() {
+        //form.reset()
         setEditionPopinOpen(true)
     }
 
@@ -111,11 +121,22 @@ export default function PackageLotConfigurator({packageLot: packageLot, changeCa
         setEditionPopinOpen(false)
     }
 
+    function cancelForm(formData) {
+        form.reset({
+            label: packageLot.label,
+            description: packageLot.description,
+            netWeight: packageLot.netWeight,
+            unitPrice: packageLot.unitPrice
+        })
+        closeEditionPopin()
+    }
+
     function validForm(formData) {
         packageLot.label = formData.label
         packageLot.description = formData.description
         packageLot.unitPrice = formData.unitPrice
         packageLot.netWeight = formData.netWeight
+        changeCallback(packageLot)
         closeEditionPopin()
     }
 

@@ -4,13 +4,20 @@ import { DatePickerElement, FormContainer, SliderElement, TextFieldElement, useF
 
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
 import { BeefProductionService } from '../../../service/BeefProductionService.ts'
+import dayjs from 'dayjs'
 
 export default function SlaughterPropertiesForm({
     beefProduction: beefProduction, 
     validFormCallback: validFormCallback, 
     cancelFormCallback: cancelFormCallback }) {
 
-    const form = useForm<BeefProduction>({defaultValues: beefProduction})
+    const form = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        birthDate: dayjs(beefProduction.birthDate),
+        slaughterDate: dayjs(beefProduction.slaughterDate),
+        cuttingDate: dayjs(beefProduction.cuttingDate)
+    }})
+
     const warmCarcassWeight = form.watch('warmCarcassWeight')
 
 
