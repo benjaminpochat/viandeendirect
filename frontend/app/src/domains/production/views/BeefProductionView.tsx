@@ -13,34 +13,32 @@ import TabPanel from '@mui/lab/TabPanel';
 
 export default function BeefProductionView({ beefProduction: beefProduction, backCallback: backCallback }) {
 
-    const [currentTab, setCurrentTab] = React.useState('1');
+    const [currentTab, setCurrentTab] = React.useState<number>(0);
 
-    const changeTab = (event: React.SyntheticEvent, newValue: string) => {
+    const changeTab = (event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
     };
 
 
     return <>
         <Typography variant="h6">Abattage bovin</Typography>
-        <TabContext value={currentTab}>
-            <TabList onChange={changeTab}>
-                <Tab label="Elevage" value="1" />
-                <Tab label="Abattage" value="2" />
-                <Tab label="Découpe" value="3" />
-                <Tab label="Colis" value="4" />
-            </TabList>
-            <TabPanel value="1">
+            <Tabs value={currentTab} onChange={changeTab} variant='scrollable' allowScrollButtonsMobile >
+                <Tab label="Elevage"/>
+                <Tab label="Abattage"/>
+                <Tab label="Découpe"/>
+                <Tab label="Colis"/>
+            </Tabs>
+            <div hidden={currentTab !== 0}>
                 <BreedingPropertiesForm beefProduction={beefProduction} validFormCallback={undefined} cancelFormCallback={undefined} />
-            </TabPanel>
-            <TabPanel value="2">
+            </div>
+            <div hidden={currentTab !== 1}>
                 <SlaughterPropertiesForm beefProduction={beefProduction} validFormCallback={undefined} cancelFormCallback={undefined} />
-            </TabPanel>
-            <TabPanel value="3">
+            </div>
+            <div hidden={currentTab !== 2}>
                 <CuttingPropertiesForm beefProduction={beefProduction} validFormCallback={undefined} cancelFormCallback={undefined} />
-            </TabPanel>
-            <TabPanel value="4">
-            </TabPanel>
-        </TabContext>
+            </div>
+            <div hidden={currentTab !== 3}>
+            </div>
 
         <div>
             <ButtonGroup>

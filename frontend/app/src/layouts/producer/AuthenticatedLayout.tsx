@@ -1,3 +1,4 @@
+import React from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { useState, useEffect } from 'react';
 
@@ -96,7 +97,8 @@ function AuthenticatedLayout() {
             </SideMenu>
             <Box
                 component="main"
-                sx={{ flexGrow: 1, p: 3 }}>
+                sx={{ flexGrow: 1, p: 3 }}
+                width={'100%'}>
                 <Toolbar />
                 {renderMainContent()}
             </Box>
