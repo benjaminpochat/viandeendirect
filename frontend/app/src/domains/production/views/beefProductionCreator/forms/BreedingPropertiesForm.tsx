@@ -30,65 +30,67 @@ export default function BreedingPropertiesForm({
         cuttingDate: dayjs(beefProduction.cuttingDate)
     }})
 
-    return <FormContainer onSuccess={validFormCallback} formContext={form}>
+    return <>
+        <FormContainer formContext={form}>
 
-        <div className="form">
-            <div>
-                <DatePickerElement 
-                    name="birthDate" 
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Date de naissance"/>
+            <div className="form">
+                <div>
+                    <DatePickerElement 
+                        name="birthDate" 
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Date de naissance"/>
+                </div>
+                <div>
+                    <TextFieldElement 
+                        name="birthFarm" 
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Ferme de naissance" 
+                        variant="standard" />
+                </div>
+                <div>
+                    <TextFieldElement 
+                        name="birthPlace" 
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Commune de naissance" 
+                        variant="standard" />
+                </div>
+                <div>
+                    <TextFieldElement 
+                        name="animalIdentifier" 
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Numéro d'identification de l'animal" 
+                        variant="standard" />
+                </div>
+                <div>
+                    <SelectElement 
+                        name='animalType'
+                        fullWidth
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Type d'animal" 
+                        variant="standard" 
+                        options={animalTypeList}/>
+                </div>
+                <div>
+                    <SelectElement 
+                        name='cattleBreed' 
+                        fullWidth
+                        validation={{ required: 'Champ obligatoire' }} 
+                        label="Race bovine" 
+                        variant="standard" 
+                        options={cattleBreedList}/>
+                </div>
+                <div>
+                    <CheckboxElement
+                        name='labelRougeCertified' 
+                        label="Label rouge"/>
+                </div>
             </div>
-            <div>
-                <TextFieldElement 
-                    name="birthFarm" 
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Ferme de naissance" 
-                    variant="standard" />
-            </div>
-            <div>
-                <TextFieldElement 
-                    name="birthPlace" 
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Commune de naissance" 
-                    variant="standard" />
-            </div>
-            <div>
-                <TextFieldElement 
-                    name="animalIdentifier" 
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Numéro d'identification de l'animal" 
-                    variant="standard" />
-            </div>
-            <div>
-                <SelectElement 
-                    name='animalType'
-                    fullWidth
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Type d'animal" 
-                    variant="standard" 
-                    options={animalTypeList}/>
-            </div>
-            <div>
-                <SelectElement 
-                    name='cattleBreed' 
-                    fullWidth
-                    validation={{ required: 'Champ obligatoire' }} 
-                    label="Race bovine" 
-                    variant="standard" 
-                    options={cattleBreedList}/>
-            </div>
-            <div>
-                <CheckboxElement
-                    name='labelRougeCertified' 
-                    label="Label rouge"/>
-            </div>
-            <div>
-                <ButtonGroup>
-                    <Button type='submit' variant="contained" size="small">Valider</Button>
-                    <Button variant="outlined" size="small" onClick={cancelFormCallback}>Abandonner</Button>
-                </ButtonGroup>
-            </div>
+        </FormContainer>
+        <div>
+            <ButtonGroup>
+                <Button onClick={form.handleSubmit(validFormCallback)} variant="contained" size="small">Valider</Button>
+                <Button onClick={cancelFormCallback} variant="outlined" size="small">Abandonner</Button>
+            </ButtonGroup>
         </div>
-    </FormContainer>
+    </>
 }
