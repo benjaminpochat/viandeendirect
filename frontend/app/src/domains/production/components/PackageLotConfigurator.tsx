@@ -74,6 +74,7 @@ export default function PackageLotConfigurator({ packageLot: packageLot, changeC
                         fullWidth
                         variant="standard"
                         margin="normal"
+                        type="number"
                     />
                     <TextFieldElement
                         validation={{ required: 'Champ obligatoire' }}
@@ -82,6 +83,7 @@ export default function PackageLotConfigurator({ packageLot: packageLot, changeC
                         fullWidth
                         variant="standard"
                         margin="normal"
+                        type="number"
                     />
                 </DialogContent>
                 <DialogActions>

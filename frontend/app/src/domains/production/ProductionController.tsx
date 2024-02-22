@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
-import BeefProductionCreator from './views/beefProductionCreator/BeefProductionCreator.tsx'
+import BeefProductionCreator from './views/beefProduction/BeefProductionCreator.tsx'
 import PackageLotsCreator from './views/PackageLotsCreator.tsx'
 import ProductionsList from './views/ProductionsList.tsx'
-import BeefProductionView from './views/BeefProductionView.tsx'
+import BeefProductionView from './views/beefProduction/BeefProductionView.tsx'
 
 export default function ProductionController() {
 

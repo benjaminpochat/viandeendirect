@@ -6,10 +6,10 @@ import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, Submi
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
 import dayjs from "dayjs"
 
-export default function BreedingPropertiesForm({
-    beefProduction: beefProduction, 
-    validFormCallback: validFormCallback, 
-    cancelFormCallback: cancelFormCallback }) {
+export function BreedingPropertiesForm({
+    form: form, 
+    disabled: disabled = false,
+    maxBirthDate: maxBirthDate = undefined}) {
 
     const animalTypeList = [
         { id: 'BEEF_COW', label: 'vache' },
@@ -23,43 +23,41 @@ export default function BreedingPropertiesForm({
         { id: 'CHAROLAISE', label: 'charolaise' }
     ]
 
-    const form = useForm<BeefProduction>({defaultValues: {
-        ...beefProduction,
-        birthDate: dayjs(beefProduction.birthDate),
-        slaughterDate: dayjs(beefProduction.slaughterDate),
-        cuttingDate: dayjs(beefProduction.cuttingDate)
-    }})
-
     return <>
         <FormContainer formContext={form}>
-
             <div className="form">
                 <div>
                     <DatePickerElement 
                         name="birthDate" 
                         validation={{ required: 'Champ obligatoire' }} 
-                        label="Date de naissance"/>
+                        label="Date de naissance"
+                        disabled={disabled}
+                        maxDate={maxBirthDate ? dayjs(maxBirthDate) : undefined}
+                        disableFuture={true}/>
                 </div>
                 <div>
                     <TextFieldElement 
                         name="birthFarm" 
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Ferme de naissance" 
-                        variant="standard" />
+                        variant="standard" 
+                        disabled={disabled}/>
                 </div>
                 <div>
                     <TextFieldElement 
                         name="birthPlace" 
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Commune de naissance" 
-                        variant="standard" />
+                        variant="standard" 
+                        disabled={disabled}/>
                 </div>
                 <div>
                     <TextFieldElement 
                         name="animalIdentifier" 
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Numéro d'identification de l'animal" 
-                        variant="standard" />
+                        variant="standard" 
+                        disabled={disabled}/>
                 </div>
                 <div>
                     <SelectElement 
@@ -68,7 +66,8 @@ export default function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Type d'animal" 
                         variant="standard" 
-                        options={animalTypeList}/>
+                        options={animalTypeList}
+                        disabled={disabled}/>
                 </div>
                 <div>
                     <SelectElement 
@@ -77,20 +76,31 @@ export default function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Race bovine" 
                         variant="standard" 
-                        options={cattleBreedList}/>
+                        options={cattleBreedList}
+                        disabled={disabled}/>
                 </div>
                 <div>
                     <CheckboxElement
                         name='labelRougeCertified' 
-                        label="Label rouge"/>
+                        label="Label rouge"
+                        disabled={disabled}/>
                 </div>
             </div>
         </FormContainer>
-        <div>
-            <ButtonGroup>
-                <Button onClick={form.handleSubmit(validFormCallback)} variant="contained" size="small">Valider</Button>
-                <Button onClick={cancelFormCallback} variant="outlined" size="small">Abandonner</Button>
-            </ButtonGroup>
-        </div>
     </>
 }
+
+export function mapBreedingFormDataToBeefProduction(breedingFormData, beefProduction) {
+    return {
+        ...beefProduction,
+        birthDate: breedingFormData.birthDate,
+        birthFarm: breedingFormData.birthFarm,
+        birthPlace: breedingFormData.birthPlace,
+        animalIdentifier: breedingFormData.animalIdentifier,
+        animalType: breedingFormData.animalType,
+        cattleBreed: breedingFormData.cattleBreed,
+        labelRougeCertified: breedingFormData.labelRougeCertified
+    }
+}
+
+export default BreedingPropertiesForm

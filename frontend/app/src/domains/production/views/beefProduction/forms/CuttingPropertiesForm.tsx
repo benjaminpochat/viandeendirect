@@ -5,47 +5,48 @@ import { FormContainer, DatePickerElement, TextFieldElement, useForm } from 'rea
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
 import dayjs from 'dayjs'
 
-export default function CuttingPropertiesForm({
-    beefProduction: beefProduction, 
-    validFormCallback: validFormCallback, 
-    cancelFormCallback: cancelFormCallback}) {
-
-    const form = useForm<BeefProduction>({defaultValues: {
-        ...beefProduction,
-        birthDate: dayjs(beefProduction.birthDate),
-        slaughterDate: dayjs(beefProduction.slaughterDate),
-        cuttingDate: dayjs(beefProduction.cuttingDate)
-    }})
+export function CuttingPropertiesForm({
+    form: form,
+    disabled: disabled = false,
+    minCuttingDate: minCuttingDate = undefined}) {
     
-    return <FormContainer onSuccess={validFormCallback} formContext={form}>
+    return <FormContainer formContext={form}>
         <div className="form">
             <div>
                 <DatePickerElement
                     name="cuttingDate"
                     validation={{ required: 'Champ obligatoire' }}
                     label="Date de la découpe" 
-                    minDate={beefProduction.slaughterDate}/>
+                    minDate={minCuttingDate ? dayjs(minCuttingDate) : undefined}
+                    disabled={disabled}/>
             </div>
             <div>
                 <TextFieldElement
                     name="cuttingButcher"
                     validation={{ required: 'Champ obligatoire' }}
                     label="Boucherie"
-                    variant="standard" />
+                    variant="standard"
+                    disabled={disabled}/>
             </div>
             <div>
                 <TextFieldElement
                     name="cuttingPlace"
                     validation={{ required: 'Champ obligatoire' }}
                     label="Commune de la découpe"
-                    variant="standard" />
-            </div>
-            <div>
-                <ButtonGroup>
-                    <Button type='submit' variant="contained" size="small">Valider</Button>
-                    <Button variant="outlined" size="small" onClick={cancelFormCallback}>Abandonner</Button>
-                </ButtonGroup>
+                    variant="standard"
+                    disabled={disabled}/>
             </div>
         </div>
     </FormContainer>
 }
+
+export function mapCuttingFormDataToBeefProduction(cuttingFormData, beefProduction) {
+    return {
+        ...beefProduction,
+        cuttingDate: cuttingFormData.cuttingDate,
+        cuttingPlace: cuttingFormData.cuttingPlace,
+        cuttingButcher: cuttingFormData.cuttingButcher
+    }
+}
+
+export default CuttingPropertiesForm

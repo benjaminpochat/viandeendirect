@@ -11,10 +11,12 @@ import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import { useKeycloak } from '@react-keycloak/web'
 
 import PackageLotsCreator from "../PackageLotsCreator.tsx"
-import BreedingPropertiesForm from "./forms/BreedingPropertiesForm.tsx"
-import SlaughterPropertiesForm from "./forms/SlaughterPropertiesForm.tsx"
-import CuttingPropertiesForm from "./forms/CuttingPropertiesForm.tsx"
+import {BreedingPropertiesForm, mapBreedingFormDataToBeefProduction as mapBreedingFormDataToBeefProduction} from "./forms/BreedingPropertiesForm.tsx"
+import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from "./forms/SlaughterPropertiesForm.tsx"
+import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from "./forms/CuttingPropertiesForm.tsx"
 import { BeefProductionService } from "../../service/BeefProductionService.ts"
+import { useForm } from "react-hook-form"
+import dayjs from "dayjs"
 
 export default function BeefProductionCreator({ callback }) {
 
@@ -29,6 +31,21 @@ export default function BeefProductionCreator({ callback }) {
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const apiBuilder = new ApiBuilder()
 
+    const breedingPropertiesForm = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        birthDate: beefProduction.birthDate ? dayjs(beefProduction.birthDate) : undefined
+    }})
+
+    const slaughterPropertiesForm = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        slaughterDate: beefProduction.slaughterDate ? dayjs(beefProduction.slaughterDate) : undefined
+    }})
+
+    const cuttingPropertiesForm = useForm<BeefProduction>({defaultValues: {
+        ...beefProduction,
+        cuttingDate: beefProduction.cuttingDate ? dayjs(beefProduction.cuttingDate) : undefined
+    }})
+
     return <>
             <Typography variant="h6">Nouvel abattage bovin</Typography>
             <Stepper activeStep={activeStep} orientation="vertical">
@@ -38,7 +55,11 @@ export default function BeefProductionCreator({ callback }) {
                     completed={completedSteps?.includes(BREEDING_PROPERTIES_STEP)}>
                     <StepButton onClick={() => setActiveStep(BREEDING_PROPERTIES_STEP)}>Informations sur l'élevage</StepButton>
                     <StepContent>
-                        <BreedingPropertiesForm beefProduction={beefProduction} validFormCallback={validateBreedingProperties} cancelFormCallback={() => cancel()}/>
+                        <BreedingPropertiesForm form={breedingPropertiesForm}/>
+                        <ButtonGroup>
+                            <Button onClick={breedingPropertiesForm.handleSubmit(validateBreedingProperties)} variant="contained" size="small">Valider</Button>
+                            <Button onClick={cancel} variant="outlined" size="small">Abandonner</Button>
+                        </ButtonGroup>
                     </StepContent>
                 </Step>
                 <Step 
@@ -47,7 +68,11 @@ export default function BeefProductionCreator({ callback }) {
                     completed={completedSteps?.includes(SLAUGHTER_PROPERTIES_STEP)}>
                     <StepButton onClick={() => setActiveStep(SLAUGHTER_PROPERTIES_STEP)}>Informations sur l'abattage</StepButton>
                     <StepContent>
-                        <SlaughterPropertiesForm beefProduction={beefProduction} validFormCallback={validateSlaughterProperties} cancelFormCallback={() => cancel()}/>
+                        <SlaughterPropertiesForm form={slaughterPropertiesForm} minSlaughterDate={beefProduction.birthDate}/>
+                        <ButtonGroup>
+                            <Button onClick={slaughterPropertiesForm.handleSubmit(validateSlaughterProperties)} variant="contained" size="small">Valider</Button>
+                            <Button onClick={cancel} variant="outlined" size="small">Abandonner</Button>
+                        </ButtonGroup>
                     </StepContent>
                 </Step>
                 <Step 
@@ -56,7 +81,12 @@ export default function BeefProductionCreator({ callback }) {
                     completed={completedSteps?.includes(CUTTING_PROPERTIES_STEP)}>
                     <StepButton onClick={() => setActiveStep(CUTTING_PROPERTIES_STEP)}>Information sur la découpe</StepButton>
                     <StepContent onClick={() => setActiveStep(CUTTING_PROPERTIES_STEP)}>
-                        <CuttingPropertiesForm beefProduction={beefProduction} validFormCallback={validateCuttingProperties} cancelFormCallback={() => cancel()}/>
+                        <CuttingPropertiesForm form={cuttingPropertiesForm} minCuttingDate={beefProduction.slaughterDate}/>
+                        <ButtonGroup>
+                            <Button onClick={cuttingPropertiesForm.handleSubmit(validateCuttingProperties)} variant="contained" size="small">Valider</Button>
+                            <Button onClick={cancel} variant="outlined" size="small" >Abandonner</Button>
+                        </ButtonGroup>
+
                     </StepContent>
                 </Step>
                 <Step 
@@ -83,54 +113,27 @@ export default function BeefProductionCreator({ callback }) {
         </>            
 
     function validateBreedingProperties(breedingFormData) {
-        const beefProductionUpdated = {
-            ...beefProduction,
-            birthDate: breedingFormData.birthDate,
-            birthFarm: breedingFormData.birthFarm,
-            birthPlace: breedingFormData.birthPlace,
-            animalIdentifier: breedingFormData.animalIdentifier,
-            animalType: breedingFormData.animalType,
-            cattleBreed: breedingFormData.cattleBreed,
-            labelRougeCertified: breedingFormData.labelRougeCertified
-        }
-        const updateCompletedSteps = [...completedSteps, BREEDING_PROPERTIES_STEP]
-        setBeefProduction(beefProductionUpdated)
-        setCompletedSteps(updateCompletedSteps)
-        console.debug(beefProductionUpdated)
-        console.debug(updateCompletedSteps)
+        setBeefProduction(mapBreedingFormDataToBeefProduction(breedingFormData, beefProduction))
+        setCompletedSteps([...completedSteps, BREEDING_PROPERTIES_STEP])
         setActiveStep(SLAUGHTER_PROPERTIES_STEP)
     }
 
     function validateSlaughterProperties(slaughterFormData) {
-        const beefProductionUpdated = {
-            ...beefProduction,
-            slaughterDate: slaughterFormData.slaughterDate,
-            slaughterHouse: slaughterFormData.slaughterHouse,
-            slaughterPlace: slaughterFormData.slaughterPlace,
-            warmCarcassWeight: slaughterFormData.warmCarcassWeight
-        }
-        setBeefProduction(beefProductionUpdated)
-        console.debug(beefProductionUpdated)
+        setBeefProduction(mapSlaughterFormDataToBeefProduction(slaughterFormData, beefProduction))
         setCompletedSteps([...completedSteps, SLAUGHTER_PROPERTIES_STEP])
         setActiveStep(CUTTING_PROPERTIES_STEP)
     }
 
     function validateCuttingProperties(cuttingFormData) {
-        const beefProductionUpdated = {
-            ...beefProduction,
-            cuttingDate: cuttingFormData.cuttingDate,
-            cuttingPlace: cuttingFormData.cuttingPlace,
-            cuttingButcher: cuttingFormData.cuttingButcher
-        }
-        setBeefProduction(beefProductionUpdated)
-        console.debug(beefProductionUpdated)
+        setBeefProduction(mapCuttingFormDataToBeefProduction(cuttingFormData, beefProduction))
         setCompletedSteps([...completedSteps, CUTTING_PROPERTIES_STEP])
         setActiveStep(PRODUCTS_STEP)
     }
 
     function displayAlerts() {
         if(!isTotalQuantitySoldLowerThanMeatWeight()) {
-            return <Alert severity="error">Le poids total des produits préparés ne doit pas dépasser la quantité de viande de l'animal.</Alert>
+            const meatQuantity = BeefProductionService.getMeatWeight(beefProduction.warmCarcassWeight)
+            return <Alert severity="error">Le poids total des produits préparés ne doit pas dépasser la quantité de viande de l'animal estimée à {meatQuantity} kg.</Alert>
         }
     }
 

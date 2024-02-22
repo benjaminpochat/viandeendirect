@@ -52,8 +52,6 @@ export default function BeefProductionCard({
         if (showActions) {
             return <CardActions>
                 <Button size="small">Mettre en vente</Button>
-                <Button size="small">Ajuster le poids vif</Button>
-                <Button size="small" onClick={() => viewBeefProductionCallback(beefProduction)}>Modifier les produits</Button>
             </CardActions>
         }
     }
