@@ -9,7 +9,10 @@ import { FormContainer, TextFieldElement, TextareaAutosizeElement, useForm } fro
  * @param {PackageLot} lot 
  * @returns 
  */
-export default function PackageLotConfigurator({ packageLot: packageLot, changeCallback: changeCallback }) {
+export default function PackageLotConfigurator({ 
+    packageLot: packageLot, 
+    changeCallback: changeCallback,
+    disabled: disabled = false }) {
     const [quantity, setQuantity] = useState<number>(packageLot.quantity)
     const [editionPopinOpen, setEditionPopinOpen] = useState<boolean>(false)
     const form = useForm({
@@ -24,25 +27,22 @@ export default function PackageLotConfigurator({ packageLot: packageLot, changeC
     return <div>
         <div className="lot">
             <div className="lot__package">
-                <div className="lot__package__name"><span>{packageLot.label}</span><EditIcon className="lot__package__edit" onClick={openEditionPopin} /></div>
+                <div className="lot__package__name">
+                    <span>{packageLot.label}</span>
+                    {displayEditionButton()}
+                </div>
                 <div className="lot__package__description">{packageLot.description}</div>
                 <div className="lot__package__net-weight">{packageLot.netWeight} kg</div>
                 <div className="lot__package__unit-price">{packageLot.unitPrice} € <sup>TTC</sup>/kg</div>
             </div>
-            <div className="lot__quantity-actions-remove">
-                <Button variant="contained" onClick={() => removePackages(10)}>-10</Button>
-                <Button variant="contained" onClick={() => removePackages(1)} > -1</Button>
-            </div >
+            {displayRemovePackagesButtons()}
             <div className="lot__summary">
                 <div className="lot__summary__package-number">{quantity}</div>
                 <div className="lot__summary__label">colis mis en vente</div>
                 <div className="lot__summary__total-quantity">{quantity * packageLot.netWeight} kg</div>
                 <div className="lot__summary__total-price">{quantity * packageLot.netWeight * packageLot.unitPrice} € <sup>TTC</sup></div>
             </div>
-            <div className="lot__quantity-actions-add">
-                <Button variant="contained" onClick={() => addPackages(10)}>+10</Button>
-                <Button variant="contained" onClick={() => addPackages(1)}> +1</Button >
-            </div>
+            {displayAddPackagesButtons()}
         </div>
         <Dialog
             open={editionPopinOpen}
@@ -96,6 +96,30 @@ export default function PackageLotConfigurator({ packageLot: packageLot, changeC
         </Dialog>
     </div>
 
+    function displayEditionButton() {
+        if (!disabled) {
+            return <EditIcon className="lot__package__edit" onClick={openEditionPopin} />
+        }
+    }
+
+    function displayAddPackagesButtons() {
+        if (!disabled) {
+            return  <div className="lot__quantity-actions-add">
+                        <Button variant="contained" onClick={() => addPackages(10)} disabled={disabled}>+10</Button>
+                        <Button variant="contained" onClick={() => addPackages(1)} disabled={disabled}> +1</Button >
+                    </div>
+        }
+    }
+
+    function displayRemovePackagesButtons() {
+        if (!disabled) {
+            return  <div className="lot__quantity-actions-remove">
+                        <Button variant="contained" onClick={() => removePackages(10)} disabled={disabled}>-10</Button>
+                        <Button variant="contained" onClick={() => removePackages(1)} disabled={disabled}> -1</Button>
+                    </div >
+        }
+    }
+
     /**
      * @param {number} quantity 
      */
@@ -115,7 +139,6 @@ export default function PackageLotConfigurator({ packageLot: packageLot, changeC
     }
 
     function openEditionPopin() {
-        //form.reset()
         setEditionPopinOpen(true)
     }
 

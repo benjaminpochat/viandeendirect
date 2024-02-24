@@ -6,7 +6,10 @@ import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 import PackageLotConfigurator from "../components/PackageLotConfigurator.tsx"
 
 
-export default function PackageLotsCreator({ production: production, changeProductionCallback: changeProductionCallback }) {
+export default function PackageLotsCreator({ 
+    production: production, 
+    changeProductionCallback: changeProductionCallback,
+    disabled: disabled = false }) {
 
     const { keycloak } = useKeycloak()
     const apiBuilder = new ApiBuilder()
@@ -40,10 +43,13 @@ export default function PackageLotsCreator({ production: production, changeProdu
     }, [keycloak])
 
     return <>
-        {production.lots?.map(lot => <PackageLotConfigurator packageLot={lot} changeCallback={changeLotConfiguration}></PackageLotConfigurator>)}
+        {production.lots?.map(lot => <PackageLotConfigurator 
+            packageLot={lot} 
+            changeCallback={changeLotConfiguration}
+            disabled={disabled}/>)}
     </>
 
-    function changeLotConfiguration(lot) {
+    function changeLotConfiguration() {
         changeProductionCallback({ ...production })
     }
 }

@@ -86,7 +86,6 @@ export default function BeefProductionCreator({ callback }) {
                             <Button onClick={cuttingPropertiesForm.handleSubmit(validateCuttingProperties)} variant="contained" size="small">Valider</Button>
                             <Button onClick={cancel} variant="outlined" size="small" >Abandonner</Button>
                         </ButtonGroup>
-
                     </StepContent>
                 </Step>
                 <Step 

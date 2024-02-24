@@ -7,6 +7,7 @@ import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from './for
 import { useForm } from 'react-hook-form'
 import dayjs from 'dayjs'
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
+import PackageLotsCreator from '../PackageLotsCreator.tsx'
 
 export default function BeefProductionView({ beefProduction: beefProduction, backCallback: backCallback }) {
 
@@ -67,6 +68,13 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                     minCuttingDate={production.slaughterDate} />
             </div>
             <div hidden={currentTab !== 3}>
+                <div>
+                    <PackageLotsCreator 
+                        production={production} 
+                        changeProductionCallback={setProduction}
+                        disabled={readOnly}/>
+                </div>
+
             </div>
             {getButtons()}
     </>
@@ -101,6 +109,11 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                     setProduction(mapCuttingFormDataToBeefProduction(cuttingFormData, production))
                     setReadOnly(true) 
                 })
+            case PRODUCTS_TAB:
+                return () => {
+                    setReadOnly(true) 
+                    //setProduction()
+                }
         }
     }
 
@@ -121,6 +134,8 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                     setProduction(beefProduction)
                     setReadOnly(true)
                 })
+            case PRODUCTS_TAB:
+                setReadOnly(true) 
         }
     }
 }
