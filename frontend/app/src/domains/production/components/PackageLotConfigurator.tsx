@@ -10,17 +10,18 @@ import { FormContainer, TextFieldElement, TextareaAutosizeElement, useForm } fro
  * @returns 
  */
 export default function PackageLotConfigurator({ 
-    packageLot: packageLot, 
-    changeCallback: changeCallback,
-    disabled: disabled = false }) {
-    const [quantity, setQuantity] = useState<number>(packageLot.quantity)
+    lot: lot, 
+    disabled: disabled = false,
+    changeQuantitySoldCallback: changeQuantitySoldCallback }) {
+    
+    const [quantity, setQuantity] = useState<number>(lot.quantity)
     const [editionPopinOpen, setEditionPopinOpen] = useState<boolean>(false)
     const form = useForm({
         defaultValues: {
-            label: packageLot.label,
-            description: packageLot.description,
-            netWeight: packageLot.netWeight,
-            unitPrice: packageLot.unitPrice
+            label: lot.label,
+            description: lot.description,
+            netWeight: lot.netWeight,
+            unitPrice: lot.unitPrice
         }
     })
 
@@ -28,19 +29,19 @@ export default function PackageLotConfigurator({
         <div className="lot">
             <div className="lot__package">
                 <div className="lot__package__name">
-                    <span>{packageLot.label}</span>
+                    <span>{lot.label}</span>
                     {displayEditionButton()}
                 </div>
-                <div className="lot__package__description">{packageLot.description}</div>
-                <div className="lot__package__net-weight">{packageLot.netWeight} kg</div>
-                <div className="lot__package__unit-price">{packageLot.unitPrice} € <sup>TTC</sup>/kg</div>
+                <div className="lot__package__description">{lot.description}</div>
+                <div className="lot__package__net-weight">{lot.netWeight} kg</div>
+                <div className="lot__package__unit-price">{lot.unitPrice} € <sup>TTC</sup>/kg</div>
             </div>
             {displayRemovePackagesButtons()}
             <div className="lot__summary">
-                <div className="lot__summary__package-number">{quantity}</div>
+                <div className="lot__summary__package-number">{lot.quantity}</div>
                 <div className="lot__summary__label">colis mis en vente</div>
-                <div className="lot__summary__total-quantity">{quantity * packageLot.netWeight} kg</div>
-                <div className="lot__summary__total-price">{quantity * packageLot.netWeight * packageLot.unitPrice} € <sup>TTC</sup></div>
+                <div className="lot__summary__total-quantity">{lot.quantity * lot.netWeight} kg</div>
+                <div className="lot__summary__total-price">{lot.quantity * lot.netWeight * lot.unitPrice} € <sup>TTC</sup></div>
             </div>
             {displayAddPackagesButtons()}
         </div>
@@ -124,18 +125,18 @@ export default function PackageLotConfigurator({
      * @param {number} quantity 
      */
     function addPackages(quantity) {
-        packageLot.quantity += quantity
-        setQuantity(packageLot.quantity)
-        changeCallback(packageLot)
+        lot.quantity += quantity
+        changeQuantitySoldCallback()
+        setQuantity(lot.quantity)
     }
 
     /**
      * @param {number} quantity 
      */
     function removePackages(quantity) {
-        packageLot.quantity -= Math.min(quantity, packageLot.quantity)
-        setQuantity(packageLot.quantity)
-        changeCallback(packageLot)
+        lot.quantity -= Math.min(quantity, lot.quantity)
+        changeQuantitySoldCallback()
+        setQuantity(lot.quantity)
     }
 
     function openEditionPopin() {
@@ -148,20 +149,19 @@ export default function PackageLotConfigurator({
 
     function cancelForm(formData) {
         form.reset({
-            label: packageLot.label,
-            description: packageLot.description,
-            netWeight: packageLot.netWeight,
-            unitPrice: packageLot.unitPrice
+            label: lot.label,
+            description: lot.description,
+            netWeight: lot.netWeight,
+            unitPrice: lot.unitPrice
         })
         closeEditionPopin()
     }
 
     function validForm(formData) {
-        packageLot.label = formData.label
-        packageLot.description = formData.description
-        packageLot.unitPrice = formData.unitPrice
-        packageLot.netWeight = formData.netWeight
-        changeCallback(packageLot)
+        lot.label = formData.label
+        lot.description = formData.description
+        lot.unitPrice = formData.unitPrice
+        lot.netWeight = formData.netWeight
         closeEditionPopin()
     }
 

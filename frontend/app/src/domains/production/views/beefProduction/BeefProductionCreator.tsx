@@ -1,22 +1,19 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
-
-import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton, Alert } from "@mui/material"
-
+import { useForm } from "react-hook-form"
+import dayjs from "dayjs"
 import 'dayjs/locale/fr'
-
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
-
-import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import { useKeycloak } from '@react-keycloak/web'
 
+import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton, Alert } from "@mui/material"
+import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import PackageLotsCreator from "../PackageLotsCreator.tsx"
 import {BreedingPropertiesForm, mapBreedingFormDataToBeefProduction as mapBreedingFormDataToBeefProduction} from "./forms/BreedingPropertiesForm.tsx"
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from "./forms/SlaughterPropertiesForm.tsx"
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from "./forms/CuttingPropertiesForm.tsx"
 import { BeefProductionService } from "../../service/BeefProductionService.ts"
-import { useForm } from "react-hook-form"
-import dayjs from "dayjs"
+import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
+import PackageLot from "viandeendirect_eu/dist/model/PackageLot.js"
 
 export default function BeefProductionCreator({ callback }) {
 
@@ -28,8 +25,33 @@ export default function BeefProductionCreator({ callback }) {
     const { keycloak } = useKeycloak()
     const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
-    const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
+    const [ completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const apiBuilder = new ApiBuilder()
+
+    useEffect(() => {
+        if (! beefProduction.lots) {
+            apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+                apiBuilder.invokeAuthenticatedApi(() => {
+                    api.getPackageTemplates((error, data, response) => {
+                        if (error) {
+                            console.error(error);
+                        } else {
+                            console.log('api.getPackageTemplates called successfully. Returned data: ' + data);
+                            const lots: Array<PackageLot> = []
+                            data.map(template => {
+                                lots.push({
+                                    ...template,
+                                    quantity: 0,
+                                    quantitySold: 0
+                                })
+                            })
+                            setBeefProduction({...beefProduction, lots: lots})
+                        }
+                    })
+                }, keycloak)
+            })
+        }
+    }, [keycloak])
 
     const breedingPropertiesForm = useForm<BeefProduction>({defaultValues: {
         ...beefProduction,
@@ -95,9 +117,8 @@ export default function BeefProductionCreator({ callback }) {
                     <StepButton onClick={() => setActiveStep(PRODUCTS_STEP)}>Produits préparés</StepButton>
                     <StepContent>
                         <div className="form">
-                            {displayAlerts()}
                             <div>
-                                <PackageLotsCreator production={beefProduction} changeProductionCallback={setBeefProduction}></PackageLotsCreator>
+                                <PackageLotsCreator production={beefProduction}></PackageLotsCreator>
                             </div>
                             <div>
                                 <ButtonGroup>
@@ -129,12 +150,6 @@ export default function BeefProductionCreator({ callback }) {
         setActiveStep(PRODUCTS_STEP)
     }
 
-    function displayAlerts() {
-        if(!isTotalQuantitySoldLowerThanMeatWeight()) {
-            const meatQuantity = BeefProductionService.getMeatWeight(beefProduction.warmCarcassWeight)
-            return <Alert severity="error">Le poids total des produits préparés ne doit pas dépasser la quantité de viande de l'animal estimée à {meatQuantity} kg.</Alert>
-        }
-    }
 
     function isTotalQuantitySoldLowerThanMeatWeight() {
         return getTotalQuantitySold() < BeefProductionService.getMeatWeight(beefProduction.warmCarcassWeight)

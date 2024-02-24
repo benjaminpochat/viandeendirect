@@ -1,55 +1,36 @@
-import React from 'react'
-import { useEffect, useState } from "react"
-import { useKeycloak } from '@react-keycloak/web'
-import { ApiBuilder } from '../../../api/ApiBuilder.ts'
-import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
+import React, { useState } from 'react'
 import PackageLotConfigurator from "../components/PackageLotConfigurator.tsx"
+import { BeefProductionService } from '../service/BeefProductionService.ts'
+import { Alert } from '@mui/material'
 
 
-export default function PackageLotsCreator({ 
-    production: production, 
-    changeProductionCallback: changeProductionCallback,
-    disabled: disabled = false }) {
-
-    const { keycloak } = useKeycloak()
-    const apiBuilder = new ApiBuilder()
-
-    useEffect(() => {
-        if (!production.lots) {
-            apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-                apiBuilder.invokeAuthenticatedApi(() => {
-                    api.getPackageTemplates((error, data, response) => {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            console.log('api.getPackageTemplates called successfully. Returned data: ' + data);
-                            const lots = []
-                            data.map(template => {
-                                let lot = new PackageLot()
-                                lot.label = template.label
-                                lot.description = template.description
-                                lot.unitPrice = template.unitPrice
-                                lot.netWeight = template.netWeight
-                                lot.quantity = 0
-                                lot.quantitySold = 0
-                                lots.push(lot)
-                            })
-                            changeProductionCallback({ ...production, lots: lots })
-                        }
-                    })
-                }, keycloak)
-            })
-        }
-    }, [keycloak])
+export default function PackageLotsCreator({
+    production: production,
+    disabled: disabled = false,
+    changeQuantitiesCompliancyCallback: changeQuantitiesCompliancyCallback = (isCompliant) => {}}) {
 
     return <>
-        {production.lots?.map(lot => <PackageLotConfigurator 
-            packageLot={lot} 
-            changeCallback={changeLotConfiguration}
-            disabled={disabled}/>)}
+        {displayAlerts()}
+        {production.lots?.map(lot => <PackageLotConfigurator
+            lot={lot}
+            disabled={disabled}
+            changeQuantitySoldCallback={changeQuantitySold} />)}
     </>
 
-    function changeLotConfiguration() {
-        changeProductionCallback({ ...production })
+    function displayAlerts() {
+        const totalQuantitySold = production.lots?.map(lot => lot.netWeight * lot.quantity).reduce((total, added) => total + added) || 0
+        if (!isTotalQuantitySoldLowerThanMeatWeight(totalQuantitySold)) {
+            const meatQuantity = BeefProductionService.getMeatWeight(production.warmCarcassWeight)
+            return <Alert severity="error">Le poids total des produits préparés ne doit pas dépasser la quantité de viande de l'animal estimée à {meatQuantity} kg.</Alert>
+        }
+    }
+
+    function isTotalQuantitySoldLowerThanMeatWeight(totalQuantitySoldUpdated) {
+        return totalQuantitySoldUpdated < BeefProductionService.getMeatWeight(production.warmCarcassWeight)
+    }
+
+    function changeQuantitySold() {
+        const totalQuantitySold = production.lots?.map(lot => lot.netWeight * lot.quantity).reduce((total, added) => total + added) || 0
+        changeQuantitiesCompliancyCallback(isTotalQuantitySoldLowerThanMeatWeight(totalQuantitySold))
     }
 }
