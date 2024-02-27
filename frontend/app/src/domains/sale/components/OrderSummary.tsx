@@ -39,7 +39,7 @@ export default function OrderSummary({ order: order }) {
     }
 
     function orderTotalPrice(order: Order): String {
-        return order.items.map(item => item.quantity * item.packageLot.quantity * item.packageLot.unitPrice)
+        return order.items?.map(item => item.quantity * item.packageLot.netWeight * item.unitPrice)
             .reduce((totalPrice, itemPrice) => totalPrice + itemPrice)
     }
 }

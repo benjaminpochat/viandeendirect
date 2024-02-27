@@ -178,7 +178,7 @@ export class MockApiSales {
                     }
                 }, {
                     id: 222,
-                    unitPrice: 160,
+                    unitPrice: 16,
                     quantity: 1,
                     packageLot: {
                         id: 2,

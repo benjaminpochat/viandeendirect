@@ -20,11 +20,11 @@ export default function CustomersList() {
     function loadCustomers() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
             apiBuilder.invokeAuthenticatedApi(() => {
-                api.getCustomers((error, data, response) => {
+                api.getProducerCustomers((error, data, response) => {
                     if (error) {
                         console.error(error)
                     } else {
-                        console.log('api.getSales called successfully. Returned data: ' + data)
+                        console.log('api.getProducerCustomers called successfully. Returned data: ' + data)
                         setCustomers(data)
                     }
                 })
