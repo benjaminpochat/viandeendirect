@@ -1,5 +1,7 @@
 [![Java CI with Maven](https://github.com/benjaminpochat/viandeendirect/actions/workflows/maven.yml/badge.svg)](https://github.com/benjaminpochat/viandeendirect/actions/workflows/maven.yml)
 
+[![Node.js CI](https://github.com/benjaminpochat/viandeendirect/actions/workflows/node.js.yml/badge.svg)](https://github.com/benjaminpochat/viandeendirect/actions/workflows/node.js.yml)
+
 # viandeendirect
 
 ## Notes for developping
