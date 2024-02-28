@@ -26,6 +26,7 @@ export default function BeefProductionCreator({ callback }) {
     const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
     const [ completedSteps, setCompletedSteps] = useState<Array<number>>([])
+    const [ saveEnabled, setSaveEnabled] = useState<boolean>(false)
     const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
@@ -41,6 +42,7 @@ export default function BeefProductionCreator({ callback }) {
                             data.map(template => {
                                 lots.push({
                                     ...template,
+                                    id: undefined,
                                     quantity: 0,
                                     quantitySold: 0
                                 })
@@ -118,11 +120,11 @@ export default function BeefProductionCreator({ callback }) {
                     <StepContent>
                         <div className="form">
                             <div>
-                                <PackageLotsCreator production={beefProduction}></PackageLotsCreator>
+                                <PackageLotsCreator production={beefProduction} changeQuantitiesCompliancyCallback={setSaveEnabled}></PackageLotsCreator>
                             </div>
                             <div>
                                 <ButtonGroup>
-                                    <Button type='submit' variant="contained" size="small" onClick={() => validate() } disabled={!isTotalQuantitySoldLowerThanMeatWeight() || getTotalQuantitySold() === 0}>Valider</Button>
+                                    <Button type='submit' variant="contained" size="small" onClick={() => validate() } disabled={!saveEnabled}>Valider</Button>
                                     <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
                                 </ButtonGroup>
                             </div>

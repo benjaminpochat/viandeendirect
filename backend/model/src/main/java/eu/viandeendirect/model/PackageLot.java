@@ -8,7 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Production;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -31,6 +34,8 @@ public class PackageLot {
 
   @JsonProperty("id")
   @jakarta.persistence.Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_lot_id_generator")
+  @SequenceGenerator(name="package_lot_id_generator", sequenceName = "package_lot_id_seq", allocationSize = 1)
   private Integer id;
 
   @JsonProperty("production")
