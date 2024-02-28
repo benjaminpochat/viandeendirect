@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render without error 1`] = `
+<div
+  className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-bhp9pd-MuiPaper-root-MuiCard-root"
+>
+  <button
+    className="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
+    disabled={false}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onDragLeave={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyUp={[Function]}
+    onMouseDown={[Function]}
+    onMouseLeave={[Function]}
+    onMouseUp={[Function]}
+    onTouchEnd={[Function]}
+    onTouchMove={[Function]}
+    onTouchStart={[Function]}
+    tabIndex={0}
+    type="button"
+  >
+    <div
+      className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
+    >
+      <p
+        className="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-1ydyjjr-MuiTypography-root"
+      >
+        Abattage bovin
+      </p>
+      <div
+        className="MuiTypography-root MuiTypography-subtitle1 css-10wpov9-MuiTypography-root"
+      >
+        Abattage le 
+        01/02/2024
+      </div>
+      <div
+        className="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+      >
+        Poids de carcasse chaude : 
+        350
+         kg
+      </div>
+    </div>
+    <span
+      className="MuiCardActionArea-focusHighlight css-1v2exvi-MuiCardActionArea-focusHighlight"
+    />
+  </button>
+</div>
+`;

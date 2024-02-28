@@ -38,6 +38,7 @@
     "start:mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:8080",
@@ -67,6 +68,14 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "dotenv": "^16.3.1",
+    "react-test-renderer": "^18.2.0",
     "typescript": "^5.2.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
   }
 }
