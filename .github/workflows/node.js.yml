@@ -23,7 +23,7 @@ jobs:
     - name: Install js openapi-generator client
       run: npm install @openapitools/openapi-generator-cli@2.6.0 -g
     - name: Generate js code from openapi
-      run: 
+      run: |
         cd ../..
         bash scripts/dev/generate-client-code-from-openapi.sh
     - name: Clean and install dependencies
