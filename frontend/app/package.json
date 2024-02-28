@@ -37,8 +37,9 @@
     "start": "react-scripts start",
     "start:mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "coverage": "react-scripts test --coverage",
+    "test": "react-scripts test --watchAll=false",
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
+    "test:update": "react-scripts test --watchAll=false -u",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:8080",
