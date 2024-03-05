@@ -1,13 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Typography, ButtonGroup, Button, Tab, Tabs } from '@mui/material'
+import { Typography, ButtonGroup, Button, Tab, Tabs, Alert } from '@mui/material'
 import dayjs from 'dayjs'
 import BreedingPropertiesForm, { mapBreedingFormDataToBeefProduction } from './forms/BreedingPropertiesForm.tsx'
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from './forms/SlaughterPropertiesForm.tsx'
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from './forms/CuttingPropertiesForm.tsx'
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
+import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
+import { useKeycloak } from '@react-keycloak/web'
 
 export default function BeefProductionView({ beefProduction: beefProduction, backCallback: backCallback }) {
 
@@ -16,6 +18,9 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
     const CUTTING_PROPERTIES_TAB = 2
     const PRODUCTS_TAB = 3
 
+    const apiInvoker = new ApiInvoker()
+    const { keycloak } = useKeycloak()
+
     const [currentTab, setCurrentTab] = useState<number>(BREEDING_PROPERTIES_TAB)
     const [readOnly, setReadOnly] = useState<boolean>(true)
     const [production, setProduction] = useState<BeefProduction>(
@@ -23,6 +28,7 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
             lots: beefProduction.lots ? beefProduction.lots.map((lot) => {return {...lot}}) : undefined
         })
     const [saveEnabled, setSaveEnabled] = useState<boolean>(true)
+    const [alerts, setAlerts] = useState<string>(undefined)
 
     const changeTab = (event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
@@ -51,6 +57,7 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                 <Tab label="Découpe" disabled={!readOnly}/>
                 <Tab label="Colis" disabled={!readOnly}/>
             </Tabs>
+            {displayAlerts()}
             <div hidden={currentTab !== 0}>
                 <BreedingPropertiesForm 
                     form={breedingPropertiesForm} 
@@ -90,36 +97,49 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
             </ButtonGroup>
         }
         return <ButtonGroup>
-                <Button variant="contained" size="small" onClick={saveUpdate()} disabled={!saveEnabled}>Sauvegarder</Button>
+                <Button variant="contained" size="small" onClick={handleSave()} disabled={!saveEnabled}>Sauvegarder</Button>
                 <Button variant="outlined" size="small" onClick={cancelUpdate} >Abandonner</Button>
             </ButtonGroup>
     }
 
-    function saveUpdate() {
+    function handleSave() {
         switch (currentTab) {
             case BREEDING_PROPERTIES_TAB: 
                 return breedingPropertiesForm.handleSubmit((breedingFormData) => {
-                    setProduction(mapBreedingFormDataToBeefProduction(breedingFormData, production))
-                    setReadOnly(true)
+                    const updatedProduction = mapBreedingFormDataToBeefProduction(breedingFormData, production)
+                    setProduction(updatedProduction)
+                    saveProduction(updatedProduction)
             })
             case SLAUGHTER_PROPERTIES_TAB: 
                 return slaughterPropertiesForm.handleSubmit((slaughterFormData) => {
-                    setProduction(mapSlaughterFormDataToBeefProduction(slaughterFormData, production))
-                    setReadOnly(true) 
+                    const updatedProduction = mapSlaughterFormDataToBeefProduction(slaughterFormData, production)
+                    setProduction(updatedProduction)
+                    saveProduction(updatedProduction)
                 })
             case CUTTING_PROPERTIES_TAB:
                 return cuttingPropertiesForm.handleSubmit((cuttingFormData) => {
-                    setProduction(mapCuttingFormDataToBeefProduction(cuttingFormData, production))
-                    setReadOnly(true) 
+                    const updatedProduction = mapCuttingFormDataToBeefProduction(cuttingFormData, production)
+                    setProduction(updatedProduction)
+                    saveProduction(updatedProduction)
                 })
             case PRODUCTS_TAB:
-                return () => {
-                    setReadOnly(true) 
-                }
+                return () => saveProduction(production)
         }
     }
 
+    function saveProduction(updatedProduction) {
+        setAlerts(undefined)
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.createBeefProduction, 
+            updatedProduction, 
+            () => setReadOnly(true),
+            error => setAlerts(error.response.body.message)
+        )
+    }
+
     function cancelUpdate() {
+        setAlerts(undefined)
         switch (currentTab) {
             case BREEDING_PROPERTIES_TAB: 
                 return breedingPropertiesForm.reset(() => {
@@ -146,6 +166,12 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                 })
                 setSaveEnabled(true)
                 setReadOnly(true) 
+        }
+    }
+
+    function displayAlerts() {
+        if (alerts) {
+            return <Alert severity="error">{alerts}</Alert>
         }
     }
 }

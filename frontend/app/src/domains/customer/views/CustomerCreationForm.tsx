@@ -15,7 +15,7 @@ export default function CustomerCreationForm({returnCallback: returnCallback, cu
         customer.user.firstName = userFormData.firstName
         customer.user.email = userFormData.email
         customer.user.phone = userFormData.phone
-        apiInvoker.callApiAuthenticatedly(api => api.createCustomer, customer, returnCallback, keycloak)
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createCustomer, customer, returnCallback)
     }
 
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

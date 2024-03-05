@@ -45,10 +45,12 @@ export default function ProductionsList({
 
 
     function getProductionCards() {
-        return productions.map(production => <ProductionCard 
-                                                production={production} 
-                                                showActions={true} 
-                                                viewBeefProductionCallback={viewBeefProductionCallback}> 
-                                            </ProductionCard>)
+        return productions.map(production => <div className='card-clickable'>
+                                                <ProductionCard 
+                                                    production={production} 
+                                                    showActions={true} 
+                                                    clickCallback={viewBeefProductionCallback}> 
+                                                </ProductionCard>
+                                            </div>)
     }
 }

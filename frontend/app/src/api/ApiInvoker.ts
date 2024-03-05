@@ -4,24 +4,24 @@ export class ApiInvoker {
 
     apiBuilder = new ApiBuilder()
 
-    callApiAnonymously(getApiFunction, arg, callBackFunction) {
+    callApiAnonymously(getApiFunction, arg, successCallbackFunction, errorCallbackFunction) {
         this.apiBuilder.getAnonymousApi().then(api => {
             this.apiBuilder.invokeAnonymousApi(() => {
                 const apiFunction = getApiFunction(api)
                 if (arg) {
                     apiFunction.call(api, arg, (error, data) => {
                         if (error) {
-                            console.error(error)
+                            errorCallbackFunction(error)
                         } else {
-                            callBackFunction(data)
+                            successCallbackFunction(data)
                         }
                     })
                 } else {
                     apiFunction.call(api, (error, data) => {
                         if (error) {
-                            console.error(error)
+                            errorCallbackFunction(error)
                         } else {
-                            callBackFunction(data)
+                            successCallbackFunction(data)
                         }
                     })
                 }
@@ -29,24 +29,24 @@ export class ApiInvoker {
         })
     }
 
-    callApiAuthenticatedly(getApiFunction, arg, callBackFunction, keycloak) {
+    callApiAuthenticatedly(keycloak, getApiFunction, arg, successCallbackFunction, errorCallbackFunction) {
         this.apiBuilder.getAuthenticatedApi(keycloak).then(api => {
             this.apiBuilder.invokeAuthenticatedApi(() => {
                 const apiFunction = getApiFunction(api)
                 if (arg) {
                     apiFunction.call(api, arg, (error, data) => {
                         if (error) {
-                            console.error(error)
+                            errorCallbackFunction(error)
                         } else {
-                            callBackFunction(data)
+                            successCallbackFunction(data)
                         }
                     })
                 } else {
                     apiFunction.call(api, (error, data) => {
                         if (error) {
-                            console.error(error)
+                            errorCallbackFunction(error)
                         } else {
-                            callBackFunction(data)
+                            successCallbackFunction(data)
                         }
                     })
                 }

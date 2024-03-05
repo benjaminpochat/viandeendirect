@@ -30,7 +30,7 @@ export default function CustomerLayout() {
     useEffect(() => {
         if (initialized) {
             if (authenticationService.isAuthenticated() && !customer) {
-                apiInvoker.callApiAuthenticatedly(api => api.getCustomer, {"email": authenticationService.getCurrentUserEmail()}, aCustomer => initCustomer(aCustomer), keycloak)
+                apiInvoker.callApiAuthenticatedly(keycloak, api => api.getCustomer, {"email": authenticationService.getCurrentUserEmail()}, aCustomer => initCustomer(aCustomer))
             }
         }
     }, [initialized])

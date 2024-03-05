@@ -24,7 +24,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     const CONFIRMATION_STEP = 3
     const PAYMENT_STEP = 4
 
-    const { keycloak, initialized } = useKeycloak()
+    const { keycloak } = useKeycloak()
     const apiInvoker = new ApiInvoker()
     const authenticationService = new AuthenticationService(keycloak)
     
@@ -171,7 +171,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function createOrder(order: Order) {
-        apiInvoker.callApiAuthenticatedly(api => api.createOrder, order, () => {}, keycloak)
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrder, order, () => {})
     }
 
     function toggleConditionApproved() {

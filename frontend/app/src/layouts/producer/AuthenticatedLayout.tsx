@@ -26,7 +26,7 @@ function AuthenticatedLayout() {
     const authenticationService = new AuthenticationService(keycloak)
 
     useEffect(() => {
-      apiInvoker.callApiAuthenticatedly(api => api.getProducer, {'email': authenticationService.getCurrentUserEmail()}, setProducer, keycloak)
+      apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducer, {'email': authenticationService.getCurrentUserEmail()}, setProducer)
     }, [keycloak])
 
     const sideMenuWidth = 240;

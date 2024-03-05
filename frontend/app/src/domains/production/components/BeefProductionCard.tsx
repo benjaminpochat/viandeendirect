@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 export default function BeefProductionCard({
     production: production, 
     showActions: showActions, 
-    viewBeefProductionCallback: viewBeefProductionCallback}) {
+    clickCallback: clickCallback}) {
 
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
@@ -31,7 +31,7 @@ export default function BeefProductionCard({
 
     return (
         <Card>
-            <CardActionArea onClick={() => viewBeefProductionCallback(beefProduction)}>
+            <CardActionArea onClick={() => clickCallback(beefProduction)}>
                 <CardContent>
                     <Typography color="text.secondary" gutterBottom>
                         Abattage bovin

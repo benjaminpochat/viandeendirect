@@ -33,11 +33,12 @@ export default function SaleProductionSelector({selectProduction: selectProducti
     }
 
     return productionsForSale.map(production => {
-        return <div className='card-clickable' onClick={() => handleProductSelection(production)}>
+        return <div className='card-clickable'>
                     <ProductionCard 
                         key={'production-card-' + production.id} 
                         production={production} 
-                        showActions={false}>
+                        showActions={false}
+                        clickCallback={() => handleProductSelection(production)}>
                     </ProductionCard>
                 </div>
     })
