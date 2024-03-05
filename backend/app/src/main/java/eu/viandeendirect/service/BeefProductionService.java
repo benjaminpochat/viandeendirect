@@ -50,13 +50,15 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
         List<PackageLot> lotsCreatedAsList = new ArrayList<>();
         lotsCreated.forEach(lotsCreatedAsList::add);
         productionCreated.setLots(lotsCreatedAsList);
-        return new ResponseEntity<>(productionCreated, HttpStatus.CREATED);
+        return new ResponseEntity<>(productionCreated, HttpStatus.OK);
     }
 
     void checkBeefProduction(BeefProduction beefProduction) {
-        List<Sale> sales = saleRepository.findByProduction(beefProduction);
-        if(!sales.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il n'est pas possible de modifier une production déjà mise en vente.");
+        if(beefProduction.getId() != null) {
+            List<Sale> sales = saleRepository.findByProduction(beefProduction);
+            if (!sales.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il n'est pas possible de modifier une production déjà mise en vente.");
+            }
         }
     }
 }
