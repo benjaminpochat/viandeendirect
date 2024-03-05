@@ -12,6 +12,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
@@ -45,6 +47,7 @@ class TestBeefProductionService {
         BeefProduction beefProduction = new BeefProduction();
         beefProduction.setAnimalIdentifier("9999");
         beefProduction.setBirthPlace("Béchy");
+        beefProduction.setLots(new ArrayList<>());
 
         // when
         BeefProduction beefProductionCreated = beefProductionService.createBeefProduction(beefProduction).getBody();
