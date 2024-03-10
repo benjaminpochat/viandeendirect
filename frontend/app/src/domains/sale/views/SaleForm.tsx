@@ -5,7 +5,6 @@ import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography,
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
 
-import Production from 'viandeendirect_eu/dist/model/Production'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 
 import SaleProductionSelector from '../components/SaleProductionSelector.js'

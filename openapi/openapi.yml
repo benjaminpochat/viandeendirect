@@ -680,7 +680,6 @@ components:
       description: ""
       required:
       - customer
-      - id
       type: object
       properties:
         id:

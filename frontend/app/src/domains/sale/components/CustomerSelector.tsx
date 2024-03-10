@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-import { Switch, Autocomplete, TextField, Button } from "@mui/material"
+import { Switch, Button } from "@mui/material"
 import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
 
 import Customer from "viandeendirect_eu/dist/model/Customer"

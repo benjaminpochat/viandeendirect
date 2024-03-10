@@ -3,35 +3,20 @@ import { useEffect, useState } from 'react'
 import { Typography, Button } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web'
-import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import SaleCard from '../components/SaleCard.tsx'
+import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
 export default function SalesList({producer: producer, manageSaleOrdersCallback: manageSaleOrdersCallback, createSaleCallback: createSaleCallback}) {
 
-    const { keycloak, initialized } = useKeycloak()
-    const apiBuilder = new ApiBuilder()
+    const { keycloak } = useKeycloak()
 
     const [sales, setSales] = useState([])
+    const apiInvoker = new ApiInvoker()
 
     useEffect(() => {
-        loadSales()
-    }, [keycloak])
-
-    function loadSales() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getProducerSales(producer.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getSales called successfully. Returned data: ' + data)
-                        setSales(data)
-                    }
-                })
-            }, keycloak)
-        })
-    }
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerSales, producer.id, setSales, console.error)
+    }, [keycloak, producer])
 
     return <>
         <Typography variant='h6'>Ventes</Typography>

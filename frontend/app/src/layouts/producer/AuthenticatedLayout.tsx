@@ -12,22 +12,28 @@ import CustomerController from '../../domains/customer/CustomerController.js';
 import GrowerAccount from '../../domains/producer/ProducerAccount.js'
 import ProductionController from '../../domains/production/ProductionController.tsx'
 import SaleController from '../../domains/sale/SaleController.tsx'
-import SideMenu from './SideMenu.js'
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
+import SideMenu from './SideMenu.js'
 import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
 
 
 function AuthenticatedLayout() {
     const { keycloak, initialized } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
     const [mainContent, setMainContent] = useState('DASHBOARD')
     const [producer, setProducer] = useState<Producer>()
+    const apiInvoker = new ApiInvoker()
     const authenticationService = new AuthenticationService(keycloak)
 
     useEffect(() => {
-      apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducer, {'email': authenticationService.getCurrentUserEmail()}, setProducer)
+      apiInvoker.callApiAuthenticatedly(
+        keycloak, 
+        api => api.getProducer, 
+        {'email': authenticationService.getCurrentUserEmail()}, 
+        setProducer, 
+        console.error)
     }, [keycloak])
+
 
     const sideMenuWidth = 240;
    
@@ -44,8 +50,8 @@ function AuthenticatedLayout() {
         switch (mainContent) {
           case 'DASHBOARD' : return <Dashboard></Dashboard>
           case 'SALES' : return <SaleController producer={producer}></SaleController>
-          case 'PRODUCTIONS' : return <ProductionController></ProductionController>
-          case 'CUSTOMERS' : return <CustomerController></CustomerController>
+          case 'PRODUCTIONS' : return <ProductionController producer={producer}></ProductionController>
+          case 'CUSTOMERS' : return <CustomerController producer={producer}></CustomerController>
           case 'GROWER_ACCOUNT' : return <GrowerAccount></GrowerAccount>
         }
     }

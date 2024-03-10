@@ -55,6 +55,7 @@ public class Producer {
   private List<Production> productions = null;
 
   @JsonProperty("sales")
+  @JsonIgnore
   @JsonManagedReference("salesSeller")
   @jakarta.persistence.OneToMany(mappedBy = "seller")
   @Valid

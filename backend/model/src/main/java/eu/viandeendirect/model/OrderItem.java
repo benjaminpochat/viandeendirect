@@ -2,6 +2,8 @@ package eu.viandeendirect.model;
 
 import java.net.URI;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Order;
@@ -38,6 +40,7 @@ public class OrderItem {
 
   @JsonProperty("order")
   @ManyToOne
+  @JsonIgnore
   private Order order;
 
   @JsonProperty("packageLot")

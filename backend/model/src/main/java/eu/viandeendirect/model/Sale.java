@@ -45,6 +45,7 @@ public class Sale {
   @JsonProperty("orders")
   @jakarta.persistence.OneToMany(mappedBy = "sale")
   @Valid
+  @JsonIgnore
   private List<Order> orders = null;
 
   @JsonProperty("deliveryStart")

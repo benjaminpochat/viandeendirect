@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.js';
+import { ApiInvoker } from '../../../api/ApiInvoker.ts';
+import { useKeycloak } from '@react-keycloak/web';
+import Order from 'viandeendirect_eu/dist/model/Order'
+import Production from 'viandeendirect_eu/dist/model/Production'
+
 
 export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrdersCallback}) {
+
+    const apiInvoker = new ApiInvoker()
+    const [orders, setOrders] = useState<Array<Order>>([])
+    const [productions, setProductions] = useState<Array<Production>>([])
+    const {keycloak} = useKeycloak()
+
+    useEffect(() => {
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleOrders, sale.id, setOrders, console.error)
+    }, [keycloak, sale])
+
+    useEffect(() => {
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleProductions, sale.id, setProductions, console.error)
+    }, [keycloak, sale])
 
     return (
         <Card>
@@ -29,7 +47,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
                             Commandes
                         </Typography>
                         <Typography>
-                            {sale.orders.length} commandes client
+                            {orders.length} commandes client
                         </Typography>
                         <Typography>
                             {getQuantitySold()} kg commandés
@@ -44,7 +62,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
                         <Typography color="text.secondary">
                             Productions mises en vente
                         </Typography>
-                        {sale.productions.map(getProduction)}
+                        {productions.map(getProduction)}
                     </div>
                 </div>
             </CardContent>
@@ -69,14 +87,14 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
     }
 
     function getQuantitySold() {
-        return sale.orders
+        return orders
             .flatMap(order => order.items)
             .map(item => item.packageLot.netWeight * item.quantity)
             .reduce((totalQuantity, orderItemQuantity) => totalQuantity + orderItemQuantity, 0)
     }
 
     function getAmountSold() {
-        return sale.orders
+        return orders
             .flatMap(order => order.items)
             .map(item => item.unitPrice * item.quantity)
             .reduce((totalAmout, orderItemAmout) => totalAmout + orderItemAmout, 0)

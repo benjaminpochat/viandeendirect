@@ -5,31 +5,34 @@ import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-gri
 
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
+import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 
 export default function CustomersList() {
 
     const [customers, setCustomers] = useState([])
     const { keycloak, initialized } = useKeycloak()
-    const apiBuilder = new ApiBuilder()
-
+    const apiInvoker = new ApiInvoker()
     
     useEffect(() => {
         loadCustomers()
     }, [keycloak])
 
     function loadCustomers() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getProducerCustomers((error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getProducerCustomers called successfully. Returned data: ' + data)
-                        setCustomers(data)
-                    }
-                })
-            }, keycloak)
-        })
+
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerCustomers, null, setCustomers, console.error)
+
+        // apiBuilder.getAuthenticatedApi(keycloak).then(api => {
+        //     apiBuilder.invokeAuthenticatedApi(() => {
+        //         api.getProducerCustomers((error, data, response) => {
+        //             if (error) {
+        //                 console.error(error)
+        //             } else {
+        //                 console.log('api.getProducerCustomers called successfully. Returned data: ' + data)
+        //                 setCustomers(data)
+        //             }
+        //         })
+        //     }, keycloak)
+        // })
     }
 
     const rows: GridRowsProp = customers.map(customer => {

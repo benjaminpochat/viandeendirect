@@ -17,14 +17,16 @@ import Sale from "viandeendirect_eu/dist/model/Sale"
 import PackageSelector from '../components/PackageSelector.tsx'
 import CustomerSelector from '../components/CustomerSelector.tsx'
 import OrderSummary from '../components/OrderSummary.tsx'
+import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
-export default function OrderForm({ sale: sale, returnCallback: returnCallback }) {
+export default function ProducerOrderForm({ producer: producer, sale: sale, returnCallback: returnCallback }) {
 
     const SET_ITEMS_STEP = 1
     const SET_CUSTOMER_STEP = 2
     const CONFIRMATION_STEP = 3
 
     const { keycloak, initialized } = useKeycloak()
+    const apiInvoker = new ApiInvoker()
     const apiBuilder = new ApiBuilder()
 
     const [productions, setProductions] = useState<Array<Production>>([])
@@ -39,35 +41,44 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
     }, [keycloak])
 
     function loadProductions() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getSaleProductions(sale.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getSaleProductions called successfully. Returned data: ' + data)
-                        setProductions(data)
-                    }
-                })
-            }, keycloak)
-        })
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.getSaleProductions, 
+            sale.id, setProductions, 
+            console.error)
     }
 
     function loadCustomers() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getProducerCustomers((error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getCustomers called successfully. Returned data: ' + data)
-                        setCustomers(data)
-                    }
-                })
-            }, keycloak)        
-        })
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.getProducerCustomers, 
+            producer.id, 
+            setCustomers, 
+            console.error)
     }
 
+    function createCustomerAndOrder(customer: Customer){
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.createCustomer, 
+            customer, 
+            customer => {
+                const updatedOrder = {...order, customer: customer}
+                setOrder(updatedOrder)
+                createOrder(updatedOrder)
+                returnCallback(sale)
+            }, 
+            console.error)
+    }
+
+    function createOrder(order: Order) {
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.createOrder, 
+            order, 
+            order => console.log('api.createOrder called successfully. Returned data: ' + order),
+            console.error)
+    }
     return <>
         <Typography variant='h6'>Creation d'une commande pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
 
@@ -134,38 +145,10 @@ export default function OrderForm({ sale: sale, returnCallback: returnCallback }
 
     function validateOrder() {
         if(!order.customer.id) {
-            order.customer = createCustomer(order.customer)
+            createCustomerAndOrder(order.customer)
+        } else {
+            createOrder(order)
+            returnCallback(sale)
         }
-        createOrder(order)
-        returnCallback(sale)
-    }
-
-    function createCustomer(customer: Customer){
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.createCustomer(customer, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.createCustomer called successfully. Returned data: ' + data)
-                        setOrder({...order, customer: data})
-                    }
-                })
-            }, keycloak)
-        })
-    }
-
-    function createOrder(order: Order) {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.createOrder(order, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.createOrder called successfully. Returned data: ' + data)
-                    }
-                })
-            }, keycloak)
-        })
     }
 }

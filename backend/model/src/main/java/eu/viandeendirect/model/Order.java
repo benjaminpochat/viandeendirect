@@ -2,6 +2,8 @@ package eu.viandeendirect.model;
 
 import java.net.URI;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.viandeendirect.model.Customer;
@@ -63,8 +65,8 @@ public class Order {
    *
    * @return id
   */
-  @NotNull
-  @Schema(name = "id", description = "", required = true)
+
+  @Schema(name = "id", description = "", required = false)
   public Integer getId() {
     return id;
   }

@@ -5,6 +5,7 @@ import eu.viandeendirect.repository.CustomerRepository;
 import eu.viandeendirect.repository.OrderItemRepository;
 import eu.viandeendirect.repository.PackageLotRepository;
 import eu.viandeendirect.repository.SaleRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
@@ -55,6 +57,7 @@ public class TestOrderService {
         item.setUnitPrice(16f);
         item.setPackageLot(packageLot);
         order.setItems(List.of(item));
+        int quantitySoldBeforeOrderCreation = packageLot.getQuantitySold();
 
         // when
         Order orderCreated = orderService.createOrder(order).getBody();
@@ -64,6 +67,29 @@ public class TestOrderService {
         assertThat(orderCreated.getId()).isNotNull();
         List<OrderItem> itemsCreated = orderItemRepository.findByOrder(orderCreated);
         assertThat(itemsCreated).hasSize(1);
+        assertThat(packageLot.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation + 1);
+    }
+
+    @Test
+    void createOrder_should_raise_an_exception_if_not_enough_quantity_to_sell() {
+        // given
+        Sale sale = saleRepository.findById(1000).get();
+        Customer customer = customerRepository.findById(3000).get();
+        PackageLot packageLot = packageLotRepository.findById(10001).get();
+        Order order = new Order();
+        order.setCustomer(customer);
+        order.setSale(sale);
+        OrderItem item = new OrderItem();
+        item.setQuantity(100);
+        item.setUnitPrice(16f);
+        item.setPackageLot(packageLot);
+        order.setItems(List.of(item));
+        int quantitySoldBeforeOrderCreation = packageLot.getQuantitySold();
+
+        // when / then
+        assertThatThrownBy(() -> orderService.createOrder(order))
+                .isNotNull();
+        assertThat(packageLot.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation);
     }
 
     @Test

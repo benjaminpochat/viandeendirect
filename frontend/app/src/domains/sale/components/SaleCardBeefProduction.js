@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
-import { ApiBuilder } from '../../../api/ApiBuilder.ts'
+import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
 import styles from './SaleCard.css'
@@ -9,28 +9,17 @@ import styles from './SaleCard.css'
 export default function SaleCardBeefProduction({production: production}) {
 
     const [productionPercentageSold, setProductionPercentageSold] = useState([])
-    const { keycloak, initialized } = useKeycloak()
-    const apiBuilder = new ApiBuilder()
+    const { keycloak } = useKeycloak()
+    const apiInvoker = new ApiInvoker()
 
     useEffect(() => {
-        loadProductionPercentageSold()
-    }, [keycloak])
-
-
-    function loadProductionPercentageSold() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getProductionPercentageSold(production.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getProductionPercentageSold called successfully. Returned data: ' + data)
-                        setProductionPercentageSold(data)
-                    }
-                })
-            }, keycloak)        
-        })
-    }
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.getProductionPercentageSold,
+            production.id,
+            setProductionPercentageSold,
+            console.error)
+    }, [keycloak, production])
 
     return <>
         <div className='sale-card-production'>

@@ -5,7 +5,7 @@ import PackageLotsCreator from './views/PackageLotsCreator.tsx'
 import ProductionsList from './views/ProductionsList.tsx'
 import BeefProductionView from './views/beefProduction/BeefProductionView.tsx'
 
-export default function ProductionController() {
+export default function ProductionController({producer: producer}) {
 
     const BEEF_PRODUCTION_CREATION = 'BEEF_PRODUCTION_CREATION'
     const BEEF_PRODUCTION_VIEW = 'BEEF_PRODUCTION_VIEW'

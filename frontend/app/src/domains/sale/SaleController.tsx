@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import SalesList from './views/SalesList.tsx'
 import SaleForm from './views/SaleForm.tsx'
@@ -7,7 +7,7 @@ import OrdersList from './views/OrdersList.tsx'
 import Sale from 'viandeendirect_eu/dist/model/Sale'
 import Order from 'viandeendirect_eu/dist/model/Order'
 import OrderView from './views/OrderView.tsx'
-import OrderForm from './views/OrderForm.tsx'
+import ProducerOrderForm from './views/ProducerOrderForm.tsx'
 
 export default function SaleController({producer: producer}) {
 
@@ -28,7 +28,7 @@ export default function SaleController({producer: producer}) {
             case SALE_CREATION_VIEW: return <SaleForm producer={producer} returnCallback={displaySalesList}></SaleForm>
             case ORDERS_LIST_VIEW: return <OrdersList sale={context} returnCallback={displaySalesList} viewOrderCallback={displayOrder} createOrderCallback={() => createOrder(context)}/>
             case ORDER_VIEW: return <OrderView order={context.order} sale={context.sale} returnCallback={displayOrdersList}/>
-            case ORDER_CREATION_VIEW: return <OrderForm sale={context} returnCallback={displayOrdersList}/>
+            case ORDER_CREATION_VIEW: return <ProducerOrderForm producer={producer} sale={context} returnCallback={displayOrdersList}/>
         }
     }
 

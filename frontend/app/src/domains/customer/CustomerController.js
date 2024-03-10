@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import CustomersList from './views/CustomersList.tsx'
 
-export default function CustomerController() {
+export default function CustomerController({producer: producer}) {
 
     const NONE = 'NONE'
     
