@@ -88,7 +88,8 @@ public class TestOrderService {
 
         // when / then
         assertThatThrownBy(() -> orderService.createOrder(order))
-                .isNotNull();
+                .isNotNull()
+                .hasMessageContaining("Le nombre total d'articles vendus ne peut pas dépasser la quantité totals du lot.");
         assertThat(packageLot.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation);
     }
 

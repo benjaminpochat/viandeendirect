@@ -57,7 +57,9 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
         if(beefProduction.getId() != null) {
             List<Sale> sales = saleRepository.findByProduction(beefProduction);
             if (!sales.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il n'est pas possible de modifier une production déjà mise en vente.");
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Il n'est pas possible de modifier une production déjà mise en vente.");
             }
         }
     }
