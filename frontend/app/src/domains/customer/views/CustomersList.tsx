@@ -7,7 +7,7 @@ import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 
-export default function CustomersList() {
+export default function CustomersList({producer: producer}) {
 
     const [customers, setCustomers] = useState([])
     const { keycloak, initialized } = useKeycloak()
@@ -19,7 +19,7 @@ export default function CustomersList() {
 
     function loadCustomers() {
 
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerCustomers, null, setCustomers, console.error)
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerCustomers, producer.id, setCustomers, console.error)
 
         // apiBuilder.getAuthenticatedApi(keycloak).then(api => {
         //     apiBuilder.invokeAuthenticatedApi(() => {

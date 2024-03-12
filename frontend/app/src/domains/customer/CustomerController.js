@@ -11,7 +11,7 @@ export default function CustomerController({producer: producer}) {
 
     function getContent() {
         switch (currentAction) {
-            case 'NONE': return <CustomersList/>
+            case 'NONE': return <CustomersList producer={producer}/>
         }
     }
 
