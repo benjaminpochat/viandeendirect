@@ -4,7 +4,6 @@ import { Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 import { useKeycloak } from '@react-keycloak/web'
-import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 
 export default function CustomersList({producer: producer}) {
@@ -18,21 +17,7 @@ export default function CustomersList({producer: producer}) {
     }, [keycloak])
 
     function loadCustomers() {
-
         apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerCustomers, producer.id, setCustomers, console.error)
-
-        // apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-        //     apiBuilder.invokeAuthenticatedApi(() => {
-        //         api.getProducerCustomers((error, data, response) => {
-        //             if (error) {
-        //                 console.error(error)
-        //             } else {
-        //                 console.log('api.getProducerCustomers called successfully. Returned data: ' + data)
-        //                 setCustomers(data)
-        //             }
-        //         })
-        //     }, keycloak)
-        // })
     }
 
     const rows: GridRowsProp = customers.map(customer => {

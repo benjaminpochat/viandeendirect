@@ -44,10 +44,10 @@ export function SlaughterPropertiesForm({
                 <SliderElement
                     name='warmCarcassWeight'
                     label="Poids estimé de l'animal"
-                    required
                     max={500}
                     step={10} 
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    rules={{ required: 'Champ obligatoire' }}/>
                 <div>
                     <span>Poids de l'animal vivant : {BeefProductionService.getLiveWeight(warmCarcassWeight || initialWarmCarcassWeight)} kg</span>
                 </div>
