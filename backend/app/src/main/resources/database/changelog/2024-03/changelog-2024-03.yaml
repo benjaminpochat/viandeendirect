@@ -1,0 +1,701 @@
+databaseChangeLog:
+- changeSet:
+    id: 1710452305517-1
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: address_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-2
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: customer_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-3
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: invoice_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-4
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: order_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-5
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: order_item_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-6
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: package_lot_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-7
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: package_template_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-8
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: producer_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-9
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: production_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-10
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: sale_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-11
+    author: benjamin (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: user_id_seq
+        startValue: 1
+- changeSet:
+    id: 1710452305517-12
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: addresses_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: address_line1
+            type: VARCHAR(255)
+        - column:
+            name: address_line2
+            type: VARCHAR(255)
+        - column:
+            name: city
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: zip_code
+            type: VARCHAR(255)
+        - column:
+            name: owner_id
+            type: INTEGER
+        tableName: addresses
+- changeSet:
+    id: 1710452305517-13
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: beef_productions_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: production_type
+            type: SMALLINT
+        - column:
+            name: producer_id
+            type: INTEGER
+        - column:
+            name: animal_identifier
+            type: VARCHAR(255)
+        - column:
+            name: animal_type
+            type: SMALLINT
+        - column:
+            name: birth_date
+            type: date
+        - column:
+            name: birth_farm
+            type: VARCHAR(255)
+        - column:
+            name: birth_place
+            type: VARCHAR(255)
+        - column:
+            name: cattle_breed
+            type: SMALLINT
+        - column:
+            name: cutting_butcher
+            type: VARCHAR(255)
+        - column:
+            name: cutting_date
+            type: VARCHAR(255)
+        - column:
+            name: cutting_place
+            type: VARCHAR(255)
+        - column:
+            name: label_rouge_certified
+            type: BOOLEAN
+        - column:
+            name: meat_weight
+            type: INTEGER
+        - column:
+            name: slaughter_date
+            type: date
+        - column:
+            name: slaughter_house
+            type: VARCHAR(255)
+        - column:
+            name: slaughter_place
+            type: VARCHAR(255)
+        - column:
+            name: warm_carcass_weight
+            type: INTEGER
+        tableName: beef_productions
+- changeSet:
+    id: 1710452305517-14
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: customers_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: user_id
+            type: INTEGER
+        tableName: customers
+- changeSet:
+    id: 1710452305517-15
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: honney_productions_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: production_type
+            type: SMALLINT
+        - column:
+            name: producer_id
+            type: INTEGER
+        - column:
+            name: honey_description
+            type: VARCHAR(255)
+        - column:
+            name: total_weight
+            type: FLOAT4
+        tableName: honney_productions
+- changeSet:
+    id: 1710452305517-16
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: invoices_pkey
+            name: id
+            type: INTEGER
+        tableName: invoices
+- changeSet:
+    id: 1710452305517-17
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: order_items_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: quantity
+            type: INTEGER
+        - column:
+            name: unit_price
+            type: FLOAT4
+        - column:
+            name: order_id
+            type: INTEGER
+        - column:
+            name: package_lot_id
+            type: INTEGER
+        tableName: order_items
+- changeSet:
+    id: 1710452305517-18
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: orders_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: customer_id
+            type: INTEGER
+        - column:
+            name: invoice_id
+            type: INTEGER
+        - column:
+            name: sale_id
+            type: INTEGER
+        tableName: orders
+- changeSet:
+    id: 1710452305517-19
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: package_lots_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: description
+            type: VARCHAR(255)
+        - column:
+            name: label
+            type: VARCHAR(255)
+        - column:
+            name: net_weight
+            type: FLOAT4
+        - column:
+            name: photo
+            type: VARCHAR(255)
+        - column:
+            name: quantity
+            type: INTEGER
+        - column:
+            name: quantity_sold
+            type: INTEGER
+        - column:
+            name: unit_price
+            type: FLOAT4
+        - column:
+            name: production_id
+            type: INTEGER
+        tableName: package_lots
+- changeSet:
+    id: 1710452305517-20
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: package_templates_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: description
+            type: VARCHAR(255)
+        - column:
+            name: label
+            type: VARCHAR(255)
+        - column:
+            name: net_weight
+            type: FLOAT4
+        - column:
+            name: photo
+            type: VARCHAR(255)
+        - column:
+            name: unit_price
+            type: FLOAT4
+        tableName: package_templates
+- changeSet:
+    id: 1710452305517-21
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: producers_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: sales_credits
+            type: INTEGER
+        - column:
+            name: status
+            type: SMALLINT
+        - column:
+            name: user_id
+            type: INTEGER
+        tableName: producers
+- changeSet:
+    id: 1710452305517-22
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: sales_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: delivery_address_line1
+            type: VARCHAR(255)
+        - column:
+            name: delivery_address_line2
+            type: VARCHAR(255)
+        - column:
+            name: delivery_address_name
+            type: VARCHAR(255)
+        - column:
+            name: delivery_city
+            type: VARCHAR(255)
+        - column:
+            name: delivery_start
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: delivery_stop
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: delivery_zip_code
+            type: VARCHAR(255)
+        - column:
+            name: seller_id
+            type: INTEGER
+        tableName: sales
+- changeSet:
+    id: 1710452305517-23
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: sales_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: productions_id
+            type: INTEGER
+        tableName: sales_productions
+- changeSet:
+    id: 1710452305517-24
+    author: benjamin (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: users_pkey
+            name: id
+            type: INTEGER
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: first_name
+            type: VARCHAR(255)
+        - column:
+            name: last_name
+            type: VARCHAR(255)
+        - column:
+            name: phone
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1710452305517-25
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: owner_id
+        baseTableName: addresses
+        constraintName: fk6w8a377quohcp3tiidv73qfjt
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: producers
+        validate: true
+- changeSet:
+    id: 1710452305517-26
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: sales_id
+        baseTableName: sales_productions
+        constraintName: fk8bp75gganhmnhr1c3j8ynd56p
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sales
+        validate: true
+- changeSet:
+    id: 1710452305517-27
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: seller_id
+        baseTableName: sales
+        constraintName: fk9shvxwud111e9k3f1k1h6dw9n
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: producers
+        validate: true
+- changeSet:
+    id: 1710452305517-28
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: producer_id
+        baseTableName: beef_productions
+        constraintName: fk_gt6eol2q7flwkgqoji4au46ya
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: producers
+        validate: true
+- changeSet:
+    id: 1710452305517-29
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: producer_id
+        baseTableName: honney_productions
+        constraintName: fk_moh47203t73podwhcnnpoh1nk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: producers
+        validate: true
+- changeSet:
+    id: 1710452305517-30
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: producers
+        constraintName: fkbdhpmkubysydpq6dgo15t3bsu
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1710452305517-31
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: order_id
+        baseTableName: order_items
+        constraintName: fkbioxgbv59vetrxe0ejfubep1w
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: orders
+        validate: true
+- changeSet:
+    id: 1710452305517-32
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: sale_id
+        baseTableName: orders
+        constraintName: fkcm9vcbcxvpn7eg2gtsr6a8dqj
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sales
+        validate: true
+- changeSet:
+    id: 1710452305517-33
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: package_lot_id
+        baseTableName: order_items
+        constraintName: fkof5bo9c81amicsv8wlokwm8q3
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: package_lots
+        validate: true
+- changeSet:
+    id: 1710452305517-34
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: customer_id
+        baseTableName: orders
+        constraintName: fkpxtb8awmi0dk6smoh2vp1litg
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: customers
+        validate: true
+- changeSet:
+    id: 1710452305517-35
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: invoice_id
+        baseTableName: orders
+        constraintName: fkr0sctxctxvnbhfqn41bfvv51i
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: invoices
+        validate: true
+- changeSet:
+    id: 1710452305517-36
+    author: benjamin (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: customers
+        constraintName: fkrh1g1a20omjmn6kurd35o3eit
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+
