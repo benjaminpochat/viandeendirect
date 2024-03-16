@@ -33,7 +33,7 @@ public class OrderService implements OrdersApiDelegate {
         Order orderCreated = orderRepository.save(order);
         List<PackageLot> lots = new ArrayList<>();
         order.getItems().forEach(item -> {
-            PackageLot lot = item.getPackageLot();
+            PackageLot lot = packageLotRepository.findById(item.getPackageLot().getId()).get();
             int updatedQuantySold = lot.getQuantitySold() + item.getQuantity();
             if (updatedQuantySold > lot.getQuantity()) {
                 throw new ResponseStatusException(

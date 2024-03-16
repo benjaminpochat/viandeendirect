@@ -67,7 +67,10 @@ public class TestOrderService {
         assertThat(orderCreated.getId()).isNotNull();
         List<OrderItem> itemsCreated = orderItemRepository.findByOrder(orderCreated);
         assertThat(itemsCreated).hasSize(1);
-        assertThat(packageLot.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation + 1);
+        var packageLotReloaded = packageLotRepository.findById(packageLot.getId()).get();
+        assertThat(packageLotReloaded.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation + 1);
+        assertThat(packageLotReloaded.getProduction()).isNotNull();
+
     }
 
     @Test

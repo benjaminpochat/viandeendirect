@@ -1,16 +1,28 @@
+import React from 'react'
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
-import styles from './SaleCard.css'
+import Production from 'viandeendirect_eu/dist/model/BeefProduction'
+import './SaleCard.css'
 
 export default function SaleCardBeefProduction({production: production}) {
 
+    const [beefProduction, setBeefProduction] = useState<BeefProduction>()
     const [productionPercentageSold, setProductionPercentageSold] = useState([])
     const { keycloak } = useKeycloak()
     const apiInvoker = new ApiInvoker()
+
+    useEffect(() => {
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.getBeefProduction,
+            production.id,
+            setBeefProduction,
+            console.error)
+    }, [keycloak])
 
     useEffect(() => {
         apiInvoker.callApiAuthenticatedly(
@@ -19,7 +31,7 @@ export default function SaleCardBeefProduction({production: production}) {
             production.id,
             setProductionPercentageSold,
             console.error)
-    }, [keycloak, production])
+    }, [keycloak])
 
     return <>
         <div className='sale-card-production'>
@@ -29,12 +41,12 @@ export default function SaleCardBeefProduction({production: production}) {
                 </Typography>
                 <Typography>
                     <div>
-                        {AnimalTypeUtils.getAnimalTypeLabel(production.animalType)} n° {production.animalIdentifier}
+                        {AnimalTypeUtils.getAnimalTypeLabel(beefProduction?.animalType)} n° {beefProduction?.animalIdentifier}
                     </div>
                 </Typography>
                 <Typography>
                     <div>
-                        Poids vif estimé : {production.animalLiveWeight} kg
+                        Carcasse chaude estimée : {beefProduction?.warmCarcassWeight} kg
                     </div>
                 </Typography>
             </div>

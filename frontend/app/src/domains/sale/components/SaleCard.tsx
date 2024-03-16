@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
 import dayjs from 'dayjs'
-import SaleCardBeefProduction from './SaleCardBeefProduction.js';
+import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
 import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
 import Order from 'viandeendirect_eu/dist/model/Order'
@@ -18,11 +18,11 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
 
     useEffect(() => {
         apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleOrders, sale.id, setOrders, console.error)
-    }, [keycloak, sale])
+    }, [keycloak])
 
     useEffect(() => {
         apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleProductions, sale.id, setProductions, console.error)
-    }, [keycloak, sale])
+    }, [keycloak])
 
     return (
         <Card>
