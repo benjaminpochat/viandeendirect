@@ -621,6 +621,7 @@ components:
         cuttingDate:
           description: "date when the animal has been cutted"
           type: string
+          format: date
         cuttingPlace:
           description: "the place where the animal has been cutted"
           type: string
