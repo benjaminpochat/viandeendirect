@@ -66,7 +66,6 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
                 const updatedOrder = {...order, customer: customer}
                 setOrder(updatedOrder)
                 createOrder(updatedOrder)
-                returnCallback(sale)
             }, 
             console.error)
     }
@@ -76,7 +75,7 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
             keycloak, 
             api => api.createOrder, 
             order, 
-            order => console.log('api.createOrder called successfully. Returned data: ' + order),
+            () => returnCallback(sale),
             console.error)
     }
     return <>
@@ -148,7 +147,6 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
             createCustomerAndOrder(order.customer)
         } else {
             createOrder(order)
-            returnCallback(sale)
         }
     }
 }
