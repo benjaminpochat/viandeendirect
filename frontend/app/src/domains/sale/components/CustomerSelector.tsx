@@ -33,10 +33,10 @@ export default function CustomerSelector({ customers: customers, callback: callb
                         <TextFieldElement name="firstName" label="Prénom" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
                     </div>
                     <div>
-                        <TextFieldElement name="email" label="email" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
+                        <TextFieldElement name="email" type={'email'} label="email" variant="standard" validation={{ required: "Ce champ est obligatoire", pattern: {value: /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/, message: "L'adresse mail doit avoir un format valide"}}}/>
                     </div>
                     <div>
-                        <TextFieldElement name="phone" label="Téléphone" variant="standard" validation={{ required: "Ce champ est obligatoire"}}/>
+                        <TextFieldElement name="phone" label="Téléphone" variant="standard" validation={{ required: "Ce champ est obligatoire", pattern: {value: /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/, message: "Le numéro de téléphone doit avoir un format valide"}}}/>
                     </div>
                     <div>
                         <Button type='submit' variant="contained" size="small">Valider</Button>
