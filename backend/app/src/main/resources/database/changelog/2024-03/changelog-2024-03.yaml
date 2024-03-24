@@ -698,4 +698,13 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: users
         validate: true
-
+- changeSet:
+      id: 2024-03-24
+      author: benjamin
+      changes:
+          - addColumn:
+                tableName: producers
+                columns:
+                    - column:
+                          name: mollieRefreshToken
+                          type: VARCHAR

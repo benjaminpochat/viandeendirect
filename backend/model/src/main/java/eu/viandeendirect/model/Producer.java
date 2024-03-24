@@ -42,6 +42,9 @@ public class Producer {
   @SequenceGenerator(name="producer_id_generator", sequenceName = "producer_id_seq", allocationSize = 1)
   private Integer id;
 
+  @JsonProperty("mollieRefreshToken")
+  private String mollieRefreshToken;
+
   @JsonProperty("status")
   private ProducerStatus status;
 
@@ -97,6 +100,25 @@ public class Producer {
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public Producer mollieRefreshToken(String mollieRefreshToken) {
+    this.mollieRefreshToken = mollieRefreshToken;
+    return this;
+  }
+
+  /**
+   * refresh token to get access code for Mollie payment provider to authorize viandeendirect to create payments on behalf of the producer
+   * @return mollieRefreshToken
+  */
+
+  @Schema(name = "mollieRefreshToken", description = "refresh token to get access code for Mollie payment provider to authorize viandeendirect to create payments on behalf of the producer", required = false)
+  public String getMollieRefreshToken() {
+    return mollieRefreshToken;
+  }
+
+  public void setMollieRefreshToken(String mollieRefreshToken) {
+    this.mollieRefreshToken = mollieRefreshToken;
   }
 
   public Producer status(ProducerStatus status) {
@@ -202,6 +224,7 @@ public class Producer {
     Producer producer = (Producer) o;
     return Objects.equals(this.user, producer.user) &&
         Objects.equals(this.id, producer.id) &&
+        Objects.equals(this.mollieRefreshToken, producer.mollieRefreshToken) &&
         Objects.equals(this.status, producer.status) &&
         Objects.equals(this.salesCredits, producer.salesCredits) &&
         Objects.equals(this.productions, producer.productions) &&
@@ -210,7 +233,7 @@ public class Producer {
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, id, status, salesCredits, productions, sales);
+    return Objects.hash(user, id, mollieRefreshToken, status, salesCredits, productions, sales);
   }
 
   @Override
@@ -219,6 +242,7 @@ public class Producer {
     sb.append("class Producer {\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    mollieRefreshToken: ").append(toIndentedString(mollieRefreshToken)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    salesCredits: ").append(toIndentedString(salesCredits)).append("\n");
     sb.append("    productions: ").append(toIndentedString(productions)).append("\n");
