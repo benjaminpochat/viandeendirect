@@ -1,8 +1,8 @@
 package eu.viandeendirect.common;
 
 import eu.viandeendirect.model.Sale;
-import eu.viandeendirect.repository.SaleRepository;
-import eu.viandeendirect.service.SaleService;
+import eu.viandeendirect.domains.sale.SaleRepository;
+import eu.viandeendirect.domains.sale.SaleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
