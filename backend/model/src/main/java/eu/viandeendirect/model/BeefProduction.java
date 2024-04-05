@@ -151,7 +151,8 @@ public class BeefProduction extends Production {
   private String slaughterHouse;
 
   @JsonProperty("cuttingDate")
-  private String cuttingDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate cuttingDate;
 
   @JsonProperty("cuttingPlace")
   private String cuttingPlace;
@@ -371,7 +372,7 @@ public class BeefProduction extends Production {
     this.slaughterHouse = slaughterHouse;
   }
 
-  public BeefProduction cuttingDate(String cuttingDate) {
+  public BeefProduction cuttingDate(LocalDate cuttingDate) {
     this.cuttingDate = cuttingDate;
     return this;
   }
@@ -380,13 +381,13 @@ public class BeefProduction extends Production {
    * date when the animal has been cutted
    * @return cuttingDate
   */
-
+  @Valid
   @Schema(name = "cuttingDate", description = "date when the animal has been cutted", required = false)
-  public String getCuttingDate() {
+  public LocalDate getCuttingDate() {
     return cuttingDate;
   }
 
-  public void setCuttingDate(String cuttingDate) {
+  public void setCuttingDate(LocalDate cuttingDate) {
     this.cuttingDate = cuttingDate;
   }
 

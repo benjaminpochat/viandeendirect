@@ -1,0 +1,51 @@
+@page {
+    size: A4 portrait;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.bill {
+    page-break-after: always;
+}
+
+.full-width-width {
+    width: 100%;
+}
+
+.articles-table, .articles-table thead, .articles-table tr, .articles-table td {
+    border-collapse: collapse;
+    border-color: grey;
+    border-style: solid;
+    border-width: thin;
+    padding: 1mm;
+}
+
+.with-top-margin {
+    margin-top: 2cm;
+}
+
+.table-head {
+    background-color: navy;
+    color: white;
+    font-weight: bold;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.payed {
+    font-weigth: bolder;
+    font-size: 1cm;
+    color: red;
+    border-color: red;
+    border-style: solid;
+    border-width: 2mm;
+    border-radius: 2mm;
+    padding: 5mm;
+    text-align: center;
+    transform: rotate(10deg);
+    width: 3cm;
+}

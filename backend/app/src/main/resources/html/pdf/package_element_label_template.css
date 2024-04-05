@@ -1,0 +1,40 @@
+@page {
+    size: A4 portrait;
+    margin: 0mm;
+}
+
+body {
+    margin: 0mm;
+    font-family: sans-serif;
+}
+
+body > table {
+    border-spacing: 0mm;
+}
+
+body > table > tbody > tr > td {
+    height: 42mm;
+    width: 70mm;
+    border-style: none;
+    border-collapse: collapse;
+    padding: 0mm;
+}
+
+body > table > tbody > tr > td > table {
+    text-align: center;
+    width: 100%;
+}
+
+.label-page {
+    page-break-after: always;
+}
+
+.certification-images {
+    height: 10mm;
+}
+
+.element-name {
+    height: 12mm;
+    font-size: 6mm;
+    font-weight: bold;
+}

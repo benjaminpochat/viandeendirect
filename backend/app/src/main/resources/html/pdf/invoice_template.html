@@ -1,0 +1,75 @@
+<div class="bill">
+    <div>
+        <table class="full-width-width entete-facture">
+            <tbody>
+            <tr>
+                <td>
+                    <div>Vendeur</div>
+                    <div>%1$s</div>
+                    %2$s
+                    <div>%3$s %4$s</div>
+                    <div>SIREN : %5$s</div>
+                    <div>Tel. : %6$s</div>
+                </td>
+                <td>
+                    <div>Client</div>
+                    <div>%7$s %8$s</div>
+                    <div>Tel. : %9$s</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="with-top-margin">
+        <table class="full-width-width">
+            <tr>
+                <td>
+                    <div>
+                        Facture N° %17$tY%17$tm%17$td-%10$s
+                    </div>
+                    <div>
+                        Date : %11$td/%11$tm/%11$tY
+                    </div>
+                </td>
+                <td>
+                    <div class="payed">PAYÉ</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="with-top-margin">
+        <table class="full-width-width articles-table">
+            <thead class="table-head">
+            <td>Désignation</td>
+            <td>Quantité</td>
+            <td>Prix Unitaire HT</td>
+            <td>Total HT</td>
+            </thead>
+            %12$s
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="table-head">TOTAL HT</td>
+                <td class="align-right">%13$.2f €</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="table-head">Montant de TVA</td>
+                <td class="align-right">%14$.2f €</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="table-head">TOTAL TTC</td>
+                <td class="align-right">%15$.2f €</td>
+            </tr>
+        </table>
+    </div>
+    <div class="with-top-margin">
+        Date de réglement : %16$td/%16$tm/%16$tY
+    </div>
+    <div>
+        Date de livraison : %17$td/%17$tm/%17$tY
+    </div>
+</div>

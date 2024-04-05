@@ -1,0 +1,77 @@
+@page {
+    size: A4 landscape;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+article {
+    page-break-after: always;
+}
+
+thead {
+    font-weight: bold;
+}
+
+.logo {
+    width: 40rem;
+}
+
+.logo > img {
+    height: 3rem;
+}
+
+.order-id {
+    font-size: 2rem;
+    text-align: right;
+}
+
+.delivery-description {
+    font-size: 2rem;
+    text-align: right;
+}
+
+.customer-info {
+    font-size: 2rem;
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dated-limits-and-animal-description > tbody > tr > td {
+    vertical-align: top;
+}
+
+.dated-limits,
+.product-description,
+.animal-description {
+    margin-bottom: 1rem;
+}
+
+.product-description,
+.dated-limits-and-animal-description {
+    width: 100%;
+}
+
+.dated-limits-and-animal-description > tbody > tr > td {
+    width: 50%;
+}
+
+.dated-limits-and-animal-description > tbody > tr > td > table {
+    width: 100%;
+}
+
+.bordered, .bordered thead, .bordered tr, .bordered td {
+    border: solid thin;
+    border-collapse: collapse;
+    padding: 0.3rem;
+}
+
+.certification-images {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 3rem;
+}

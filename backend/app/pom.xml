@@ -108,6 +108,11 @@
             <artifactId>hsqldb</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.redsix</groupId>
+            <artifactId>pdfcompare</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
