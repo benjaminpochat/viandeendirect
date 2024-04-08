@@ -1,4 +1,4 @@
-FROM maven:3.9.2
+FROM maven:3.9.6
 
 RUN chmod -R a+rwx /usr/share/maven
 
