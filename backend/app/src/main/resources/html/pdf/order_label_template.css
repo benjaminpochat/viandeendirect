@@ -40,27 +40,14 @@ thead {
     margin-bottom: 1rem;
 }
 
-.dated-limits-and-animal-description > tbody > tr > td {
-    vertical-align: top;
-}
-
-.dated-limits,
-.product-description,
-.animal-description {
+.product-description{
+    width: 100%;
     margin-bottom: 1rem;
 }
 
-.product-description,
-.dated-limits-and-animal-description {
-    width: 100%;
-}
-
-.dated-limits-and-animal-description > tbody > tr > td {
-    width: 50%;
-}
-
-.dated-limits-and-animal-description > tbody > tr > td > table {
-    width: 100%;
+.production-details {
+    font-size: x-small;
+    margin-top: 0.5rem;
 }
 
 .bordered, .bordered thead, .bordered tr, .bordered td {
