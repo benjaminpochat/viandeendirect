@@ -9,7 +9,7 @@ import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
 import Dashboard from '../../domains/dashboard/Dashboard.js';
 import CustomerController from '../../domains/customer/CustomerController.js';
-import GrowerAccount from '../../domains/producer/ProducerAccount.js'
+import ProducerController from '../../domains/producer/ProducerController.js'
 import ProductionController from '../../domains/production/ProductionController.tsx'
 import SaleController from '../../domains/sale/SaleController.tsx'
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
@@ -52,7 +52,7 @@ function AuthenticatedLayout() {
           case 'SALES' : return <SaleController producer={producer}></SaleController>
           case 'PRODUCTIONS' : return <ProductionController producer={producer}></ProductionController>
           case 'CUSTOMERS' : return <CustomerController producer={producer}></CustomerController>
-          case 'GROWER_ACCOUNT' : return <GrowerAccount></GrowerAccount>
+          case 'GROWER_ACCOUNT' : return <ProducerController></ProducerController>
         }
     }
     

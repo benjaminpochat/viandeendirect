@@ -1,6 +1,7 @@
 package eu.viandeendirect;
 
 import com.fasterxml.jackson.databind.Module;
+import com.stripe.Stripe;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class Application {
 
     public static void main(String[] args) {
+        Stripe.apiKey = "sk_test_51P7HcpCgv5VSh4jfbuh4NdajukjRQeAI8uwZgdx0cbDYUFEMRzdWn72xA16Qhko4Qfevjb0VRoNNBcKhd39HCfGu00WBTjmkao";
         SpringApplication.run(Application.class, args);
     }
 

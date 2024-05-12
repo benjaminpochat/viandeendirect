@@ -9,10 +9,14 @@ import Keycloak from 'keycloak-js'
 
 import { CookiesProvider } from 'react-cookie';
 
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
 import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
 
 import './App.css';
+import StripeAccountOnboardingAcknowledgement from './domains/producer/StripeAccountOnboardingAcknowledgement.jsx';
+import StripeAccountOnboardingRefresh from './domains/producer/StripeAccountOnboardingRefresh.jsx';
 
 
 function App() {
@@ -57,6 +61,21 @@ function App() {
     }
   }, frFR);
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: getLayoutWrapper(),
+    },
+    {
+      path: "/payments/stripe/acknowledge/:connectedAccountId",
+      element: <StripeAccountOnboardingAcknowledgement/>,
+    },
+    {
+      path: "/payments/stripe/refresh/:connectedAccountId",
+      element: <StripeAccountOnboardingRefresh/>,
+    },
+  ]);
+
   function getLayoutWrapper() {
     if(process.env.REACT_APP_MODE === 'CUSTOMER') {
       return <CustomerLayout/>
@@ -72,7 +91,7 @@ function App() {
       <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
         <ThemeProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-            {getLayoutWrapper()}
+            <RouterProvider router={router} />
           </LocalizationProvider>
         </ThemeProvider>
       </ReactKeycloakProvider>

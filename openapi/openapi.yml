@@ -758,9 +758,6 @@ components:
         id:
           type: integer
           x-field-extra-annotation: '@jakarta.persistence.Id'
-        mollieRefreshToken:
-          description: "refresh token to get access code for Mollie payment provider to authorize viandeendirect to create payments on behalf of the producer"
-          type: string
         status:
           $ref: '#/components/schemas/ProducerStatus'
         salesCredits:

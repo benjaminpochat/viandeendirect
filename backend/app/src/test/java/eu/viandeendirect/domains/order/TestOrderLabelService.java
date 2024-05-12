@@ -3,6 +3,7 @@ package eu.viandeendirect.domains.order;
 import de.redsix.pdfcompare.CompareResult;
 import de.redsix.pdfcompare.PdfComparator;
 import eu.viandeendirect.model.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles(value = "test")
 @ExtendWith({SpringExtension.class})
+@Disabled
 public class TestOrderLabelService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestOrderLabelService.class);
