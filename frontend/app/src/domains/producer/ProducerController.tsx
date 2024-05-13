@@ -1,11 +1,49 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { Button, Typography } from "@mui/material"
-import { ApiBuilder } from "../../api/ApiBuilder.ts"
+
+import { ApiInvoker } from '../../api/ApiInvoker.ts';
+import { useKeycloak } from '@react-keycloak/web';
+import Producer from 'viandeendirect_eu/dist/model/Producer.js';
+import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
+
 
 function ProducerController() {
 
+  const apiInvoker = new ApiInvoker()
+  const {keycloak} = useKeycloak()
+  const authenticationService = new AuthenticationService(keycloak)
+
+  useEffect(() => {
+    apiInvoker.callApiAuthenticatedly(
+      keycloak, 
+      api => api.getProducer, 
+      {'email': authenticationService.getCurrentUserEmail()}, 
+      setProducer, 
+      console.error)
+  }, [keycloak])
+
+  const [producer, setProducer] = useState<Producer>();
+
+  return <>
+          <Typography variant="h6">Gestion du compte</Typography>
+          {displayStripeAccount()}
+          </>
+  
+  function displayStripeAccount() {
+    if(producer?.stripeAccountId) {
+      return <div>Votre numéro de compte Stripe est {producer.stripeAccountId}</div>
+    } else {
+     return <Button onClick={createStripeAccount}>Créer un compte de paiement Stripe</Button> 
+    }
+  }
+
+  function createStripeAccount() {
+    apiInvoker.callApiAuthenticatedly(keycloak, api => api.createStripeAccount, producer?.id, setProducer, console.error)
+  }
+
+/*
     const [accountCreatePending, setAccountCreatePending] = useState(false);
     const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false);
     const [stripeAccountId, setStripeAccountId] = useState();
@@ -78,6 +116,7 @@ function ProducerController() {
             }
         })
     }
+    */
 }
 
 

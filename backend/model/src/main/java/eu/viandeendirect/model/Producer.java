@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import eu.viandeendirect.model.ProducerStatus;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
+import eu.viandeendirect.model.StripeAccount;
 import eu.viandeendirect.model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import jakarta.annotation.Generated;
  * 
  */
 
-@Schema(name = "Producer", description = "")
+@Schema(name = "Producer", description = "a producer")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")
 public class Producer {
@@ -60,6 +61,11 @@ public class Producer {
   @jakarta.persistence.OneToMany(mappedBy = "seller")
   @Valid
   private List<Sale> sales = null;
+
+  @JsonProperty("stripeAccount")
+  @OneToOne
+  @JoinColumn(name = "stripe_account_id")
+  private StripeAccount stripeAccount;
 
   public Producer user(User user) {
     this.user = user;
@@ -191,6 +197,25 @@ public class Producer {
     this.sales = sales;
   }
 
+  public Producer stripeAccount(StripeAccount stripeAccount) {
+    this.stripeAccount = stripeAccount;
+    return this;
+  }
+
+  /**
+   * Get stripeAccount
+   * @return stripeAccount
+  */
+  @Valid
+  @Schema(name = "stripeAccount", required = false)
+  public StripeAccount getStripeAccount() {
+    return stripeAccount;
+  }
+
+  public void setStripeAccount(StripeAccount stripeAccount) {
+    this.stripeAccount = stripeAccount;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -205,12 +230,13 @@ public class Producer {
         Objects.equals(this.status, producer.status) &&
         Objects.equals(this.salesCredits, producer.salesCredits) &&
         Objects.equals(this.productions, producer.productions) &&
-        Objects.equals(this.sales, producer.sales);
+        Objects.equals(this.sales, producer.sales) &&
+        Objects.equals(this.stripeAccount, producer.stripeAccount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, id, status, salesCredits, productions, sales);
+    return Objects.hash(user, id, status, salesCredits, productions, sales, stripeAccount);
   }
 
   @Override
@@ -223,6 +249,7 @@ public class Producer {
     sb.append("    salesCredits: ").append(toIndentedString(salesCredits)).append("\n");
     sb.append("    productions: ").append(toIndentedString(productions)).append("\n");
     sb.append("    sales: ").append(toIndentedString(sales)).append("\n");
+    sb.append("    stripeAccount: ").append(toIndentedString(stripeAccount)).append("\n");
     sb.append("}");
     return sb.toString();
   }

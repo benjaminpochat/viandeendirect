@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +24,7 @@ public class StripeApiController {
     @Value("${PRODUCER_FRONTEND_URL:http://localhost:3000}")
     String viandeendirectProducerFrontendUrl;
 
-    @PostMapping(value = "/payments/stripe/account", produces = "application/json")
+    @PostMapping(value = "/tests/payments/stripe/account", produces = "application/json")
     public ResponseEntity<StripeResponse> createAccount() {
         try {
             Account account = Account.create(
@@ -44,7 +43,7 @@ public class StripeApiController {
        }
     }
 
-    @PostMapping(value = "/payments/stripe/accountLink", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/tests/payments/stripe/accountLink", consumes = "application/json", produces = "application/json")
     public ResponseEntity<StripeResponse> createAccountLink(@RequestBody StripeAccount account) {
         try {
             AccountLink accountLink = AccountLink.create(

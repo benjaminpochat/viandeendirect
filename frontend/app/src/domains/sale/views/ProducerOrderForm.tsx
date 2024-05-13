@@ -44,7 +44,8 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
         apiInvoker.callApiAuthenticatedly(
             keycloak, 
             api => api.getSaleProductions, 
-            sale.id, setProductions, 
+            sale.id, 
+            setProductions, 
             console.error)
     }
 

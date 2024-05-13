@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class Application {
 
     public static void main(String[] args) {
+        //TODO : move this as an environment variable
         Stripe.apiKey = "sk_test_51P7HcpCgv5VSh4jfbuh4NdajukjRQeAI8uwZgdx0cbDYUFEMRzdWn72xA16Qhko4Qfevjb0VRoNNBcKhd39HCfGu00WBTjmkao";
         SpringApplication.run(Application.class, args);
     }

@@ -1,15 +1,17 @@
 package eu.viandeendirect.domains.user;
 
 import eu.viandeendirect.api.ProducersApiDelegate;
+import eu.viandeendirect.domains.payment.StripeService;
 import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.domains.sale.SaleRepository;
+import eu.viandeendirect.model.StripeAccount;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,17 @@ public class ProducerService implements ProducersApiDelegate {
     SaleRepository saleRepository;
 
     @Autowired
-    AuthenticationServiceSpecs producerService;
+    AuthenticationServiceSpecs authenticationService;
 
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    StripeService stripeService;
+
     @Override
     public ResponseEntity<Sale> createProducerSale(Integer producerId, Sale sale) {
-        Producer producer = producerService.getAuthenticatedProducer();
+        Producer producer = authenticationService.getAuthenticatedProducer();
         if (!producer.getId().equals(producerId)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
@@ -49,7 +54,7 @@ public class ProducerService implements ProducersApiDelegate {
 
     @Override
     public ResponseEntity<List<Sale>> getProducerSales(Integer producerId) {
-        Producer producer = producerService.getAuthenticatedProducer();
+        Producer producer = authenticationService.getAuthenticatedProducer();
         if (!producer.getId().equals(producerId)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
@@ -60,10 +65,45 @@ public class ProducerService implements ProducersApiDelegate {
 
     @Override
     public ResponseEntity<List<Customer>> getProducerCustomers(Integer producerId) {
-        Producer producer = producerService.getAuthenticatedProducer();
+        Producer producer = authenticationService.getAuthenticatedProducer();
         if (!producer.getId().equals(producerId)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
-        return new ResponseEntity<>(customerRepository.findByProducer(producer), HttpStatus.OK);
+        return new ResponseEntity<>(customerRepository.findByProducer(producer), OK);
+    }
+
+    @Override
+    public ResponseEntity<StripeAccount> createStripeAccount(Integer producerId) {
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        producer = producerRepository.findById(producerId).orElseThrow();
+        if (producer.getStripeAccount() != null) {
+            throw new ResponseStatusException(BAD_REQUEST, "Un compte Stripe existe déjà pour le producteur " + producer.getId());
+        }
+        try {
+            StripeAccount stripeAccount = stripeService.createStripeAccount(producer);
+            producer.setStripeAccount(stripeAccount);
+            producerRepository.save(producer);
+            return new ResponseEntity<>(stripeAccount, OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du compte Stripe", e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<StripeAccount> createStripeAccountLink(Integer producerId) {
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        try {
+            var stripeAccount = producer.getStripeAccount();
+            stripeService.setStripeAccountLink(stripeAccount);
+            return new ResponseEntity<>(stripeAccount, OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du lien vers le compte Stripe", e);
+        }
     }
 }

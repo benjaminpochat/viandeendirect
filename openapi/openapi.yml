@@ -86,6 +86,44 @@ paths:
       operationId: getProducerCustomers
       summary: List all customers who have bought anything to a specific producer.
       description: Gets a list of all `customer` entities.
+  /producers/{producerId}/stripeAccount/:
+    parameters:
+    - name: producerId
+      description: A unique identifier for a `producer`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    post:
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeAccount'
+          description: Successful response - returns a Stripe account
+      operationId: createStripeAccount
+  /producers/{producerId}/stripeAccount/accountLink/:
+    parameters:
+    - name: producerId
+      description: A unique identifier for a `producer`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    post:
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeAccount'
+          description: Successful response - returns a Stripe account update with Stripe account link
+      operationId: createStripeAccountLink
   /sales:
     summary: Path used to manage the list of all public sales.
     get:
@@ -432,6 +470,7 @@ components:
             read: Grants read access
             write: Grants write access
             admin: Grants access to admin operations
+
   schemas:
     PackageLot:
       description: "A lot of packages"
@@ -747,8 +786,23 @@ components:
         deliveryZipCode:
           type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "sales")'
+    StripeAccount:
+      description: an acount for Stripe payment service
+      type: object
+      properties:
+        id:
+          type: integer
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+          description: the Stripe account id given by viandeendirect.eu
+        stripeId:
+          type: string
+          description: the Stripe account id given by Stripe service
+        detailsSubmitted:
+          type: boolean
+        accountLink:
+          type: string
     Producer:
-      description: ""
+      description: a producer
       type: object
       properties:
         user:
@@ -773,6 +827,8 @@ components:
           items:
             $ref: "#/components/schemas/Sale"
           x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "seller")'
+        stripeAccount:
+          $ref: '#/components/schemas/StripeAccount'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")'
     Address:
       description: "an address for delivering orders"

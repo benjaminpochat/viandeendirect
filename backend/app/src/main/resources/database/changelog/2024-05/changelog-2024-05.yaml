@@ -1,0 +1,45 @@
+databaseChangeLog:
+- changeSet:
+      id: 2024-05-12
+      author: benjamin
+      changes:
+          - dropColumn:
+                tableName: producers
+                columns:
+                    - column:
+                          name: mollie_refresh_token
+          - addColumn:
+                tableName: producers
+                columns:
+                    - column:
+                          name: stripe_account_id
+                          type: INTEGER
+          - createTable:
+              tableName: stripe_accounts
+              columns:
+                - column:
+                    name: id
+                    type: INTEGER
+                    constraints:
+                      nullable: false
+                      primaryKey: true
+                      primaryKeyName: stripe_accounts_pkey
+                - column:
+                    name: stripe_id
+                    type: VARCHAR(255)
+                - column:
+                    name: details_submitted
+                    type: BOOLEAN
+- changeSet:
+    id: 2024-05-12-bis
+    author: benjamin
+    changes:
+      - createSequence:
+          cacheSize: 1
+          cycle: false
+          dataType: bigint
+          incrementBy: 1
+          maxValue: 9223372036854775807
+          minValue: 1
+          sequenceName: stripe_account_id_seq
+          startValue: 1
