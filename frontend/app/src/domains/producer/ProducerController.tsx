@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 
-import { Button, Typography } from "@mui/material"
+import { Button, Link, Typography, CircularProgress } from "@mui/material"
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
@@ -20,27 +20,78 @@ function ProducerController() {
       keycloak, 
       api => api.getProducer, 
       {'email': authenticationService.getCurrentUserEmail()}, 
-      setProducer, 
+      producer => {
+        setProducer(producer)
+        if(producer.stripeAccount) {
+          loadStripeAccount(producer.id)
+        }
+      }, 
       console.error)
   }, [keycloak])
 
   const [producer, setProducer] = useState<Producer>();
+  const [stripeAccountCreationPending, setStripeAccountCreationPending] = useState<boolean>(false)
 
   return <>
           <Typography variant="h6">Gestion du compte</Typography>
           {displayStripeAccount()}
           </>
   
+  function loadStripeAccount(producerId: number) {
+    apiInvoker.callApiAuthenticatedly(
+      keycloak,
+      api => api.getStripeAccount,
+      producerId,
+      stripeAccount => setProducer({...producer, stripeAccount: stripeAccount}),
+      console.error
+    )
+  }
+
   function displayStripeAccount() {
-    if(producer?.stripeAccountId) {
-      return <div>Votre numéro de compte Stripe est {producer.stripeAccountId}</div>
+    if (producer?.stripeAccount) {
+      return <>
+        <div>Votre numéro de compte Stripe est {producer.stripeAccount.stripeId}</div>
+        {displayStripeAccountLink()}
+        </>
     } else {
-     return <Button onClick={createStripeAccount}>Créer un compte de paiement Stripe</Button> 
+      return <Button disabled={stripeAccountCreationPending} onClick={createStripeAccount}>
+        Créer un compte de paiement Stripe
+          {displayStripeAccountCreationProgress()}
+        </Button>
+    }
+  }
+
+  function displayStripeAccountLink() {
+    if(producer?.stripeAccount) {
+      if (!producer.stripeAccount.detailsSubmitted) {
+        return <Button onClick={() => window.location.href = producer.stripeAccount.stripeAccountLink}>Saisissez votre RIB et vos informations réglementaires sur Stripe</Button>
+      } else {
+        return <>
+          <Button onClick={() => window.open('https://dashboard.stripe.com/', '_blank')}>Consultez vos encaissements sur Stripe</Button>
+          <Button onClick={() => window.open(producer.stripeAccount.accountLink, '_self')}>Modifier votre RIB et vos informations réglementaires sur Stripe</Button>
+        </>
+      }
+    }
+  }
+
+  function displayStripeAccountCreationProgress() {
+    if (stripeAccountCreationPending) {
+      return <CircularProgress/>
     }
   }
 
   function createStripeAccount() {
-    apiInvoker.callApiAuthenticatedly(keycloak, api => api.createStripeAccount, producer?.id, setProducer, console.error)
+    setStripeAccountCreationPending(true)
+    apiInvoker.callApiAuthenticatedly(
+      keycloak, 
+      api => api.createStripeAccount, 
+      producer?.id, 
+      stripeAccount => {
+        setProducer({...producer, stripeAccount: stripeAccount})
+        setStripeAccountCreationPending(false)
+        loadStripeAccount(producer.id)
+      }, 
+      console.error)
   }
 
 /*

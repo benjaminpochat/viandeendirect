@@ -34,7 +34,7 @@ function SideMenu({width, open, onClose, selectItem}) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Account' disablePadding>
-                        <ListItemButton onClick={() => selectItem('GROWER_ACCOUNT')}>
+                        <ListItemButton onClick={() => selectItem('ACCOUNT')}>
                             <ListItemText primary='Compte' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>

@@ -11,12 +11,10 @@ import { CookiesProvider } from 'react-cookie';
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import ProducerLayoutWrapper from './layouts/producer/LayoutWrapper';
+import ProducerLayoutWrapper from './layouts/producer/ProducerLayoutWrapper.js';
 import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
 
 import './App.css';
-import StripeAccountOnboardingAcknowledgement from './domains/producer/StripeAccountOnboardingAcknowledgement.jsx';
-import StripeAccountOnboardingRefresh from './domains/producer/StripeAccountOnboardingRefresh.jsx';
 
 
 function App() {
@@ -67,16 +65,12 @@ function App() {
       element: getLayoutWrapper(),
     },
     {
-      path: "/payments/stripe/acknowledge/:connectedAccountId",
-      element: <StripeAccountOnboardingAcknowledgement/>,
-    },
-    {
-      path: "/payments/stripe/refresh/:connectedAccountId",
-      element: <StripeAccountOnboardingRefresh/>,
-    },
+      path: "/accounts",
+      element: <ProducerLayoutWrapper routedMainContent='account'/>,
+    }
   ]);
 
-  function getLayoutWrapper() {
+  function getLayoutWrapper(mainContent) {
     if(process.env.REACT_APP_MODE === 'CUSTOMER') {
       return <CustomerLayout/>
     }

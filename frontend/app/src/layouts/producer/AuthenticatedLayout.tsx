@@ -17,10 +17,10 @@ import SideMenu from './SideMenu.js'
 import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
 
 
-function AuthenticatedLayout() {
+function AuthenticatedLayout({routedMainContent: routedMainContent}) {
     const { keycloak, initialized } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
-    const [mainContent, setMainContent] = useState('DASHBOARD')
+    const [mainContent, setMainContent] = useState(routedMainContent?.toUpperCase())
     const [producer, setProducer] = useState<Producer>()
     const apiInvoker = new ApiInvoker()
     const authenticationService = new AuthenticationService(keycloak)
@@ -52,7 +52,8 @@ function AuthenticatedLayout() {
           case 'SALES' : return <SaleController producer={producer}></SaleController>
           case 'PRODUCTIONS' : return <ProductionController producer={producer}></ProductionController>
           case 'CUSTOMERS' : return <CustomerController producer={producer}></CustomerController>
-          case 'GROWER_ACCOUNT' : return <ProducerController></ProducerController>
+          case 'ACCOUNT' : return <ProducerController></ProducerController>
+          default: return <Dashboard></Dashboard>
         }
     }
     

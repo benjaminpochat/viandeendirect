@@ -27,9 +27,6 @@ databaseChangeLog:
                 - column:
                     name: stripe_id
                     type: VARCHAR(255)
-                - column:
-                    name: details_submitted
-                    type: BOOLEAN
 - changeSet:
     id: 2024-05-12-bis
     author: benjamin

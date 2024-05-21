@@ -1,5 +1,6 @@
 package eu.viandeendirect.domains.payment;
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
@@ -13,10 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import static com.stripe.param.AccountLinkCreateParams.Type.ACCOUNT_ONBOARDING;
+
 @Service
 public class StripeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StripeService.class);
+
+    @Value("${STRIPE_API_KEY}")
+    public void setStripeApiKey(String stripeApiKey) {
+        Stripe.apiKey = stripeApiKey;
+    }
 
     @Value("${PRODUCER_FRONTEND_URL:http://localhost:3000}")
     String viandeendirectProducerFrontendUrl;
@@ -34,6 +42,7 @@ public class StripeService {
         );
         StripeAccount stripeAccount = new StripeAccount();
         stripeAccount.setStripeId(account.getId());
+        stripeAccount.setDetailsSubmitted(account.getDetailsSubmitted());
         return stripeAccountRepository.save(stripeAccount);
     }
 
@@ -41,16 +50,17 @@ public class StripeService {
         Account.retrieve(stripeAccount.getStripeId());
     }
 
-    public void setStripeAccountLink(StripeAccount stripeAccount) throws StripeException {
+    public void loadStripeAccount(StripeAccount stripeAccount) throws StripeException {
+        Account account = Account.retrieve(stripeAccount.getStripeId());
         AccountLink accountLink = AccountLink.create(
                 AccountLinkCreateParams.builder()
                         .setAccount(stripeAccount.getStripeId())
-                        .setReturnUrl(viandeendirectProducerFrontendUrl + "/payments/stripe/acknowledge/" + stripeAccount.getStripeId())
-                        .setRefreshUrl(viandeendirectProducerFrontendUrl + "/payments/stripe/refresh" + stripeAccount.getStripeId())
-                        .setType(AccountLinkCreateParams.Type.ACCOUNT_ONBOARDING)
+                        .setReturnUrl(viandeendirectProducerFrontendUrl + "/account")
+                        .setRefreshUrl(viandeendirectProducerFrontendUrl + "/account")
+                        .setType(ACCOUNT_ONBOARDING)
                         .build()
         );
+        stripeAccount.setDetailsSubmitted(account.getDetailsSubmitted());
         stripeAccount.setAccountLink(accountLink.getUrl());
-        stripeAccountRepository.save(stripeAccount);
     }
 }

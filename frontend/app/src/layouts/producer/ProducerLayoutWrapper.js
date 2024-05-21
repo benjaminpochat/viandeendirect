@@ -4,14 +4,14 @@ import AuthenticatedLayout from './AuthenticatedLayout.tsx'
 import AnonymousLayout from './AnonymousLayout.tsx';
 
 
-export default function ProducerLayoutWrapper() {
+export default function ProducerLayoutWrapper({routedMainContent: routedMainContent}) {
 
     const { keycloak, initialized } = useKeycloak()
 
     if(process.env.REACT_APP_MOCK_API) {
-        return <AuthenticatedLayout/>
+        return <AuthenticatedLayout routedMainContent={routedMainContent}/>
     } else {
-        return keycloak.authenticated ? <AuthenticatedLayout/> : <AnonymousLayout/>
+        return keycloak.authenticated ? <AuthenticatedLayout routedMainContent={routedMainContent}/> : <AnonymousLayout/>
     }
     
 }

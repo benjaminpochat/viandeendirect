@@ -2,12 +2,14 @@ package eu.viandeendirect.domains.user;
 
 import eu.viandeendirect.api.ProducersApiDelegate;
 import eu.viandeendirect.domains.payment.StripeService;
+import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.model.Customer;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Sale;
-import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.model.StripeAccount;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import static org.springframework.http.HttpStatus.*;
 
 @Service
 public class ProducerService implements ProducersApiDelegate {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProducerService.class);
 
     @Autowired
     ProducerRepository producerRepository;
@@ -84,25 +88,28 @@ public class ProducerService implements ProducersApiDelegate {
         }
         try {
             StripeAccount stripeAccount = stripeService.createStripeAccount(producer);
+            stripeService.loadStripeAccount(stripeAccount);
             producer.setStripeAccount(stripeAccount);
             producerRepository.save(producer);
             return new ResponseEntity<>(stripeAccount, OK);
         } catch (Exception e) {
+            LOGGER.error("An error occurred when creating Stripe account data using Stripe API", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du compte Stripe", e);
         }
     }
 
     @Override
-    public ResponseEntity<StripeAccount> createStripeAccountLink(Integer producerId) {
+    public ResponseEntity<StripeAccount> getStripeAccount(Integer producerId) {
         Producer producer = authenticationService.getAuthenticatedProducer();
         if (!producer.getId().equals(producerId)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
         try {
             var stripeAccount = producer.getStripeAccount();
-            stripeService.setStripeAccountLink(stripeAccount);
+            stripeService.loadStripeAccount(stripeAccount);
             return new ResponseEntity<>(stripeAccount, OK);
         } catch (Exception e) {
+            LOGGER.error("An error occurred when loading Stripe account data using Stripe API", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du lien vers le compte Stripe", e);
         }
     }

@@ -30,6 +30,7 @@ public class StripeAccount {
   private String stripeId;
 
   @JsonProperty("detailsSubmitted")
+  @Transient
   private Boolean detailsSubmitted;
 
   @JsonProperty("accountLink")

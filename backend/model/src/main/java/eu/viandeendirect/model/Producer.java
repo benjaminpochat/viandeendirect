@@ -207,7 +207,7 @@ public class Producer {
    * @return stripeAccount
   */
   @Valid
-  @Schema(name = "stripeAccount", required = false)
+  @Schema(name = "stripeAccount")
   public StripeAccount getStripeAccount() {
     return stripeAccount;
   }
