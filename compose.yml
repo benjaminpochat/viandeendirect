@@ -4,7 +4,9 @@ services:
     build:
       context: "."
       dockerfile: ./database/Dockerfile
-    image: benjaminpochat/viandeendirect-database:${DOCKER_IMAGE_TAG:-latest}
+      tags:
+        - benjaminpochat/viandeendirect-database:latest
+    image: benjaminpochat/viandeendirect-database:${DOCKER_IMAGE_TAG}
     volumes:
       - ${postgres_datafile_path:-./data}:/var/lib/postgresql/data/pgdata
     healthcheck:
@@ -26,7 +28,9 @@ services:
     build:
       context: "."
       dockerfile: ./identity/Dockerfile
-    image: benjaminpochat/viandeendirect-identity:${DOCKER_IMAGE_TAG:-latest}
+      tags:
+        - benjaminpochat/viandeendirect-identity:latest
+    image: benjaminpochat/viandeendirect-identity:${DOCKER_IMAGE_TAG}
     depends_on:
       database:
         condition: service_healthy
@@ -56,7 +60,9 @@ services:
     build:
       context: "."
       dockerfile: ./backend/Dockerfile
-    image: benjaminpochat/viandeendirect-backend:${DOCKER_IMAGE_TAG:-latest}
+      tags:
+        - benjaminpochat/viandeendirect-backend:latest
+    image: benjaminpochat/viandeendirect-backend:${DOCKER_IMAGE_TAG}
     environment:
       - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/viandeendirect
@@ -78,9 +84,11 @@ services:
     build:
       context: "."
       dockerfile: ./frontend/Dockerfile
+      tags:
+        - benjaminpochat/viandeendirect-frontend-producer:latest
       args:
         REACT_APP_MODE: PRODUCER
-    image: benjaminpochat/viandeendirect-frontend-producer:${DOCKER_IMAGE_TAG:-latest}
+    image: benjaminpochat/viandeendirect-frontend-producer:${DOCKER_IMAGE_TAG}
     volumes:
       - ${frontend_producer_config_path:-./frontend-producer-config}:/usr/local/apache2/htdocs/config
     ports:
@@ -91,9 +99,11 @@ services:
     build:
       context: "."
       dockerfile: ./frontend/Dockerfile
+      tags:
+        - benjaminpochat/viandeendirect-frontend-customer:latest
       args:
         REACT_APP_MODE: CUSTOMER
-    image: benjaminpochat/viandeendirect-frontend-customer:${DOCKER_IMAGE_TAG:-latest}
+    image: benjaminpochat/viandeendirect-frontend-customer:${DOCKER_IMAGE_TAG}
     volumes:
       - ${frontend_customer_config_path:-./frontend-customer-config}:/usr/local/apache2/htdocs/config
     ports:

@@ -171,7 +171,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function createOrder(order: Order) {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrder, order, () => {})
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrder, order, setOrder, console.error)
     }
 
     function toggleConditionApproved() {
@@ -203,7 +203,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function payOrder() {
-        //TODO : faire le truc qui paye
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order.id, () => {console.log(`payment created for order ${order.id}`)}, console.error)
         removeCookie('pendingOrder')
         returnCallback(sale)
     }

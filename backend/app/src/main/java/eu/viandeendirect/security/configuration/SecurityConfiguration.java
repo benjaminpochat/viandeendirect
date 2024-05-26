@@ -51,7 +51,7 @@ class SecurityConfiguration {
                         .requestMatchers("/honneyProductions", "/honneyProductions/**").permitAll()
                         .requestMatchers("/customers", "/customers/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
                         .requestMatchers("/producers", "/producers/**").hasRole(ROLE_PRODUCER)
-                        .requestMatchers("/orders", "/orders/**").hasRole(ROLE_PRODUCER)
+                        .requestMatchers("/orders", "/orders/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
                         .requestMatchers("/error").permitAll()
                         //TODO : enable role protection
                         //.requestMatchers("/payments/stripe/**").hasRole(ROLE_PRODUCER)

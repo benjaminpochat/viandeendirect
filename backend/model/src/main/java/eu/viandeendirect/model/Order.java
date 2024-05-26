@@ -30,7 +30,8 @@ import jakarta.annotation.Generated;
 
 @Schema(name = "Order", description = "")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-@jakarta.persistence.Entity @jakarta.persistence.Table(name = "orders")
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(name = "orders")
 public class Order {
 
   @JsonProperty("id")
@@ -55,6 +56,13 @@ public class Order {
   @JsonProperty("sale")
   @ManyToOne
   private Sale sale;
+
+  @JsonProperty("payment")
+  @OneToOne
+  private StripePayment payment;
+
+  @JsonProperty("status")
+  private OrderStatus status;
 
   public Order id(Integer id) {
     this.id = id;
@@ -160,6 +168,44 @@ public class Order {
     this.sale = sale;
   }
 
+  public Order payment(StripePayment payment) {
+    this.payment = payment;
+    return this;
+  }
+
+  /**
+   * Get payment
+   * @return payment
+  */
+  @Valid
+  @Schema(name = "payment", required = false)
+  public StripePayment getPayment() {
+    return payment;
+  }
+
+  public void setPayment(StripePayment payment) {
+    this.payment = payment;
+  }
+
+  public Order status(OrderStatus status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+  */
+  @Valid
+  @Schema(name = "status", required = false)
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -173,12 +219,14 @@ public class Order {
         Objects.equals(this.invoice, order.invoice) &&
         Objects.equals(this.items, order.items) &&
         Objects.equals(this.customer, order.customer) &&
-        Objects.equals(this.sale, order.sale);
+        Objects.equals(this.sale, order.sale) &&
+        Objects.equals(this.payment, order.payment) &&
+        Objects.equals(this.status, order.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, invoice, items, customer, sale);
+    return Objects.hash(id, invoice, items, customer, sale, payment, status);
   }
 
   @Override
@@ -190,6 +238,8 @@ public class Order {
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("    customer: ").append(toIndentedString(customer)).append("\n");
     sb.append("    sale: ").append(toIndentedString(sale)).append("\n");
+    sb.append("    payment: ").append(toIndentedString(payment)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

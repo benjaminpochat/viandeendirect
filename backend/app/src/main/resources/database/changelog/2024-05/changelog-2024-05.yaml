@@ -40,3 +40,45 @@ databaseChangeLog:
           minValue: 1
           sequenceName: stripe_account_id_seq
           startValue: 1
+- changeSet:
+    id: viandendirect-2024-05-26
+    author: benjamin
+    changes:
+      - createSequence:
+          cacheSize: 1
+          cycle: false
+          dataType: bigint
+          incrementBy: 1
+          maxValue: 9223372036854775807
+          minValue: 1
+          sequenceName: stripe_payment_id_seq
+          startValue: 1
+      - addColumn:
+          tableName: orders
+          columns:
+            - column:
+                name: stripe_payment_id
+                type: INTEGER
+      - createTable:
+          tableName: stripe_payments
+          columns:
+            - column:
+                name: id
+                type: INTEGER
+                constraints:
+                  nullable: false
+                  primaryKey: true
+                  primaryKeyName: stripe_payment_pkey
+            - column:
+                name: checkout_session_id
+                type: VARCHAR(255)
+- changeSet:
+    id: viandendirect-2024-05-26-2
+    author: benjamin
+    changes:
+      - addColumn:
+          tableName: orders
+          columns:
+            - column:
+                name: status
+                type: SMALLINT

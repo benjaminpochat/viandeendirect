@@ -66,8 +66,19 @@ function App() {
     },
     {
       path: "/accounts",
-      element: <ProducerLayoutWrapper routedMainContent='account'/>,
+      element: <ProducerLayoutWrapper routedMainContent='account'/>
+    },
+    {
+      path: "/orders/:id/paymentSuccessful",
+      //TODO : retourner une page de confirmation
+      element: <CustomerLayout/>
+    },
+    {
+      path: "/orders/:id/paymentCancelled",
+      //TODO : retourner une page d'erreur
+      element: <CustomerLayout/>,
     }
+
   ]);
 
   function getLayoutWrapper(mainContent) {

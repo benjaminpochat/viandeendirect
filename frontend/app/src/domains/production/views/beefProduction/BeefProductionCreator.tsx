@@ -158,7 +158,7 @@ export default function BeefProductionCreator({ callback }) {
     }
 
     function getTotalQuantitySold() {
-        return beefProduction.lots?.map(lot => lot.netWeight * lot.quantity).reduce((total, added) => total + added) || 0
+        return beefProduction.lots?.map(lot => lot.netWeight * lot.quantity).reduce((total, added) => total + added, 0) || 0
     }
 
     function validate() {

@@ -14,11 +14,10 @@ security:
     - write
 
 paths:
+
   /producers/{producerId}/sales:
     summary: Path used to manage the list of sales related to a particular producer.
-    description: "The REST endpoint/path used to list and create zero or more `sale`\
-      \ entities.  This path contains a `GET` and `POST` operation to perform the\
-      \ list and create tasks, respectively."
+    description: The REST endpoint/path used to list and create zero or more `sale` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.
     parameters:
     - name: producerId
       description: A unique identifier for a `producer`.
@@ -61,6 +60,7 @@ paths:
       operationId: createProducerSale
       summary: Create a sale owned by a specific producer.
       description: Creates a new instance of a `sale`.
+
   /producers/{producerId}/customers:
     summary: Path used to manage the list of customers related to a particular producer.
     description: "The REST endpoint/path used to list zero or more customers"
@@ -86,6 +86,7 @@ paths:
       operationId: getProducerCustomers
       summary: List all customers who have bought anything to a specific producer.
       description: Gets a list of all `customer` entities.
+
   /producers/{producerId}/stripeAccount/:
     parameters:
     - name: producerId
@@ -116,6 +117,7 @@ paths:
                 $ref: '#/components/schemas/StripeAccount'
           description: Successful response - returns a Stripe account
       operationId: getStripeAccount
+
   /sales:
     summary: Path used to manage the list of all public sales.
     get:
@@ -133,6 +135,7 @@ paths:
       operationId: getSales
       summary: Get all the public sales
       description: Gets the list of `sale` instances, that are published by producers.
+
   /sales/{saleId}:
     summary: Path used to manage a single sale.
     description: "The REST endpoint/path used to get, update, and delete single instances\
@@ -158,6 +161,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /sales/{saleId}/orders:
     summary: Path used to manage orders for a particular sale.
     get:
@@ -181,6 +185,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /sales/{saleId}/productions:
     summary: Path used to manage productions for a particular sale.
     get:
@@ -204,6 +209,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /productions:
     summary: Path used to manage the list of productions.
     get:
@@ -228,6 +234,7 @@ paths:
             type: boolean
             default: false
           description: "true to get only productions ready to be put on sale"
+
   /productions/{productionId}/percentageSold:
     summary: Path used to get the percentage sold for a given production.
     get:
@@ -248,6 +255,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /beefProductions:
     post:
       requestBody:
@@ -268,6 +276,7 @@ paths:
           description: Successful response - returns the `beefProduction`created.
       operationId: createBeefProduction
       summary: Create a new beef production
+
   /beefProductions/{beefProductionId}:
     get:
       security:
@@ -289,6 +298,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /packageTemplates:
     get:
       security:
@@ -305,6 +315,7 @@ paths:
       operationId: getPackageTemplates
       summary: Get all package templates
       description: Get all package templates
+
   /addresses:
     get:
       security:
@@ -321,6 +332,7 @@ paths:
       operationId: getAddresses
       summary: Get all addresses
       description: Get all addresses
+
   /honneyProductions/{honneyProductionId}:
     get:
       security:
@@ -342,6 +354,7 @@ paths:
         type: integer
       in: path
       required: true
+
   /customers:
     summary: Path used to manage customers
     get:
@@ -382,6 +395,7 @@ paths:
           description: Successful response - returns the `Customer` entity created.
       operationId: createCustomer
       summary: Create a new customer
+
   /producers:
     summary: Path used to manage producers
     get:
@@ -403,6 +417,7 @@ paths:
       operationId: getProducer
       summary: Get a producer identified by its email.
       description: Gets a `Producer` entities.
+
   /orders:
     summary: Path used to manage orders.
     description: "The REST endpoint/path used to list and create zero or more `Order`\
@@ -428,6 +443,7 @@ paths:
       operationId: createOrder
       summary: Create a Order
       description: Creates a new instance of a `Order`.
+
   /orders/{orderId}:
     summary: Path used to manage a single Order.
     get:
@@ -450,6 +466,30 @@ paths:
         type: integer
       in: path
       required: true
+
+  /orders/{orderId}/payment:
+    summary: Path used to manage an order payment.
+    post:
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripePayment'
+          description: Successful response - returns a single `Order`.
+      operationId: createOrderPayment
+      summary: Creates an order payment
+      description: Creates an order payment that should be processes afterward on payment platform.
+    parameters:
+    - name: orderId
+      description: A unique identifier for a `Order`.
+      schema:
+        type: integer
+      in: path
+      required: true
+
 components:
   securitySchemes:
     oAuth2ForViandeEnDirect:
@@ -730,12 +770,15 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "order")'
         customer:
           $ref: '#/components/schemas/Customer'
-          description: ""
           x-field-extra-annotation: '@jakarta.persistence.OneToOne'
         sale:
           $ref: '#/components/schemas/Sale'
-          description: ""
           x-field-extra-annotation: '@jakarta.persistence.ManyToOne'
+        payment:
+          $ref: '#/components/schemas/StripePayment'
+          x-field-extra-annotation: '@jakarta.persistence.OneToOne'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "orders")'
     Sale:
       description: ""
@@ -790,9 +833,28 @@ components:
           type: string
           description: the Stripe account id given by Stripe service
         detailsSubmitted:
+          x-field-extra-annotation: '@jakarta.persistence.Transient'
+          description: true if additionnal informations of the account owner have been fulfilles in Stripe platform
           type: boolean
         accountLink:
+          x-field-extra-annotation: '@jakarta.persistence.Transient'
+          description: the link to the account on Stripe platform
           type: string
+    StripePayment:
+      description: a payment piloted by Stripe platform.
+      type: object
+      properties:
+        id:
+          description: "the Stripe payment id given by viandeendirect.eu"
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+          type: integer
+        checkoutSessionId:
+          description: the Stripe Checkout Session id of the payment
+          type: string
+        paymentUrl:
+          type: string
+          description: the url where to redirect the customer to process the payment on Stripe platform.
+          x-field-extra-annotation: '@jakarta.persistence.Transient'
     Producer:
       description: a producer
       type: object
@@ -847,3 +909,6 @@ components:
     ProducerStatus:
       type: string
       enum: [ON_BOARDING, ACTIVE]
+    OrderStatus:
+      type: string
+      enum: [ITEMS_SELECTED, PAYMENT_STARTED, PAYED, PAYMENT_FAILED, DELIVERED]
