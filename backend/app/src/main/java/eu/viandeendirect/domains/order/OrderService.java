@@ -2,6 +2,7 @@ package eu.viandeendirect.domains.order;
 
 import eu.viandeendirect.api.OrdersApiDelegate;
 import eu.viandeendirect.domains.payment.StripeService;
+import eu.viandeendirect.domains.user.CustomerRepository;
 import eu.viandeendirect.model.*;
 import eu.viandeendirect.domains.production.PackageLotRepository;
 import org.slf4j.Logger;
@@ -32,9 +33,15 @@ public class OrderService implements OrdersApiDelegate {
 
     @Autowired
     private StripeService stripeService;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public ResponseEntity<Order> createOrder(Order order) {
+        if (order.getCustomer().getId() == null) {
+            Customer customer = customerRepository.findByEmail(order.getCustomer().getUser().getEmail()).orElse(null);
+            order.setCustomer(customer);
+        }
         order.setStatus(OrderStatus.ITEMS_SELECTED);
         Order orderCreated = orderRepository.save(order);
         List<PackageLot> lots = new ArrayList<>();

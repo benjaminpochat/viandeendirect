@@ -11,9 +11,6 @@ export default function CustomerCreationForm({returnCallback: returnCallback, cu
     const apiInvoker = new ApiInvoker()
 
     function storeUserData(userFormData) {
-        customer.user.lastName = userFormData.lastName
-        customer.user.firstName = userFormData.firstName
-        customer.user.email = userFormData.email
         customer.user.phone = userFormData.phone
         apiInvoker.callApiAuthenticatedly(keycloak, api => api.createCustomer, customer, returnCallback)
     }
@@ -21,7 +18,7 @@ export default function CustomerCreationForm({returnCallback: returnCallback, cu
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Typography variant='h6'>Vos coordonnées</Typography>
-        <FormContainer onSuccess={storeUserData} defaultValues={customer.user}>
+        <FormContainer onSuccess={storeUserData} defaultValues={{...customer.user}}>
             <div className="form">
                 <div>
                     <TextFieldElement name="lastName" label="Nom" variant="standard" disabled/>

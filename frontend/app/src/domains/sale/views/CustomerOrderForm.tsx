@@ -9,6 +9,7 @@ import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
 import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import Order from "viandeendirect_eu/dist/model/Order"
+import Customer from "viandeendirect_eu/dist/model/Customer"
 import Production from "viandeendirect_eu/dist/model/Production"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 
@@ -161,7 +162,12 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
 
     function validateAuthentication() {
         setCompletedSteps([...completedSteps, AUTHENTICATION_STEP])
-        createOrder(order)
+        const customer: Customer = {
+            user: {
+                email: authenticationService.getCurrentUserEmail()
+            }
+        }
+        createOrder({...order, customer: customer})
         setActiveStep(CONFIRMATION_STEP)
     }
 
@@ -203,8 +209,12 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function payOrder() {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order.id, () => {console.log(`payment created for order ${order.id}`)}, console.error)
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order.id, payment => redirectToStripePayment(payment.paymentUrl), console.error)
+    }
+
+    function redirectToStripePayment(url: string) {
+        console.log(`payment created for order ${order.id}`)
+        window.location.href = url
         removeCookie('pendingOrder')
-        returnCallback(sale)
     }
 }

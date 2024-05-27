@@ -25,7 +25,7 @@ export default function CustomerLayout() {
     const [mainContent, setMainContent] = useState(WELCOME)
     const [context, setContext] = useState(undefined)
     const [cookies, setCookie, removeCookie] = useCookies(['pendingOrder']);
-    const [customer, setCustomer] = useState(undefined)
+    const [customer, setCustomer] = useState<Customer>(undefined)
 
     useEffect(() => {
         if (initialized) {
@@ -35,7 +35,7 @@ export default function CustomerLayout() {
         }
     }, [initialized])
 
-    function initCustomer(customer) {
+    function initCustomer(customer: Customer) {
         if (customer) {
             setCustomer(customer)
         } else {

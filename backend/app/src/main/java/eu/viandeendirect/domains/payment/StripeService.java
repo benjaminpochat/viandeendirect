@@ -95,17 +95,21 @@ public class StripeService {
     }
 
     private LineItem getLineItem(OrderItem orderItem) {
-        return LineItem.builder().setPriceData(
+        long unitAmount = orderItem.getUnitPrice().longValue() * orderItem.getPackageLot().getNetWeight().longValue() * 100;
+        long quantity = orderItem.getQuantity().longValue();
+        LOGGER.debug("creating Stripe payment's line item for order item {} x{} for {} euro-cents each", orderItem.getPackageLot().getLabel(), quantity, unitAmount);
+        return LineItem.builder()
+                .setPriceData(
                         LineItem.PriceData.builder()
                                 .setCurrency("eur")
                                 .setProductData(LineItem.PriceData.ProductData.builder()
                                         .setName(orderItem.getPackageLot().getLabel())
                                         .build()
                                 )
-                                .setUnitAmount(orderItem.getUnitPrice().longValue())
+                                .setUnitAmount(unitAmount)
                                 .build()
                 )
-                .setQuantity(orderItem.getQuantity().longValue())
+                .setQuantity(quantity)
                 .build();
     }
 
