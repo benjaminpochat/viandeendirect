@@ -106,7 +106,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
                             <Checkbox onChange={toggleConditionApproved} checked={conditionApproved}/>J'accepte les conditions
                         </div>
                     </div>
-                    <Button disabled={!conditionApproved} variant="contained" size="small" onClick={approveConditions}>Valider la commande</Button>
+                    <Button disabled={!conditionApproved} variant="contained" size="small" onClick={approveConditions}>Valider les conditions</Button>
                 </StepContent>
             </Step>
             <Step active={activeStep === PAYMENT_STEP}>
@@ -167,7 +167,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
                 email: authenticationService.getCurrentUserEmail()
             }
         }
-        createOrder({...order, customer: customer})
+        setOrder({...order, customer: customer})
         setActiveStep(CONFIRMATION_STEP)
     }
 
@@ -209,7 +209,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function payOrder() {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order.id, payment => redirectToStripePayment(payment.paymentUrl), console.error)
+        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order, order => redirectToStripePayment(order.payment.paymentUrl), console.error)
     }
 
     function redirectToStripePayment(url: string) {

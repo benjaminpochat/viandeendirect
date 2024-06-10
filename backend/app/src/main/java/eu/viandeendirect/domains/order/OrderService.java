@@ -1,6 +1,7 @@
 package eu.viandeendirect.domains.order;
 
 import eu.viandeendirect.api.OrdersApiDelegate;
+import eu.viandeendirect.domains.payment.StripePaymentRepository;
 import eu.viandeendirect.domains.payment.StripeService;
 import eu.viandeendirect.domains.user.CustomerRepository;
 import eu.viandeendirect.model.*;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
@@ -33,17 +35,56 @@ public class OrderService implements OrdersApiDelegate {
 
     @Autowired
     private StripeService stripeService;
+
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private StripePaymentRepository stripePaymentRepository;
+
+    @Override
+    public ResponseEntity<Order> getOrder(Integer orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        List<OrderItem> items = orderItemRepository.findByOrder(order);
+        order.setItems(items);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<Order> createOrder(Order order) {
+        loadCustomer(order);
+        order.setStatus(OrderStatus.ITEMS_SELECTED);
+        Order orderCreated = orderRepository.save(order);
+        updateQuantitiesSold(order);
+        return new ResponseEntity<>(orderCreated, CREATED);
+    }
+
+    @Override
+    public ResponseEntity<Order> createOrderPayment(Order order) {
+        try {
+            loadCustomer(order);
+            order.setStatus(OrderStatus.ITEMS_SELECTED);
+            orderRepository.save(order);
+            updateQuantitiesSold(order);
+            StripePayment payment = stripeService.createPayment(order);
+            stripePaymentRepository.save(payment);
+            order.setPayment(payment);
+            orderRepository.save(order);
+            return new ResponseEntity<>(order, CREATED);
+        } catch (Exception e) {
+            LOGGER.error("An error occurred when creating Stripe payment using Stripe API", e);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du paiement Stripe", e);
+        }
+    }
+
+    private void loadCustomer(Order order) {
         if (order.getCustomer().getId() == null) {
             Customer customer = customerRepository.findByEmail(order.getCustomer().getUser().getEmail()).orElse(null);
             order.setCustomer(customer);
         }
-        order.setStatus(OrderStatus.ITEMS_SELECTED);
-        Order orderCreated = orderRepository.save(order);
+    }
+
+    private void updateQuantitiesSold(Order order) {
         List<PackageLot> lots = new ArrayList<>();
         order.getItems().forEach(item -> {
             PackageLot lot = packageLotRepository.findById(item.getPackageLot().getId()).get();
@@ -57,54 +98,28 @@ public class OrderService implements OrdersApiDelegate {
                                 %s articles ont été mis en vente.
                                 Le nombre total d'articles vendus ne peut pas dépasser la quantité totals du lot.
                                 """,
-                        item.getQuantity(),
-                        lot.getId(),
-                        lot.getLabel(),
-                        lot.getQuantitySold(),
-                        lot.getQuantity()));
+                                item.getQuantity(),
+                                lot.getId(),
+                                lot.getLabel(),
+                                lot.getQuantitySold(),
+                                lot.getQuantity()));
             }
             lot.setQuantitySold(updatedQuantySold);
             lots.add(lot);
         });
         packageLotRepository.saveAll(lots);
         orderItemRepository.saveAll(order.getItems());
-        return new ResponseEntity<>(orderCreated, HttpStatus.CREATED);
     }
 
-    @Override
-    public ResponseEntity<Order> getOrder(Integer orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        List<OrderItem> items = orderItemRepository.findByOrder(order);
-        order.setItems(items);
-        return new ResponseEntity<>(order, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<StripePayment> createOrderPayment(Integer orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        try {
-            StripePayment payment = stripeService.createPayment(order);
-            return new ResponseEntity<>(payment, HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.error("An error occurred when creating Stripe account data using Stripe API", e);
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du compte Stripe", e);
-        }
-    }
-
-    public void processOrderPaymentInitialization(Order order) {
-        order.setStatus(OrderStatus.PAYMENT_STARTED);
-        orderRepository.save(order);
-    }
-
-    public void processOrderPaymentValidation(Order order) {
-        stripeService.transferPaymentToProducers(order);
-        order.setStatus(OrderStatus.PAYED);
+    public void processOrderPaymentCompletion(Order order) {
+        order.setStatus(OrderStatus.PAYMENT_COMPLETED);
         // TODO: trigger an email to the customer
         orderRepository.save(order);
     }
 
-    public void processOrderPaymentFailure(Order order) {
+    public void processOrderPaymentExpiration(Order order) {
         order.setStatus(OrderStatus.PAYMENT_FAILED);
+        // TODO : update quantity to sold with product not paid
         orderRepository.save(order);
     }
 }

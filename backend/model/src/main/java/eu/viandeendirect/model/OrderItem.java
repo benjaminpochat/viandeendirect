@@ -174,7 +174,6 @@ public class OrderItem {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderItem {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("    packageLot: ").append(toIndentedString(packageLot)).append("\n");
     sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");

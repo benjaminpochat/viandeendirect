@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-05-12
+      author: benjamin
+      changes:
+        - modifyDataType:
+            tableName: orders
+            columnName: status
+            newDataType: VARCHAR(255)
+  - changeSet:
+      id: viandeendirect-2024-05-12
+      author: benjamin
+      changes:
+        - renameColumn:
+            tableName: orders
+            newColumnName: payment_id
+            oldColumnName: stripe_payment_id

@@ -53,9 +53,7 @@ class SecurityConfiguration {
                         .requestMatchers("/producers", "/producers/**").hasRole(ROLE_PRODUCER)
                         .requestMatchers("/orders", "/orders/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
                         .requestMatchers("/error").permitAll()
-                        //TODO : enable role protection
-                        //.requestMatchers("/payments/stripe/**").hasRole(ROLE_PRODUCER)
-                        .requestMatchers("/payments/stripe/**").permitAll()
+                        .requestMatchers("/payments/stripeAccountEvents", "/payments/stripeConnectEvents").permitAll()
                 );
         http.oauth2Login(Customizer.withDefaults());
         http.logout(logoutCustomizer -> logoutCustomizer.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));

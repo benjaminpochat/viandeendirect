@@ -62,6 +62,7 @@ public class Order {
   private StripePayment payment;
 
   @JsonProperty("status")
+  @Enumerated(EnumType.STRING)
   private OrderStatus status;
 
   public Order id(Integer id) {

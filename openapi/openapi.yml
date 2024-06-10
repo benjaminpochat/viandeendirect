@@ -467,7 +467,7 @@ paths:
       in: path
       required: true
 
-  /orders/{orderId}/payment:
+  /orders/payment:
     summary: Path used to manage an order payment.
     post:
       security:
@@ -477,18 +477,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StripePayment'
-          description: Successful response - returns a single `Order`.
+                $ref: '#/components/schemas/Order'
+          description: Successful response - returns a single `Order` with its `StripePayment`.
       operationId: createOrderPayment
-      summary: Creates an order payment
-      description: Creates an order payment that should be processes afterward on payment platform.
-    parameters:
-    - name: orderId
-      description: A unique identifier for a `Order`.
-      schema:
-        type: integer
-      in: path
-      required: true
+      summary: Creates a payment for the order given as a payload
+      description: Creates an order and its payment that should be processes afterward on payment platform.
+      requestBody:
+        description: A new `Order` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
 
 components:
   securitySchemes:
@@ -911,4 +911,4 @@ components:
       enum: [ON_BOARDING, ACTIVE]
     OrderStatus:
       type: string
-      enum: [ITEMS_SELECTED, PAYMENT_STARTED, PAYED, PAYMENT_FAILED, DELIVERED]
+      enum: [ITEMS_SELECTED, PAYMENT_COMPLETED, PAYEMENT_VALIDATED, PAYMENT_FAILED, DELIVERED]

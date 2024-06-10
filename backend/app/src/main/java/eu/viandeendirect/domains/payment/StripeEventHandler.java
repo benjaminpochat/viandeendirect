@@ -18,14 +18,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
+
 /**
  * @link <a href=https://docs.stripe.com/connect/onboarding/quickstart#init-stripe>Stripe documentation</a>
  */
 @RestController
 public class StripeEventHandler {
 
-    @Value("${STRIPE_WEBHOOK_SECRET:default_stripe_webhook_secret_value}")
-    private String stripeWebhookSecret;
+    @Value("${STRIPE_WEBHOOK_ACCOUNT_SECRET:default_stripe_webhook_secret_value}")
+    private String stripeWebhookAccountSecret;
+
+    @Value("${STRIPE_WEBHOOK_CONNECT_SECRET:default_stripe_webhook_secret_value}")
+    private String stripeWebhookConnectSecret;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StripeEventHandler.class);
 
@@ -36,50 +43,68 @@ public class StripeEventHandler {
     private OrderService orderService;
 
 
-    @PostMapping(value = "/payments/stripeEvents", produces = "application/json")
-    public ResponseEntity<String> handleStripeEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
+    @PostMapping(value = "/payments/stripeAccountEvents", produces = "application/json")
+    public ResponseEntity<String> handleStripeAccountEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
         try {
-            Event event = Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookSecret);
+            Event event = Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookAccountSecret);
             switch (event.getType()) {
                 case "checkout.session.completed":
-                    LOGGER.info("Stripe event handled : Checkout session completed");
-                    processOrderPaymentInitialization(event);
+                    LOGGER.info("Stripe account event handled : Checkout session completed");
+                    break;
+                case "checkout.session.expired":
+                    LOGGER.info("Stripe account event handled : Checkout session expired");
                     break;
                 case "checkout.session.async_payment_succeeded":
-                    LOGGER.info("Stripe event handled : Checkout session async payment succeeded");
-                    processOrderPaymentValidation(event);
+                    LOGGER.info("Stripe account event handled : Checkout session async payment succeeded");
                     break;
                 case "checkout.session.async_payment_failed":
-                    LOGGER.warn("Stripe event handled : Checkout session async payment failed");
-                    processOrderPaymentFailure(event);
+                    LOGGER.warn("Stripe account event handled : Checkout session async payment failed");
                     break;
                 default:
-                    LOGGER.error("Unhandled event type: {}", event.getType());
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    LOGGER.info("Unhandled account event type: {}", event.getType());
+                    return new ResponseEntity<>(NOT_IMPLEMENTED);
             }
         } catch (SignatureVerificationException e) {
-            LOGGER.error("An error occurred when processing Stripe webhook event", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            LOGGER.error("An error occurred when processing Stripe webhook account event", e);
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(OK);
     }
 
-    private void processOrderPaymentInitialization(Event event) {
-        Session checkoutSession = (Session) event.getData().getObject();
-        Order order = findOrderByCheckoutSession(checkoutSession);
-        orderService.processOrderPaymentInitialization(order);
+    @PostMapping(value = "/payments/stripeConnectEvents", produces = "application/json")
+    public ResponseEntity<String> handleStripeConnectEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
+        try {
+            Event event = Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookConnectSecret);
+            switch (event.getType()) {
+                case "checkout.session.completed":
+                    LOGGER.info("Stripe connect event handled : Checkout session completed");
+                    processOrderPaymentCompleted(event);
+                    break;
+                case "checkout.session.expired":
+                    LOGGER.info("Stripe connect event handled : Checkout session expired");
+                    processOrderPaymentExpiration(event);
+                    break;
+                default:
+                    LOGGER.info("Unhandled connect event type: {}", event.getType());
+                    return new ResponseEntity<>(NOT_IMPLEMENTED);
+            }
+        } catch (SignatureVerificationException e) {
+            LOGGER.error("An error occurred when processing Stripe webhook connect event", e);
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(OK);
     }
 
-    private void processOrderPaymentValidation(Event event) {
+    private void processOrderPaymentCompleted(Event event) {
         Session checkoutSession = (Session) event.getData().getObject();
         Order order = findOrderByCheckoutSession(checkoutSession);
-        orderService.processOrderPaymentValidation(order);
+        orderService.processOrderPaymentCompletion(order);
     }
 
-    private void processOrderPaymentFailure(Event event) {
+    private void processOrderPaymentExpiration(Event event) {
         Session checkoutSession = (Session) event.getData().getObject();
         Order order = findOrderByCheckoutSession(checkoutSession);
-        orderService.processOrderPaymentFailure(order);
+        orderService.processOrderPaymentExpiration(order);
     }
 
     private Order findOrderByCheckoutSession(Session checkoutSession) {
