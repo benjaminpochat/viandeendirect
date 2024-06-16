@@ -2,6 +2,7 @@ package eu.viandeendirect.domains.payment;
 
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
+import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import eu.viandeendirect.domains.order.OrderRepository;
@@ -27,14 +28,13 @@ import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 @RestController
 public class StripeEventHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StripeEventHandler.class);
+
     @Value("${STRIPE_WEBHOOK_ACCOUNT_SECRET:default_stripe_webhook_secret_value}")
     private String stripeWebhookAccountSecret;
 
     @Value("${STRIPE_WEBHOOK_CONNECT_SECRET:default_stripe_webhook_secret_value}")
     private String stripeWebhookConnectSecret;
-
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StripeEventHandler.class);
 
     @Autowired
     private OrderRepository orderRepository;
@@ -46,19 +46,15 @@ public class StripeEventHandler {
     @PostMapping(value = "/payments/stripeAccountEvents", produces = "application/json")
     public ResponseEntity<String> handleStripeAccountEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
         try {
-            Event event = Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookAccountSecret);
+            Event event = getEvent(stripeEvent, stripeSignature);
             switch (event.getType()) {
                 case "checkout.session.completed":
                     LOGGER.info("Stripe account event handled : Checkout session completed");
+                    processOrderPaymentCompleted(event);
                     break;
                 case "checkout.session.expired":
                     LOGGER.info("Stripe account event handled : Checkout session expired");
-                    break;
-                case "checkout.session.async_payment_succeeded":
-                    LOGGER.info("Stripe account event handled : Checkout session async payment succeeded");
-                    break;
-                case "checkout.session.async_payment_failed":
-                    LOGGER.warn("Stripe account event handled : Checkout session async payment failed");
+                    processOrderPaymentExpiration(event);
                     break;
                 default:
                     LOGGER.info("Unhandled account event type: {}", event.getType());
@@ -73,41 +69,32 @@ public class StripeEventHandler {
 
     @PostMapping(value = "/payments/stripeConnectEvents", produces = "application/json")
     public ResponseEntity<String> handleStripeConnectEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
-        try {
-            Event event = Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookConnectSecret);
-            switch (event.getType()) {
-                case "checkout.session.completed":
-                    LOGGER.info("Stripe connect event handled : Checkout session completed");
-                    processOrderPaymentCompleted(event);
-                    break;
-                case "checkout.session.expired":
-                    LOGGER.info("Stripe connect event handled : Checkout session expired");
-                    processOrderPaymentExpiration(event);
-                    break;
-                default:
-                    LOGGER.info("Unhandled connect event type: {}", event.getType());
-                    return new ResponseEntity<>(NOT_IMPLEMENTED);
-            }
-        } catch (SignatureVerificationException e) {
-            LOGGER.error("An error occurred when processing Stripe webhook connect event", e);
-            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(OK);
+        LOGGER.info("Unhandled connect event");
+        return new ResponseEntity<>(NOT_IMPLEMENTED);
     }
 
-    private void processOrderPaymentCompleted(Event event) {
-        Session checkoutSession = (Session) event.getData().getObject();
+    Event getEvent(String stripeEvent, String stripeSignature) throws SignatureVerificationException {
+        return Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookConnectSecret);
+    }
+
+    void processOrderPaymentCompleted(Event event) {
+        Session checkoutSession = getCheckoutSession(event);
         Order order = findOrderByCheckoutSession(checkoutSession);
         orderService.processOrderPaymentCompletion(order);
     }
 
+    Session getCheckoutSession(Event event) {
+        Session checkoutSession = (Session) event.getDataObjectDeserializer().getObject().get();
+        return checkoutSession;
+    }
+
     private void processOrderPaymentExpiration(Event event) {
-        Session checkoutSession = (Session) event.getData().getObject();
+        Session checkoutSession = getCheckoutSession(event);
         Order order = findOrderByCheckoutSession(checkoutSession);
         orderService.processOrderPaymentExpiration(order);
     }
 
-    private Order findOrderByCheckoutSession(Session checkoutSession) {
+    Order findOrderByCheckoutSession(Session checkoutSession) {
         return orderRepository.findByCheckoutSessionId(checkoutSession.getId());
     }
 

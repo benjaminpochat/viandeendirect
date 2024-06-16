@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static eu.viandeendirect.model.OrderStatus.PAYMENT_ABORTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -53,7 +54,7 @@ public class OrderService implements OrdersApiDelegate {
     @Override
     public ResponseEntity<Order> createOrder(Order order) {
         loadCustomer(order);
-        order.setStatus(OrderStatus.ITEMS_SELECTED);
+        order.setStatus(OrderStatus.BOOKED_WITHOUT_PAYMENT);
         Order orderCreated = orderRepository.save(order);
         updateQuantitiesSold(order);
         return new ResponseEntity<>(orderCreated, CREATED);
@@ -63,7 +64,7 @@ public class OrderService implements OrdersApiDelegate {
     public ResponseEntity<Order> createOrderPayment(Order order) {
         try {
             loadCustomer(order);
-            order.setStatus(OrderStatus.ITEMS_SELECTED);
+            order.setStatus(OrderStatus.PAYMENT_PENDING);
             orderRepository.save(order);
             updateQuantitiesSold(order);
             StripePayment payment = stripeService.createPayment(order);
@@ -90,6 +91,7 @@ public class OrderService implements OrdersApiDelegate {
             PackageLot lot = packageLotRepository.findById(item.getPackageLot().getId()).get();
             int updatedQuantySold = lot.getQuantitySold() + item.getQuantity();
             if (updatedQuantySold > lot.getQuantity()) {
+                order.setStatus(PAYMENT_ABORTED);
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         String.format("""
@@ -118,7 +120,7 @@ public class OrderService implements OrdersApiDelegate {
     }
 
     public void processOrderPaymentExpiration(Order order) {
-        order.setStatus(OrderStatus.PAYMENT_FAILED);
+        order.setStatus(PAYMENT_ABORTED);
         // TODO : update quantity to sold with product not paid
         orderRepository.save(order);
     }

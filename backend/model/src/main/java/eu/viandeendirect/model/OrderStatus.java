@@ -11,13 +11,13 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public enum OrderStatus {
   
-  ITEMS_SELECTED("ITEMS_SELECTED"),
+  BOOKED_WITHOUT_PAYMENT("BOOKED_WITHOUT_PAYMENT"),
+
+  PAYMENT_PENDING("PAYMENT_PENDING"),
 
   PAYMENT_COMPLETED("PAYMENT_COMPLETED"),
-
-  PAYEMENT_VALIDATED("PAYEMENT_VALIDATED"),
   
-  PAYMENT_FAILED("PAYMENT_FAILED"),
+  PAYMENT_ABORTED("PAYMENT_ABORTED"),
   
   DELIVERED("DELIVERED");
 

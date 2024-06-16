@@ -5,6 +5,7 @@ delete from sales;
 delete from package_lots;
 delete from package_templates;
 delete from beef_productions;
+delete from honney_productions;
 delete from addresses;
 delete from customers;
 delete from producers;
