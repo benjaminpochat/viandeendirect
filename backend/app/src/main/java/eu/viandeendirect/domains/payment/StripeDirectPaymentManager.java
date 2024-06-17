@@ -50,8 +50,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
                         .setApplicationFeeAmount(1L).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(order.getCustomer().getUser().getEmail())
-                .setSuccessUrl(viandeendirectProducerFrontendUrl + "/order/" + order.getId() + "/paymentSuccessful")
-                .setCancelUrl(viandeendirectProducerFrontendUrl + "/order/" + order.getId() + "/paymentCancelled")
+                .setSuccessUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/paymentSuccessful")
+                .setCancelUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/paymentCancelled")
                 .setExpiresAt(Instant.now().plusSeconds(30 * 60).getEpochSecond())
                 .build();
         RequestOptions requestOptions = RequestOptions.builder().setStripeAccount(getProducerStripeAccount(order).getStripeAccount().getStripeId()).build();

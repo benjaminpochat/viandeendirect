@@ -13,8 +13,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ProducerLayoutWrapper from './layouts/producer/ProducerLayoutWrapper.js';
 import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
+import CustomerOrderView from './layouts/customer/PaymentLayout.tsx'
 
 import './App.css';
+import PaymentLayout from './layouts/customer/PaymentLayout.tsx';
 
 
 function App() {
@@ -69,16 +71,13 @@ function App() {
       element: <ProducerLayoutWrapper routedMainContent='account'/>
     },
     {
-      path: "/orders/:id/paymentSuccessful",
-      //TODO : retourner une page de confirmation
-      element: <CustomerLayout/>
+      path: "/orders/:orderId/paymentSuccessful",
+      element: <PaymentLayout paymentSuccessful={true}/>
     },
     {
-      path: "/orders/:id/paymentCancelled",
-      //TODO : retourner une page d'erreur
-      element: <CustomerLayout/>,
+      path: "/orders/:orderId/paymentCancelled",
+      element: <PaymentLayout paymentSuccessful={false}/>
     }
-
   ]);
 
   function getLayoutWrapper(mainContent) {

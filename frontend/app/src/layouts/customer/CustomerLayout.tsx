@@ -2,15 +2,20 @@ import React from 'react'
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 
-import Welcome from '../../domains/welcome/Welcome.tsx'
-import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
-import Sale from 'viandeendirect_eu/dist/model/Sale.js'
 import { useCookies } from 'react-cookie'
-import CustomerCreationForm from '../../domains/customer/views/CustomerCreationForm.tsx'
-import { ApiInvoker } from '../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'
-import { Customer, User } from 'viandeendirect_eu'
+
+import Sale from 'viandeendirect_eu/dist/model/Sale.js'
+import Customer from 'viandeendirect_eu/dist/model/Customer.js'
+import User from 'viandeendirect_eu/dist/model/User.js'
+
+import { ApiInvoker } from '../../api/ApiInvoker.ts'
 import { AuthenticationService } from '../../authentication/AuthenticationService.ts'
+
+import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
+import CustomerCreationForm from '../../domains/customer/views/CustomerCreationForm.tsx'
+import Welcome from '../../domains/welcome/Welcome.tsx'
+
 
 export default function CustomerLayout() {
 
