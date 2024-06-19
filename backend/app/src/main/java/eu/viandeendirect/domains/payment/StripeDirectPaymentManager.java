@@ -34,8 +34,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StripeDirectPaymentManager.class);
 
-    @Value("${PRODUCER_FRONTEND_URL:http://localhost:3000}")
-    String viandeendirectProducerFrontendUrl;
+    @Value("${CUSTOMER_FRONTEND_URL:http://localhost:3000}")
+    String viandeendirectCustomerFrontendUrl;
 
     @Autowired
     PackageLotRepository packageLotRepository;
@@ -50,8 +50,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
                         .setApplicationFeeAmount(1L).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(order.getCustomer().getUser().getEmail())
-                .setSuccessUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/paymentSuccessful")
-                .setCancelUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/paymentCancelled")
+                .setSuccessUrl(viandeendirectCustomerFrontendUrl + "/orders/" + order.getId() + "/paymentSuccessful")
+                .setCancelUrl(viandeendirectCustomerFrontendUrl + "/orders/" + order.getId() + "/paymentCancelled")
                 .setExpiresAt(Instant.now().plusSeconds(30 * 60).getEpochSecond())
                 .build();
         RequestOptions requestOptions = RequestOptions.builder().setStripeAccount(getProducerStripeAccount(order).getStripeAccount().getStripeId()).build();
