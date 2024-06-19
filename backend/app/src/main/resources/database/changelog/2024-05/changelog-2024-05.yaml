@@ -7,7 +7,7 @@ databaseChangeLog:
                 tableName: producers
                 columns:
                     - column:
-                          name: mollie_refresh_token
+                          name: mollieRefreshToken
           - addColumn:
                 tableName: producers
                 columns:
