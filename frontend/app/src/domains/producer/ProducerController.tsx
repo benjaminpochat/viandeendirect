@@ -64,7 +64,7 @@ function ProducerController() {
   function displayStripeAccountLink() {
     if(producer?.stripeAccount) {
       if (!producer.stripeAccount.detailsSubmitted) {
-        return <Button onClick={() => window.location.href = producer.stripeAccount.stripeAccountLink}>Saisissez votre RIB et vos informations réglementaires sur Stripe</Button>
+        return <Button onClick={() => window.location.href = producer.stripeAccount.accountLink}>Saisissez votre RIB et vos informations réglementaires sur Stripe</Button>
       } else {
         return <>
           <Button onClick={() => window.open('https://dashboard.stripe.com/', '_blank')}>Consultez vos encaissements sur Stripe</Button>
