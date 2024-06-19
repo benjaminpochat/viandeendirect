@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2024-05-12
+      id: viandeendirect-2024-06-12
       author: benjamin
       changes:
         - modifyDataType:
@@ -8,7 +8,7 @@ databaseChangeLog:
             columnName: status
             newDataType: VARCHAR(255)
   - changeSet:
-      id: viandeendirect-2024-05-12
+      id: viandeendirect-2024-06-12-2
       author: benjamin
       changes:
         - renameColumn:
