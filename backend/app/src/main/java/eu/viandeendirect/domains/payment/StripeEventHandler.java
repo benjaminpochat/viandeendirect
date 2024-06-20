@@ -28,9 +28,6 @@ public class StripeEventHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StripeEventHandler.class);
 
-    @Value("${STRIPE_WEBHOOK_ACCOUNT_SECRET:default_stripe_webhook_secret_value}")
-    private String stripeWebhookAccountSecret;
-
     @Value("${STRIPE_WEBHOOK_CONNECT_SECRET:default_stripe_webhook_secret_value}")
     private String stripeWebhookConnectSecret;
 
@@ -40,35 +37,28 @@ public class StripeEventHandler {
     @Autowired
     private OrderService orderService;
 
-
-    @PostMapping(value = "/payments/stripeAccountEvents", produces = "application/json")
-    public ResponseEntity<String> handleStripeAccountEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
+    @PostMapping(value = "/payments/stripeConnectEvents", produces = "application/json")
+    public ResponseEntity<String> handleStripeConnectEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
         try {
             Event event = getEvent(stripeEvent, stripeSignature);
             switch (event.getType()) {
                 case "checkout.session.completed":
-                    LOGGER.info("Stripe account event handled : Checkout session completed");
+                    LOGGER.info("Stripe connect event handled : Checkout session completed");
                     processOrderPaymentCompleted(event);
                     break;
                 case "checkout.session.expired":
-                    LOGGER.info("Stripe account event handled : Checkout session expired");
+                    LOGGER.info("Stripe connect event handled : Checkout session expired");
                     processOrderPaymentExpiration(event);
                     break;
                 default:
-                    LOGGER.info("Unhandled account event type: {}", event.getType());
+                    LOGGER.info("Unhandled connect event type: {}", event.getType());
                     return new ResponseEntity<>(NOT_IMPLEMENTED);
             }
         } catch (SignatureVerificationException | EventDataObjectDeserializationException e) {
-            LOGGER.error("An error occurred when processing Stripe webhook account event", e);
+            LOGGER.error("An error occurred when processing Stripe webhook connect event", e);
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(OK);
-    }
-
-    @PostMapping(value = "/payments/stripeConnectEvents", produces = "application/json")
-    public ResponseEntity<String> handleStripeConnectEvent(@RequestBody String stripeEvent, @RequestHeader("Stripe-Signature") String stripeSignature) {
-        LOGGER.info("Unhandled connect event");
-        return new ResponseEntity<>(NOT_IMPLEMENTED);
     }
 
     Event getEvent(String stripeEvent, String stripeSignature) throws SignatureVerificationException {

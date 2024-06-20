@@ -23,7 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_ABORTED;
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_COMPLETED;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 
 @SpringBootTest
@@ -70,7 +69,7 @@ public class TestStripeEventHandler_handleStripeAccountEvent {
         doReturn(checkoutSession).when(stripeEventHandler).getCheckoutSession(any());
 
         // when
-        stripeEventHandler.handleStripeAccountEvent(null, null);
+        stripeEventHandler.handleStripeConnectEvent(null, null);
 
         // then
         Order orderReloaded = orderRepository.findById(order.getId()).get();
@@ -100,7 +99,7 @@ public class TestStripeEventHandler_handleStripeAccountEvent {
         doReturn(checkoutSession).when(stripeEventHandler).getCheckoutSession(any());
 
         // when
-        stripeEventHandler.handleStripeAccountEvent(null, null);
+        stripeEventHandler.handleStripeConnectEvent(null, null);
 
         // then
         Order orderReloaded = orderRepository.findById(order.getId()).get();
