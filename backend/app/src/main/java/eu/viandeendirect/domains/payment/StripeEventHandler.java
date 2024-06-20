@@ -1,8 +1,8 @@
 package eu.viandeendirect.domains.payment;
 
+import com.stripe.exception.EventDataObjectDeserializationException;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
-import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import eu.viandeendirect.domains.order.OrderRepository;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 
 /**
  * @link <a href=https://docs.stripe.com/connect/onboarding/quickstart#init-stripe>Stripe documentation</a>
@@ -60,7 +58,7 @@ public class StripeEventHandler {
                     LOGGER.info("Unhandled account event type: {}", event.getType());
                     return new ResponseEntity<>(NOT_IMPLEMENTED);
             }
-        } catch (SignatureVerificationException e) {
+        } catch (SignatureVerificationException | EventDataObjectDeserializationException e) {
             LOGGER.error("An error occurred when processing Stripe webhook account event", e);
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
@@ -77,18 +75,17 @@ public class StripeEventHandler {
         return Webhook.constructEvent(stripeEvent, stripeSignature, stripeWebhookConnectSecret);
     }
 
-    void processOrderPaymentCompleted(Event event) {
+    void processOrderPaymentCompleted(Event event) throws EventDataObjectDeserializationException {
         Session checkoutSession = getCheckoutSession(event);
         Order order = findOrderByCheckoutSession(checkoutSession);
         orderService.processOrderPaymentCompletion(order);
     }
 
-    Session getCheckoutSession(Event event) {
-        Session checkoutSession = (Session) event.getDataObjectDeserializer().getObject().get();
-        return checkoutSession;
+    Session getCheckoutSession(Event event) throws EventDataObjectDeserializationException {
+        return (Session) event.getDataObjectDeserializer().deserializeUnsafe();
     }
 
-    private void processOrderPaymentExpiration(Event event) {
+    private void processOrderPaymentExpiration(Event event) throws EventDataObjectDeserializationException {
         Session checkoutSession = getCheckoutSession(event);
         Order order = findOrderByCheckoutSession(checkoutSession);
         orderService.processOrderPaymentExpiration(order);
