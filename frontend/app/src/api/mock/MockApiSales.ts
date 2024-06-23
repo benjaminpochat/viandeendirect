@@ -158,6 +158,7 @@ export class MockApiSales {
     getOrder(): Order {
         return {
             id: 22,
+            status: 'PAYMENT_PENDING',
             customer: {
                 id: 2,
                 user: {

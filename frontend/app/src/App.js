@@ -71,12 +71,8 @@ function App() {
       element: <ProducerLayoutWrapper routedMainContent='account'/>
     },
     {
-      path: "/orders/:orderId/paymentSuccessful",
-      element: <PaymentLayout paymentSuccessful={true}/>
-    },
-    {
-      path: "/orders/:orderId/paymentCancelled",
-      element: <PaymentLayout paymentSuccessful={false}/>
+      path: "/orders/:orderId/payment",
+      element: <PaymentLayout/>
     }
   ]);
 
