@@ -15,7 +15,7 @@ RUN npm run install:api
 
 ARG REACT_APP_MODE
 
-RUN export REACT_APP_MODE=$REACT_APP_MODE && npm run build
+RUN export REACT_APP_MODE=$REACT_APP_MODE && PUBLIC_URL="/" && npm run build
 
 FROM httpd:2.4.57
 

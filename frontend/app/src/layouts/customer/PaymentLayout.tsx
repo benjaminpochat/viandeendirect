@@ -19,8 +19,10 @@ export default function PaymentLayout({paymentSuccessful: paymentSuccessful}) {
     const [order, setOrder] = useState<Order>()
 
     useEffect(() => {
-        loadOrder()
-    }, [keycloak])
+        if(initialized) {
+            loadOrder()
+        }
+    }, [initialized])
 
     function loadOrder() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
