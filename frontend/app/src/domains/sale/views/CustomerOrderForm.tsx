@@ -7,7 +7,6 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
-import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
 import Order from "viandeendirect_eu/dist/model/Order"
 import Customer from "viandeendirect_eu/dist/model/Customer"
 import Production from "viandeendirect_eu/dist/model/Production"
@@ -30,9 +29,8 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     const authenticationService = new AuthenticationService(keycloak)
     
     const [productions, setProductions] = useState<Array<Production>>([])
-    const [order, setOrder] = useState<Order>({sale: sale})
+    const [order, setOrder] = useState<Order>({sale: sale, items: []})
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
-    const [items, setItems] = useState<Array<OrderItem>>([])
     const [activeStep, setActiveStep] = useState(SET_ITEMS_STEP)
     const [conditionApproved, setConditionApproved] = useState<boolean>(false)
 
@@ -42,7 +40,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     useEffect(() => {
         apiInvoker.callApiAnonymously(api => api.getSaleProductions, sale.id, setProductions)
         if (cookies.pendingOrder) {
-            setItems(cookies.pendingOrder.items)
+            setOrder({...order, items: cookies.pendingOrder.items})
             if(authenticationService.isAuthenticated()) {
                 setCompletedSteps([SET_ITEMS_STEP, AUTHENTICATION_STEP])
                 setActiveStep(CONFIRMATION_STEP)
@@ -121,7 +119,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function itemsValidationButton(){
-        const totalAmount = items.map(item => item.packageLot.unitPrice * item.packageLot.netWeight * item.quantity)
+        const totalAmount = order.items.map(item => item.packageLot.unitPrice * item.packageLot.netWeight * item.quantity)
             .reduce((total, amount) => total + amount, 0)
         const buttonLabel = totalAmount > 0 ? `Valider la commande pour ${totalAmount} €TTC` : 'Valider la commande'
         const disabled = totalAmount === 0
@@ -129,15 +127,13 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     }
 
     function packageSelector(lot: PackageLot) {
-        return <PackageSelector lot={lot} orderItems={items} updateItemsCallback={setItems}></PackageSelector>
+        return <PackageSelector lot={lot} orderItems={order.items} updateItemsCallback={items => setOrder({...order, items: items})}></PackageSelector>
     }
 
     function validateItems() {
         setCompletedSteps([...completedSteps, SET_ITEMS_STEP])
         setActiveStep(AUTHENTICATION_STEP)
-        const updatedOrder = {...order, items: items}
-        setCookie('pendingOrder', updatedOrder, {path: "/", maxAge: 3600})        
-        setOrder(updatedOrder)
+        setCookie('pendingOrder', order, {path: "/", maxAge: 3600})        
     }
 
     function getAuthenticationStepLabel(): string {
@@ -176,17 +172,16 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
         setActiveStep(PAYMENT_STEP)
     }
 
-    function createOrder(order: Order) {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrder, order, setOrder, console.error)
-    }
-
     function toggleConditionApproved() {
         setConditionApproved(!conditionApproved)
     }
 
     function getFinalButton() {
         if (conditionApproved && activeStep === PAYMENT_STEP) {
-            return <Button size="small" variant='contained' onClick={payOrder}>Payer ma commande</Button>
+            return <ButtonGroup size='small'>
+                <Button size="small" variant='contained' onClick={payOrder}>Payer ma commande</Button>
+                <Button size="small" onClick={cancel}>Abandonner</Button>
+            </ButtonGroup>
         }
         return <Button size="small" onClick={cancel}>Abandonner</Button>
     }
