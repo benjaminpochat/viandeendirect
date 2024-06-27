@@ -4,8 +4,10 @@ import eu.viandeendirect.api.OrdersApiDelegate;
 import eu.viandeendirect.domains.payment.StripePaymentRepository;
 import eu.viandeendirect.domains.payment.StripeService;
 import eu.viandeendirect.domains.user.CustomerRepository;
+import eu.viandeendirect.domains.user.CustomerService;
 import eu.viandeendirect.model.*;
 import eu.viandeendirect.domains.production.PackageLotRepository;
+import eu.viandeendirect.security.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +45,32 @@ public class OrderService implements OrdersApiDelegate {
     @Autowired
     private StripePaymentRepository stripePaymentRepository;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @Override
     public ResponseEntity<Order> getOrder(Integer orderId) {
         Order order = orderRepository.findById(orderId).get();
+        checkOrderAccess(order);
         List<OrderItem> items = orderItemRepository.findByOrder(order);
         order.setItems(items);
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    private void checkOrderAccess(Order order) {
+        Customer customer = authenticationService.getAuthenticatedCustomer();
+        if (customer != null) {
+            if (!order.getCustomer().equals(customer)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            }
+            return;
+        }
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (producer!= null) {
+            if (order.getItems().stream().noneMatch(item -> item.getPackageLot().getProduction().getProducer().equals(producer))) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            }
+        }
     }
 
     @Override

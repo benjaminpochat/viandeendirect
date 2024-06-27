@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { useCookies } from 'react-cookie'
@@ -15,6 +15,7 @@ import { AuthenticationService } from '../../authentication/AuthenticationServic
 import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
 import CustomerCreationForm from '../../domains/customer/views/CustomerCreationForm.tsx'
 import Welcome from '../../domains/welcome/Welcome.tsx'
+import { Login, Logout } from '@mui/icons-material'
 
 
 export default function CustomerLayout() {
@@ -53,7 +54,7 @@ export default function CustomerLayout() {
         }
     }
 
-    function renderMainContent() {
+    function displayMainContent() {
         if(authenticationService.isAuthenticated() && customer && !customer.id) {
             return <CustomerCreationForm customer={customer} returnCallback={newCustomer => setCustomer(newCustomer)}></CustomerCreationForm>
         } else if(cookies.pendingOrder ) {
@@ -71,6 +72,20 @@ export default function CustomerLayout() {
         setMainContent(ORDER_CREATION)
     }
 
+    function displayAuthenticationButton(): React.ReactNode {
+        if (authenticationService.isAuthenticated()) {
+            return <>
+                <Typography>{authenticationService.getCurrentUserFirstName() } {authenticationService.getCurrentUserLastName()}</Typography>
+                <IconButton onClick={keycloak.logout} color="inherit">
+                    <Logout/>
+                </IconButton>
+            </>
+        } 
+        return <IconButton onClick={keycloak.login} color="inherit">
+            <Login/>
+        </IconButton>
+    }
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -84,9 +99,10 @@ export default function CustomerLayout() {
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                         Viande en direct
                     </Typography>
+                    {displayAuthenticationButton()}
                 </Toolbar>
             </AppBar>
-            {renderMainContent()}
+            {displayMainContent()}
         </Box>
     )
 }

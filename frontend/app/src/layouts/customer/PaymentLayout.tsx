@@ -9,18 +9,24 @@ import { AppBar, Box, Button, CircularProgress, CssBaseline, Toolbar, Typography
 
 import OrderSummary from '../../domains/sale/components/OrderSummary.tsx'
 import Order from 'viandeendirect_eu/dist/model/Order.js';
+import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
 
 
 export default function PaymentLayout() {
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
+    const authenticationService = new AuthenticationService(keycloak)
     let { orderId } = useParams()
 
     const [order, setOrder] = useState<Order>()
+    const [orderAccessError, setOrderAccessError] = useState<Boolean>(false)
+    const [forbiddenAccess, setForbiddenAccess] = useState<Boolean>(false)
     let intervalId = 0
 
     useEffect(() => {
-        intervalId = setInterval(loadOrder, 1000)
+        if (initialized) {
+            intervalId = setInterval(loadOrder, 1000)
+        }
     }, [initialized])
 
     function loadOrder() {
@@ -29,6 +35,11 @@ export default function PaymentLayout() {
                 api.getOrder(orderId, (error, orderLoaded, response) => {
                     if (error) {
                         console.error(error)
+                        if (response.statusCode === 403) {
+                            setForbiddenAccess(true)
+                            setOrderAccessError(true)
+                            clearInterval(intervalId)
+                        }
                     } else {
                         console.log('api.getOrder called successfully. Returned data: ' + orderLoaded)
                         if (orderLoaded.status !== 'PAYMENT_PENDING') {
@@ -58,14 +69,40 @@ export default function PaymentLayout() {
             </AppBar>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
+                {getContent()}
+            </Box>
+        </Box>
+    )
+
+    function getContent() {
+        if (orderAccessError) {
+            if (forbiddenAccess) {
+                return <>
+                    <Typography variant='h5'>Désolé, vous n'êtes pas autorisé à consulter cette commande</Typography>
+                    <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
+                </>
+            } else {
+                return <>
+                    <Typography variant='h5'>Oups... une erreur s'est produite lors de l'accès à la commande {orderId}</Typography>
+                    <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
+                </>
+            }
+        }
+        if (authenticationService.isAuthenticated()) {
+            return <>
                 <div>
                     {getPaymentState()}
                     {getOrderSummary()}
                 </div>
                 <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
-            </Box>
-        </Box>
-    )
+            </>
+        } else {
+            return <>
+                <Typography variant='h5'>Vous devez vous identifier pour voir l'état de votre commande</Typography>
+                <Button variant='contained' onClick={() => keycloak.login()}>S'identifier</Button>
+            </>
+        }
+    }
 
     function getPaymentState(){
         if (order) {

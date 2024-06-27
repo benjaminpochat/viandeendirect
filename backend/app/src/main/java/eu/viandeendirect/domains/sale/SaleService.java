@@ -25,6 +25,7 @@ public class SaleService implements SalesApiDelegate {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private ProductionRepository productionRepository;
 
