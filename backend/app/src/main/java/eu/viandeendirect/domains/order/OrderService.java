@@ -8,6 +8,7 @@ import eu.viandeendirect.domains.user.CustomerService;
 import eu.viandeendirect.model.*;
 import eu.viandeendirect.domains.production.PackageLotRepository;
 import eu.viandeendirect.security.AuthenticationService;
+import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class OrderService implements OrdersApiDelegate {
     private StripePaymentRepository stripePaymentRepository;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationServiceSpecs authenticationService;
 
     @Override
     public ResponseEntity<Order> getOrder(Integer orderId) {
