@@ -1,5 +1,4 @@
 import Keycloak from "keycloak-js"
-import { ApiInvoker } from "../api/ApiInvoker"
 
 export class AuthenticationService {
     keycloak: Keycloak

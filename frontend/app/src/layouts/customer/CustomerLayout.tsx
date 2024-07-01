@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Box, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { useCookies } from 'react-cookie'
@@ -10,19 +10,20 @@ import Customer from 'viandeendirect_eu/dist/model/Customer.js'
 import User from 'viandeendirect_eu/dist/model/User.js'
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts'
-import { AuthenticationService } from '../../authentication/AuthenticationService.ts'
+import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts'
 
 import CustomerOrderForm from '../../domains/sale/views/CustomerOrderForm.tsx'
 import CustomerCreationForm from '../../domains/customer/views/CustomerCreationForm.tsx'
 import Welcome from '../../domains/welcome/Welcome.tsx'
 import { Login, Logout } from '@mui/icons-material'
+import NotAuthorizedForProducers from '../../authentication/views/NotAuthorizedForProducers.tsx'
 
 
 export default function CustomerLayout() {
 
     const WELCOME = 'WELCOME'
     const ORDER_CREATION = 'ORDER_CREATION'
-    const CUSTOMER_CREATION = 'CUSTOMER_CREATION'
+    const NOT_AUTHORIZED_FOR_PRODUCER = 'NOT_AUTHORIZED_FOR_PRODUCER'
 
     const apiInvoker = new ApiInvoker()
     const {keycloak, initialized} = useKeycloak()
@@ -36,7 +37,18 @@ export default function CustomerLayout() {
     useEffect(() => {
         if (initialized) {
             if (authenticationService.isAuthenticated() && !customer) {
-                apiInvoker.callApiAuthenticatedly(keycloak, api => api.getCustomer, {"email": authenticationService.getCurrentUserEmail()}, aCustomer => initCustomer(aCustomer), console.error)
+                apiInvoker.callApiAuthenticatedly(
+                    keycloak, 
+                    api => api.getCustomer, 
+                    {"email": authenticationService.getCurrentUserEmail()}, 
+                    aCustomer => initCustomer(aCustomer), 
+                    error => {
+                        if (error.status === 409) {
+                            setMainContent(NOT_AUTHORIZED_FOR_PRODUCER)
+                        } else {
+                            console.error(error)
+                        }
+                    })
             }
         }
     }, [initialized])
@@ -63,6 +75,7 @@ export default function CustomerLayout() {
         switch (mainContent) {
             case WELCOME: return <Welcome createOrderCallback={sale => createOrder(sale)}></Welcome>
             case ORDER_CREATION: return <CustomerOrderForm returnCallback={() => setMainContent(WELCOME)} sale={context} ></CustomerOrderForm>
+            case NOT_AUTHORIZED_FOR_PRODUCER: return <NotAuthorizedForProducers/>
         }
         
     }

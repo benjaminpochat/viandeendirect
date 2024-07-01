@@ -9,7 +9,7 @@ import { AppBar, Box, Button, CircularProgress, CssBaseline, Toolbar, Typography
 
 import OrderSummary from '../../domains/sale/components/OrderSummary.tsx'
 import Order from 'viandeendirect_eu/dist/model/Order.js';
-import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
+import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 
 
 export default function PaymentLayout() {

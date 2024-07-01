@@ -13,7 +13,7 @@ import Production from "viandeendirect_eu/dist/model/Production"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
 
 import PackageSelector from '../components/PackageSelector.tsx'
-import { AuthenticationService } from '../../../authentication/AuthenticationService.ts'
+import { AuthenticationService } from '../../../authentication/service/AuthenticationService.ts'
 import { useCookies } from 'react-cookie'
 
 export default function CustomerOrderForm({ sale: sale, returnCallback: returnCallback }) {

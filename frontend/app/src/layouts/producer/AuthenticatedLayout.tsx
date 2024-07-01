@@ -14,7 +14,8 @@ import ProductionController from '../../domains/production/ProductionController.
 import SaleController from '../../domains/sale/SaleController.tsx'
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
 import SideMenu from './SideMenu.js'
-import { AuthenticationService } from '../../authentication/AuthenticationService.ts';
+import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
+import NotAuthorizedForCustomers from '../../authentication/views/NotAuthorizedForCustomers.tsx';
 
 
 function AuthenticatedLayout({routedMainContent: routedMainContent}) {
@@ -30,8 +31,12 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
         keycloak, 
         api => api.getProducer, 
         {'email': authenticationService.getCurrentUserEmail()}, 
-        setProducer, 
-        console.error)
+        setProducer,
+        error => {
+          if (error.status === 403) {
+            setMainContent('NOT_AUTHORIZED_FOR_CUSTOMERS')
+          }
+        })
     }, [keycloak])
 
 
@@ -65,6 +70,9 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
       }
     }
 
+    if (mainContent === 'NOT_AUTHORIZED_FOR_CUSTOMERS') {
+      return <NotAuthorizedForCustomers/>
+    }
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -91,6 +99,7 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                         Viande en direct
                     </Typography>
+                    <Typography>{authenticationService.getCurrentUserFirstName() } {authenticationService.getCurrentUserLastName()}</Typography>
                     <IconButton onClick={keycloak.logout} color="inherit">
                       <Logout/>
                     </IconButton>

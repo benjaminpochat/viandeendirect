@@ -62,7 +62,7 @@ public class OrderService implements OrdersApiDelegate {
         Customer customer = authenticationService.getAuthenticatedCustomer();
         if (customer != null) {
             if (!order.getCustomer().equals(customer)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
             }
             return;
         }

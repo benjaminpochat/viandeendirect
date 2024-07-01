@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -15,6 +16,9 @@ public class CustomerService implements CustomersApiDelegate {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    ProducerRepository producerRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -33,10 +37,15 @@ public class CustomerService implements CustomersApiDelegate {
     public ResponseEntity<Customer> getCustomer(String email) {
         Customer customer = authenticationService.getAuthenticatedCustomer();
         if (customer == null) {
-            return new ResponseEntity<>(NO_CONTENT);
+            var producer = producerRepository.findByEmail(email);
+            if (producer.isPresent()) {
+                throw new ResponseStatusException(CONFLICT);
+            } else {
+                return new ResponseEntity<>(NO_CONTENT);
+            }
         }
         if (!customer.getUser().getEmail().equals(email)) {
-            return new ResponseEntity<>(FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
