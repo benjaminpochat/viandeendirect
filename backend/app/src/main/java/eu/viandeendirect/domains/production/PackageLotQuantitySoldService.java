@@ -19,11 +19,12 @@ public class PackageLotQuantitySoldService {
     PackageLotRepository packageLotRepository;
 
     public void updateQuantitySold(PackageLot packageLot) {
-        int quantitySold = orderItemRepository.findByPackageLot(packageLot).stream()
+        var packageLotLoaded = packageLotRepository.findById(packageLot.getId()).get();
+        int quantitySold = orderItemRepository.findByPackageLot(packageLotLoaded).stream()
                 .filter(orderItem -> List.of(PAYMENT_COMPLETED, PAYMENT_PENDING, BOOKED_WITHOUT_PAYMENT, DELIVERED).contains(orderItem.getOrder().getStatus()))
                 .mapToInt(OrderItem::getQuantity)
                 .sum();
-        packageLot.setQuantitySold(quantitySold);
-        packageLotRepository.save(packageLot);
+        packageLotLoaded.setQuantitySold(quantitySold);
+        packageLotRepository.save(packageLotLoaded);
     }
 }
