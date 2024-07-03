@@ -137,7 +137,7 @@ public class OrderService implements OrdersApiDelegate {
     }
 
     private void updateQuantitiesSold(Order order) {
-        order.getItems().stream()
+        orderItemRepository.findByOrder(order).stream()
                 .map(OrderItem::getPackageLot)
                 .forEach(packageLotQuantitySoldService::updateQuantitySold);
     }
