@@ -45,7 +45,7 @@ export default function BeefProductionCustomerCard({production: production}) {
                 <div className="sale-customer-card__farm">
                     <i className="icon farm-icon"></i>
                     <span>
-                        ferme_elevage
+                        {beefProduction.birthFarm}
                     </span>
                 </div>
             </div>

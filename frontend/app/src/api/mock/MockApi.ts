@@ -49,7 +49,7 @@ export class MockApi {
         callback(undefined, this.mockApiProducers.getProducerSales())
     }
 
-    getProducerCustomers(callback) {
+    getProducerCustomers(options, callback) {
         callback(undefined, this.mockApiProducers.getCustomers())
     }
 

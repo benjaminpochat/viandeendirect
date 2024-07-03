@@ -21,7 +21,8 @@ export class MockApiSales {
                     slaughterDate: '2023-10-01T10:00:00',
                     animalLiveWeight: 450,
                     animalType: 'BEEF_HEIFER',
-                    animalIdentifier: '9876'
+                    animalIdentifier: '9876',
+                    birthFarm: 'La ferme du puis'
                 }
             ]
         }
@@ -41,7 +42,8 @@ export class MockApiSales {
                     slaughterDate: '2023-11-01T10:00:00',
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
-                    animalIdentifier: '0987'
+                    animalIdentifier: '0987',
+                    birthFarm: 'La ferme du pommier'
                 }
             ]
         }
@@ -61,7 +63,8 @@ export class MockApiSales {
                     slaughterDate: '2024-01-01T10:00:00',
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
-                    animalIdentifier: '1234'
+                    animalIdentifier: '1234',
+                    birthFarm: 'La ferme de la source'
                 }
             ]
         }

@@ -32,6 +32,7 @@ export class MockApiProductions {
             cuttingDate: '2024-10-01T10:00:00',
             warmCarcassWeight: 450,
             animalType: 'BEEF_COW',
+            birthFarm: 'La ferme du puis',
             lots: [
                 {
                     id: 1,
