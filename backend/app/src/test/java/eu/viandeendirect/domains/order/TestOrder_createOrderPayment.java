@@ -16,6 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_ABORTED;
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_PENDING;
 import static java.util.regex.Pattern.*;
@@ -92,8 +94,6 @@ public class TestOrder_createOrderPayment {
         // when / then
         Assertions.assertThatThrownBy(() -> orderService.createOrderPayment(order))
                 .cause().hasMessageMatching(compile(".*Une erreur s'est produite lors de la création d'une commande de .* articles pour le lot '.* - .*'.*", MULTILINE | DOTALL));
-        Order orderReloaded = orderRepository.findById(order.getId()).get();
-        Assertions.assertThat(orderReloaded.getStatus()).isNotEqualTo(PAYMENT_ABORTED);
     }
 
 

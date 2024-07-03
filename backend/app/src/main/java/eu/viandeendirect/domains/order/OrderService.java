@@ -3,11 +3,10 @@ package eu.viandeendirect.domains.order;
 import eu.viandeendirect.api.OrdersApiDelegate;
 import eu.viandeendirect.domains.payment.StripePaymentRepository;
 import eu.viandeendirect.domains.payment.StripeService;
+import eu.viandeendirect.domains.production.PackageLotQuantitySoldService;
 import eu.viandeendirect.domains.user.CustomerRepository;
-import eu.viandeendirect.domains.user.CustomerService;
 import eu.viandeendirect.model.*;
 import eu.viandeendirect.domains.production.PackageLotRepository;
-import eu.viandeendirect.security.AuthenticationService;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_ABORTED;
@@ -33,6 +31,9 @@ public class OrderService implements OrdersApiDelegate {
 
     @Autowired
     OrderItemRepository orderItemRepository;
+
+    @Autowired
+    PackageLotQuantitySoldService packageLotQuantitySoldService;
 
     @Autowired
     private PackageLotRepository packageLotRepository;
@@ -78,9 +79,11 @@ public class OrderService implements OrdersApiDelegate {
     public ResponseEntity<Order> createOrder(Order order) {
         loadCustomer(order);
         order.setStatus(OrderStatus.BOOKED_WITHOUT_PAYMENT);
-        Order orderCreated = orderRepository.save(order);
+        checkAvailability(order);
+        orderRepository.save(order);
+        orderItemRepository.saveAll(order.getItems());
         updateQuantitiesSold(order);
-        return new ResponseEntity<>(orderCreated, CREATED);
+        return new ResponseEntity<>(order, CREATED);
     }
 
     @Override
@@ -88,7 +91,9 @@ public class OrderService implements OrdersApiDelegate {
         try {
             loadCustomer(order);
             order.setStatus(OrderStatus.PAYMENT_PENDING);
+            checkAvailability(order);
             orderRepository.save(order);
+            orderItemRepository.saveAll(order.getItems());
             updateQuantitiesSold(order);
             StripePayment payment = stripeService.createPayment(order);
             stripePaymentRepository.save(payment);
@@ -108,8 +113,7 @@ public class OrderService implements OrdersApiDelegate {
         }
     }
 
-    private void updateQuantitiesSold(Order order) {
-        List<PackageLot> lots = new ArrayList<>();
+    private void checkAvailability(Order order) {
         order.getItems().forEach(item -> {
             PackageLot lot = packageLotRepository.findById(item.getPackageLot().getId()).get();
             int updatedQuantySold = lot.getQuantitySold() + item.getQuantity();
@@ -129,11 +133,13 @@ public class OrderService implements OrdersApiDelegate {
                                 lot.getQuantitySold(),
                                 lot.getQuantity()));
             }
-            lot.setQuantitySold(updatedQuantySold);
-            lots.add(lot);
         });
-        packageLotRepository.saveAll(lots);
-        orderItemRepository.saveAll(order.getItems());
+    }
+
+    private void updateQuantitiesSold(Order order) {
+        order.getItems().stream()
+                .map(OrderItem::getPackageLot)
+                .forEach(packageLotQuantitySoldService::updateQuantitySold);
     }
 
     public void processOrderPaymentCompletion(Order order) {
@@ -144,7 +150,7 @@ public class OrderService implements OrdersApiDelegate {
 
     public void processOrderPaymentExpiration(Order order) {
         order.setStatus(PAYMENT_ABORTED);
-        // TODO : update quantity to sold with product not paid
         orderRepository.save(order);
+        updateQuantitiesSold(order);
     }
 }

@@ -1,6 +1,7 @@
 package eu.viandeendirect.domains.order;
 
 import eu.viandeendirect.model.Order;
+import eu.viandeendirect.model.PackageLot;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,5 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
             inner join o.payment p
             where p.checkoutSessionId = :checkoutSessionId""")
     Order findByCheckoutSessionId(@Param("checkoutSessionId") String checkoutSessionId);
+
 }
