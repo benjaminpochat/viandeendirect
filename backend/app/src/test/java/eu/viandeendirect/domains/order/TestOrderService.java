@@ -46,7 +46,7 @@ public class TestOrderService {
         // given
         Sale sale = saleRepository.findById(1000).get();
         Customer customer = customerRepository.findById(3000).get();
-        PackageLot packageLot = packageLotRepository.findById(10001).get();
+        PackageLot packageLot = packageLotRepository.findById(10000).get();
         Order order = new Order();
         order.setCustomer(customer);
         order.setSale(sale);
@@ -55,7 +55,6 @@ public class TestOrderService {
         item.setUnitPrice(16f);
         item.setPackageLot(packageLot);
         order.setItems(List.of(item));
-        int quantitySoldBeforeOrderCreation = packageLot.getQuantitySold();
 
         // when
         Order orderCreated = orderService.createOrder(order).getBody();
@@ -66,7 +65,7 @@ public class TestOrderService {
         List<OrderItem> itemsCreated = orderItemRepository.findByOrder(orderCreated);
         assertThat(itemsCreated).hasSize(1);
         var packageLotReloaded = packageLotRepository.findById(packageLot.getId()).get();
-        assertThat(packageLotReloaded.getQuantitySold()).isEqualTo(quantitySoldBeforeOrderCreation + 1);
+        assertThat(packageLotReloaded.getQuantitySold()).isEqualTo(2);
         assertThat(packageLotReloaded.getProduction()).isNotNull();
 
     }
