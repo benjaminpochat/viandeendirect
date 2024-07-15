@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-import { Button, ButtonGroup, Typography } from "@mui/material"
+import { Button, ButtonGroup, Switch, Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import dayjs from 'dayjs'
 
@@ -9,6 +9,7 @@ import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import Order from "viandeendirect_eu/dist/model/Order"
+import { OrderStatus, OrderStatusUtils } from '../../../enum/OrderStatus.ts';
 
 export default function OrdersList({
     sale: sale, 
@@ -19,11 +20,13 @@ export default function OrdersList({
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
 
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState<Order[]>([])
 
     useEffect(() => {
         loadOrders()
     }, [keycloak])
+
+    const [abortedOrdersHidden, setAbortedOrdersHidden] = useState<Boolean>(true);
 
     function loadOrders() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
@@ -43,6 +46,7 @@ export default function OrdersList({
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'Référence', flex: 0.5, disableColumnMenu: true },
         { field: 'customerName', headerName: 'Nom du client', flex: 1, disableColumnMenu: true },
+        { field: 'orderStatus', headerName: 'Statut', flex: 1, disableColumnMenu: true },
         {
             field: 'actions',
             headerName: '',
@@ -52,13 +56,20 @@ export default function OrdersList({
           }
     ]
 
-    const rows: GridRowsProp = orders.map((order: Order) => {
+    const rows: GridRowsProp = orders.filter(order => isOrderDisplayed(order)).map((order: Order) => {
         return {
             id: order.id,
             customerName: order.customer.user.lastName + ' ' + order.customer.user.firstName,
+            orderStatus: OrderStatusUtils.getOrderStatusLabel(order.status)
         }
     })
-      
+
+    function isOrderDisplayed(order: Order): boolean {
+        if (abortedOrdersHidden) {
+            return order.status !== OrderStatus.PaymentAborted;
+        }
+        return true
+    }
 
     return <>
         <Typography variant='h6'>Commandes pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
@@ -76,6 +87,10 @@ export default function OrdersList({
                     csvOptions: { disableToolbarButton: true },
                 },
             }} />
+        <div>
+            <Switch checked={abortedOrdersHidden.valueOf()} onChange={() => setAbortedOrdersHidden(!abortedOrdersHidden)}/>
+            Masquer les commandes échouées
+        </div>
         <ButtonGroup>
             <Button variant="contained" size="small" onClick={createOrderCallback}>Saisir une commande</Button>
             <Button size="small" onClick={returnCallback}>Retour aux ventes</Button>

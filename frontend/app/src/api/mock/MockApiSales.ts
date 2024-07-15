@@ -74,6 +74,7 @@ export class MockApiSales {
     getSaleOrders(): Array<Order> {
         const order1: Order = {
             id: 21,
+            status: 'BOOKED_WITHOUT_PAYMENT',
             customer: {
                 id: 1,
                 user: {
@@ -99,6 +100,7 @@ export class MockApiSales {
 
         const order2: Order = {
             id: 22,
+            status: 'PAYMENT_COMPLETED',
             customer: {
                 id: 2,
                 user: {
@@ -132,6 +134,7 @@ export class MockApiSales {
         }
         const order3: Order = {
             id: 23,
+            status: 'PAYMENT_ABORTED',
             customer: {
                 id: 3,
                 user: {
