@@ -6,6 +6,7 @@ import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
+import eu.viandeendirect.common.ViandeEnDirectConfiguration;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.StripeAccount;
@@ -29,8 +30,8 @@ public class StripeService {
         Stripe.apiKey = stripeApiKey;
     }
 
-    @Value("${PRODUCER_FRONTEND_URL:http://localhost:3000}")
-    String viandeendirectProducerFrontendUrl;
+    @Autowired
+    ViandeEnDirectConfiguration viandeEnDirectConfiguration;
 
     @Autowired
     StripeAccountRepository stripeAccountRepository;
@@ -62,8 +63,8 @@ public class StripeService {
         AccountLink accountLink = AccountLink.create(
                 AccountLinkCreateParams.builder()
                         .setAccount(stripeAccount.getStripeId())
-                        .setReturnUrl(viandeendirectProducerFrontendUrl + "/account")
-                        .setRefreshUrl(viandeendirectProducerFrontendUrl + "/account")
+                        .setReturnUrl(viandeEnDirectConfiguration.getProducerFrontendUrl() + "/account")
+                        .setRefreshUrl(viandeEnDirectConfiguration.getProducerFrontendUrl() + "/account")
                         .setType(ACCOUNT_ONBOARDING)
                         .build()
         );

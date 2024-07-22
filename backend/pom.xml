@@ -31,6 +31,7 @@
         <stripe.version>24.6.0-beta.1</stripe.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <spring-boot-maven-plugin.version>3.2.4</spring-boot-maven-plugin.version>
+        <angus-mail.version>2.0.3</angus-mail.version>
     </properties>
 
     <build>
@@ -90,6 +91,11 @@
                 <groupId>com.stripe</groupId>
                 <artifactId>stripe-java</artifactId>
                 <version>${stripe.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-mail</artifactId>
+                <version>${angus-mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

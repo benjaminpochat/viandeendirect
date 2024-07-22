@@ -50,6 +50,12 @@ public class OrderService implements OrdersApiDelegate {
     @Autowired
     private AuthenticationServiceSpecs authenticationService;
 
+    @Autowired
+    private OrderNotificationToProducerService orderNotificationToProducerService;
+
+    @Autowired
+    private OrderNotificationToCustomerService orderNotificationToCustomerService;
+
     @Override
     public ResponseEntity<Order> getOrder(Integer orderId) {
         Order order = orderRepository.findById(orderId).get();
@@ -68,7 +74,7 @@ public class OrderService implements OrdersApiDelegate {
             return;
         }
         Producer producer = authenticationService.getAuthenticatedProducer();
-        if (producer!= null) {
+        if (producer != null) {
             if (order.getItems().stream().noneMatch(item -> item.getPackageLot().getProduction().getProducer().equals(producer))) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
             }
@@ -122,11 +128,11 @@ public class OrderService implements OrdersApiDelegate {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         String.format("""
-                                Une erreur s'est produite lors de la création d'une commande de %s articles pour le lot '%s - %s'
-                                %s articles sont déjà vendus.
-                                %s articles ont été mis en vente.
-                                Le nombre total d'articles vendus ne peut pas dépasser la quantité totals du lot.
-                                """,
+                                        Une erreur s'est produite lors de la création d'une commande de %s articles pour le lot '%s - %s'
+                                        %s articles sont déjà vendus.
+                                        %s articles ont été mis en vente.
+                                        Le nombre total d'articles vendus ne peut pas dépasser la quantité totals du lot.
+                                        """,
                                 item.getQuantity(),
                                 lot.getId(),
                                 lot.getLabel(),
@@ -145,7 +151,21 @@ public class OrderService implements OrdersApiDelegate {
     public void processOrderPaymentCompletion(Order order) {
         order.setStatus(OrderStatus.PAYMENT_COMPLETED);
         // TODO: trigger an email to the customer
+        notifyProducers(order);
+        notifyCustomer(order);
         orderRepository.save(order);
+    }
+
+    private void notifyProducers(Order order) {
+        order.getItems().stream()
+                .map(item -> item.getPackageLot().getProduction().getProducer())
+                .distinct()
+                .map(producer -> new OrderProducer(order, producer))
+                        .forEach(orderProducer -> orderNotificationToProducerService.notify(orderProducer));
+    }
+
+    private void notifyCustomer(Order order) {
+        orderNotificationToCustomerService.notify(order);
     }
 
     public void processOrderPaymentExpiration(Order order) {
@@ -153,4 +173,8 @@ public class OrderService implements OrdersApiDelegate {
         orderRepository.save(order);
         updateQuantitiesSold(order);
     }
+
+    public record OrderProducer(Order order, Producer producer) {
+    }
+
 }

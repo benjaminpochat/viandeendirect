@@ -1,6 +1,8 @@
-package eu.viandeendirect.domains.sale;
+package eu.viandeendirect.domains.order;
 
-import eu.viandeendirect.model.Address;
+import eu.viandeendirect.model.Order;
+import eu.viandeendirect.model.Producer;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
@@ -20,18 +19,25 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @ExtendWith({SpringExtension.class})
 @Sql(value = {"/sql/create_test_data.sql"}, executionPhase = BEFORE_TEST_METHOD)
 @Sql(value = {"/sql/delete_test_data.sql"}, executionPhase = AFTER_TEST_METHOD)
-public class TestAddressesService {
+class TestOrderNotificationToProducerService_getTotalWeight {
+
     @Autowired
-    private AddressService addressService;
+    private OrderNotificationToProducerService orderNotificationToProducerService;
 
     @Test
-    void getAddresses_should_return_addresses() {
+    void should_return_the_right_total_weight() {
+        // given
+        var order = new Order();
+        order.setId(3000);
+        var producer = new Producer();
+        producer.setId(1000);
+
         // when
-        List<Address> addresses = addressService.getAddresses().getBody();
+        double totalWeight = orderNotificationToProducerService.getTotalWeight(order, producer);
 
         // then
-        assertThat(addresses).hasSize(2);
-        assertThat(addresses).anyMatch(address -> "Toulouse Centre".equals(address.getName()));
-        assertThat(addresses).anyMatch(address -> "Toulouse Mirail".equals(address.getName()));
+        Assertions.assertThat(totalWeight).isEqualTo(10f);
     }
+
+
 }

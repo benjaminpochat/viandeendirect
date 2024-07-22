@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AddresseService implements AddressesApiDelegate {
+public class AddressService implements AddressesApiDelegate {
 
     @Autowired
     AddressRepository addressRepository;
