@@ -4,6 +4,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
+import eu.viandeendirect.common.ViandeEnDirectConfiguration;
 import eu.viandeendirect.domains.production.PackageLotRepository;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.OrderItem;
@@ -13,14 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Manager Stripe payments following the Stripe pattern "direct charge".
@@ -34,8 +31,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StripeDirectPaymentManager.class);
 
-    @Value("${CUSTOMER_FRONTEND_URL:http://localhost:3000}")
-    String viandeendirectCustomerFrontendUrl;
+    @Autowired
+    ViandeEnDirectConfiguration viandeEnDirectConfiguration;
 
     @Autowired
     PackageLotRepository packageLotRepository;
@@ -50,8 +47,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
                         .setApplicationFeeAmount(1L).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(order.getCustomer().getUser().getEmail())
-                .setSuccessUrl(viandeendirectCustomerFrontendUrl + "/orders/" + order.getId() + "/payment")
-                .setCancelUrl(viandeendirectCustomerFrontendUrl + "/orders/" + order.getId() + "/payment")
+                .setSuccessUrl(viandeEnDirectConfiguration.getCustomerFrontendUrl() + "/orders/" + order.getId() + "/payment")
+                .setCancelUrl(viandeEnDirectConfiguration.getCustomerFrontendUrl() + "/orders/" + order.getId() + "/payment")
                 .setExpiresAt(Instant.now().plusSeconds(30 * 60).getEpochSecond())
                 .build();
         RequestOptions requestOptions = RequestOptions.builder().setStripeAccount(getProducerStripeAccount(order).getStripeAccount().getStripeId()).build();

@@ -157,11 +157,11 @@ public class OrderService implements OrdersApiDelegate {
     }
 
     private void notifyProducers(Order order) {
-        order.getItems().stream()
+        orderItemRepository.findByOrder(order).stream()
                 .map(item -> item.getPackageLot().getProduction().getProducer())
                 .distinct()
                 .map(producer -> new OrderProducer(order, producer))
-                        .forEach(orderProducer -> orderNotificationToProducerService.notify(orderProducer));
+                .forEach(orderProducer -> orderNotificationToProducerService.notify(orderProducer));
     }
 
     private void notifyCustomer(Order order) {

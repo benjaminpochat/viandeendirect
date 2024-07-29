@@ -9,6 +9,7 @@ import eu.viandeendirect.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +33,16 @@ public class OrderTestService {
 
     public Order createOrderWithItems(PackageLot beefLotSteaksVache, PackageLot beefLotCoteVeau, PackageLot honeyLotMielDeSapin, PackageLot honeyLotMielDeColza) {
 
+        Sale sale = new Sale();
+        sale.setDeliveryStart(OffsetDateTime.parse("2021-09-30T15:30:00+01:00"));
+        sale.setDeliveryStop(OffsetDateTime.parse("2021-09-30T18:30:00+01:00"));
+        sale.setDeliveryAddressName("A la ferme");
+        sale.setDeliveryAddressLine1("Rue de la Paix");
+        sale.setDeliveryCity("Paris");
+        sale.setDeliveryZipCode("75001");
+
         Order order = new Order();
+        order.setSale(sale);
 
         OrderItem item1= new OrderItem();
         item1.setQuantity(2);
@@ -66,6 +76,7 @@ public class OrderTestService {
         packageLot.setLabel(packageLotLabel);
         packageLot.setQuantity(quantity);
         packageLot.setQuantitySold(quantitySold);
+        packageLot.setNetWeight(0.5f);
         return packageLot;
     }
 
@@ -77,6 +88,7 @@ public class OrderTestService {
         packageLot.setLabel(packageLotLabel);
         packageLot.setQuantity(quantity);
         packageLot.setQuantitySold(quantitySold);
+        packageLot.setNetWeight(10f);
         return packageLot;
     }
 
@@ -106,13 +118,21 @@ public class OrderTestService {
     }
 
     public Producer createAndSaveProducer() {
+        User user = new User();
+        user.setEmail("producer@address.mail");
+        userRepository.save(user);
+
         Producer producer = new Producer();
+        producer.setUser(user);
         producerRepository.save(producer);
         return producer;
     }
 
     public Customer createAndSaveCustomer() {
         User user = new User();
+        user.setPhone("0102030405");
+        user.setFirstName("John");
+        user.setLastName("Doe");
         user.setEmail("customer@address.mail");
         userRepository.save(user);
 

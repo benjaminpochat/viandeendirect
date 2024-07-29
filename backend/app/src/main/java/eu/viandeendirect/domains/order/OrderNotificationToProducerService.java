@@ -27,6 +27,7 @@ public class OrderNotificationToProducerService implements NotificationService<O
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private OrderItemRepository orderItemRepository;
 
@@ -70,14 +71,14 @@ public class OrderNotificationToProducerService implements NotificationService<O
     double getTotalPrice(Order order, Producer producer) {
         return orderItemRepository.findByOrder(order).stream()
                 .filter(item -> item.getPackageLot().getProduction().getProducer().getId().equals(producer.getId()))
-                .mapToDouble(item -> item.getUnitPrice() * item.getQuantity() * item.getPackageLot().getQuantity())
+                .mapToDouble(item -> item.getUnitPrice() * item.getQuantity() * item.getPackageLot().getNetWeight())
                 .sum();
     }
 
     double getTotalWeight(Order order, Producer producer) {
         return orderItemRepository.findByOrder(order).stream()
                 .filter(item -> item.getPackageLot().getProduction().getProducer().getId().equals(producer.getId()))
-                .mapToDouble(item -> item.getQuantity() * item.getPackageLot().getQuantity())
+                .mapToDouble(item -> item.getQuantity() * item.getPackageLot().getNetWeight())
                 .sum();
     }
 }
