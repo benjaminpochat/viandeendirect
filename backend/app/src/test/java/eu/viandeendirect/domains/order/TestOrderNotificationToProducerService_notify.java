@@ -74,7 +74,7 @@ class TestOrderNotificationToProducerService_notify {
                 mailBodyCaptor.capture());
         String mailBody = mailBodyCaptor.getValue();
         String cleanMailBody = mailBody.replaceAll("( {4})*", "");
-        assertThat(cleanMailBody).isEqualTo(String.format("<meta charset=\"UTF-8\"><div>La commande n° 1 a été enregistrée sur <a href='%s'>ViandeEnDirect.eu</a>.</div><div><ul><li>Client :<ul><li>Nom : John Doe</li><li>Email : customer@address.mail</li><li>Téléphone : 0102030405</li></ul></li><li>Montant de la commande : 1000.0 €TTC</li><li>Quantité commandée : 30.0 kg</li></ul></div>",viandeEnDirectConfiguration.getProducerFrontendUrl()));
+        assertThat(cleanMailBody).isEqualTo(String.format("<meta charset=\"UTF-8\"><div>La commande n° %s a été enregistrée sur <a href='%s'>ViandeEnDirect.eu</a>.</div><div><ul><li>Client :<ul><li>Nom : John Doe</li><li>Email : customer@address.mail</li><li>Téléphone : 0102030405</li></ul></li><li>Montant de la commande : 1000.0 €TTC</li><li>Quantité commandée : 30.0 kg</li></ul></div>",order.getId(), viandeEnDirectConfiguration.getProducerFrontendUrl()));
     }
 
 }

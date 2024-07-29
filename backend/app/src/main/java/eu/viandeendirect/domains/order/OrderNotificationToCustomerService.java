@@ -45,7 +45,7 @@ public class OrderNotificationToCustomerService implements NotificationService<O
         Object[] bodyTemplateValues = {
                 order.getId(),
                 viandeEnDirectConfiguration.getCustomerFrontendUrl(),
-                order.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getUnitPrice()).sum(),
+                order.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getUnitPrice() * item.getPackageLot().getNetWeight()).sum(),
                 order.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getPackageLot().getNetWeight()).sum(),
                 sale.getDeliveryStart(),
                 sale.getDeliveryStop(),

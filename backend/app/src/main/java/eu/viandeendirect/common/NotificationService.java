@@ -24,7 +24,7 @@ public interface NotificationService<T> {
 
     String getBodyTemplatePath();
 
-    default public void notify(T object) {
+    default void notify(T object) {
         String recipient = getRecipient(object);
         String subject = getSubject(object);
         String body = getBody(object);

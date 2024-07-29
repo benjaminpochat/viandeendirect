@@ -3,6 +3,7 @@ package eu.viandeendirect.domains.order;
 import com.stripe.exception.StripeException;
 import eu.viandeendirect.domains.payment.StripeService;
 import eu.viandeendirect.domains.production.PackageLotRepository;
+import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.model.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Optional;
-
-import static eu.viandeendirect.model.OrderStatus.PAYMENT_ABORTED;
 import static eu.viandeendirect.model.OrderStatus.PAYMENT_PENDING;
 import static java.util.regex.Pattern.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +43,9 @@ public class TestOrder_createOrderPayment {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private SaleRepository saleRepository;
+
     @Test
     void should_persist_order_in_database() throws StripeException {
         // given
@@ -58,6 +59,7 @@ public class TestOrder_createOrderPayment {
         PackageLot honeyLotMielDeColza = orderTestService.getHoneyPackageLot(honeyProducer, "miel de colza", 5, 0);
 
         Order order = orderTestService.createOrder(beefLotSteaksVache, beefLotCoteVeau, honeyLotMielDeSapin, honeyLotMielDeColza, customer);
+        saleRepository.save(order.getSale());
 
         var stripePayment = new StripePayment();
         stripePayment.setCheckoutSessionId("test_success");

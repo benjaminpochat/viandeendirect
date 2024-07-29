@@ -5,9 +5,8 @@ import com.google.gson.JsonObject;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
-import eu.viandeendirect.domains.order.OrderRepository;
-import eu.viandeendirect.domains.order.OrderService;
-import eu.viandeendirect.domains.order.OrderTestService;
+import eu.viandeendirect.domains.order.*;
+import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.model.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -43,17 +42,29 @@ public class TestStripeEventHandler_handleStripeAccountEvent {
     @MockBean
     private StripeService stripeService;
 
+    @MockBean
+    private OrderNotificationToCustomerService orderNotificationToCustomerService;
+
+    @MockBean
+    private OrderNotificationToProducerService orderNotificationToProducerService;
+
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private SaleRepository saleRepository;
 
     @Test
     void should_change_order_status_after_payment_is_completed() throws StripeException {
         // given
         Order order = orderTestService.createOrder();
+        saleRepository.save(order.getSale());
 
         var stripePayment = new StripePayment();
         stripePayment.setCheckoutSessionId("stripe-id-success");
         when(stripeService.createPayment(any())).thenReturn(stripePayment);
+        doNothing().when(orderNotificationToCustomerService).notify(any());
+        doNothing().when(orderNotificationToProducerService).notify(any());
         orderService.createOrderPayment(order);
 
         Session checkoutSession = new Session();
@@ -80,6 +91,7 @@ public class TestStripeEventHandler_handleStripeAccountEvent {
     void should_change_order_status_after_payment_is_aborted() throws StripeException {
         // given
         Order order = orderTestService.createOrder();
+        saleRepository.save(order.getSale());
 
         var stripePayment = new StripePayment();
         stripePayment.setCheckoutSessionId("stripe-id-aborted");
