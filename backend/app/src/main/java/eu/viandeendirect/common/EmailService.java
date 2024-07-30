@@ -32,7 +32,7 @@ public class EmailService {
     @Value("${SMTP_START_TLS:true}")
     private boolean startTls;
 
-    @Value("${SMTP_SSL_TRUST:unknown}")
+    @Value("${SMTP_SSL_TRUST:smtp.gmail.com}")
     private String sslTrust;
 
     @Value("${EMAIL_DISABLED:true}")
