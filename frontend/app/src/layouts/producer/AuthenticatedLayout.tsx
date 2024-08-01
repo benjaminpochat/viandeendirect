@@ -7,36 +7,24 @@ import {Close, Logout, Menu} from '@mui/icons-material'
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
-import Dashboard from '../../domains/dashboard/Dashboard.js';
-import CustomerController from '../../domains/customer/CustomerController.js';
-import ProducerController from '../../domains/producer/ProducerController.tsx'
-import ProductionController from '../../domains/production/ProductionController.tsx'
-import SaleController from '../../domains/sale/SaleController.tsx'
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
 import SideMenu from './SideMenu.js'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import NotAuthorizedForCustomers from '../../authentication/views/NotAuthorizedForCustomers.tsx';
+import { ProducerService } from '../../domains/commons/service/ProducerService.ts';
 
 
-function AuthenticatedLayout({routedMainContent: routedMainContent}) {
+function AuthenticatedLayout(props) {
     const { keycloak, initialized } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
-    const [mainContent, setMainContent] = useState(routedMainContent?.toUpperCase())
     const [producer, setProducer] = useState<Producer>()
+    const [unauthorized, setUnauthorized] = useState<Boolean>(false)
     const apiInvoker = new ApiInvoker()
     const authenticationService = new AuthenticationService(keycloak)
+    const producerService = new ProducerService(keycloak)
 
     useEffect(() => {
-      apiInvoker.callApiAuthenticatedly(
-        keycloak, 
-        api => api.getProducer, 
-        {'email': authenticationService.getCurrentUserEmail()}, 
-        setProducer,
-        error => {
-          if (error.status === 403) {
-            setMainContent('NOT_AUTHORIZED_FOR_CUSTOMERS')
-          }
-        })
+      producerService.loadProducer(setProducer, setUnauthorized)
     }, [keycloak])
 
 
@@ -46,22 +34,6 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
       setSideMenuOpen(!sideMenuOpen);
     };
   
-    const handleSelectMenuItem = (menuItem) => {
-      setSideMenuOpen(false)
-      setMainContent(menuItem)
-    }
-  
-    function renderMainContent() {
-        switch (mainContent) {
-          case 'DASHBOARD' : return <Dashboard></Dashboard>
-          case 'SALES' : return <SaleController producer={producer}></SaleController>
-          case 'PRODUCTIONS' : return <ProductionController producer={producer}></ProductionController>
-          case 'CUSTOMERS' : return <CustomerController producer={producer}></CustomerController>
-          case 'ACCOUNT' : return <ProducerController></ProducerController>
-          default: return <Dashboard></Dashboard>
-        }
-    }
-    
     function getIcon() {
       if (sideMenuOpen) {
         return <Close/>
@@ -70,7 +42,7 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
       }
     }
 
-    if (mainContent === 'NOT_AUTHORIZED_FOR_CUSTOMERS') {
+    if (unauthorized) {
       return <NotAuthorizedForCustomers/>
     }
     return (
@@ -108,7 +80,6 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
             <SideMenu
                 open={sideMenuOpen}
                 onClose={handleSideMenuToggle}
-                selectItem={handleSelectMenuItem}
                 width={sideMenuWidth}>
             </SideMenu>
             <Box
@@ -116,7 +87,7 @@ function AuthenticatedLayout({routedMainContent: routedMainContent}) {
                 sx={{ flexGrow: 1, p: 3 }}
                 width={'100%'}>
                 <Toolbar />
-                {renderMainContent()}
+                {props.children}
             </Box>
         </Box>
     )

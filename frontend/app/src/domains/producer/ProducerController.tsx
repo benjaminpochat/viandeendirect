@@ -7,35 +7,32 @@ import { ApiInvoker } from '../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
+import AuthenticatedLayout from '../../layouts/producer/AuthenticatedLayout.tsx';
+import { ProducerService } from '../commons/service/ProducerService.ts';
 
 
 function ProducerController() {
 
   const apiInvoker = new ApiInvoker()
   const {keycloak} = useKeycloak()
+  const producerService = new ProducerService(keycloak)
   const authenticationService = new AuthenticationService(keycloak)
-
-  useEffect(() => {
-    apiInvoker.callApiAuthenticatedly(
-      keycloak, 
-      api => api.getProducer, 
-      {'email': authenticationService.getCurrentUserEmail()}, 
-      producer => {
-        setProducer(producer)
-        if(producer.stripeAccount) {
-          loadStripeAccount(producer.id)
-        }
-      }, 
-      console.error)
-  }, [keycloak])
-
-  const [producer, setProducer] = useState<Producer>();
+  const [producer, setProducer] = useState<Producer>()
   const [stripeAccountCreationPending, setStripeAccountCreationPending] = useState<boolean>(false)
 
-  return <>
-          <Typography variant="h6">Gestion du compte</Typography>
-          {displayStripeAccount()}
-          </>
+  useEffect(() => {
+    producerService.loadProducer(producer => {
+      setProducer(producer)
+      if(producer.stripeAccount) {
+        loadStripeAccount(producer.id)
+      }
+    })
+  })
+
+  return <AuthenticatedLayout>
+            <Typography variant="h6">Gestion du compte</Typography>
+            {displayStripeAccount()}
+          </AuthenticatedLayout>
   
   function loadStripeAccount(producerId: number) {
     apiInvoker.callApiAuthenticatedly(

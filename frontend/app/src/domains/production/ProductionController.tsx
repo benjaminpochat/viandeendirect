@@ -4,6 +4,7 @@ import BeefProductionCreator from './views/beefProduction/BeefProductionCreator.
 import PackageLotsCreator from './views/PackageLotsCreator.tsx'
 import ProductionsList from './views/ProductionsList.tsx'
 import BeefProductionView from './views/beefProduction/BeefProductionView.tsx'
+import AuthenticatedLayout from '../../layouts/producer/AuthenticatedLayout.tsx'
 
 export default function ProductionController({producer: producer}) {
 
@@ -14,7 +15,7 @@ export default function ProductionController({producer: producer}) {
     const [currentAction, setCurrentAction] = useState(PRODUCTIONS_LIST)
     const [context, setContext] = useState(undefined)
 
-    return <>{getContent()}</>
+    return <AuthenticatedLayout>{getContent()}</AuthenticatedLayout>
 
     function getContent() {
         switch (currentAction) {

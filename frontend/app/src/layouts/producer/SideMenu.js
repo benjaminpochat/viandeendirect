@@ -6,7 +6,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 
-function SideMenu({width, open, onClose, selectItem}) {
+function SideMenu({width, open, onClose}) {
 
     function sideMenuContent() {
         return (
@@ -14,27 +14,42 @@ function SideMenu({width, open, onClose, selectItem}) {
                 <Toolbar/>
                 <List>
                     <ListItem key='Dashboard' disablePadding>
-                        <ListItemButton onClick={() => selectItem('DASHBOARD')}>
+                        <ListItemButton onClick={() => {
+                                onClose()
+                                setTimeout(() => window.open('./dashboard', '_self'), 200)
+                            }}>
                             <ListItemText primary='Tableau de bord' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Productions' disablePadding>
-                        <ListItemButton onClick={() => selectItem('PRODUCTIONS')}>
+                        <ListItemButton onClick={() => {
+                                onClose()
+                                setTimeout(() => window.open('./productions', '_self'), 200)
+                            }}>
                             <ListItemText primary='Productions' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Sales' disablePadding>
-                        <ListItemButton onClick={() => selectItem('SALES')}>
+                        <ListItemButton onClick={() => {
+                                onClose()
+                                setTimeout(() => window.open('./sales', '_self'), 200)
+                            }}>
                             <ListItemText primary='Ventes' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Customers' disablePadding>
-                    <ListItemButton onClick={() => selectItem('CUSTOMERS')}>
+                    <ListItemButton onClick={() => {
+                                onClose()
+                                setTimeout(() => window.open('./customers', '_self'), 200)
+                            }}>
                             <ListItemText primary='Clients' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>
                     <ListItem key='Account' disablePadding>
-                        <ListItemButton onClick={() => selectItem('ACCOUNT')}>
+                        <ListItemButton onClick={() => {
+                                onClose()
+                                setTimeout(() => window.open('./account', '_self'), 200)
+                            }}>
                             <ListItemText primary='Compte' primaryTypographyProps={{variant:'h6'}}/>
                         </ListItemButton>
                     </ListItem>

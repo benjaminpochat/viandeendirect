@@ -11,12 +11,16 @@ import { CookiesProvider } from 'react-cookie';
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import ProducerLayoutWrapper from './layouts/producer/ProducerLayoutWrapper.js';
 import CustomerLayout from './layouts/customer/CustomerLayout.tsx';
 import CustomerOrderView from './layouts/customer/PaymentLayout.tsx'
 
 import './App.css';
 import PaymentLayout from './layouts/customer/PaymentLayout.tsx';
+import Dashboard from './domains/dashboard/views/Dashboard.tsx';
+import ProductionController from './domains/production/ProductionController.tsx';
+import SaleController from './domains/sale/SaleController.tsx';
+import CustomerController from './domains/customer/CustomerController.tsx';
+import ProducerController from './domains/producer/ProducerController.tsx';
 
 
 function App() {
@@ -67,8 +71,24 @@ function App() {
       element: getLayoutWrapper(),
     },
     {
-      path: "/accounts",
-      element: <ProducerLayoutWrapper routedMainContent='account'/>
+      path: "/dashboard",
+      element: <Dashboard/>
+    },
+    {
+      path: "/productions",
+      element: <ProductionController/>
+    },
+    {
+      path: "/sales",
+      element: <SaleController/>
+    },
+    {
+      path: "/customers",
+      element: <CustomerController/>
+    },
+    {
+      path: "/account",
+      element: <ProducerController/>
     },
     {
       path: "/orders/:orderId/payment",
@@ -81,7 +101,7 @@ function App() {
       return <CustomerLayout/>
     }
     if(process.env.REACT_APP_MODE === 'PRODUCER') {
-      return <ProducerLayoutWrapper/>
+      return <Dashboard/>
     }
     return <div>Configuration du mode client ou producteur absent ou non reconnu</div>
   }

@@ -1,17 +1,24 @@
 import Customer from "viandeendirect_eu/dist/model/Customer"
 import Producer from "viandeendirect_eu/dist/model/Producer"
 import ProducerStatus from "viandeendirect_eu/dist/model/ProducerStatus"
+import Sale from "viandeendirect_eu/dist/model/Sale"
 
 export class MockApiProducers {
 
     getProducer(): Producer {
         return {
             id: 1,
-            user: undefined,
+            user: {
+                id: 1,
+                firstName: "Bob",
+                lastName: "MARCEL",
+                email: "bob.marcel@email.eu"
+            },
             status: 'ACTIVE',
             salesCredits: undefined,
             sales: undefined,
-            productions: undefined
+            productions: undefined,
+            stripeAccount: undefined
         }
     }
 
