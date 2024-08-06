@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom';
 
 export default function BeefProductionCard({
     production: production, 
     showActions: showActions, 
     clickCallback: clickCallback}) {
 
+    const navigate = useNavigate()
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
@@ -31,7 +33,7 @@ export default function BeefProductionCard({
 
     return (
         <Card>
-            <CardActionArea onClick={() => clickCallback(beefProduction)}>
+            <CardActionArea onClick={() => navigate(`/beefProduction/${production.id}`)}>
                 <CardContent>
                     <Typography color="text.secondary" gutterBottom>
                         Abattage bovin

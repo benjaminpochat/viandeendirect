@@ -5,22 +5,20 @@ import { useState, useEffect } from 'react';
 import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/material'
 import {Close, Logout, Menu} from '@mui/icons-material'
 
-import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
 import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
-import NotAuthorizedForCustomers from '../../authentication/views/NotAuthorizedForCustomers.tsx';
 import { ProducerService } from '../../domains/commons/service/ProducerService.ts';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 
 export default function AuthenticatedLayout(props) {
-    const { keycloak, initialized } = useKeycloak()
+    const { keycloak } = useKeycloak()
+    const navigate = useNavigate()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
     const [producer, setProducer] = useState<Producer>()
     const [unauthorized, setUnauthorized] = useState<Boolean>(false)
-    const apiInvoker = new ApiInvoker()
     const authenticationService = new AuthenticationService(keycloak)
     const producerService = new ProducerService(keycloak)
 
@@ -43,8 +41,11 @@ export default function AuthenticatedLayout(props) {
       }
     }
 
+    if (!authenticationService.isAuthenticated()) {
+      navigate('/authentication')
+    }
     if (unauthorized) {
-      return <NotAuthorizedForCustomers/>
+      navigate('/unauthorized')
     }
     return (
         <Box sx={{ display: 'flex' }}>

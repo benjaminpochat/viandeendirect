@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import PaymentLayout from "./PaymentLayout.tsx";
 import CustomerLayout from "./CustomerLayout.tsx";
@@ -15,6 +15,10 @@ export class CustomerRouterFactory {
                 path: "/",
                 element: <CustomerLayout/>,
                 children: [
+                    {
+                        index: true,
+                        element: <Navigate to='/welcome' replace/>
+                    },
                     {
                         path: "/welcome",
                         element: <Welcome/>

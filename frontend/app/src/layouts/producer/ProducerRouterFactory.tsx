@@ -9,6 +9,7 @@ import SaleController from "../../domains/sale/SaleController.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
 import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
+import BeefProductionView from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
 
 export class ProducerRouterFactory {
     getRouter() {
@@ -40,7 +41,11 @@ export class ProducerRouterFactory {
                 {
                     path: "/account",
                     element: <ProducerController/>
-                },    
+                },
+                {
+                    path: "/beefProduction/:beefProductionId",
+                    element: <BeefProductionView/>
+                }
             ]
             },
             {

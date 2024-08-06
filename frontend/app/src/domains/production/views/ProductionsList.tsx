@@ -7,6 +7,7 @@ import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { Button, Typography } from "@mui/material"
 
 import ProductionCard from '../components/ProductionCard.tsx'
+import { useNavigate } from 'react-router-dom'
 
 export default function ProductionsList({
     createBeefProductionCallback: createBeefProductionCallback,

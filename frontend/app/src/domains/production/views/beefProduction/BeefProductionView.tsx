@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Typography, ButtonGroup, Button, Tab, Tabs, Alert } from '@mui/material'
@@ -10,8 +10,9 @@ import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
 import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'
+import { useParams } from 'react-router-dom'
 
-export default function BeefProductionView({ beefProduction: beefProduction, backCallback: backCallback }) {
+export default function BeefProductionView() {
 
     const BREEDING_PROPERTIES_TAB = 0
     const SLAUGHTER_PROPERTIES_TAB = 1
@@ -23,10 +24,21 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
 
     const [currentTab, setCurrentTab] = useState<number>(BREEDING_PROPERTIES_TAB)
     const [readOnly, setReadOnly] = useState<boolean>(true)
-    const [production, setProduction] = useState<BeefProduction>(
-        {...beefProduction,
-            lots: beefProduction.lots ? beefProduction.lots.map((lot) => {return {...lot}}) : undefined
-        })
+    const [production, setProduction] = useState<BeefProduction>()
+
+    let { beefProductionId } = useParams()
+    
+    useEffect(() => {
+        apiInvoker.callApiAuthenticatedly(
+            keycloak, 
+            api => api.getBeefProduction,
+            beefProductionId,
+            setProduction,
+            console.error)
+    }, [keycloak])
+
+
+
     const [saveEnabled, setSaveEnabled] = useState<boolean>(true)
     const [alerts, setAlerts] = useState<string>(undefined)
 
@@ -35,18 +47,18 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
     };
 
     const breedingPropertiesForm = useForm<BeefProduction>({defaultValues: {
-        ...beefProduction,
-        birthDate: production.birthDate ? dayjs(production.birthDate) : undefined
+        ...production,
+        birthDate: production?.birthDate ? dayjs(production.birthDate) : undefined
     }})
 
     const slaughterPropertiesForm = useForm<BeefProduction>({defaultValues: {
         ...production,
-        slaughterDate: production.slaughterDate ? dayjs(production.slaughterDate) : undefined
+        slaughterDate: production?.slaughterDate ? dayjs(production.slaughterDate) : undefined
     }})
 
     const cuttingPropertiesForm = useForm<BeefProduction>({defaultValues: {
         ...production,
-        cuttingDate: production.cuttingDate ? dayjs(production.cuttingDate) : undefined
+        cuttingDate: production?.cuttingDate ? dayjs(production.cuttingDate) : undefined
     }})
 
     return <>
@@ -62,21 +74,21 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
                 <BreedingPropertiesForm 
                     form={breedingPropertiesForm} 
                     disabled={readOnly} 
-                    maxBirthDate={production.slaughterDate}/>
+                    maxBirthDate={production?.slaughterDate}/>
             </div>
             <div hidden={currentTab !== 1}>
                 <SlaughterPropertiesForm 
                     form={slaughterPropertiesForm} 
                     disabled={readOnly} 
-                    minSlaughterDate={production.birthDate} 
-                    maxSlaughterDate={production.cuttingDate}
-                    initialWarmCarcassWeight={production.warmCarcassWeight}/>
+                    minSlaughterDate={production?.birthDate} 
+                    maxSlaughterDate={production?.cuttingDate}
+                    initialWarmCarcassWeight={production?.warmCarcassWeight}/>
             </div>
             <div hidden={currentTab !== 2}>
                 <CuttingPropertiesForm 
                     form={cuttingPropertiesForm} 
                     disabled={readOnly} 
-                    minCuttingDate={production.slaughterDate} />
+                    minCuttingDate={production?.slaughterDate} />
             </div>
             <div hidden={currentTab !== 3}>
                 <div>
@@ -143,26 +155,26 @@ export default function BeefProductionView({ beefProduction: beefProduction, bac
         switch (currentTab) {
             case BREEDING_PROPERTIES_TAB: 
                 return breedingPropertiesForm.reset(() => {
-                    setProduction(beefProduction)
+                    setProduction(production)
                     setReadOnly(true)
                 })
             case SLAUGHTER_PROPERTIES_TAB:
                 return slaughterPropertiesForm.reset(() => {
-                    setProduction({...beefProduction,
-                        lots: beefProduction.lots ? beefProduction.lots.map((lot) => {return {...lot}}) : undefined
+                    setProduction({...production,
+                        lots: production?.lots ? production?.lots.map((lot) => {return {...lot}}) : undefined
                     })
                     setReadOnly(true)
                 })
             case CUTTING_PROPERTIES_TAB:
                 return cuttingPropertiesForm.reset(() => {
-                    setProduction({...beefProduction,
-                        lots: beefProduction.lots ? beefProduction.lots.map((lot) => {return {...lot}}) : undefined
+                    setProduction({...production,
+                        lots: production?.lots ? production?.lots.map((lot) => {return {...lot}}) : undefined
                     })
                     setReadOnly(true)
                 })
             case PRODUCTS_TAB:
-                setProduction({...beefProduction,
-                    lots: beefProduction.lots ? beefProduction.lots.map((lot) => {return {...lot}}) : undefined
+                setProduction({...production,
+                    lots: production?.lots ? production?.lots.map((lot) => {return {...lot}}) : undefined
                 })
                 setSaveEnabled(true)
                 setReadOnly(true) 
