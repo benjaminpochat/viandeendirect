@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button } from "@mui/material";
 import { useKeycloak } from '@react-keycloak/web'
+import React from 'react';
 
 function AnonymousLayout() {
 

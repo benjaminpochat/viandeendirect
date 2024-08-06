@@ -29,10 +29,10 @@ function ProducerController() {
     })
   })
 
-  return <AuthenticatedLayout>
+  return <>
             <Typography variant="h6">Gestion du compte</Typography>
             {displayStripeAccount()}
-          </AuthenticatedLayout>
+          </>
   
   function loadStripeAccount(producerId: number) {
     apiInvoker.callApiAuthenticatedly(

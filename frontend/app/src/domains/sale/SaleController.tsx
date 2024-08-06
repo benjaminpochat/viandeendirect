@@ -32,7 +32,7 @@ export default function SaleController() {
         producerService.loadProducer(setProducer)
     })
 
-    return <AuthenticatedLayout>{getCurrentView()}</AuthenticatedLayout>
+    return <>{getCurrentView()}</>
 
     function getCurrentView() {
         if(producer) {

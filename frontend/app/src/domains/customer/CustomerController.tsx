@@ -20,7 +20,7 @@ export default function CustomerController() {
         producerService.loadProducer(setProducer)
     })
 
-    return <AuthenticatedLayout>{getContent()}</AuthenticatedLayout>
+    return <>{getContent()}</>
 
     function getContent() {
         if(producer) {

@@ -17,6 +17,7 @@ import CustomerCreationForm from '../../domains/customer/views/CustomerCreationF
 import Welcome from '../../domains/welcome/Welcome.tsx'
 import { Login, Logout } from '@mui/icons-material'
 import NotAuthorizedForProducers from '../../authentication/views/NotAuthorizedForProducers.tsx'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 
 export default function CustomerLayout() {
@@ -33,6 +34,7 @@ export default function CustomerLayout() {
     const [context, setContext] = useState(undefined)
     const [cookies, setCookie, removeCookie] = useCookies(['pendingOrder']);
     const [customer, setCustomer] = useState<Customer>(undefined)
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (initialized) {
@@ -65,7 +67,7 @@ export default function CustomerLayout() {
             setCustomer(customer)
         }
     }
-
+/*
     function displayMainContent() {
         if(authenticationService.isAuthenticated() && customer && !customer.id) {
             return <CustomerCreationForm customer={customer} returnCallback={newCustomer => setCustomer(newCustomer)}></CustomerCreationForm>
@@ -79,10 +81,11 @@ export default function CustomerLayout() {
         }
         
     }
-  
+ */ 
     function createOrder(sale: Sale) {
         setContext(sale)
-        setMainContent(ORDER_CREATION)
+        /*setMainContent(ORDER_CREATION)*/
+        navigate('/order/creation')
     }
 
     function displayAuthenticationButton(): React.ReactNode {
@@ -115,7 +118,7 @@ export default function CustomerLayout() {
                     {displayAuthenticationButton()}
                 </Toolbar>
             </AppBar>
-            {displayMainContent()}
+            <Outlet/>
         </Box>
     )
 }

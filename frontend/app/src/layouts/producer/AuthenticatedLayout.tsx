@@ -8,13 +8,14 @@ import {Close, Logout, Menu} from '@mui/icons-material'
 import { ApiInvoker } from '../../api/ApiInvoker.ts'
 
 import Producer from 'viandeendirect_eu/dist/model/Producer.js';
-import SideMenu from './SideMenu.js'
+import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import NotAuthorizedForCustomers from '../../authentication/views/NotAuthorizedForCustomers.tsx';
 import { ProducerService } from '../../domains/commons/service/ProducerService.ts';
+import { Outlet } from 'react-router-dom';
 
 
-function AuthenticatedLayout(props) {
+export default function AuthenticatedLayout(props) {
     const { keycloak, initialized } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
     const [producer, setProducer] = useState<Producer>()
@@ -87,10 +88,8 @@ function AuthenticatedLayout(props) {
                 sx={{ flexGrow: 1, p: 3 }}
                 width={'100%'}>
                 <Toolbar />
-                {props.children}
+                <Outlet/>
             </Box>
         </Box>
     )
 }
-
-export default AuthenticatedLayout

@@ -7,7 +7,7 @@ import DashboardProductions from '../components/DashboardProductions.tsx'
 import DashboardSales from '../components/DashboardSales.tsx'
 
 function Dashboard() {
-    return <AuthenticatedLayout>
+    return <>
         <Typography variant="h6">Tableau de bord</Typography>
         <div className="dashboard-container">
             <div className="dashboard-item"><DashboardAccount/></div>
@@ -15,7 +15,7 @@ function Dashboard() {
             <div className="dashboard-item"><DashboardProductions/></div>
             <div className="dashboard-item"><DashboardSales/></div>
         </div>
-    </AuthenticatedLayout>
+    </>
 }
 
 export default Dashboard

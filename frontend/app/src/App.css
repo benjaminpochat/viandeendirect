@@ -18,6 +18,11 @@
   cursor: pointer;
 }
 
+.link {
+  color: unset;
+  text-decoration: none;
+}
+
 .lot {
   border-top: 1px solid lightgrey;
   display: flex;

@@ -15,7 +15,7 @@ export default function ProductionController({producer: producer}) {
     const [currentAction, setCurrentAction] = useState(PRODUCTIONS_LIST)
     const [context, setContext] = useState(undefined)
 
-    return <AuthenticatedLayout>{getContent()}</AuthenticatedLayout>
+    return <>{getContent()}</>
 
     function getContent() {
         switch (currentAction) {
