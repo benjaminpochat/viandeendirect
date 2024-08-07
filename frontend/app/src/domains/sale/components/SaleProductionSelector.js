@@ -38,7 +38,7 @@ export default function SaleProductionSelector({selectProduction: selectProducti
                         key={'production-card-' + production.id} 
                         production={production} 
                         showActions={false}
-                        clickCallback={() => handleProductSelection(production)}>
+                        onClick={() => handleProductSelection(production)}>
                     </ProductionCard>
                 </div>
     })

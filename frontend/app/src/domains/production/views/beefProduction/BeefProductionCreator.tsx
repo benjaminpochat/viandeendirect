@@ -14,8 +14,9 @@ import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from "./for
 import { BeefProductionService } from "../../service/BeefProductionService.ts"
 import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
 import PackageLot from "viandeendirect_eu/dist/model/PackageLot.js"
+import { useNavigate } from "react-router-dom"
 
-export default function BeefProductionCreator({ callback }) {
+export default function BeefProductionCreator() {
 
     const BREEDING_PROPERTIES_STEP = 0
     const SLAUGHTER_PROPERTIES_STEP = 1
@@ -23,6 +24,7 @@ export default function BeefProductionCreator({ callback }) {
     const PRODUCTS_STEP = 3
 
     const { keycloak } = useKeycloak()
+    const navigate = useNavigate()
     const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
     const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
     const [ completedSteps, setCompletedSteps] = useState<Array<number>>([])
@@ -170,7 +172,7 @@ export default function BeefProductionCreator({ callback }) {
                         console.error(error)
                     } else {
                         console.log('API called successfully. Returned data: ' + data)
-                        callback('PRODUCTIONS_LIST')
+                        navigate(-1)
                     }
                 })
             }, keycloak)
@@ -178,6 +180,6 @@ export default function BeefProductionCreator({ callback }) {
     }
 
     function cancel() {
-        callback('PRODUCTIONS_LIST')
+        navigate(-1)
     }
 }

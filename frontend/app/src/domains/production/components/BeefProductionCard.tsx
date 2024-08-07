@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BeefProductionCard({
     production: production, 
-    showActions: showActions, 
-    clickCallback: clickCallback}) {
+    showActions: showActions,
+    onClick: onClick = undefined}) {
 
     const navigate = useNavigate()
     const [beefProduction, setBeefProduction] = useState(production)
@@ -33,7 +33,7 @@ export default function BeefProductionCard({
 
     return (
         <Card>
-            <CardActionArea onClick={() => navigate(`/beefProduction/${production.id}`)}>
+            <CardActionArea onClick={onClick || (() => navigate(`/beefProduction/${production.id}`))}>
                 <CardContent>
                     <Typography color="text.secondary" gutterBottom>
                         Abattage bovin

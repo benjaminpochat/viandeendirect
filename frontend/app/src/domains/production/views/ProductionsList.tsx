@@ -9,12 +9,11 @@ import { Button, Typography } from "@mui/material"
 import ProductionCard from '../components/ProductionCard.tsx'
 import { useNavigate } from 'react-router-dom'
 
-export default function ProductionsList({
-    createBeefProductionCallback: createBeefProductionCallback,
-    viewBeefProductionCallback: viewBeefProductionCallback}) {
+export default function ProductionsList() {
 
     const [productions, setProductions] = useState([])
     const { keycloak, initialized } = useKeycloak()
+    const navigate = useNavigate()
     const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
@@ -41,7 +40,7 @@ export default function ProductionsList({
         <div className='card-list'>
             {getProductionCards()}
         </div>
-        <Button variant="contained" size="small" onClick={createBeefProductionCallback}>Ajouter un abattage bovin</Button>
+        <Button variant="contained" size="small" onClick={() => navigate('/beefProduction/creation')}>Ajouter un abattage bovin</Button>
     </>
 
 
@@ -49,8 +48,7 @@ export default function ProductionsList({
         return productions.map(production => <div className='card-clickable'>
                                                 <ProductionCard 
                                                     production={production} 
-                                                    showActions={true} 
-                                                    clickCallback={viewBeefProductionCallback}> 
+                                                    showActions={true} > 
                                                 </ProductionCard>
                                             </div>)
     }

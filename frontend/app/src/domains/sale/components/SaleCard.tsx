@@ -7,6 +7,7 @@ import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
 import Order from 'viandeendirect_eu/dist/model/Order'
 import Production from 'viandeendirect_eu/dist/model/Production'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrdersCallback}) {
@@ -15,6 +16,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
     const [orders, setOrders] = useState<Array<Order>>([])
     const [productions, setProductions] = useState<Array<Production>>([])
     const {keycloak} = useKeycloak()
+    const navigate = useNavigate()
 
     useEffect(() => {
         apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleOrders, sale.id, setOrders, console.error)
@@ -69,7 +71,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
             <CardActions>
                 <ButtonGroup>
                     <Button size="small">Publier la vente</Button>
-                    <Button size="small" onClick={() => manageOrdersCallback(sale)}>Gérer les commandes</Button>
+                    <Button size="small" onClick={() => navigate(`/sale/${sale.id}/orders`)}>Gérer les commandes</Button>
                     <Button size="small">Préparer la livraison</Button>
                 </ButtonGroup>
             </CardActions>

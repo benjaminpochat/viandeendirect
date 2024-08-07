@@ -10,6 +10,7 @@ import Sale from 'viandeendirect_eu/dist/model/Sale'
 import SaleProductionSelector from '../components/SaleProductionSelector.js'
 import 'dayjs/locale/fr';
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom'
 
 const steps = ['Choisir une production', 'Définir le lieu et l\'heure', 'Choisir les produits mis en vente']
 
@@ -17,7 +18,7 @@ const steps = ['Choisir une production', 'Définir le lieu et l\'heure', 'Choisi
  * @param {Production} production 
  * @returns 
  */
-export default function SaleForm({producer: producer, returnCallback: returnCallback}) {
+export default function SaleForm({producer: producer}) {
 
     const SELECT_PRODUCTION_STEP = 'SELECT_PRODUCTION_STEP'
     const SET_DELIVERY_DATE_STEP = 'SET_DELIVERY_DATE_STEP'
@@ -25,6 +26,7 @@ export default function SaleForm({producer: producer, returnCallback: returnCall
     const CONFIRMATION_STEP = 'CONFIRMATION_STEP'
 
     const { keycloak, initialized } = useKeycloak()
+    const navigate = useNavigate()
     const [activeStep, setActiveStep] = useState(SELECT_PRODUCTION_STEP)
     const [sale, setSale] = useState(new Sale())
     const [addresses, setAddresses] = useState([])
@@ -97,7 +99,7 @@ export default function SaleForm({producer: producer, returnCallback: returnCall
                                 <div>
                                     <ButtonGroup>
                                         <Button type='submit' variant="contained" size="small">Valider</Button>
-                                        <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
+                                        <Button variant="outlined" size="small" onClick={cancel}>Abandonner</Button>
                                     </ButtonGroup>
                                 </div>
                             </div>
@@ -195,7 +197,7 @@ export default function SaleForm({producer: producer, returnCallback: returnCall
                         console.error(error)
                     } else {
                         console.log('API called successfully. Returned data: ' + data)
-                        returnCallback()
+                        navigate(-1)
                     }
                 })
             }, keycloak)
@@ -203,6 +205,6 @@ export default function SaleForm({producer: producer, returnCallback: returnCall
     }
 
     function cancel() {
-        returnCallback()
+        navigate(-1)
     }
 }

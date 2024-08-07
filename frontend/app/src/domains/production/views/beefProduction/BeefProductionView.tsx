@@ -10,7 +10,7 @@ import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
 import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function BeefProductionView() {
 
@@ -21,10 +21,11 @@ export default function BeefProductionView() {
 
     const apiInvoker = new ApiInvoker()
     const { keycloak } = useKeycloak()
+    const navigate = useNavigate();
 
     const [currentTab, setCurrentTab] = useState<number>(BREEDING_PROPERTIES_TAB)
     const [readOnly, setReadOnly] = useState<boolean>(true)
-    const [production, setProduction] = useState<BeefProduction>()
+    const [production, setProduction] = useState<BeefProduction>({})
 
     let { beefProductionId } = useParams()
     
@@ -36,8 +37,6 @@ export default function BeefProductionView() {
             setProduction,
             console.error)
     }, [keycloak])
-
-
 
     const [saveEnabled, setSaveEnabled] = useState<boolean>(true)
     const [alerts, setAlerts] = useState<string>(undefined)
@@ -104,7 +103,7 @@ export default function BeefProductionView() {
     function getButtons() {
         if (readOnly) {
             return <ButtonGroup>
-                <Button variant="contained" size="small" onClick={() => backCallback()} >Retour</Button>
+                <Button variant="contained" size="small" onClick={() => navigate(-1)} >Retour</Button>
                 <Button variant="outlined" size="small" onClick={() => setReadOnly(false)} >Modifier</Button>
             </ButtonGroup>
         }
