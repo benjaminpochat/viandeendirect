@@ -1,6 +1,6 @@
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
-import PackageTemplate from "viandeendirect_eu/dist/model/PackageTemplate"
-import Production from "viandeendirect_eu/dist/model/Production"
+import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
+import PackageTemplate from "@viandeendirect/api/dist/models/PackageTemplate"
+import Production from "@viandeendirect/api/dist/models/Production"
 
 export class MockApiProductions {
 

@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useKeycloak } from '@react-keycloak/web'
 
-import Sale from 'viandeendirect_eu/dist/model/Sale.js'
-import Customer from 'viandeendirect_eu/dist/model/Customer.js'
-import User from 'viandeendirect_eu/dist/model/User.js'
+import { Sale } from '@viandeendirect/api/dist/models/Sale'
+import { Customer } from '@viandeendirect/api/dist/models/Customer'
+import { User } from '@viandeendirect/api/dist/models/User'
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts'
@@ -55,33 +55,19 @@ export default function CustomerLayout() {
         }
     }, [initialized])
 
-    function initCustomer(customer: Customer) {
+    function initCustomer(customer :Customer) {
         if (customer) {
             setCustomer(customer)
         } else {
-            const customer = new Customer()
-            customer.user = new User()
+            const customer: Customer = {}
+            customer.user = {}
             customer.user.lastName = authenticationService.getCurrentUserLastName()
             customer.user.firstName = authenticationService.getCurrentUserFirstName()
             customer.user.email = authenticationService.getCurrentUserEmail()
             setCustomer(customer)
         }
     }
-/*
-    function displayMainContent() {
-        if(authenticationService.isAuthenticated() && customer && !customer.id) {
-            return <CustomerCreationForm customer={customer} returnCallback={newCustomer => setCustomer(newCustomer)}></CustomerCreationForm>
-        } else if(cookies.pendingOrder ) {
-            return <CustomerOrderForm returnCallback={() => setMainContent(WELCOME)} sale={{id: cookies.pendingOrder.sale.id}} ></CustomerOrderForm>
-        }
-        switch (mainContent) {
-            case WELCOME: return <Welcome createOrderCallback={sale => createOrder(sale)}></Welcome>
-            case ORDER_CREATION: return <CustomerOrderForm returnCallback={() => setMainContent(WELCOME)} sale={context} ></CustomerOrderForm>
-            case NOT_AUTHORIZED_FOR_PRODUCER: return <NotAuthorizedForProducers/>
-        }
-        
-    }
- */ 
+
     function createOrder(sale: Sale) {
         setContext(sale)
         /*setMainContent(ORDER_CREATION)*/

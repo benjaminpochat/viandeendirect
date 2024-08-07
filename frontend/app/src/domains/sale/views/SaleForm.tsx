@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography,
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
 
-import Sale from 'viandeendirect_eu/dist/model/Sale'
+import Sale from '@viandeendirect/api/dist/models/Sale'
 
 import SaleProductionSelector from '../components/SaleProductionSelector.js'
 import 'dayjs/locale/fr';
@@ -28,7 +28,7 @@ export default function SaleForm({producer: producer}) {
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const [activeStep, setActiveStep] = useState(SELECT_PRODUCTION_STEP)
-    const [sale, setSale] = useState(new Sale())
+    const [sale, setSale] = useState<Sale>({})
     const [addresses, setAddresses] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(undefined)
     const apiBuilder = new ApiBuilder()

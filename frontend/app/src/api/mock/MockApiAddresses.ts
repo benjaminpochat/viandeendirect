@@ -1,4 +1,4 @@
-import Address from "viandeendirect_eu/dist/model/Address"
+import Address from "@viandeendirect/api/dist/models/Address"
 
 export class MockApiAddresses {
     getAddresses(): Array<Address> {

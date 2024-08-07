@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
 import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
-import Order from 'viandeendirect_eu/dist/model/Order'
-import Production from 'viandeendirect_eu/dist/model/Production'
+import Order from '@viandeendirect/api/dist/models/Order'
+import Production from '@viandeendirect/api/dist/models/Production'
 import { useNavigate } from 'react-router-dom';
 
 

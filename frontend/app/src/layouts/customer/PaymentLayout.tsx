@@ -8,7 +8,7 @@ import { ApiBuilder } from '../../api/ApiBuilder.ts'
 import { AppBar, Box, Button, CircularProgress, CssBaseline, Toolbar, Typography } from '@mui/material'
 
 import OrderSummary from '../../domains/sale/components/OrderSummary.tsx'
-import Order from 'viandeendirect_eu/dist/model/Order.js';
+import Order from '@viandeendirect/api/dist/models/Order.js';
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 
 

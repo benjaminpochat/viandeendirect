@@ -7,10 +7,10 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
-import Order from "viandeendirect_eu/dist/model/Order"
-import Customer from "viandeendirect_eu/dist/model/Customer"
-import Production from "viandeendirect_eu/dist/model/Production"
-import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
+import Order from "@viandeendirect/api/dist/models/Order"
+import Customer from "@viandeendirect/api/dist/models/Customer"
+import Production from "@viandeendirect/api/dist/models/Production"
+import PackageLot from "@viandeendirect/api/dist/models/PackageLot"
 
 import PackageSelector from '../components/PackageSelector.tsx'
 import { AuthenticationService } from '../../../authentication/service/AuthenticationService.ts'

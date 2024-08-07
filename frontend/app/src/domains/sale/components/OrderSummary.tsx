@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Typography } from '@mui/material'
 
-import OrderItem from 'viandeendirect_eu/dist/model/OrderItem'
-import Order from 'viandeendirect_eu/dist/model/Order'
+import OrderItem from '@viandeendirect/api/dist/models/OrderItem'
+import Order from '@viandeendirect/api/dist/models/Order'
 import { OrderStatusUtils } from '../../../enum/OrderStatus.ts'
 
 export default function OrderSummary({ order: order }) {

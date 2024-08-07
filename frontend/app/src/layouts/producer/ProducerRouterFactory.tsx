@@ -13,12 +13,12 @@ import BeefProductionCreator from "../../domains/production/views/beefProduction
 import ProductionsList from "../../domains/production/views/ProductionsList.tsx";
 import SalesList from "../../domains/sale/views/SalesList.tsx";
 import SaleForm from "../../domains/sale/views/SaleForm.tsx";
-import OrdersList from "../../domains/sale/views/OrdersList.tsx";
+import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersList.tsx";
 import OrderView from "../../domains/sale/views/OrderView.tsx";
 import ProducerOrderForm from "../../domains/sale/views/ProducerOrderForm.tsx";
 
 export class ProducerRouterFactory {
-    getRouter() {
+    getRouter(keycloakClient) {
         return createBrowserRouter([
             {
             path: "/",
@@ -54,7 +54,8 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/sale/:saleId/orders',
-                        element: <OrdersList/>
+                        element: <OrdersList/>,
+                        loader: async ({params}) => loadOrdersListData(params.saleId, keycloakClient)
                     },
                     {
                         path: '/sale/:saleId/order/:orderId',

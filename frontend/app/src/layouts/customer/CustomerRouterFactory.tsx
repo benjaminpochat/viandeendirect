@@ -9,7 +9,7 @@ import NotAuthorizedForProducers from "../../authentication/views/NotAuthorizedF
 import Welcome from "../../domains/welcome/Welcome.tsx";
 
 export class CustomerRouterFactory {
-    getRouter() {
+    getRouter(keycloakClient) {
         return createBrowserRouter([
             {
                 path: "/",

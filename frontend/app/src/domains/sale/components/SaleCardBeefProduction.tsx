@@ -5,7 +5,7 @@ import { Typography } from "@mui/material"
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
-import Production from 'viandeendirect_eu/dist/model/BeefProduction'
+import Production from '@viandeendirect/api/dist/models/BeefProduction'
 import './SaleCard.css'
 
 export default function SaleCardBeefProduction({production: production}) {

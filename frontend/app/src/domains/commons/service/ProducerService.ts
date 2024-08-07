@@ -1,5 +1,5 @@
 import Keycloak from "keycloak-js"
-import Producer from "viandeendirect_eu/dist/model/Producer.js";
+import Producer from "@viandeendirect/api/dist/models/Producer.js";
 import { ApiInvoker } from "../../../api/ApiInvoker.ts";
 import { AuthenticationService } from "../../../authentication/service/AuthenticationService.ts";
 

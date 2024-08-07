@@ -3,9 +3,8 @@ import { useState } from 'react'
 
 import { Switch, Button } from "@mui/material"
 import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
+import { Customer } from '@viandeendirect/api/dist/models/Customer'
 
-import Customer from "viandeendirect_eu/dist/model/Customer"
-import User from "viandeendirect_eu/dist/model/User"
 
 export default function CustomerSelector({ customers: customers, callback: callback }) {
 
@@ -71,8 +70,8 @@ export default function CustomerSelector({ customers: customers, callback: callb
     }
 
     function defineNewCustomer(newCustomerFormData: FormData){
-        const createdCustomer = new Customer()
-        createdCustomer.user = new User()
+        const createdCustomer :Customer = {}
+        createdCustomer.user = {}
         createdCustomer.user.lastName = newCustomerFormData['lastName']
         createdCustomer.user.firstName = newCustomerFormData['firstName']
         createdCustomer.user.email = newCustomerFormData['email']

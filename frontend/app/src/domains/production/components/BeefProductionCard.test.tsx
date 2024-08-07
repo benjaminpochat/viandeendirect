@@ -2,7 +2,7 @@ import renderer from 'react-test-renderer';
 import BeefProductionCard from './BeefProductionCard';
 import React from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import Production from 'viandeendirect_eu/dist/model/Production';
+import Production from '@viandeendirect/api/dist/models/Production';
 
 jest.mock("@react-keycloak/web", () => ({ useKeycloak: mockUseKeycloak }));
 

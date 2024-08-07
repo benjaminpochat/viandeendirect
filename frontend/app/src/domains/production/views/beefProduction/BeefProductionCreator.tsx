@@ -12,8 +12,8 @@ import {BreedingPropertiesForm, mapBreedingFormDataToBeefProduction as mapBreedi
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from "./forms/SlaughterPropertiesForm.tsx"
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from "./forms/CuttingPropertiesForm.tsx"
 import { BeefProductionService } from "../../service/BeefProductionService.ts"
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
-import PackageLot from "viandeendirect_eu/dist/model/PackageLot.js"
+import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction.js"
+import PackageLot from "@viandeendirect/api/dist/models/PackageLot.js"
 import { useNavigate } from "react-router-dom"
 
 export default function BeefProductionCreator() {

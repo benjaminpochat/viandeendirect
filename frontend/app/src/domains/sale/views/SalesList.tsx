@@ -4,7 +4,7 @@ import { Typography, Button } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web'
 
-import Producer from "viandeendirect_eu/dist/model/Producer.js";
+import Producer from "@viandeendirect/api/dist/models/Producer.js";
 import SaleCard from '../components/SaleCard.tsx'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { useNavigate } from 'react-router-dom'

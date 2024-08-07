@@ -716,10 +716,6 @@ components:
         honeyDescription:
           description: "type of honney, type of flowers nectar gathered"
           type: string
-      discriminator:
-        propertyName: 'productionType'
-        mapping:
-          'HonneyProduction': '#/components/schemas/HonneyProduction'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "honney_productions")'
     OrderItem:
       description: ""

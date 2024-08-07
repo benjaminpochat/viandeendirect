@@ -5,7 +5,7 @@ import { Button, Link, Typography, CircularProgress } from "@mui/material"
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
-import Producer from 'viandeendirect_eu/dist/model/Producer.js';
+import Producer from '@viandeendirect/api/dist/models/Producer.js';
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import AuthenticatedLayout from '../../layouts/producer/AuthenticatedLayout.tsx';
 import { ProducerService } from '../commons/service/ProducerService.ts';

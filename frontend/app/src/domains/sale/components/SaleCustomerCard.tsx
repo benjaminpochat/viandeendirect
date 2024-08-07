@@ -3,7 +3,7 @@ import { Button, Card, CardActions, CardContent } from '@mui/material'
 import dayjs from 'dayjs'
 
 
-import Production from 'viandeendirect_eu/dist/model/Production.js'
+import Production from '@viandeendirect/api/dist/models/Production.js'
 import './SaleCustomerCard.css'
 import ProductionCustomerCard from '../../production/components/ProductionCustomerCard.tsx';
 

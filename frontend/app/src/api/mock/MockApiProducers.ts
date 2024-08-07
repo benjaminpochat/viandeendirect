@@ -1,7 +1,7 @@
-import Customer from "viandeendirect_eu/dist/model/Customer"
-import Producer from "viandeendirect_eu/dist/model/Producer"
-import ProducerStatus from "viandeendirect_eu/dist/model/ProducerStatus"
-import Sale from "viandeendirect_eu/dist/model/Sale"
+import Customer from "@viandeendirect/api/dist/models/Customer"
+import Producer from "@viandeendirect/api/dist/models/Producer"
+import ProducerStatus from "@viandeendirect/api/dist/models/ProducerStatus"
+import Sale from "@viandeendirect/api/dist/models/Sale"
 
 export class MockApiProducers {
 

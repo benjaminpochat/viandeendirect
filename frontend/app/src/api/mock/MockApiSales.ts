@@ -1,6 +1,6 @@
-import Order from "viandeendirect_eu/dist/model/Order";
-import Sale from "viandeendirect_eu/dist/model/Sale";
-import Production from "viandeendirect_eu/dist/model/Production";
+import Order from "@viandeendirect/api/dist/models/Order";
+import Sale from "@viandeendirect/api/dist/models/Sale";
+import Production from "@viandeendirect/api/dist/models/Production";
 
 export class MockApiSales {
 

@@ -3,7 +3,7 @@ import CustomersList from './views/CustomersList.tsx'
 import React from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { ProducerService } from '../commons/service/ProducerService.ts'
-import Producer from 'viandeendirect_eu/dist/model/Producer.js'
+import Producer from '@viandeendirect/api/dist/models/Producer.js'
 import AuthenticatedLayout from '../../layouts/producer/AuthenticatedLayout.tsx'
 
 export default function CustomerController() {

@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import SalesList from './views/SalesList.tsx'
 import SaleForm from './views/SaleForm.tsx'
 import OrdersList from './views/OrdersList.tsx'
-import Sale from 'viandeendirect_eu/dist/model/Sale'
-import Order from 'viandeendirect_eu/dist/model/Order'
+import Sale from '@viandeendirect/api/dist/models/Sale'
+import Order from '@viandeendirect/api/dist/models/Order'
 import OrderView from './views/OrderView.tsx'
 import ProducerOrderForm from './views/ProducerOrderForm.tsx'
 import AuthenticatedLayout from '../../layouts/producer/AuthenticatedLayout.tsx'
 import { useKeycloak } from '@react-keycloak/web'
 import { ProducerService } from '../commons/service/ProducerService.ts'
-import Producer from 'viandeendirect_eu/dist/model/Producer.js'
+import Producer from '@viandeendirect/api/dist/models/Producer.js'
 
 export default function SaleController() {
 

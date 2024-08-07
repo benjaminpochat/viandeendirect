@@ -2,7 +2,7 @@ import React from 'react'
 import { ButtonGroup, Button } from '@mui/material'
 import { FormContainer, DatePickerElement, TextFieldElement, useForm } from 'react-hook-form-mui'
 
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
+import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
 import dayjs from 'dayjs'
 
 export function CuttingPropertiesForm({

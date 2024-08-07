@@ -1,4 +1,4 @@
-import Customer from "viandeendirect_eu/dist/model/Customer"
+import Customer from "@viandeendirect/api/dist/models/Customer"
 
 export class MockApiCustomers {
 

@@ -7,12 +7,12 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
-import Customer from "viandeendirect_eu/dist/model/Customer"
-import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
-import Order from "viandeendirect_eu/dist/model/Order"
-import Production from "viandeendirect_eu/dist/model/Production"
-import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
-import Sale from "viandeendirect_eu/dist/model/Sale"
+import Customer from "@viandeendirect/api/dist/models/Customer"
+import OrderItem from "@viandeendirect/api/dist/models/OrderItem"
+import Order from "@viandeendirect/api/dist/models/Order"
+import Production from "@viandeendirect/api/dist/models/Production"
+import PackageLot from "@viandeendirect/api/dist/models/PackageLot"
+import Sale from "@viandeendirect/api/dist/models/Sale"
 
 import PackageSelector from '../components/PackageSelector.tsx'
 import CustomerSelector from '../components/CustomerSelector.tsx'

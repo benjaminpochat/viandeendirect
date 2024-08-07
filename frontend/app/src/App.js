@@ -32,7 +32,7 @@ function App() {
       <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
         <ThemeProvider theme={themeFactory.createTheme()}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-            <RouterProvider router={routerFactory.getRouter()} />
+            <RouterProvider router={routerFactory.getRouter(keycloakClient)} />
           </LocalizationProvider>
         </ThemeProvider>
       </ReactKeycloakProvider>

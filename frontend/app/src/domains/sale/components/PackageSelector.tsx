@@ -4,8 +4,8 @@ import { Button, Fab } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-import OrderItem from "viandeendirect_eu/dist/model/OrderItem"
-import PackageLot from "viandeendirect_eu/dist/model/PackageLot"
+import OrderItem from "@viandeendirect/api/dist/models/OrderItem"
+import PackageLot from "@viandeendirect/api/dist/models/PackageLot"
 
 import PackageLotDescription from '../../production/components/PackageLotDescription.tsx';
 import './PackageSelector.css'

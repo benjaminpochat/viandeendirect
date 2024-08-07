@@ -1,7 +1,7 @@
-import ApiClient from 'viandeendirect_eu/dist/ApiClient'
-import DefaultApi from 'viandeendirect_eu/dist/api/DefaultApi'
+import { DefaultApi } from '@viandeendirect/api/dist/apis/DefaultApi'
 import { MockApi } from './mock/MockApi.ts'
 import { UrlService } from '../domains/commons/service/UrlService.ts'
+import { Configuration } from '@viandeendirect/api/dist/runtime'
 
 export class ApiBuilder {
 
@@ -16,11 +16,11 @@ export class ApiBuilder {
         if(process.env.REACT_APP_MOCK_API) {
             return new MockApi()
         } else {
-            let apiClient = ApiClient.instance
-            apiClient.authentications['oAuth2ForViandeEnDirect'].accessToken = keycloak.token
-            apiClient.basePath = await this.urlService.getBackendUrl()
-            var api = new DefaultApi(apiClient)
-            return api
+            const configuration = new Configuration({
+                accessToken: keycloak.token,
+                basePath: await this.urlService.getBackendUrl()
+            });
+            return new DefaultApi(configuration)
         }
     }
 
@@ -28,9 +28,10 @@ export class ApiBuilder {
         if(process.env.REACT_APP_MOCK_API) {
             return new MockApi()
         } else {
-            let apiClient = ApiClient.instance
-            apiClient.basePath = await this.urlService.getBackendUrl()   
-            return new DefaultApi(apiClient)
+            const configuration = new Configuration({
+                basePath: await this.urlService.getBackendUrl()
+            });
+            return new DefaultApi(configuration)
         }
     }
 

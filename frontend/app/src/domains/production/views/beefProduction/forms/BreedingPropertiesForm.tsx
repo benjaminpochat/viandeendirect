@@ -3,7 +3,7 @@ import React from "react"
 import { Button, ButtonGroup } from "@mui/material"
 import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui'
 
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction"
+import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
 import dayjs from "dayjs"
 
 export function BreedingPropertiesForm({

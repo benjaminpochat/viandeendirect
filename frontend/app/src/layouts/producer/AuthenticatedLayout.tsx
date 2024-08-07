@@ -6,7 +6,7 @@ import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/ma
 import {Close, Logout, Menu} from '@mui/icons-material'
 
 
-import Producer from 'viandeendirect_eu/dist/model/Producer.js';
+import Producer from '@viandeendirect/api/dist/models/Producer.js';
 import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import { ProducerService } from '../../domains/commons/service/ProducerService.ts';

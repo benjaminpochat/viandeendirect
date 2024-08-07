@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import BreedingPropertiesForm, { mapBreedingFormDataToBeefProduction } from './forms/BreedingPropertiesForm.tsx'
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from './forms/SlaughterPropertiesForm.tsx'
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from './forms/CuttingPropertiesForm.tsx'
-import BeefProduction from "viandeendirect_eu/dist/model/BeefProduction.js"
+import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
 import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'

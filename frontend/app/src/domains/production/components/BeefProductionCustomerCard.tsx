@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 
 import { Typography } from "@mui/material"
 
-import BeefProduction from 'viandeendirect_eu/dist/model/BeefProduction.js'
-import PackageLot from 'viandeendirect_eu/dist/model/PackageLot.js'
+import BeefProduction from '@viandeendirect/api/dist/models/BeefProduction.js'
+import PackageLot from '@viandeendirect/api/dist/models/PackageLot.js'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import PieChart from '../../commons/components/PieChart.tsx'

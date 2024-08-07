@@ -8,27 +8,34 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
-import Order from "viandeendirect_eu/dist/model/Order.js"
-import Sale from "viandeendirect_eu/dist/model/Sale.js"
+import { Order } from "@viandeendirect/api/dist/models/Order"
+import { Sale } from "@viandeendirect/api/dist/models/Sale"
 import { OrderStatus, OrderStatusUtils } from '../../../enum/OrderStatus.ts';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { DefaultApi } from '@viandeendirect/api/dist/apis/DefaultApi';
+import { Configuration } from '@viandeendirect/api/dist/runtime';
 
-export default function OrdersList(props) {
+export default function OrdersList() {
 
-    const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
-    const apiBuilder = new ApiBuilder()
-
+    const loaderData = useLoaderData()
+    const sale = loaderData.sale
+    const orders = loaderData.orders
+    
+    /*
     const [sale, setSale] = useState<Sale>({id: props.saleId})
+    
     const [orders, setOrders] = useState<Order[]>([])
-
+    
     useEffect(() => {
         //TODO : load sale from props.saleId
         loadOrders()
     }, [keycloak])
+    */
 
     const [abortedOrdersHidden, setAbortedOrdersHidden] = useState<Boolean>(true);
 
+    /*
     function loadOrders() {
         apiBuilder.getAuthenticatedApi(keycloak).then(api => {
             apiBuilder.invokeAuthenticatedApi(() => {
@@ -43,6 +50,7 @@ export default function OrdersList(props) {
             }, keycloak)
         })
     }
+    */
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'Référence', flex: 0.5, disableColumnMenu: true },
@@ -97,4 +105,12 @@ export default function OrdersList(props) {
             <Button size="small" onClick={() => navigate(-1)}>Retour aux ventes</Button>
         </ButtonGroup>
     </>
+}
+
+export async function loadOrdersListData(saleId, keycloakClient) {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const orders = await api.getSaleOrders({saleId: saleId})
+    const sale = await api.getSale({saleId: saleId})
+    return {orders: orders, sale: sale}
 }

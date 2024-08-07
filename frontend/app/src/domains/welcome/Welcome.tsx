@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
 
-import Sale from 'viandeendirect_eu/dist/model/Sale.js'
+import Sale from '@viandeendirect/api/dist/models/Sale.js'
 
 import { ApiInvoker } from '../../api/ApiInvoker.ts'
 import SaleCustomerCard from '../../domains/sale/components/SaleCustomerCard.tsx'

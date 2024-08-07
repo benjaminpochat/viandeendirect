@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@viandeendirect/api": "file:../gen",
     "dayjs": "^1.11.10",
     "keycloak-js": "^21.1.1",
     "querystring": "^0.2.1",
@@ -25,16 +26,15 @@
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "typescript": "^5.2.2",
-    "viandeendirect_eu": "file:../gen",
     "web-vitals": "^2.1.4"
   },
   "overrides": {
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g javascript -o ../gen --skip-validate-spec",
+    "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g typescript-fetch -o ../gen --skip-validate-spec --additional-properties=npmName=@viandeendirect/api,npmVersion=0.1.0",
     "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
-    "install:api": "rm -Rf ./node_modules/viandeendirect_eu && npm install ../gen",
+    "install:api": "rm -Rf ./node_modules/@viandeendirect/api && npm install ../gen",
     "start": "react-scripts start",
     "start:mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@mui/x-data-grid": "^6.18.1",
-    "@openapitools/openapi-generator-cli": "^2.6.0",
+    "@openapitools/openapi-generator-cli": "^2.13.4",
     "@types/jest": "^29.5.8",
     "@types/node": "^20.9.2",
     "@types/react": "^18.2.37",
