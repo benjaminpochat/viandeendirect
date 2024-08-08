@@ -12,68 +12,70 @@ export class MockApi {
     mockApiSales: MockApiSales = new MockApiSales()
     mockApiProducers: MockApiProducers = new MockApiProducers()
 
-    createBeefProduction(beefProduction, callback) {
-        callback()
+    createBeefProduction() {
     }
 
-    getProductions(options, callback) {
-        callback(undefined, this.mockApiProductions.getProductions())
+    getProductions() {
+        return this.mockApiProductions.getProductions()
     }
 
-    getProductionPercentageSold(options, callback) {
-        callback(undefined, this.mockApiProductions.getProductionPercentageSold)
+    getProductionPercentageSold() {
+        return this.mockApiProductions.getProductionPercentageSold()
     }
 
-    getBeefProduction(id, callback) {
-        let mockApi = this
-        callback(undefined, mockApi.mockApiProductions.getBeefProduction())
+    getBeefProduction() {
+        return this.mockApiProductions.getBeefProduction()
     }
 
-    getPackageTemplates(callback) {
-        callback(undefined, this.mockApiProductions.getPackageTemplates())
+    getPackageTemplates() {
+        return this.mockApiProductions.getPackageTemplates()
     }
 
-    getAddresses(callback) {
-        callback(undefined, this.mockApiAddresses.getAddresses())
+    getAddresses() {
+        return this.mockApiAddresses.getAddresses()
     }
 
-    createCustomer(customer, callback){
-        callback(undefined, this.mockApiCustomers.createCustomer(customer))
+    createCustomer(customer){
+        return this.mockApiCustomers.createCustomer(customer)
     }
 
-    getCustomer(options, callback){
-        callback(undefined, this.mockApiCustomers.getCustomer())
+    getCustomer(){
+        return this.mockApiCustomers.getCustomer()
     }
 
-    getProducerSales(options, callback) {
-        callback(undefined, this.mockApiProducers.getProducerSales())
+    getProducerSales() {
+        return this.mockApiProducers.getProducerSales()
     }
 
-    getProducerCustomers(options, callback) {
-        callback(undefined, this.mockApiProducers.getCustomers())
+    getProducerCustomers() {
+        return this.mockApiProducers.getCustomers()
     }
 
-    getSales(callback) {
-        callback(undefined, this.mockApiSales.getSales())
+    getSales() {
+        return this.mockApiSales.getSales()
     }
 
-    getSaleOrders(options, callback) {
-        callback(undefined, this.mockApiSales.getSaleOrders())
+    getSale() {
+        return this.mockApiSales.getSale()
     }
 
-    getSaleProductions(options, callback) {
-        callback(undefined, this.mockApiSales.getSaleProductions())
+    getSaleOrders() {
+        return this.mockApiSales.getSaleOrders()
     }
 
-    getOrder(option, callback) {
-        callback(undefined, this.mockApiSales.getOrder())
+    getSaleProductions() {
+        return this.mockApiSales.getSaleProductions()
     }
 
-    createOrder(order, callback) {
-        callback(undefined, this.mockApiSales.createOrder(order))
+    getOrder() {
+        return this.mockApiSales.getOrder()
     }
 
-    getProducer(id, callback) {
-        callback(undefined, this.mockApiProducers.getProducer())
+    createOrder(order) {
+        return this.mockApiSales.createOrder(order)
+    }
+
+    getProducer() {
+        return this.mockApiProducers.getProducer()
     }
 }

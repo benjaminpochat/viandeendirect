@@ -4,11 +4,15 @@ import { Typography, Button } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web'
 
-import Producer from "@viandeendirect/api/dist/models/Producer.js";
+import {Producer} from "@viandeendirect/api/dist/models/Producer.js";
 import SaleCard from '../components/SaleCard.tsx'
 import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { useNavigate } from 'react-router-dom'
 import { ProducerService } from '../../commons/service/ProducerService.ts'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts';
+import { Sale } from '@viandeendirect/api/dist/models/Sale';
+
+//TODO : finir la conversion
 
 export default function SalesList() {
 
@@ -35,4 +39,13 @@ export default function SalesList() {
         </div>
         <Button variant="contained" size="small" onClick={() => navigate('/sales/creation')}>Créer une vente</Button>
     </>
+}
+
+export async function loadSalesListData(keycloakClient): Promise<{sales: Array<Sale>, producer: Producer}> {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const sales: Array<Sale> = await api.getSales()
+    const producerService = new ProducerService(keycloakClient)
+    const producer: Producer = await producerService.loadProducer()
+    return {sales: sales, producer: producer}
 }

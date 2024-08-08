@@ -1,11 +1,11 @@
-import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
-import PackageTemplate from "@viandeendirect/api/dist/models/PackageTemplate"
-import Production from "@viandeendirect/api/dist/models/Production"
+import {BeefProduction} from "@viandeendirect/api/dist/models/BeefProduction"
+import {PackageTemplate} from "@viandeendirect/api/dist/models/PackageTemplate"
+import {Production} from "@viandeendirect/api/dist/models/Production"
 
 export class MockApiProductions {
 
     getProductions(): Array<Production> {
-        const production1 = {
+        const production1: BeefProduction = {
             id: 1,
             productionType: 'BeefProduction',
             producer: undefined,
@@ -13,7 +13,7 @@ export class MockApiProductions {
             sales: undefined
         }
 
-        const production2 = {
+        const production2: BeefProduction = {
             id: 2,
             productionType: 'BeefProduction',
             producer: undefined,
@@ -27,9 +27,9 @@ export class MockApiProductions {
         return {
             id: 1,
             animalIdentifier: '1234',
-            birthDate: '2022-10-01T10:00:00',
-            slaughterDate: '2023-10-01T10:00:00',
-            cuttingDate: '2024-10-01T10:00:00',
+            birthDate: new Date('2022-10-01T10:00:00'),
+            slaughterDate: new Date('2023-10-01T10:00:00'),
+            cuttingDate: new Date('2024-10-01T10:00:00'),
             warmCarcassWeight: 450,
             animalType: 'BEEF_COW',
             birthFarm: 'La ferme du puis',

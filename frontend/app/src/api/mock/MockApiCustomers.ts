@@ -1,8 +1,8 @@
-import Customer from "@viandeendirect/api/dist/models/Customer"
+import {Customer} from "@viandeendirect/api/dist/models/Customer"
 
 export class MockApiCustomers {
 
-    getCustomer() {
+    getCustomer(): Customer {
         return {
             id: 1,
             user: {
@@ -15,7 +15,7 @@ export class MockApiCustomers {
        //return undefined
     }
 
-    createCustomer(customer: Customer) {
+    createCustomer(customer: Customer): Customer {
         return {...customer, id: 999}
     }
 

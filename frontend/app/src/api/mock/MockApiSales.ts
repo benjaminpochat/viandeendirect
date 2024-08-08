@@ -1,14 +1,13 @@
-import Order from "@viandeendirect/api/dist/models/Order";
-import Sale from "@viandeendirect/api/dist/models/Sale";
-import Production from "@viandeendirect/api/dist/models/Production";
+import {Order} from "@viandeendirect/api/dist/models/Order";
+import {Sale} from "@viandeendirect/api/dist/models/Sale";
+import { Production } from "@viandeendirect/api/dist/models/Production";
 
 export class MockApiSales {
-
-    getSales(): Array<Sale> {
-        const sale1 = {
+    getSale(): Sale {
+        return  {
             id: 1,
-            deliveryStart: '2023-11-15T18:00:00',
-            deliveryStop: '2023-11-15T20:00:00',
+            deliveryStart: new Date('2023-11-15T18:00:00'),
+            deliveryStop: new Date('2023-11-15T20:00:00'),
             deliveryAddressName: 'ESL Rémilly',
             deliveryAddressLine1: '1 rue De Gaulle',
             deliveryAddressLine2: undefined,
@@ -18,7 +17,7 @@ export class MockApiSales {
                 {
                     id: 1,
                     productionType: 'BeefProduction',
-                    slaughterDate: '2023-10-01T10:00:00',
+                    slaughterDate: new Date('2023-10-01T10:00:00'),
                     animalLiveWeight: 450,
                     animalType: 'BEEF_HEIFER',
                     animalIdentifier: '9876',
@@ -26,10 +25,34 @@ export class MockApiSales {
                 }
             ]
         }
-        const sale2 = {
+    }
+
+    getSales(): Array<Sale> {
+        const sale1: Sale = {
+            id: 1,
+            deliveryStart: new Date('2023-11-15T18:00:00'),
+            deliveryStop: new Date('2023-11-15T20:00:00'),
+            deliveryAddressName: 'ESL Rémilly',
+            deliveryAddressLine1: '1 rue De Gaulle',
+            deliveryAddressLine2: undefined,
+            deliveryCity: 'Rémilly',
+            deliveryZipCode: '57580',
+            productions: [
+                {
+                    id: 1,
+                    productionType: 'BeefProduction',
+                    slaughterDate: new Date('2023-10-01T10:00:00'),
+                    animalLiveWeight: 450,
+                    animalType: 'BEEF_HEIFER',
+                    animalIdentifier: '9876',
+                    birthFarm: 'La ferme du puis'
+                }
+            ]
+        }
+        const sale2: Sale = {
             id: 2,
-            deliveryStart: '2023-11-20T16:00:00',
-            deliveryStop: '2023-11-20T18:00:00',
+            deliveryStart: new Date('2023-11-20T16:00:00'),
+            deliveryStop: new Date('2023-11-20T18:00:00'),
             deliveryAddressName: 'Place de l\'Etoile',
             deliveryAddressLine1: '1 place de l\'Etoile',
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
@@ -39,7 +62,7 @@ export class MockApiSales {
                 {
                     id: 2,
                     productionType: 'BeefProduction',
-                    slaughterDate: '2023-11-01T10:00:00',
+                    slaughterDate: new Date('2023-11-01T10:00:00'),
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
                     animalIdentifier: '0987',
@@ -47,10 +70,10 @@ export class MockApiSales {
                 }
             ]
         }
-        const sale3 = {
+        const sale3: Sale = {
             id: 3,
-            deliveryStart: '2024-01-15T16:00:00',
-            deliveryStop: '2024-01-15T18:00:00',
+            deliveryStart: new Date('2024-01-15T16:00:00'),
+            deliveryStop: new Date('2024-01-15T18:00:00'),
             deliveryAddressName: 'Place de l\'Etoile',
             deliveryAddressLine1: '1 place de l\'Etoile',
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
@@ -60,7 +83,7 @@ export class MockApiSales {
                 {
                     id: 3,
                     productionType: 'BeefProduction',
-                    slaughterDate: '2024-01-01T10:00:00',
+                    slaughterDate: new Date('2024-01-01T10:00:00'),
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
                     animalIdentifier: '1234',

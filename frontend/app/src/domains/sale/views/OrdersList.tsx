@@ -1,56 +1,25 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, ButtonGroup, Switch, Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import dayjs from 'dayjs'
 
-import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import { Order } from "@viandeendirect/api/dist/models/Order"
-import { Sale } from "@viandeendirect/api/dist/models/Sale"
 import { OrderStatus, OrderStatusUtils } from '../../../enum/OrderStatus.ts';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { DefaultApi } from '@viandeendirect/api/dist/apis/DefaultApi';
-import { Configuration } from '@viandeendirect/api/dist/runtime';
+import { Sale } from '@viandeendirect/api/dist/models/Sale';
 
 export default function OrdersList() {
 
     const navigate = useNavigate()
-    const loaderData = useLoaderData()
-    const sale = loaderData.sale
-    const orders = loaderData.orders
-    
-    /*
-    const [sale, setSale] = useState<Sale>({id: props.saleId})
-    
-    const [orders, setOrders] = useState<Order[]>([])
-    
-    useEffect(() => {
-        //TODO : load sale from props.saleId
-        loadOrders()
-    }, [keycloak])
-    */
+    const data = useLoaderData()
+    const sale = data.sale
+    const orders = data.orders
 
     const [abortedOrdersHidden, setAbortedOrdersHidden] = useState<Boolean>(true);
-
-    /*
-    function loadOrders() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getSaleOrders(sale.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getSaleOrders called successfully. Returned data: ' + data)
-                        setOrders(data)
-                    }
-                })
-            }, keycloak)
-        })
-    }
-    */
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'Référence', flex: 0.5, disableColumnMenu: true },
@@ -107,10 +76,10 @@ export default function OrdersList() {
     </>
 }
 
-export async function loadOrdersListData(saleId, keycloakClient) {
+export async function loadOrdersListData(saleId: number, keycloakClient): Promise<{orders: Array<Order>, sale: Sale}> {
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
-    const orders = await api.getSaleOrders({saleId: saleId})
+    const orders: Array<Order> = await api.getSaleOrders({saleId: saleId})
     const sale = await api.getSale({saleId: saleId})
     return {orders: orders, sale: sale}
 }

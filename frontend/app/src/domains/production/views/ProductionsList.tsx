@@ -1,39 +1,19 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
 
-import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import { Button, Typography } from "@mui/material"
 
 import ProductionCard from '../components/ProductionCard.tsx'
-import { useNavigate } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { Production } from '@viandeendirect/api/dist/models/Production'
 
 export default function ProductionsList() {
 
-    const [productions, setProductions] = useState([])
-    const { keycloak, initialized } = useKeycloak()
+    const productions: Array<Production> = useLoaderData()
+
     const navigate = useNavigate()
-    const apiBuilder = new ApiBuilder()
 
-    useEffect(() => {
-        loadProductions()
-    }, [keycloak])
-
-    function loadProductions() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getProductions({}, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getProductions called successfully. Returned data: ' + data)
-                        setProductions(data)
-                    }
-                })
-            }, keycloak)
-        })
-    }
 
     return <>
         <Typography variant='h6'>Productions</Typography>
@@ -52,4 +32,11 @@ export default function ProductionsList() {
                                                 </ProductionCard>
                                             </div>)
     }
+}
+
+export async function loadProductionListData(keycloakClient): Promise<Array<Production>> {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const productions: Array<Production> = await api.getProductions()
+    return productions
 }

@@ -10,7 +10,7 @@ import AnonymousLayout from "./AnonymousLayout.tsx";
 import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
 import BeefProductionView from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
 import BeefProductionCreator from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
-import ProductionsList from "../../domains/production/views/ProductionsList.tsx";
+import ProductionsList, { loadProductionListData } from "../../domains/production/views/ProductionsList.tsx";
 import SalesList from "../../domains/sale/views/SalesList.tsx";
 import SaleForm from "../../domains/sale/views/SaleForm.tsx";
 import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersList.tsx";
@@ -34,7 +34,8 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/productions',
-                        element: <ProductionsList/>
+                        element: <ProductionsList/>,
+                        loader: async () => loadProductionListData(keycloakClient)
                     },
                     {
                         path: '/beefProduction/:beefProductionId',
@@ -55,7 +56,7 @@ export class ProducerRouterFactory {
                     {
                         path: '/sale/:saleId/orders',
                         element: <OrdersList/>,
-                        loader: async ({params}) => loadOrdersListData(params.saleId, keycloakClient)
+                        loader: async ({params}) => loadOrdersListData(+params.saleId, keycloakClient)
                     },
                     {
                         path: '/sale/:saleId/order/:orderId',
