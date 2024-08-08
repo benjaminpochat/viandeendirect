@@ -4,14 +4,13 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import AuthenticatedLayout from "./AuthenticatedLayout.tsx";
 import CustomerController from "../../domains/customer/CustomerController.tsx";
 import ProducerController from "../../domains/producer/ProducerController.tsx";
-import SaleController from "../../domains/sale/SaleController.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
 import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
 import BeefProductionView from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
-import BeefProductionCreator from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
+import BeefProductionCreator, { loadBeefProductionCreatorData } from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
 import ProductionsList, { loadProductionListData } from "../../domains/production/views/ProductionsList.tsx";
-import SalesList from "../../domains/sale/views/SalesList.tsx";
+import SalesList, { loadSalesListData } from "../../domains/sale/views/SalesList.tsx";
 import SaleForm from "../../domains/sale/views/SaleForm.tsx";
 import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersList.tsx";
 import OrderView from "../../domains/sale/views/OrderView.tsx";
@@ -43,11 +42,13 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/beefProduction/creation',
-                        element: <BeefProductionCreator/>
+                        element: <BeefProductionCreator/>,
+                        loader: async () => loadBeefProductionCreatorData(keycloakClient)
                     },
                     {
                         path: '/sales',
-                        element: <SalesList/>
+                        element: <SalesList/>,
+                        loader: async () => loadSalesListData(keycloakClient)
                     },
                     {
                         path: '/sales/creation',

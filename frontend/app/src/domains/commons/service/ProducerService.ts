@@ -1,15 +1,18 @@
 import Keycloak from "keycloak-js"
-import Producer from "@viandeendirect/api/dist/models/Producer.js";
+import {Producer} from "@viandeendirect/api/dist/models/Producer.js";
 import { ApiInvoker } from "../../../api/ApiInvoker.ts";
 import { AuthenticationService } from "../../../authentication/service/AuthenticationService.ts";
+import { ApiBuilder } from "../../../api/ApiBuilder.ts";
 
 export class ProducerService {
     keycloak: Keycloak
+    apiBuilder: ApiBuilder
     static producer: Producer
     static unauthorized: boolean
 
     constructor(keycloak: Keycloak) {
         this.keycloak = keycloak
+        this.apiBuilder = new ApiBuilder();
     }
 
     loadProducer(setProducer, setUnauthorized = unauthorized => {}) {
@@ -37,5 +40,11 @@ export class ProducerService {
             setProducer(ProducerService.producer)
             setUnauthorized(ProducerService.unauthorized)
         }
+    }
+
+    async asyncLoadProducer(): Promise<Producer> {
+        const api = await this.apiBuilder.getAuthenticatedApi(this.keycloak)
+        const authenticationService = new AuthenticationService(this.keycloak)
+        return await api.getProducer({'email': authenticationService.getCurrentUserEmail()})
     }
 }

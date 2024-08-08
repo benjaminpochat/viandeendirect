@@ -208,3 +208,7 @@ export default function SaleForm({producer: producer}) {
         navigate(-1)
     }
 }
+
+export async function loadSaleFormData(keycloakClient) {
+    //TODO : à implémenter
+}

@@ -12,9 +12,9 @@ import {BreedingPropertiesForm, mapBreedingFormDataToBeefProduction as mapBreedi
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from "./forms/SlaughterPropertiesForm.tsx"
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from "./forms/CuttingPropertiesForm.tsx"
 import { BeefProductionService } from "../../service/BeefProductionService.ts"
-import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction.js"
-import PackageLot from "@viandeendirect/api/dist/models/PackageLot.js"
-import { useNavigate } from "react-router-dom"
+import {BeefProduction} from "@viandeendirect/api/dist/models/BeefProduction.js"
+import { useLoaderData, useNavigate } from "react-router-dom"
+import { PackageTemplate } from "@viandeendirect/api/dist/models/PackageTemplate"
 
 export default function BeefProductionCreator() {
 
@@ -25,37 +25,22 @@ export default function BeefProductionCreator() {
 
     const { keycloak } = useKeycloak()
     const navigate = useNavigate()
+    const packageTemplates: Array<PackageTemplate> = useLoaderData()
+
     const [ activeStep, setActiveStep ] = useState<number>(BREEDING_PROPERTIES_STEP)
-    const [ beefProduction, setBeefProduction] = useState<BeefProduction>({ productionType: "BeefProduction"})
+    const [ beefProduction, setBeefProduction] = useState<BeefProduction>({
+            productionType: "BeefProduction",
+            lots: packageTemplates.map(template => {
+                return {
+                    ...template,
+                    id: undefined,
+                    quantity: 0,
+                    quantitySold: 0
+                }
+            })
+        })
     const [ completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const [ saveEnabled, setSaveEnabled] = useState<boolean>(false)
-    const apiBuilder = new ApiBuilder()
-
-    useEffect(() => {
-        if (! beefProduction.lots) {
-            apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-                apiBuilder.invokeAuthenticatedApi(() => {
-                    api.getPackageTemplates((error, data, response) => {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            console.log('api.getPackageTemplates called successfully. Returned data: ' + data);
-                            const lots: Array<PackageLot> = []
-                            data.map(template => {
-                                lots.push({
-                                    ...template,
-                                    id: undefined,
-                                    quantity: 0,
-                                    quantitySold: 0
-                                })
-                            })
-                            setBeefProduction({...beefProduction, lots: lots})
-                        }
-                    })
-                }, keycloak)
-            })
-        }
-    }, [keycloak])
 
     const breedingPropertiesForm = useForm<BeefProduction>({defaultValues: {
         ...beefProduction,
@@ -163,23 +148,22 @@ export default function BeefProductionCreator() {
         return beefProduction.lots?.map(lot => lot.netWeight * lot.quantity).reduce((total, added) => total + added, 0) || 0
     }
 
-    function validate() {
+    async function validate() {
         console.debug(beefProduction)
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.createBeefProduction(beefProduction, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('API called successfully. Returned data: ' + data)
-                        navigate(-1)
-                    }
-                })
-            }, keycloak)
-        });
+        const apiBuilder = new ApiBuilder()
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        await api.createBeefProduction({beefProduction: beefProduction})
+        navigate(-1)    
     }
 
     function cancel() {
         navigate(-1)
     }
+}
+
+export async function loadBeefProductionCreatorData(keycloakClient) {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const packageTemplates = await api.getPackageTemplates()
+    return packageTemplates
 }
