@@ -150,7 +150,6 @@ public class OrderService implements OrdersApiDelegate {
 
     public void processOrderPaymentCompletion(Order order) {
         order.setStatus(OrderStatus.PAYMENT_COMPLETED);
-        // TODO: trigger an email to the customer
         notifyProducers(order);
         notifyCustomer(order);
         orderRepository.save(order);

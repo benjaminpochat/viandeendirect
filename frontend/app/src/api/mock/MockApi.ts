@@ -12,70 +12,95 @@ export class MockApi {
     mockApiSales: MockApiSales = new MockApiSales()
     mockApiProducers: MockApiProducers = new MockApiProducers()
 
-    createBeefProduction() {
+    private log(methodName: String, args: any) {
+        console.log(`MockApi.${methodName} has been invoked with following artguments : ${JSON.stringify(args)}`)
     }
 
-    getProductions() {
+    createBeefProduction(args) {
+        this.log('createBeefProduction', args)
+    }
+
+    getProductions(args) {
+        this.log('getProductions', args)
         return this.mockApiProductions.getProductions()
     }
 
-    getProductionPercentageSold() {
+    getProductionPercentageSold(args) {
+        this.log('getProductionPercentageSold', args)
         return this.mockApiProductions.getProductionPercentageSold()
     }
 
-    getBeefProduction() {
+    getBeefProduction(args) {
+        this.log('getBeefProduction', args)
         return this.mockApiProductions.getBeefProduction()
     }
 
-    getPackageTemplates() {
+    getPackageTemplates(args) {
+        this.log('getPackageTemplates', args)
         return this.mockApiProductions.getPackageTemplates()
     }
 
-    getAddresses() {
+    getAddresses(args) {
+        this.log('getAddresses', args)
         return this.mockApiAddresses.getAddresses()
     }
 
-    createCustomer(customer){
-        return this.mockApiCustomers.createCustomer(customer)
+    createCustomer(args){
+        this.log('createCustomer', args)
+        return this.mockApiCustomers.createCustomer(args)
     }
 
-    getCustomer(){
+    getCustomer(args){
+        this.log('getCustomer', args)
         return this.mockApiCustomers.getCustomer()
     }
 
-    getProducerSales() {
+    createProducerSale(args) {
+        this.log('createProducerSale', args)
+    }
+
+    getProducerSales(args) {
+        this.log('getProducerSales', args)
         return this.mockApiProducers.getProducerSales()
     }
 
-    getProducerCustomers() {
+    getProducerCustomers(args) {
+        this.log('getProducerCustomers', args)
         return this.mockApiProducers.getCustomers()
     }
 
-    getSales() {
+    getSales(args) {
+        this.log('getSales', args)
         return this.mockApiSales.getSales()
     }
 
-    getSale() {
+    getSale(args) {
+        this.log('getSale', args)
         return this.mockApiSales.getSale()
     }
 
-    getSaleOrders() {
+    getSaleOrders(args) {
+        this.log('getSaleOrders', args)
         return this.mockApiSales.getSaleOrders()
     }
 
-    getSaleProductions() {
+    getSaleProductions(args) {
+        this.log('getSaleProductions', args)
         return this.mockApiSales.getSaleProductions()
     }
 
-    getOrder() {
+    getOrder(args) {
+        this.log('getOrder', args)
         return this.mockApiSales.getOrder()
     }
 
-    createOrder(order) {
-        return this.mockApiSales.createOrder(order)
+    createOrder(args) {
+        this.log('createOrder', args)
+        return this.mockApiSales.createOrder(args)
     }
 
-    getProducer() {
+    getProducer(args) {
+        this.log('getProducer', args)
         return this.mockApiProducers.getProducer()
     }
 }

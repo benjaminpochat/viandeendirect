@@ -7,78 +7,54 @@ import dayjs from 'dayjs'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
-import Customer from "@viandeendirect/api/dist/models/Customer"
-import OrderItem from "@viandeendirect/api/dist/models/OrderItem"
-import Order from "@viandeendirect/api/dist/models/Order"
-import Production from "@viandeendirect/api/dist/models/Production"
-import PackageLot from "@viandeendirect/api/dist/models/PackageLot"
-import Sale from "@viandeendirect/api/dist/models/Sale"
+import { Customer } from "@viandeendirect/api/dist/models/Customer"
+import { OrderItem } from "@viandeendirect/api/dist/models/OrderItem"
+import {Order} from "@viandeendirect/api/dist/models/Order"
+import { Production } from "@viandeendirect/api/dist/models/Production"
+import { PackageLot } from "@viandeendirect/api/dist/models/PackageLot"
+import { Sale } from "@viandeendirect/api/dist/models/Sale"
 
 import PackageSelector from '../components/PackageSelector.tsx'
 import CustomerSelector from '../components/CustomerSelector.tsx'
 import OrderSummary from '../components/OrderSummary.tsx'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
+import { ProducerService } from '../../commons/service/ProducerService.ts'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 
-export default function ProducerOrderForm({ producer: producer, sale: sale, returnCallback: returnCallback }) {
+// TODO : corriger erreur eu retour de la création si saisie d'un nouvel utilisateur
+export default function ProducerOrderForm() {
 
     const SET_ITEMS_STEP = 1
     const SET_CUSTOMER_STEP = 2
     const CONFIRMATION_STEP = 3
 
-    const { keycloak, initialized } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
-    const apiBuilder = new ApiBuilder()
+    const { keycloak } = useKeycloak()
+    const navigate = useNavigate()
+    const data: ProducerOrderFormData = useLoaderData()
+    const productions = data.productions
+    const customers = data.customers
+    const sale = data.sale
 
-    const [productions, setProductions] = useState<Array<Production>>([])
-    const [customers, setCustomers] = useState<Array<Customer>>([])
-    const [order, setOrder] = useState<Order>({sale: sale})
+    const [order, setOrder] = useState<Order>({sale: sale, customer: {}})
     const [items, setItems] = useState<Array<OrderItem>>([])
     const [activeStep, setActiveStep] = useState(SET_ITEMS_STEP)
 
-    useEffect(() => {
-        loadProductions()
-        loadCustomers()
-    }, [keycloak])
-
-    function loadProductions() {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.getSaleProductions, 
-            sale.id, 
-            setProductions, 
-            console.error)
+    async function createCustomerAndOrder(customer: Customer){
+        const apiBuilder = new ApiBuilder()
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        const createdCustomer = await api.createCustomer({customer: customer})
+        const updatedOrder = {...order, customer: createdCustomer}
+        setOrder(updatedOrder)
+        await api.createOrder({order: updatedOrder})
+        navigate(-1)
     }
 
-    function loadCustomers() {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.getProducerCustomers, 
-            producer.id, 
-            setCustomers, 
-            console.error)
+    async function createOrder(){
+        const apiBuilder = new ApiBuilder()
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        await api.createOrder({order: order})
+        navigate(-1)
     }
 
-    function createCustomerAndOrder(customer: Customer){
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.createCustomer, 
-            customer, 
-            customer => {
-                const updatedOrder = {...order, customer: customer}
-                setOrder(updatedOrder)
-                createOrder(updatedOrder)
-            }, 
-            console.error)
-    }
-
-    function createOrder(order: Order) {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.createOrder, 
-            order, 
-            () => returnCallback(sale),
-            console.error)
-    }
     return <>
         <Typography variant='h6'>Creation d'une commande pour la vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</Typography>
 
@@ -114,7 +90,7 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
                 </StepContent>
             </Step>
         </Stepper>
-        <Button size="small" onClick={() => returnCallback(sale)}>Abandonner</Button>
+        <Button size="small" onClick={() => navigate(-1)}>Abandonner</Button>
     </>
 
     function packageLots() {
@@ -147,7 +123,24 @@ export default function ProducerOrderForm({ producer: producer, sale: sale, retu
         if(!order.customer.id) {
             createCustomerAndOrder(order.customer)
         } else {
-            createOrder(order)
+            createOrder()
         }
     }
+}
+
+class ProducerOrderFormData {
+    productions: Array<Production>    
+    customers: Array<Customer>
+    sale: Sale
+}
+
+export async function loadProducerOrderFormData(saleId: number, keycloakClient): Promise<ProducerOrderFormData> {
+    const producerService = new ProducerService(keycloakClient)
+    const producer = await producerService.asyncLoadProducer()
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const productions = await api.getSaleProductions({saleId: saleId})
+    const customers = await api.getProducerCustomers({producerId: producer.id})
+    const sale = await api.getSale({saleId: saleId})
+    return {productions: productions, customers: customers, sale: sale}
 }

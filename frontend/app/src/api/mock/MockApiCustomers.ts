@@ -12,7 +12,6 @@ export class MockApiCustomers {
                 email: 'bob.marcel@email.eu'
             }
         }
-       //return undefined
     }
 
     createCustomer(customer: Customer): Customer {

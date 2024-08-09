@@ -4,7 +4,7 @@ import BeefProductionCard from "./BeefProductionCard.tsx"
 export default function ProductionCard({
     production: production, 
     showActions: showActions,
-    clickCallback: clickCallback
+    onClick: onClick
 }) {
 
     switch (production.productionType) {
@@ -13,7 +13,7 @@ export default function ProductionCard({
                         key={production.id}
                         production={production} 
                         showActions={showActions}
-                        clickCallback={clickCallback}>
+                        onClick={onClick}>
                     </BeefProductionCard>
         default :
             return <></>

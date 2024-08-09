@@ -1,52 +1,42 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
-
-import Sale from '@viandeendirect/api/dist/models/Sale'
-
-import SaleProductionSelector from '../components/SaleProductionSelector.js'
 import 'dayjs/locale/fr';
 import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
 
-const steps = ['Choisir une production', 'Définir le lieu et l\'heure', 'Choisir les produits mis en vente']
+import SaleProductionSelector from '../components/SaleProductionSelector.js'
+import { Sale } from '@viandeendirect/api/dist/models/Sale'
+import { Address } from '@viandeendirect/api/dist/models/Address'
+import { Production } from '@viandeendirect/api/dist/models/Production'
+import { Producer } from '@viandeendirect/api/dist/models/Producer'
+import { ProducerService } from '../../commons/service/ProducerService.ts'
 
 /**
  * @param {Production} production 
  * @returns 
  */
-export default function SaleForm({producer: producer}) {
+export default function SaleForm() {
 
     const SELECT_PRODUCTION_STEP = 'SELECT_PRODUCTION_STEP'
     const SET_DELIVERY_DATE_STEP = 'SET_DELIVERY_DATE_STEP'
     const SET_DELIVERY_ADDRESS_STEP = 'SET_DELIVERY_ADDRESS_STEP'
     const CONFIRMATION_STEP = 'CONFIRMATION_STEP'
 
-    const { keycloak, initialized } = useKeycloak()
+    const { keycloak } = useKeycloak()
     const navigate = useNavigate()
+    const data: SaleFormData = useLoaderData()
+    const addresses: Array<Address> = data.addresses
+    const productions: Array<Production> = data.productions
+    const producer: Producer = data.producer
+
+
     const [activeStep, setActiveStep] = useState(SELECT_PRODUCTION_STEP)
     const [sale, setSale] = useState<Sale>({})
-    const [addresses, setAddresses] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(undefined)
-    const apiBuilder = new ApiBuilder()
-
-    useEffect(() => {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getAddresses((error, data, response) => {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        console.log('api.getAddresses called successfully. Returned data: ' + data);
-                        setAddresses(data)
-                    }
-                })
-            }, keycloak)
-        })
-    }, [keycloak])
 
     return <>
         <Typography variant='h6'>Nouvelle vente</Typography>
@@ -55,7 +45,7 @@ export default function SaleForm({producer: producer}) {
                 <StepLabel>Choisir une production</StepLabel>
                 <StepContent>
                     <div>
-                        <SaleProductionSelector selectProduction={selectProduction}></SaleProductionSelector>
+                        <SaleProductionSelector selectProduction={selectProduction} productions={productions}></SaleProductionSelector>
                     </div>
                     <div>
                         <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
@@ -189,19 +179,16 @@ export default function SaleForm({producer: producer}) {
         setActiveStep(CONFIRMATION_STEP)
     }
 
-    function validate() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.createProducerSale(producer.id, sale, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('API called successfully. Returned data: ' + data)
-                        navigate(-1)
-                    }
-                })
-            }, keycloak)
-        });
+    async function validate() {
+        const apiBuilder = new ApiBuilder()
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        try {
+            await api.createProducerSale({producerId: +producer.id, sale: sale})
+            console.log('API called successfully. Returned data: ' + data)
+            navigate(-1)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     function cancel() {
@@ -209,6 +196,18 @@ export default function SaleForm({producer: producer}) {
     }
 }
 
-export async function loadSaleFormData(keycloakClient) {
-    //TODO : à implémenter
+class SaleFormData {
+    addresses: Array<Address>
+    productions: Array<Production>
+    producer: Producer
+}
+
+export async function loadSaleFormData(keycloakClient): Promise<SaleFormData> {
+    const producerService = new ProducerService(keycloakClient)
+    const producer: Producer = await producerService.asyncLoadProducer()
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const addresses: Array<Address> = await api.getAddresses()
+    const productions: Array<Production> = await api.getProductions({forSale: true})
+    return {addresses: addresses, productions: productions, producer: producer}
 }

@@ -11,10 +11,10 @@ import BeefProductionView from "../../domains/production/views/beefProduction/Be
 import BeefProductionCreator, { loadBeefProductionCreatorData } from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
 import ProductionsList, { loadProductionListData } from "../../domains/production/views/ProductionsList.tsx";
 import SalesList, { loadSalesListData } from "../../domains/sale/views/SalesList.tsx";
-import SaleForm from "../../domains/sale/views/SaleForm.tsx";
+import SaleForm, { loadSaleFormData } from "../../domains/sale/views/SaleForm.tsx";
 import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersList.tsx";
-import OrderView from "../../domains/sale/views/OrderView.tsx";
-import ProducerOrderForm from "../../domains/sale/views/ProducerOrderForm.tsx";
+import OrderView, { loadOrderViewData } from "../../domains/sale/views/OrderView.tsx";
+import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale/views/ProducerOrderForm.tsx";
 
 export class ProducerRouterFactory {
     getRouter(keycloakClient) {
@@ -52,7 +52,8 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/sales/creation',
-                        element: <SaleForm/>
+                        element: <SaleForm/>,
+                        loader: async () => loadSaleFormData(keycloakClient)
                     },
                     {
                         path: '/sale/:saleId/orders',
@@ -61,11 +62,13 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/sale/:saleId/order/:orderId',
-                        element: <OrderView/>
+                        element: <OrderView/>,
+                        loader: async ({params}) => loadOrderViewData(+params.orderId, keycloakClient)
                     },
                     {
                         path: '/sale/:saleId/order/creation',
-                        element: <ProducerOrderForm/>
+                        element: <ProducerOrderForm/>,
+                        loader: async ({params}) => loadProducerOrderFormData(+params.saleId, keycloakClient)
                     },
                     {
                         path: '/customers',

@@ -9,8 +9,6 @@ import { ProducerService } from '../../commons/service/ProducerService.ts'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 import { Sale } from '@viandeendirect/api/dist/models/Sale';
 
-//TODO : finir la conversion
-
 export default function SalesList() {
 
     const navigate = useNavigate()

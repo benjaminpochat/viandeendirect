@@ -1,42 +1,27 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 
 import { Button, Typography } from '@mui/material'
 
-import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import OrderSummary from '../components/OrderSummary.tsx'
+import { Order } from '@viandeendirect/api/dist/models/Order'
 
-export default function OrderView({order: rawOrder, sale: sale, returnCallback: returnCallback}) {
+export default function OrderView() {
     
-    const { keycloak, initialized } = useKeycloak()
-    const apiBuilder = new ApiBuilder()
-
-    const [order, setOrder] = useState([])
-
-    useEffect(() => {
-        loadOrder()
-    }, [keycloak])
-
-    function loadOrder() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getOrder(rawOrder.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        console.log('api.getOrder called successfully. Returned data: ' + data)
-                        setOrder(data)
-                    }
-                })
-            }, keycloak)
-        })
-    }
+    const navigate = useNavigate()
+    const order: Order = useLoaderData()
 
     return <>
         <Typography variant='h6'>Détails de la commande</Typography>
         <OrderSummary order={order}></OrderSummary>
-        <Button onClick={() => returnCallback(sale)}>Retour aux commandes</Button>
+        <Button onClick={() => navigate(-1)}>Retour aux commandes</Button>
     </>
+}
+
+export async function loadOrderViewData(orderId: number, keycloakClient): Promise<Order> {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    return await api.getOrder({orderId})
 }
