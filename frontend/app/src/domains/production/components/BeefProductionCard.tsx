@@ -15,20 +15,14 @@ export default function BeefProductionCard({
     const [beefProduction, setBeefProduction] = useState(production)
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
-
+    
     useEffect(() => {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getBeefProduction(production.id, (error, data, response) => {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        console.log('api.getBeefProduction called successfully. Returned data: ' + data);
-                        setBeefProduction(data)
-                    }
-                })
-            }, keycloak)
-        })
+        const loadBeefProduction = async () => {
+            const api = await apiBuilder.getAuthenticatedApi(keycloak)
+            const loadBeefProduction = await api.getBeefProduction({beefProductionId: production.id})
+            setBeefProduction(loadBeefProduction)            
+        }
+        loadBeefProduction()
     }, [keycloak])
 
     return (

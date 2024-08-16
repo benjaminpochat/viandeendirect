@@ -7,7 +7,7 @@ import ProducerController from "../../domains/producer/ProducerController.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
 import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
-import BeefProductionView from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
+import BeefProductionView, { loadBeefProductionViewData } from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
 import BeefProductionCreator, { loadBeefProductionCreatorData } from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
 import ProductionsList, { loadProductionListData } from "../../domains/production/views/ProductionsList.tsx";
 import SalesList, { loadSalesListData } from "../../domains/sale/views/SalesList.tsx";
@@ -17,7 +17,7 @@ import OrderView, { loadOrderViewData } from "../../domains/sale/views/OrderView
 import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale/views/ProducerOrderForm.tsx";
 
 export class ProducerRouterFactory {
-    getRouter(keycloakClient) {
+    getRouter(keycloak) {
         return createBrowserRouter([
             {
             path: "/",
@@ -34,21 +34,22 @@ export class ProducerRouterFactory {
                     {
                         path: '/productions',
                         element: <ProductionsList/>,
-                        loader: async () => loadProductionListData(keycloakClient)
+                        loader: async () => loadProductionListData(keycloak)
                     },
                     {
                         path: '/beefProduction/:beefProductionId',
-                        element: <BeefProductionView/>
+                        element: <BeefProductionView/>,
+                        loader: async ({params}) => loadBeefProductionViewData(+params.beefProductionId, keycloak)
                     },
                     {
                         path: '/beefProduction/creation',
                         element: <BeefProductionCreator/>,
-                        loader: async () => loadBeefProductionCreatorData(keycloakClient)
+                        loader: async () => loadBeefProductionCreatorData(keycloak)
                     },
                     {
                         path: '/sales',
                         element: <SalesList/>,
-                        loader: async () => loadSalesListData(keycloakClient)
+                        loader: async () => loadSalesListData(keycloak)
                     },
                     {
                         path: '/sales/creation',
@@ -58,7 +59,7 @@ export class ProducerRouterFactory {
                     {
                         path: '/sale/:saleId/orders',
                         element: <OrdersList/>,
-                        loader: async ({params}) => loadOrdersListData(+params.saleId, keycloakClient)
+                        loader: async ({params}) => loadOrdersListData(+params.saleId, keycloak)
                     },
                     {
                         path: '/sale/:saleId/order/:orderId',

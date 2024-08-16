@@ -2,8 +2,9 @@ import { styled } from '@mui/material/styles';
 import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button } from "@mui/material";
 import { useKeycloak } from '@react-keycloak/web'
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-function AnonymousLayout() {
+export default function AnonymousLayout() {
 
     const { keycloak, initialized } = useKeycloak()
 
@@ -23,8 +24,8 @@ function AnonymousLayout() {
         keycloak.register()
     }
 
-    return (
-        <Box>
+    function getAnonymousLayout() {
+        return <Box>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -61,7 +62,9 @@ function AnonymousLayout() {
 
             </Box>
         </Box>
+    }
+
+    return (
+        <>{keycloak.authenticated ? <Navigate to='/'></Navigate> : getAnonymousLayout()}</>
     )
 }
-
-export default AnonymousLayout

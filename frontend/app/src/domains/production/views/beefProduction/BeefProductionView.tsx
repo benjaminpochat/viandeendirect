@@ -10,7 +10,8 @@ import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
 import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom'
+import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 
 export default function BeefProductionView() {
 
@@ -22,21 +23,13 @@ export default function BeefProductionView() {
     const apiInvoker = new ApiInvoker()
     const { keycloak } = useKeycloak()
     const navigate = useNavigate();
+    const loadedProduction = useLoaderData()
+
 
     const [currentTab, setCurrentTab] = useState<number>(BREEDING_PROPERTIES_TAB)
     const [readOnly, setReadOnly] = useState<boolean>(true)
-    const [production, setProduction] = useState<BeefProduction>({})
-
-    let { beefProductionId } = useParams()
+    const [production, setProduction] = useState<BeefProduction>(loadedProduction)
     
-    useEffect(() => {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.getBeefProduction,
-            beefProductionId,
-            setProduction,
-            console.error)
-    }, [keycloak])
 
     const [saveEnabled, setSaveEnabled] = useState<boolean>(true)
     const [alerts, setAlerts] = useState<string>(undefined)
@@ -185,4 +178,12 @@ export default function BeefProductionView() {
             return <Alert severity="error">{alerts}</Alert>
         }
     }
+}
+
+export async function loadBeefProductionViewData(beefProductionId: number, keycloakClient): Promise<BeefProduction> {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
+    const beefProduction = await api.getBeefProduction({beefProductionId: beefProductionId})
+    return beefProduction
+
 }

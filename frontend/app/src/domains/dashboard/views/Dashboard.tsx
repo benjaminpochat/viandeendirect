@@ -2,7 +2,6 @@ import React from 'react'
 import { Typography } from "@mui/material"
 import './Dashboard.css'
 import DashboardAccount from '../components/DashboardAccount.tsx'
-import AuthenticatedLayout from '../../../layouts/producer/AuthenticatedLayout.tsx'
 import DashboardProductions from '../components/DashboardProductions.tsx'
 import DashboardSales from '../components/DashboardSales.tsx'
 

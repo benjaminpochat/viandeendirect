@@ -9,12 +9,12 @@ export class RouterFactory {
     producerRouterFactory: ProducerRouterFactory = new ProducerRouterFactory()
     customerRouterFactory: CustomerRouterFactory = new CustomerRouterFactory()
 
-    getRouter(keycloakClient) {
+    getRouter(keycloak) {
         if(process.env.REACT_APP_MODE === 'CUSTOMER') {
-          return this.customerRouterFactory.getRouter(keycloakClient)
+          return this.customerRouterFactory.getRouter(keycloak)
         }
         if(process.env.REACT_APP_MODE === 'PRODUCER') {
-          return this.producerRouterFactory.getRouter(keycloakClient)
+          return this.producerRouterFactory.getRouter(keycloak)
         }
         return createBrowserRouter([
             {

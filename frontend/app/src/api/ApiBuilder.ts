@@ -1,7 +1,7 @@
-import { DefaultApi } from '@viandeendirect/api/dist/apis/DefaultApi'
 import { MockApi } from './mock/MockApi.ts'
 import { UrlService } from '../domains/commons/service/UrlService.ts'
 import { Configuration } from '@viandeendirect/api/dist/runtime'
+import { DefaultApi } from '@viandeendirect/api/dist/apis/DefaultApi'
 
 export class ApiBuilder {
 
@@ -17,7 +17,7 @@ export class ApiBuilder {
             return new MockApi()
         } else {
             const configuration = new Configuration({
-                accessToken: keycloak.token,
+                accessToken: () => `Bearer ${keycloak.token}`,
                 basePath: await this.urlService.getBackendUrl()
             });
             return new DefaultApi(configuration)

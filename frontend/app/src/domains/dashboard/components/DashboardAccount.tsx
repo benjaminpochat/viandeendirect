@@ -14,7 +14,7 @@ function DashboardAccount() {
   const [producer, setProducer] = useState<Producer>()
 
   useEffect(() => {
-    producerService.loadProducer(setProducer)
+    producerService.asyncLoadProducer().then(loadedProducer => setProducer(loadedProducer))
   }, [keycloak])
 
 
