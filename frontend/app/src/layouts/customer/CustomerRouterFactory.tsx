@@ -3,17 +3,18 @@ import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import PaymentLayout from "./PaymentLayout.tsx";
-import CustomerLayout from "./CustomerLayout.tsx";
+import CustomerLayout, { loadCustomerLayoutData } from "./CustomerLayout.tsx";
 import CustomerOrderForm from "../../domains/sale/views/CustomerOrderForm.tsx";
 import NotAuthorizedForProducers from "../../authentication/views/NotAuthorizedForProducers.tsx";
-import Welcome from "../../domains/welcome/Welcome.tsx";
+import Welcome, { loadWelcomeData } from "../../domains/welcome/Welcome.tsx";
 
 export class CustomerRouterFactory {
-    getRouter(keycloakClient) {
+    getRouter(keycloak) {
         return createBrowserRouter([
             {
                 path: "/",
                 element: <CustomerLayout/>,
+                loader: async () => loadCustomerLayoutData(keycloak),
                 children: [
                     {
                         index: true,
@@ -21,7 +22,8 @@ export class CustomerRouterFactory {
                     },
                     {
                         path: "/welcome",
-                        element: <Welcome/>
+                        element: <Welcome/>,
+                        loader: async () => loadWelcomeData()
                     },
                     {
                         path: "/order/creation",

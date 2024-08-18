@@ -5,25 +5,31 @@ import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
 import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
-import Order from '@viandeendirect/api/dist/models/Order'
-import Production from '@viandeendirect/api/dist/models/Production'
 import { useNavigate } from 'react-router-dom';
+import { ApiBuilder } from '../../../api/ApiBuilder.ts';
+import { Order } from '@viandeendirect/api/dist/models/Order'
+import { Production } from '@viandeendirect/api/dist/models/Production'
 
 
-export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrdersCallback}) {
+export default function SaleCard({sale: sale}) {
 
     const apiInvoker = new ApiInvoker()
     const [orders, setOrders] = useState<Array<Order>>([])
     const [productions, setProductions] = useState<Array<Production>>([])
     const {keycloak} = useKeycloak()
     const navigate = useNavigate()
+    const apiBuilder = new ApiBuilder()
+
 
     useEffect(() => {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleOrders, sale.id, setOrders, console.error)
-    }, [keycloak])
-
-    useEffect(() => {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getSaleProductions, sale.id, setProductions, console.error)
+        const loadData = async () => {
+            const api = await apiBuilder.getAuthenticatedApi(keycloak)
+            const loadedOrders = await api.getSaleOrders({saleId: sale.id})
+            setOrders(loadedOrders)
+            const loadedProductions = await api.getSaleProductions({saleId: sale.id})
+            setProductions(loadedProductions)
+        }
+        loadData()
     }, [keycloak])
 
     return (
@@ -81,7 +87,7 @@ export default function SaleCard({ sale: sale, manageOrdersCallback: manageOrder
     function getProduction(production) {
         switch (production.productionType) {
             case 'BeefProduction':
-                return <SaleCardBeefProduction production={production}/>
+                return <SaleCardBeefProduction key={`beef-production-card-${production.id}`} production={production}/>
             default:
                 return <></>
 

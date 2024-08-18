@@ -3,21 +3,17 @@ import { useEffect, useState } from 'react'
 
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
 
-import Sale from '@viandeendirect/api/dist/models/Sale.js'
+import { useLoaderData } from 'react-router-dom';
 
-import { ApiInvoker } from '../../api/ApiInvoker.ts'
+import { Sale } from '@viandeendirect/api/dist/models/Sale.js'
+
 import SaleCustomerCard from '../../domains/sale/components/SaleCustomerCard.tsx'
+import { ApiBuilder } from '../../api/ApiBuilder.ts'
 
 
-export default function Welcome({createOrderCallback: createOrderCallback}) {
+export default function Welcome() {
 
-    const [sales, setSales] = useState([])
-    const apiInvoker = new ApiInvoker()
-
-    useEffect(() => {
-        apiInvoker.callApiAnonymously(api => api.getSales, null, setSales)
-    }, [])
-
+    const sales: Array<Sale> = useLoaderData()
 
     return <Box
         component="main"
@@ -28,7 +24,14 @@ export default function Welcome({createOrderCallback: createOrderCallback}) {
     </Box>
 
     function getSaleCard(sale: Sale) {
-        return <SaleCustomerCard sale={sale} createOrderCallback={() => createOrderCallback(sale)}></SaleCustomerCard>
+        return <SaleCustomerCard sale={sale}></SaleCustomerCard>
     }
 
+}
+
+export async function loadWelcomeData(): Promise<Array<Sale>> {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAnonymousApi()
+    const sales = await api.getSales()
+    return sales
 }

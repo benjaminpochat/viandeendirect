@@ -7,6 +7,8 @@ import {RouterFactory} from './RouterFactory.tsx'
 export default function ViandeEnDirectRouterProvider() {
     const {keycloak, initialized} = useKeycloak()
     const routerFactory = new RouterFactory()
-
-    return <RouterProvider router={routerFactory.getRouter(keycloak)} ></RouterProvider>
+    if (initialized) {
+        return <RouterProvider router={routerFactory.getRouter(keycloak)} ></RouterProvider>
+    } 
+    return <>Authentification en cours...</>
 }

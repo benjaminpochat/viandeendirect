@@ -7,6 +7,7 @@ import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
 import Production from '@viandeendirect/api/dist/models/BeefProduction'
 import './SaleCard.css'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 
 export default function SaleCardBeefProduction({production: production}) {
 
@@ -14,23 +15,17 @@ export default function SaleCardBeefProduction({production: production}) {
     const [productionPercentageSold, setProductionPercentageSold] = useState([])
     const { keycloak } = useKeycloak()
     const apiInvoker = new ApiInvoker()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.getBeefProduction,
-            production.id,
-            setBeefProduction,
-            console.error)
-    }, [keycloak])
-
-    useEffect(() => {
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.getProductionPercentageSold,
-            production.id,
-            setProductionPercentageSold,
-            console.error)
+        const loadData = async () => {
+            const api = await apiBuilder.getAuthenticatedApi(keycloak)
+            const loadedBeefProduction = await api.getBeefProduction({beefProductionId: production.id})
+            setBeefProduction(loadedBeefProduction)
+            const loadedPercentageSold = await api.getProductionPercentageSold({productionId: production.id})
+            setProductionPercentageSold(+loadedPercentageSold)
+        }
+        loadData()
     }, [keycloak])
 
     return <>

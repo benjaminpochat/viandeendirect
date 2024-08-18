@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Typography, ButtonGroup, Button, Tab, Tabs, Alert } from '@mui/material'
@@ -6,11 +6,10 @@ import dayjs from 'dayjs'
 import BreedingPropertiesForm, { mapBreedingFormDataToBeefProduction } from './forms/BreedingPropertiesForm.tsx'
 import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from './forms/SlaughterPropertiesForm.tsx'
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from './forms/CuttingPropertiesForm.tsx'
-import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction.js"
+import { BeefProduction } from "@viandeendirect/api/dist/models/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
-import { ApiInvoker } from '../../../../api/ApiInvoker.ts'
 import { useKeycloak } from '@react-keycloak/web'
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 
 export default function BeefProductionView() {
@@ -20,10 +19,10 @@ export default function BeefProductionView() {
     const CUTTING_PROPERTIES_TAB = 2
     const PRODUCTS_TAB = 3
 
-    const apiInvoker = new ApiInvoker()
     const { keycloak } = useKeycloak()
     const navigate = useNavigate();
     const loadedProduction = useLoaderData()
+    const apiBuilder = new ApiBuilder()
 
 
     const [currentTab, setCurrentTab] = useState<number>(BREEDING_PROPERTIES_TAB)
@@ -131,15 +130,19 @@ export default function BeefProductionView() {
         }
     }
 
-    function saveProduction(updatedProduction) {
+    async function saveProduction(updatedProduction) {
         setAlerts(undefined)
-        apiInvoker.callApiAuthenticatedly(
-            keycloak, 
-            api => api.createBeefProduction, 
-            updatedProduction, 
-            () => setReadOnly(true),
-            error => setAlerts(error.response.body.message)
-        )
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        try {
+            await api.createBeefProduction({beefProduction: updatedProduction})
+            setReadOnly(true)
+        } catch (error) {
+            const reader = error.response.body.getReader()
+            const chunk  = await reader.read()
+            const errorAsJson = new TextDecoder().decode(chunk.value);
+            const errorAsObject = JSON.parse(errorAsJson)
+            setAlerts(errorAsObject.message)
+        }
     }
 
     function cancelUpdate() {

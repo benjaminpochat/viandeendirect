@@ -12,23 +12,22 @@ import { Sale } from '@viandeendirect/api/dist/models/Sale';
 export default function SalesList() {
 
     const navigate = useNavigate()
-    const data = useLoaderData()
-    const sales: Array<Sale> = data.sales
+    const sales: Array<Sale> = useLoaderData()
 
     return <>
         <Typography variant='h6'>Ventes</Typography>
         <div className='card-list'>
-            {sales.map(sale => <SaleCard sale={sale}/>)}
+            {sales.map(sale => <SaleCard key={`sale-card-${sale.id}`} sale={sale}/>)}
         </div>
         <Button variant="contained" size="small" onClick={() => navigate('/sales/creation')}>Créer une vente</Button>
     </>
 }
 
-export async function loadSalesListData(keycloakClient): Promise<{sales: Array<Sale>, producer: Producer}> {
-    const producerService = new ProducerService(keycloakClient)
+export async function loadSalesListData(keycloak): Promise<Array<Sale>> {
+    const producerService = new ProducerService(keycloak)
     const producer: Producer = await producerService.asyncLoadProducer()
     const apiBuilder = new ApiBuilder()
-    const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
-    const sales: Array<Sale> = await api.getProducerSales({producerId: producer.id})
-    return {sales: sales, producer: producer}
+    const api = await apiBuilder.getAuthenticatedApi(keycloak)
+    const sales: Array<Sale> = await api.getProducerSales({producerId: +producer.id})
+    return sales
 }

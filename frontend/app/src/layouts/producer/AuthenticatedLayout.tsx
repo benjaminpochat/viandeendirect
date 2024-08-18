@@ -6,27 +6,16 @@ import {AppBar, Box, CssBaseline, IconButton, Toolbar, Typography} from '@mui/ma
 import {Close, Logout, Menu} from '@mui/icons-material'
 
 
-import { Producer } from '@viandeendirect/api/dist/models/Producer.js';
 import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
-import { ProducerService } from '../../domains/commons/service/ProducerService.ts';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 
 export default function AuthenticatedLayout() {
     const { keycloak } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
-    const [producer, setProducer] = useState<Producer>()
     const [unauthorized, setUnauthorized] = useState<Boolean>(false)
     const authenticationService = new AuthenticationService(keycloak)
-    const producerService = new ProducerService(keycloak)
-
-    useEffect(() => {
-      /*
-      producerService.loadProducer(setProducer, setUnauthorized)
-      */
-    }, [keycloak])
-
 
     const sideMenuWidth = 240;
    

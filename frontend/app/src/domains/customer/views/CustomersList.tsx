@@ -1,24 +1,16 @@
 import React from 'react';
-import { useEffect, useState } from 'react'
 import { Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
-import { useKeycloak } from '@react-keycloak/web'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts';
+import { ApiBuilder } from '../../../api/ApiBuilder.ts';
+import { Producer } from '@viandeendirect/api/dist/models/Producer';
+import { ProducerService } from '../../commons/service/ProducerService.ts';
+import { useLoaderData } from 'react-router-dom';
+import { Customer } from '@viandeendirect/api/dist/models/Customer';
 
-export default function CustomersList({producer: producer}) {
+export default function CustomersList() {
 
-    const [customers, setCustomers] = useState([])
-    const { keycloak, initialized } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
-    
-    useEffect(() => {
-        loadCustomers()
-    }, [keycloak])
-
-    function loadCustomers() {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.getProducerCustomers, producer.id, setCustomers, console.error)
-    }
+    const customers: Array<Customer> = useLoaderData()
 
     const rows: GridRowsProp = customers.map(customer => {
         return {
@@ -52,4 +44,13 @@ export default function CustomersList({producer: producer}) {
     </>
     )
 
+}
+
+export async function loadCustomersListData(keycloak): Promise<Array<Customer>> {
+    const producerService = new ProducerService(keycloak)
+    const producer: Producer = await producerService.asyncLoadProducer()
+    const apiBuilder = new ApiBuilder();
+    const api = await apiBuilder.getAuthenticatedApi(keycloak);
+    const customers = await api.getProducerCustomers({producerId: +producer.id})
+    return customers
 }

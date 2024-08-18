@@ -3,23 +3,28 @@ import { useEffect, useState } from 'react'
 
 import { Typography } from "@mui/material"
 
-import BeefProduction from '@viandeendirect/api/dist/models/BeefProduction.js'
-import PackageLot from '@viandeendirect/api/dist/models/PackageLot.js'
+import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction.js'
+import { PackageLot } from '@viandeendirect/api/dist/models/PackageLot.js'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import PieChart from '../../commons/components/PieChart.tsx'
 import PackageLotDescription from './PackageLotDescription.tsx'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 export default function BeefProductionCustomerCard({production: production}) {
 
     const [beefProduction, setBeefProduction] = useState<BeefProduction>({})
     const [percentageSold, setPercentageSold] = useState(0)
-    const [lots, setLots]= useState([])
-    const apiInvoker = new ApiInvoker()
+    const apiBuilder = new ApiBuilder()
 
     useEffect(() => {
-        apiInvoker.callApiAnonymously(api => api.getBeefProduction, production.id, setBeefProduction)
-        apiInvoker.callApiAnonymously(api => api.getProductionPercentageSold, production.id, setPercentageSold)
+        const loadData = async () => {
+            const api = await apiBuilder.getAnonymousApi()
+            const loadedBeefProduction = await api.getBeefProduction({beefProductionId: production.id})
+            setBeefProduction(loadedBeefProduction)
+            const loadedPercentageSold = await api.getProductionPercentageSold({productionId: production.id})
+            setPercentageSold(+loadedPercentageSold)
+        }
+        loadData()
     }, [])
 
 

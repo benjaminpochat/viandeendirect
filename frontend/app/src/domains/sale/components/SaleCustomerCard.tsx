@@ -1,14 +1,18 @@
 import React from 'react'
 import { Button, Card, CardActions, CardContent } from '@mui/material'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom';
 
-
-import Production from '@viandeendirect/api/dist/models/Production.js'
-import './SaleCustomerCard.css'
 import ProductionCustomerCard from '../../production/components/ProductionCustomerCard.tsx';
+import { Production } from '@viandeendirect/api/dist/models/Production';
+
+import './SaleCustomerCard.css'
 
 
-export default function SaleCustomerCard({ sale: sale, createOrderCallback: createOrderCallBack }) {
+export default function SaleCustomerCard({ sale: sale }) {
+
+    const navigate = useNavigate()
+
     return <Card className="sale-customer-card">
         <CardContent>
             <div className="sale-customer-card__title">
@@ -33,7 +37,7 @@ export default function SaleCustomerCard({ sale: sale, createOrderCallback: crea
             {sale.productions.map(getProductionContent)}
         </CardContent>
         <CardActions>
-            <Button onClick={createOrderCallBack}>Je commande</Button>
+            <Button onClick={() => navigate('/order/creation')}>Je commande</Button>
             <Button>Je visite la ferme</Button>
         </CardActions>
     </Card>

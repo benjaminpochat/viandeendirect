@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import AuthenticatedLayout from "./AuthenticatedLayout.tsx";
 import CustomerController from "../../domains/customer/CustomerController.tsx";
-import ProducerController from "../../domains/producer/ProducerController.tsx";
+import ProducerAccountView, { loadProducerAccountViewData } from "../../domains/producer/views/ProducerAccountView.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
 import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
@@ -15,6 +15,7 @@ import SaleForm, { loadSaleFormData } from "../../domains/sale/views/SaleForm.ts
 import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersList.tsx";
 import OrderView, { loadOrderViewData } from "../../domains/sale/views/OrderView.tsx";
 import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale/views/ProducerOrderForm.tsx";
+import CustomersList, { loadCustomersListData } from "../../domains/customer/views/CustomersList.tsx";
 
 export class ProducerRouterFactory {
     getRouter(keycloak) {
@@ -29,7 +30,7 @@ export class ProducerRouterFactory {
                     },
                     {
                         path: '/dashboard',
-                        element: <Dashboard/>         
+                        element: <Dashboard/>
                     },
                     {
                         path: '/productions',
@@ -54,7 +55,7 @@ export class ProducerRouterFactory {
                     {
                         path: '/sales/creation',
                         element: <SaleForm/>,
-                        loader: async () => loadSaleFormData(keycloakClient)
+                        loader: async () => loadSaleFormData(keycloak)
                     },
                     {
                         path: '/sale/:saleId/orders',
@@ -64,20 +65,22 @@ export class ProducerRouterFactory {
                     {
                         path: '/sale/:saleId/order/:orderId',
                         element: <OrderView/>,
-                        loader: async ({params}) => loadOrderViewData(+params.orderId, keycloakClient)
+                        loader: async ({params}) => loadOrderViewData(+params.orderId, keycloak)
                     },
                     {
                         path: '/sale/:saleId/order/creation',
                         element: <ProducerOrderForm/>,
-                        loader: async ({params}) => loadProducerOrderFormData(+params.saleId, keycloakClient)
+                        loader: async ({params}) => loadProducerOrderFormData(+params.saleId, keycloak)
                     },
                     {
                         path: '/customers',
-                        element: <CustomerController/>
+                        element: <CustomersList/>,
+                        loader: async ({params}) => loadCustomersListData(keycloak)
                     },
                     {
                         path: '/account',
-                        element: <ProducerController/>
+                        element: <ProducerAccountView/>,
+                        loader: async ({params}) => loadProducerAccountViewData(keycloak)
                     }
                 ]
             },

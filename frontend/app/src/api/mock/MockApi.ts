@@ -69,8 +69,8 @@ export class MockApi {
         return this.mockApiProducers.getCustomers()
     }
 
-    getSales(args) {
-        this.log('getSales', args)
+    getSales() {
+        this.log('getSales', null)
         return this.mockApiSales.getSales()
     }
 
@@ -103,4 +103,15 @@ export class MockApi {
         this.log('getProducer', args)
         return this.mockApiProducers.getProducer()
     }
+
+    getStripeAccount(args) {
+        this.log('getStripeAccount', args)
+        return this.mockApiProducers.getStripeAccount()
+    }
+
+    createStripeAccount(args) {
+        this.log('createStripeAccount', args)
+        return this.mockApiProducers.getStripeAccount()
+    }
+
 }

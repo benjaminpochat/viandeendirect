@@ -1,8 +1,17 @@
+import { StripeAccount } from "@viandeendirect/api/dist/models"
 import {Customer} from "@viandeendirect/api/dist/models/Customer"
 import {Producer} from "@viandeendirect/api/dist/models/Producer"
 import {Sale} from "@viandeendirect/api/dist/models/Sale"
 
 export class MockApiProducers {
+    getStripeAccount(): StripeAccount {
+        return {
+            id: 1,
+            accountLink: 'http://fake_stripe_account_link',
+            stripeId: '12345',
+            detailsSubmitted: true
+        }
+    }
 
     getProducer(): Producer {
         return {
