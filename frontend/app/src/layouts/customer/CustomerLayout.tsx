@@ -2,8 +2,6 @@ import React from 'react'
 import { AppBar, Box, Button, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
 import { useKeycloak } from '@react-keycloak/web'
 
-import { Customer } from '@viandeendirect/api/dist/models/Customer'
-
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts'
 
 import { Login, Logout } from '@mui/icons-material'
@@ -13,21 +11,18 @@ import { ApiBuilder } from '../../api/ApiBuilder.ts'
 
 export default function CustomerLayout() {
 
-    const WELCOME = 'WELCOME'
-    const ORDER_CREATION = 'ORDER_CREATION'
-    const NOT_AUTHORIZED_FOR_PRODUCER = 'NOT_AUTHORIZED_FOR_PRODUCER'
-
     const {keycloak} = useKeycloak()
     const authenticationService = new AuthenticationService(keycloak)
 
-    const navigate = useNavigate()
-
-    const data = useLoaderData()
-    const loggedAsProducer = data.loggedAsProducer
+    const data  = useLoaderData()
+    const authenticatedAsProducer = data.authenticatedAsProducer
     const customer = data.customer
-
-    if (loggedAsProducer) {
+    
+    if (authenticatedAsProducer) {
         return <Navigate to='/unauthorized'/>
+    }
+    if (authenticationService.isAuthenticated() && !customer.id) {
+        return <Navigate to='/customer/registration'/>
     }
 
     function displayAuthenticationButton(): React.ReactNode {
@@ -67,18 +62,12 @@ export default function CustomerLayout() {
 
 export async function loadCustomerLayoutData(keycloak) {
     const authenticationService = new AuthenticationService(keycloak)
-    if (!authenticationService.isAuthenticated()) {
-        return {loggedAsProducer: false, customer: undefined}
+    const authenticatedAsProducer = await authenticationService.isAuthenticatedAsProducer()
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAuthenticatedApi(keycloak)
+    if(authenticationService.isAuthenticated()) {
+        const customer = await api.getCustomer({email: authenticationService.getCurrentUserEmail()})
+        return {authenticatedAsProducer: authenticatedAsProducer, customer: customer}
     }
-    try {
-        const userEmail = authenticationService.getCurrentUserEmail()
-        const apiBuilder = new ApiBuilder()
-        const api = await apiBuilder.getAuthenticatedApi(keycloak)
-        const customer: Customer = await api.getCustomer({'email': userEmail})
-        return {loggedAsProducer: false, customer: customer}
-    } catch (error) {
-        if(error.response.status === 409) {
-            return {loggedAsProducer: true, customer: undefined}
-        }
-    }
+    return {authenticatedAsProducer: authenticatedAsProducer, customer: undefined}
 }

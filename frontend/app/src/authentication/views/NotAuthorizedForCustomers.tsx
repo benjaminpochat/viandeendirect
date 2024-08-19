@@ -1,19 +1,21 @@
+import React from 'react'
 import { Box, Toolbar, Typography, Button, ButtonGroup, AppBar, CssBaseline, IconButton } from '@mui/material'
 import { useKeycloak } from '@react-keycloak/web'
-import React from 'react'
-import { useEffect, useState } from 'react'
 import { UrlService } from '../../domains/commons/service/UrlService.ts'
-import { Logout } from '@mui/icons-material'
+import { Navigate, useLoaderData } from 'react-router-dom'
+import { AuthenticationService } from '../service/AuthenticationService.ts'
 
 export default function NotAuthorizedForCustomers() {
 
-    const urlService = new UrlService()  
-    const [customerFrontendUrl, setCustomerFrontendUrl] = useState<String>()
     const {keycloak} = useKeycloak()
-        
-    useEffect(() => {
-        urlService.getCustomerFrontentUrl().then(setCustomerFrontendUrl)
-    })
+
+    const data = useLoaderData()
+    const authenticatedAsCustomer = data.authenticatedAsCustomer
+    const customerFrontendUrl = data.customerFrontendUrl
+    
+    if (!authenticatedAsCustomer) {
+        return <Navigate to='/'/>
+    }
 
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <CssBaseline />
@@ -27,9 +29,6 @@ export default function NotAuthorizedForCustomers() {
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                         Viande en direct
                     </Typography>
-                    <IconButton onClick={keycloak.logout} color="inherit">
-                      <Logout/>
-                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Toolbar/>
@@ -39,13 +38,20 @@ export default function NotAuthorizedForCustomers() {
             <ButtonGroup>
                 <Button size="small" variant="outlined" onClick={() => {
                     keycloak.logout()
-                    keycloak.login()
                     }}>
-                    Changer de compte
+                    Se déconnecter
                 </Button>
                 <Button size="small" variant="contained" onClick={() => window.open(customerFrontendUrl, '_self')}>
                     Accéder à l'espace client
                 </Button>
             </ButtonGroup>
         </Box>
+}
+
+export async function loadNotAuthorizedForCustomerData(keycloak) {
+    const authenticationService = new AuthenticationService(keycloak)
+    const authenticatedAsCustomer = await authenticationService.isAuthenticatedAsCustomer()
+    const urlService = new UrlService()
+    const customerFrontendUrl = await urlService.getCustomerFrontentUrl()
+    return {authenticatedAsCustomer: authenticatedAsCustomer, customerFrontendUrl: customerFrontendUrl}
 }

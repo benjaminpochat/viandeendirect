@@ -2,6 +2,7 @@ package eu.viandeendirect.domains.user;
 
 import eu.viandeendirect.api.CustomersApiDelegate;
 import eu.viandeendirect.model.Customer;
+import eu.viandeendirect.model.User;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,13 +42,17 @@ public class CustomerService implements CustomersApiDelegate {
             if (producer.isPresent()) {
                 throw new ResponseStatusException(CONFLICT);
             } else {
-                return new ResponseEntity<>(NO_CONTENT);
+                customer = new Customer();
+                var user = new User();
+                user.setEmail(email);
+                customer.setUser(user);
+                return new ResponseEntity<>(customer, OK);
             }
         }
         if (!customer.getUser().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        return new ResponseEntity<>(customer, OK);
     }
 
 

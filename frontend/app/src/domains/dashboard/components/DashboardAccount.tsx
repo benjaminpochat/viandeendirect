@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Typography } from "@mui/material"
-import Producer from '@viandeendirect/api/dist/models/Producer.js'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
+import { Producer } from '@viandeendirect/api/dist/models/Producer.js'
 import { useKeycloak } from '@react-keycloak/web'
-import { AuthenticationService } from '../../../authentication/service/AuthenticationService.ts'
 import { ProducerService } from '../../commons/service/ProducerService.ts'
 
 
@@ -14,7 +12,7 @@ function DashboardAccount() {
   const [producer, setProducer] = useState<Producer>()
 
   useEffect(() => {
-    producerService.asyncLoadProducer().then(loadedProducer => setProducer(loadedProducer))
+    producerService.loadProducer().then(loadedProducer => setProducer(loadedProducer))
   }, [keycloak])
 
 

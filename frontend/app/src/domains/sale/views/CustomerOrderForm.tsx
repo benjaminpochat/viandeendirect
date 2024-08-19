@@ -5,18 +5,20 @@ import { Button, Checkbox, Stepper, Step, StepLabel, StepContent, Typography, Bo
 import dayjs from 'dayjs'
 
 import { useKeycloak } from '@react-keycloak/web'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 
-import Order from "@viandeendirect/api/dist/models/Order"
-import Customer from "@viandeendirect/api/dist/models/Customer"
-import Production from "@viandeendirect/api/dist/models/Production"
-import PackageLot from "@viandeendirect/api/dist/models/PackageLot"
+import { Customer } from "@viandeendirect/api/dist/models/Customer"
+import { Order } from "@viandeendirect/api/dist/models/Order"
+import { Production } from "@viandeendirect/api/dist/models/Production"
+import { PackageLot } from "@viandeendirect/api/dist/models/PackageLot"
 
 import PackageSelector from '../components/PackageSelector.tsx'
 import { AuthenticationService } from '../../../authentication/service/AuthenticationService.ts'
 import { useCookies } from 'react-cookie'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { Sale } from '@viandeendirect/api/dist/models/Sale'
 
-export default function CustomerOrderForm({ sale: sale, returnCallback: returnCallback }) {
+export default function CustomerOrderForm() {
     window.scroll(0,0)
 
     const SET_ITEMS_STEP = 1
@@ -25,10 +27,14 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
     const PAYMENT_STEP = 4
 
     const { keycloak } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
+    const navigate = useNavigate()
+    const apiBuilder = new ApiBuilder()
     const authenticationService = new AuthenticationService(keycloak)
-    
-    const [productions, setProductions] = useState<Array<Production>>([])
+
+    const data = useLoaderData()
+    const productions: Array<Production> = data.productions
+    const sale: Sale = data.sale
+
     const [order, setOrder] = useState<Order>({sale: sale, items: []})
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const [activeStep, setActiveStep] = useState(SET_ITEMS_STEP)
@@ -36,9 +42,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
 
     const [cookies, setCookie, removeCookie] = useCookies(['pendingOrder']);
 
-
     useEffect(() => {
-        apiInvoker.callApiAnonymously(api => api.getSaleProductions, sale.id, setProductions)
         if (cookies.pendingOrder) {
             setOrder({...order, items: cookies.pendingOrder.items})
             if(authenticationService.isAuthenticated()) {
@@ -188,7 +192,7 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
 
     function cancel() {
         removeCookie('pendingOrder')
-        returnCallback(sale)
+        navigate('/')
     }
 
     function login() {
@@ -203,8 +207,10 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
         keycloak.register()
     }
 
-    function payOrder() {
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createOrderPayment, order, order => redirectToStripePayment(order.payment.paymentUrl), console.error)
+    async function payOrder() {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        const orderWithPayment = await api.createOrderPayment({order: order})
+        redirectToStripePayment(orderWithPayment.payment.paymentUrl)
     }
 
     function redirectToStripePayment(url: string) {
@@ -212,4 +218,12 @@ export default function CustomerOrderForm({ sale: sale, returnCallback: returnCa
         window.location.href = url
         removeCookie('pendingOrder')
     }
+}
+
+export async function loadCustomerOrderFormData(saleId: number) {
+    const apiBuilder = new ApiBuilder()
+    const api = await apiBuilder.getAnonymousApi()
+    const sale = await api.getSale({saleId: saleId})
+    const productions = await api.getSaleProductions({saleId: saleId})
+    return {productions: productions, sale: sale}
 }

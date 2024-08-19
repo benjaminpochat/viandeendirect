@@ -8,14 +8,15 @@ import {Close, Logout, Menu} from '@mui/icons-material'
 
 import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLoaderData } from 'react-router-dom';
 
 
 export default function AuthenticatedLayout() {
     const { keycloak } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
-    const [unauthorized, setUnauthorized] = useState<Boolean>(false)
     const authenticationService = new AuthenticationService(keycloak)
+
+    const authenticatedAsCustomer: boolean = useLoaderData()
 
     const sideMenuWidth = 240;
    
@@ -33,9 +34,6 @@ export default function AuthenticatedLayout() {
   
 
     function getAuthenticatedLayout() {
-      if(unauthorized) {
-        return <Navigate to='/unauthorized'/>
-      }
       return <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar
@@ -82,13 +80,17 @@ export default function AuthenticatedLayout() {
             </Box>
     }
 
-    function getUnauthenticatedLayout() {
-      return <Navigate to='/authentication'></Navigate>
+
+    if (!authenticationService.isAuthenticated()) {
+      return <Navigate to='/authentication'/>
     }
+    if (authenticatedAsCustomer) {
+      return <Navigate to='/unauthorized'/>
+    }
+    return getAuthenticatedLayout()
+}
 
-    return (<>
-      {authenticationService.isAuthenticated() ? getAuthenticatedLayout() : getUnauthenticatedLayout()}
-      </>
-    )
-
+export async function loadAuthenticatedLayoutData(keycloak): Promise<boolean> {
+  const authenticationService = new AuthenticationService(keycloak)
+  return await authenticationService.isAuthenticatedAsCustomer()
 }

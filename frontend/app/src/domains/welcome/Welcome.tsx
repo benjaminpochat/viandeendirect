@@ -24,7 +24,7 @@ export default function Welcome() {
     </Box>
 
     function getSaleCard(sale: Sale) {
-        return <SaleCustomerCard sale={sale}></SaleCustomerCard>
+        return <SaleCustomerCard key={`sale-card-${sale.id}`} sale={sale}></SaleCustomerCard>
     }
 
 }

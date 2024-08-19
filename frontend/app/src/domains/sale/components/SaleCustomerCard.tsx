@@ -37,12 +37,12 @@ export default function SaleCustomerCard({ sale: sale }) {
             {sale.productions.map(getProductionContent)}
         </CardContent>
         <CardActions>
-            <Button onClick={() => navigate('/order/creation')}>Je commande</Button>
+            <Button onClick={() => navigate(`/sale/${sale.id}/order/creation`)}>Je commande</Button>
             <Button>Je visite la ferme</Button>
         </CardActions>
     </Card>
 
     function getProductionContent(production: Production) {
-        return <ProductionCustomerCard production={production}></ProductionCustomerCard>
+        return <ProductionCustomerCard key={`production-card-${production.id}`} production={production}></ProductionCustomerCard>
     }
 }

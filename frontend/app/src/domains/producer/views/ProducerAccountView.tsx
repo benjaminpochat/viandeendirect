@@ -68,7 +68,7 @@ export default function ProducerAccountView() {
 
 export async function loadProducerAccountViewData(keycloak) {
   const producerService = new ProducerService(keycloak)
-  const producer: Producer = await producerService.asyncLoadProducer()
+  const producer: Producer = await producerService.loadProducer()
   const apiBuilder = new ApiBuilder();
   const api = await apiBuilder.getAuthenticatedApi(keycloak);
   if (producer.stripeAccount) {

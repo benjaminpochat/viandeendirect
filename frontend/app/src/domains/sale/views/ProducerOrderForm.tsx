@@ -136,7 +136,7 @@ class ProducerOrderFormData {
 
 export async function loadProducerOrderFormData(saleId: number, keycloakClient): Promise<ProducerOrderFormData> {
     const producerService = new ProducerService(keycloakClient)
-    const producer = await producerService.asyncLoadProducer()
+    const producer = await producerService.loadProducer()
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
     const productions = await api.getSaleProductions({saleId: saleId})

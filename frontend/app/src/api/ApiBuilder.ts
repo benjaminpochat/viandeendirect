@@ -34,26 +34,4 @@ export class ApiBuilder {
             return new DefaultApi(configuration)
         }
     }
-
-    /**
-     * 
-     * @param {*} apiFunction 
-     * @param {Keycloak} keycloak 
-     */
-     invokeAuthenticatedApi(apiFunction, keycloak) {
-        if(process.env.REACT_APP_MOCK_API) {
-            apiFunction()
-        } else {
-            keycloak.updateToken(30).then(function () {
-                apiFunction()
-            }).catch(function (error) {
-                console.log('Failed to refresh token');
-                console.log(error);
-            })
-        }
-    }
-
-    invokeAnonymousApi(apiFunction) {
-        apiFunction()
-    }
 }

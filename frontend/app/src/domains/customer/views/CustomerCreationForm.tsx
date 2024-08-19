@@ -2,17 +2,24 @@ import { Box, Button, ButtonGroup, Stepper, Toolbar, Typography } from '@mui/mat
 import { useKeycloak } from '@react-keycloak/web'
 import React from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
-import { Customer, User } from 'viandeendirect_eu'
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
+import { Customer } from '@viandeendirect/api/dist/models/Customer'
+import { User } from '@viandeendirect/api/dist/models/User'
+import { AuthenticationService } from '../../../authentication/service/AuthenticationService.ts'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
-export default function CustomerCreationForm({returnCallback: returnCallback, customer: customer}) {
+export default function CustomerCreationForm() {
 
     const { keycloak } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
+    const navigate = useNavigate()
+    const apiBuilder = new ApiBuilder()
+    const customer: Customer = useLoaderData()
 
-    function storeUserData(userFormData) {
+    async function storeUserData(userFormData) {
         customer.user.phone = userFormData.phone
-        apiInvoker.callApiAuthenticatedly(keycloak, api => api.createCustomer, customer, returnCallback)
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        await api.createCustomer({customer: customer})
+        navigate(-1)
     }
 
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -40,4 +47,15 @@ export default function CustomerCreationForm({returnCallback: returnCallback, cu
             </div>
         </FormContainer>
     </Box>
+}
+
+export function loadCustomerCreationFormData(keycloak): Customer {
+    const authenticationService = new AuthenticationService(keycloak)
+    const customer: Customer = {}
+    const user: User = {}
+    user.email = authenticationService.getCurrentUserEmail()
+    user.firstName = authenticationService.getCurrentUserFirstName()
+    user.lastName = authenticationService.getCurrentUserLastName()
+    customer.user = user
+    return customer
 }

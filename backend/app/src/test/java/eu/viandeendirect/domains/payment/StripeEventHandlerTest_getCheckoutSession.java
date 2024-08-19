@@ -41,7 +41,7 @@ class StripeEventHandlerTest_getCheckoutSession {
                         "status": null
                       },
                       "billing_address_collection": null,
-                      "cancel_url": "https://customer.sandbox.viandeendirect.eu/orders/14/paymentCancelled",
+                      "cancel_url": "https://customer.sandbox.viandeendirect.eu/order/14/paymentCancelled",
                       "client_reference_id": null,
                       "client_secret": null,
                       "consent": null,
@@ -127,7 +127,7 @@ class StripeEventHandlerTest_getCheckoutSession {
                       "status": "complete",
                       "submit_type": null,
                       "subscription": null,
-                      "success_url": "https://customer.sandbox.viandeendirect.eu/orders/14/paymentSuccessful",
+                      "success_url": "https://customer.sandbox.viandeendirect.eu/order/14/paymentSuccessful",
                       "total_details": {
                         "amount_discount": 0,
                         "amount_shipping": 0,

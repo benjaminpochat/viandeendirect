@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
-import { ApiInvoker } from '../../../api/ApiInvoker.ts';
 import { useKeycloak } from '@react-keycloak/web';
 import { useNavigate } from 'react-router-dom';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
@@ -13,7 +12,6 @@ import { Production } from '@viandeendirect/api/dist/models/Production'
 
 export default function SaleCard({sale: sale}) {
 
-    const apiInvoker = new ApiInvoker()
     const [orders, setOrders] = useState<Array<Order>>([])
     const [productions, setProductions] = useState<Array<Production>>([])
     const {keycloak} = useKeycloak()

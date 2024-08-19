@@ -1,12 +1,12 @@
 import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import AuthenticatedLayout from "./AuthenticatedLayout.tsx";
+import AuthenticatedLayout, { loadAuthenticatedLayoutData } from "./AuthenticatedLayout.tsx";
 import CustomerController from "../../domains/customer/CustomerController.tsx";
 import ProducerAccountView, { loadProducerAccountViewData } from "../../domains/producer/views/ProducerAccountView.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
-import NotAuthorizedForCustomers from "../../authentication/views/NotAuthorizedForCustomers.tsx";
+import NotAuthorizedForCustomers, { loadNotAuthorizedForCustomerData } from "../../authentication/views/NotAuthorizedForCustomers.tsx";
 import BeefProductionView, { loadBeefProductionViewData } from "../../domains/production/views/beefProduction/BeefProductionView.tsx";
 import BeefProductionCreator, { loadBeefProductionCreatorData } from "../../domains/production/views/beefProduction/BeefProductionCreator.tsx";
 import ProductionsList, { loadProductionListData } from "../../domains/production/views/ProductionsList.tsx";
@@ -23,6 +23,7 @@ export class ProducerRouterFactory {
             {
             path: "/",
             element: <AuthenticatedLayout/>,
+            loader: async () => loadAuthenticatedLayoutData(keycloak),
             children: [
                     {
                         index: true,
@@ -75,12 +76,12 @@ export class ProducerRouterFactory {
                     {
                         path: '/customers',
                         element: <CustomersList/>,
-                        loader: async ({params}) => loadCustomersListData(keycloak)
+                        loader: async () => loadCustomersListData(keycloak)
                     },
                     {
                         path: '/account',
                         element: <ProducerAccountView/>,
-                        loader: async ({params}) => loadProducerAccountViewData(keycloak)
+                        loader: async () => loadProducerAccountViewData(keycloak)
                     }
                 ]
             },
@@ -90,7 +91,8 @@ export class ProducerRouterFactory {
             },
             {
                 path: '/unauthorized',
-                element: <NotAuthorizedForCustomers/>
+                element: <NotAuthorizedForCustomers/>,
+                loader: async () => loadNotAuthorizedForCustomerData(keycloak)
             }
         ])
         

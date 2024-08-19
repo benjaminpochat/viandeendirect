@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Typography } from '@mui/material'
 
-import OrderItem from '@viandeendirect/api/dist/models/OrderItem'
-import Order from '@viandeendirect/api/dist/models/Order'
+import { OrderItem } from '@viandeendirect/api/dist/models/OrderItem'
+import { Order } from '@viandeendirect/api/dist/models/Order'
 import { OrderStatusUtils } from '../../../enum/OrderStatus.ts'
 
 export default function OrderSummary({ order: order }) {
@@ -20,7 +20,7 @@ export default function OrderSummary({ order: order }) {
         <div>
             <Typography color="text.secondary">Liste des articles</Typography>
             <ul>
-                {order.items?.map(item => <li>{itemDescription(item)}</li>)}
+                {order.items?.map(item => <li key={`order-item-${item.id}`}>{itemDescription(item)}</li>)}
             </ul>
         </div>
         <div>

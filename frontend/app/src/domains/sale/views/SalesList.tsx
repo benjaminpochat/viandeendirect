@@ -25,7 +25,7 @@ export default function SalesList() {
 
 export async function loadSalesListData(keycloak): Promise<Array<Sale>> {
     const producerService = new ProducerService(keycloak)
-    const producer: Producer = await producerService.asyncLoadProducer()
+    const producer: Producer = await producerService.loadProducer()
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloak)
     const sales: Array<Sale> = await api.getProducerSales({producerId: +producer.id})

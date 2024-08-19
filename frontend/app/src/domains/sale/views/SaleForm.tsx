@@ -204,7 +204,7 @@ class SaleFormData {
 
 export async function loadSaleFormData(keycloakClient): Promise<SaleFormData> {
     const producerService = new ProducerService(keycloakClient)
-    const producer: Producer = await producerService.asyncLoadProducer()
+    const producer: Producer = await producerService.loadProducer()
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
     const addresses: Array<Address> = await api.getAddresses()

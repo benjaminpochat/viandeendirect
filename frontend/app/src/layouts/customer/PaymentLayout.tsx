@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
@@ -8,7 +8,7 @@ import { ApiBuilder } from '../../api/ApiBuilder.ts'
 import { AppBar, Box, Button, CircularProgress, CssBaseline, Toolbar, Typography } from '@mui/material'
 
 import OrderSummary from '../../domains/sale/components/OrderSummary.tsx'
-import Order from '@viandeendirect/api/dist/models/Order.js';
+import { Order } from '@viandeendirect/api/dist/models/Order.js';
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 
 
@@ -16,11 +16,10 @@ export default function PaymentLayout() {
     const { keycloak, initialized } = useKeycloak()
     const apiBuilder = new ApiBuilder()
     const authenticationService = new AuthenticationService(keycloak)
-    let { orderId } = useParams()
-
-    const [order, setOrder] = useState<Order>()
-    const [orderAccessError, setOrderAccessError] = useState<Boolean>(false)
+    const { orderId } = useParams()
     const [forbiddenAccess, setForbiddenAccess] = useState<Boolean>(false)
+    const [order, setOrder] = useState<Order>({})
+    const [orderAccessError, setOrderAccessError] = useState<Boolean>(false)
     let intervalId = 0
 
     useEffect(() => {
@@ -29,27 +28,21 @@ export default function PaymentLayout() {
         }
     }, [initialized])
 
-    function loadOrder() {
-        apiBuilder.getAuthenticatedApi(keycloak).then(api => {
-            apiBuilder.invokeAuthenticatedApi(() => {
-                api.getOrder(orderId, (error, orderLoaded, response) => {
-                    if (error) {
-                        console.error(error)
-                        if (response.statusCode === 403) {
-                            setForbiddenAccess(true)
-                            setOrderAccessError(true)
-                            clearInterval(intervalId)
-                        }
-                    } else {
-                        console.log('api.getOrder called successfully. Returned data: ' + orderLoaded)
-                        if (orderLoaded.status !== 'PAYMENT_PENDING') {
-                            clearInterval(intervalId)
-                        }
-                        setOrder(orderLoaded)
-                    }
-                })
-            }, keycloak)
-        })
+    async function loadOrder() {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        try {
+            const loadedOrder = await api.getOrder({orderId: +orderId})
+            if (loadedOrder.status !== 'PAYMENT_PENDING') {
+                clearInterval(intervalId)
+            }
+            setOrder(loadedOrder)
+        } catch (error) {
+            console.error(error)
+            if (error.response.status === 403 || error.response.status === 401) {
+                setForbiddenAccess(true)
+                clearInterval(intervalId)
+            }
+        }
     }
 
     return (
@@ -75,18 +68,11 @@ export default function PaymentLayout() {
     )
 
     function getContent() {
-        if (orderAccessError) {
-            if (forbiddenAccess) {
-                return <>
-                    <Typography variant='h5'>Désolé, vous n'êtes pas autorisé à consulter cette commande</Typography>
-                    <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
-                </>
-            } else {
-                return <>
-                    <Typography variant='h5'>Oups... une erreur s'est produite lors de l'accès à la commande {orderId}</Typography>
-                    <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
-                </>
-            }
+        if (forbiddenAccess) {
+            return <>
+                <Typography variant='h5'>Désolé, vous n'êtes pas autorisé à consulter cette commande</Typography>
+                <Button variant='contained' onClick={() => window.open('/', '_self')}>Retour à l'accueil</Button>
+            </>
         }
         if (authenticationService.isAuthenticated()) {
             return <>
@@ -139,5 +125,4 @@ export default function PaymentLayout() {
             </>
         }
     }
-
 }

@@ -2,19 +2,17 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
-import { ApiInvoker } from '../../../api/ApiInvoker.ts'
 import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
-import Production from '@viandeendirect/api/dist/models/BeefProduction'
 import './SaleCard.css'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
+import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction';
 
 export default function SaleCardBeefProduction({production: production}) {
 
     const [beefProduction, setBeefProduction] = useState<BeefProduction>()
     const [productionPercentageSold, setProductionPercentageSold] = useState([])
     const { keycloak } = useKeycloak()
-    const apiInvoker = new ApiInvoker()
     const apiBuilder = new ApiBuilder()
 
     useEffect(() => {

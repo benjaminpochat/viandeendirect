@@ -41,8 +41,8 @@ public class StripePayAndTransferPaymentManager implements StripePaymentManager{
         SessionCreateParams params = builder
                 .setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder().setTransferGroup(order.getId().toString()).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/payment")
-                .setCancelUrl(viandeendirectProducerFrontendUrl + "/orders/" + order.getId() + "/payment")
+                .setSuccessUrl(viandeendirectProducerFrontendUrl + "/order/" + order.getId() + "/payment")
+                .setCancelUrl(viandeendirectProducerFrontendUrl + "/order/" + order.getId() + "/payment")
                 .build();
         Session session = Session.create(params);
         StripePayment stripePayment = new StripePayment();

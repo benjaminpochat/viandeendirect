@@ -1,4 +1,6 @@
 import Keycloak from "keycloak-js"
+import { ApiBuilder } from "../../api/ApiBuilder.ts"
+import { Producer } from "@viandeendirect/api/dist/models/Producer"
 
 export class AuthenticationService {
     keycloak: Keycloak
@@ -9,6 +11,40 @@ export class AuthenticationService {
 
     isAuthenticated(): boolean {
         return (!!process.env.REACT_APP_MOCK_API) || (!!this.keycloak.authenticated)
+    }
+
+    async isAuthenticatedAsProducer(): Promise<boolean> {
+        if (this.isAuthenticated()) {
+            try {
+                const userEmail = this.getCurrentUserEmail()
+                const apiBuilder = new ApiBuilder()
+                const api = await apiBuilder.getAuthenticatedApi(this.keycloak)
+                await api.getProducer({'email': userEmail})
+                return true
+            } catch (error) {
+                if(error.response.status === 409) {
+                    return false
+                }
+            }
+        }
+        return false
+    }
+
+    async isAuthenticatedAsCustomer(): Promise<boolean> {
+        if (this.isAuthenticated()) {
+            try {
+                const userEmail = this.getCurrentUserEmail()
+                const apiBuilder = new ApiBuilder()
+                const api = await apiBuilder.getAuthenticatedApi(this.keycloak)
+                await api.getCustomer({'email': userEmail})
+                return true
+            } catch (error) {
+                if(error.response.status === 409) {
+                    return false
+                }
+            }
+        }
+        return false
     }
 
     getCurrentUserName(): string | undefined {
