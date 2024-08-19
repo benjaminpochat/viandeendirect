@@ -1,11 +1,15 @@
 import renderer from 'react-test-renderer';
 import BeefProductionCard from './BeefProductionCard';
 import React from 'react';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
-import Production from '@viandeendirect/api/dist/models/Production';
+
+const mockedUsedNavigate = jest.fn();
 
 jest.mock("@react-keycloak/web", () => ({ useKeycloak: mockUseKeycloak }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+ useNavigate: () => mockedUsedNavigate,
+}));
 
 function mockUseKeycloak() {
   const token = "A random string that is non zero length";
