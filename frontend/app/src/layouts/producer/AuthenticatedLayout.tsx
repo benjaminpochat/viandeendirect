@@ -9,12 +9,14 @@ import {Close, Logout, Menu} from '@mui/icons-material'
 import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import { Navigate, Outlet, useLoaderData } from 'react-router-dom';
+import { UrlService } from '../../domains/commons/service/UrlService.ts';
 
 
 export default function AuthenticatedLayout() {
     const { keycloak } = useKeycloak()
     const [sideMenuOpen, setSideMenuOpen] = useState(false)
     const authenticationService = new AuthenticationService(keycloak)
+    const urlService = new UrlService()
 
     const authenticatedAsCustomer: boolean = useLoaderData()
 
@@ -31,7 +33,11 @@ export default function AuthenticatedLayout() {
         return <Menu/>
       }
     }
-  
+ 
+    async function logout() {
+      const frontendUrl = await urlService.getProducerFrontentUrl()
+      keycloak.logout({redirectUri: `${frontendUrl}/authentication`})
+    }
 
     function getAuthenticatedLayout() {
       return <Box sx={{ display: 'flex' }}>
@@ -60,7 +66,7 @@ export default function AuthenticatedLayout() {
                             Viande en direct
                         </Typography>
                         <Typography>{authenticationService.getCurrentUserFirstName() } {authenticationService.getCurrentUserLastName()}</Typography>
-                        <IconButton onClick={keycloak.logout} color="inherit">
+                        <IconButton onClick={logout} color="inherit">
                           <Logout/>
                         </IconButton>
                     </Toolbar>

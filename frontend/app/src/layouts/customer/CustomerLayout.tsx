@@ -7,14 +7,16 @@ import { AuthenticationService } from '../../authentication/service/Authenticati
 import { Login, Logout } from '@mui/icons-material'
 import { Navigate, Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
+import { UrlService } from '../../domains/commons/service/UrlService.ts'
 
 
 export default function CustomerLayout() {
 
     const {keycloak} = useKeycloak()
     const authenticationService = new AuthenticationService(keycloak)
+    const urlService = new UrlService()
 
-    const data  = useLoaderData()
+    const data = useLoaderData()
     const authenticatedAsProducer = data.authenticatedAsProducer
     const customer = data.customer
     
@@ -25,11 +27,16 @@ export default function CustomerLayout() {
         return <Navigate to='/customer/registration'/>
     }
 
+    async function logout() {
+        const frontendUrl = await urlService.getCustomerFrontentUrl()
+        keycloak.logout({redirectUri: frontendUrl})
+    }
+
     function displayAuthenticationButton(): React.ReactNode {
         if (authenticationService.isAuthenticated()) {
             return <>
                 <Typography>{authenticationService.getCurrentUserFirstName() } {authenticationService.getCurrentUserLastName()}</Typography>
-                <IconButton onClick={keycloak.logout} color="inherit">
+                <IconButton onClick={logout} color="inherit">
                     <Logout/>
                 </IconButton>
             </>
