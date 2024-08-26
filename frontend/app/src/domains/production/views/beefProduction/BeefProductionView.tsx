@@ -11,6 +11,7 @@ import PackageLotsCreator from '../PackageLotsCreator.tsx'
 import { useKeycloak } from '@react-keycloak/web'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
+import { Production } from '@viandeendirect/api/dist/models/Production'
 
 export default function BeefProductionView() {
 
@@ -145,7 +146,7 @@ export default function BeefProductionView() {
         }
     }
 
-    function cancelUpdate() {
+    async function cancelUpdate() {
         setAlerts(undefined)
         switch (currentTab) {
             case BREEDING_PROPERTIES_TAB: 
@@ -168,12 +169,18 @@ export default function BeefProductionView() {
                     setReadOnly(true)
                 })
             case PRODUCTS_TAB:
+                const reloadedProduction = await reloadProduction(production.id)
                 setProduction({...production,
-                    lots: production?.lots ? production?.lots.map((lot) => {return {...lot}}) : undefined
+                    lots: reloadedProduction?.lots ? reloadedProduction?.lots : undefined
                 })
                 setSaveEnabled(true)
                 setReadOnly(true) 
         }
+    }
+
+    async function reloadProduction(beefProductionId: number): Promise<Production> {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        return await api.getBeefProduction({beefProductionId: beefProductionId})
     }
 
     function displayAlerts() {

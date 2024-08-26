@@ -1,0 +1,18 @@
+.form {
+    margin-bottom: 0.5rem;
+}
+
+.disabled input {
+    -webkit-text-fill-color: black
+    !important
+}
+
+.disabled div[role="combobox"] {
+    -webkit-text-fill-color: black
+    !important
+}
+
+.disabled + span {
+    -webkit-text-fill-color: black
+    !important
+}

@@ -3,6 +3,7 @@ import { DatePickerElement, FormContainer, SliderElement, TextFieldElement } fro
 
 import { BeefProductionService } from '../../../service/BeefProductionService.ts'
 import dayjs from 'dayjs'
+import '../../../../../resources/styles/form.css'
 
 export function SlaughterPropertiesForm({
     form: form,
@@ -22,7 +23,8 @@ export function SlaughterPropertiesForm({
                     label="Date de l'abattage" 
                     minDate={minSlaughterDate ? dayjs(minSlaughterDate) : undefined}
                     maxDate={maxSlaughterDate ? dayjs(maxSlaughterDate) : undefined}
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
             <div>
                 <TextFieldElement
@@ -30,7 +32,8 @@ export function SlaughterPropertiesForm({
                     validation={{ required: 'Champ obligatoire' }}
                     label="Abattoir"
                     variant="standard" 
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
             <div>
                 <TextFieldElement
@@ -38,7 +41,8 @@ export function SlaughterPropertiesForm({
                     validation={{ required: 'Champ obligatoire' }}
                     label="Commune d'abattage"
                     variant="standard" 
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
             <div>
                 <SliderElement
@@ -47,7 +51,8 @@ export function SlaughterPropertiesForm({
                     max={500}
                     step={10} 
                     disabled={disabled}
-                    rules={{ required: 'Champ obligatoire' }}/>
+                    rules={{ required: 'Champ obligatoire' }}
+                    className={disabled ? 'disabled' : ''}/>
                 <div>
                     <span>Poids de l'animal vivant : {BeefProductionService.getLiveWeight(warmCarcassWeight || initialWarmCarcassWeight)} kg</span>
                 </div>

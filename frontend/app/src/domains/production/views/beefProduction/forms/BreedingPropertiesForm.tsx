@@ -1,10 +1,9 @@
 import React from "react"
 
-import { Button, ButtonGroup } from "@mui/material"
-import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui'
+import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, TextFieldElement } from 'react-hook-form-mui'
 
-import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
 import dayjs from "dayjs"
+import '../../../../../resources/styles/form.css'
 
 export function BreedingPropertiesForm({
     form: form, 
@@ -33,7 +32,8 @@ export function BreedingPropertiesForm({
                         label="Date de naissance"
                         disabled={disabled}
                         maxDate={maxBirthDate ? dayjs(maxBirthDate) : undefined}
-                        disableFuture={true}/>
+                        disableFuture={true}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <TextFieldElement 
@@ -41,7 +41,8 @@ export function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Ferme de naissance" 
                         variant="standard" 
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <TextFieldElement 
@@ -49,7 +50,8 @@ export function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Commune de naissance" 
                         variant="standard" 
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <TextFieldElement 
@@ -57,7 +59,8 @@ export function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Numéro d'identification de l'animal" 
                         variant="standard" 
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <SelectElement 
@@ -67,7 +70,8 @@ export function BreedingPropertiesForm({
                         label="Type d'animal" 
                         variant="standard" 
                         options={animalTypeList}
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <SelectElement 
@@ -77,13 +81,15 @@ export function BreedingPropertiesForm({
                         label="Race bovine" 
                         variant="standard" 
                         options={cattleBreedList}
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
                 <div>
                     <CheckboxElement
                         name='labelRougeCertified' 
                         label="Label rouge"
-                        disabled={disabled}/>
+                        disabled={disabled}
+                        className={disabled ? 'disabled' : ''}/>
                 </div>
             </div>
         </FormContainer>

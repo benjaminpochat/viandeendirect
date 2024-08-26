@@ -1,9 +1,8 @@
 import React from 'react'
-import { ButtonGroup, Button } from '@mui/material'
-import { FormContainer, DatePickerElement, TextFieldElement, useForm } from 'react-hook-form-mui'
+import { FormContainer, DatePickerElement, TextFieldElement } from 'react-hook-form-mui'
 
-import BeefProduction from "@viandeendirect/api/dist/models/BeefProduction"
 import dayjs from 'dayjs'
+import '../../../../../resources/styles/form.css'
 
 export function CuttingPropertiesForm({
     form: form,
@@ -18,7 +17,8 @@ export function CuttingPropertiesForm({
                     validation={{ required: 'Champ obligatoire' }}
                     label="Date de la découpe" 
                     minDate={minCuttingDate ? dayjs(minCuttingDate) : undefined}
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
             <div>
                 <TextFieldElement
@@ -26,7 +26,8 @@ export function CuttingPropertiesForm({
                     validation={{ required: 'Champ obligatoire' }}
                     label="Boucherie"
                     variant="standard"
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
             <div>
                 <TextFieldElement
@@ -34,7 +35,8 @@ export function CuttingPropertiesForm({
                     validation={{ required: 'Champ obligatoire' }}
                     label="Commune de la découpe"
                     variant="standard"
-                    disabled={disabled}/>
+                    disabled={disabled}
+                    className={disabled ? 'disabled' : ''}/>
             </div>
         </div>
     </FormContainer>
