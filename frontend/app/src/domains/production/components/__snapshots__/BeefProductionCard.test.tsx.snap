@@ -29,7 +29,7 @@ exports[`should render without error 1`] = `
       <p
         className="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-1ydyjjr-MuiTypography-root"
       >
-        Abattage bovin
+        Colis de viande de boeuf
       </p>
       <div
         className="MuiTypography-root MuiTypography-subtitle1 css-10wpov9-MuiTypography-root"
