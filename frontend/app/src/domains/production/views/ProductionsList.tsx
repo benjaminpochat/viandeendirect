@@ -20,7 +20,7 @@ export default function ProductionsList() {
         <div className='card-list'>
             {getProductionCards()}
         </div>
-        <Button variant="contained" size="small" onClick={() => navigate('/beefProduction/creation')}>Ajouter un abattage bovin</Button>
+        <Button variant="contained" size="small" onClick={() => navigate('/beefProduction/creation')}>Ajouter une production de colis de viande de boeuf</Button>
     </>
 
 

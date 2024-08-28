@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 
 import { OrderItem } from '@viandeendirect/api/dist/models/OrderItem'
 import { Order } from '@viandeendirect/api/dist/models/Order'
-import { OrderStatusUtils } from '../../../enum/OrderStatus.ts'
+import { OrderStatusUtils } from '../../../enum/OrderStatusUtils.ts'
 
 export default function OrderSummary({ order: order }) {
     return <div>
@@ -15,7 +15,7 @@ export default function OrderSummary({ order: order }) {
         </div>
         <div>
             <Typography color="text.secondary">Statut de la commande</Typography>
-            <Typography>{OrderStatusUtils.getOrderStatusLabel(order.status)}</Typography>
+            <Typography>{new OrderStatusUtils().getLabel(order.status)}</Typography>
         </div>
         <div>
             <Typography color="text.secondary">Liste des articles</Typography>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web'
 import { Typography } from "@mui/material"
-import { AnimalTypeUtils } from '../../../enum/AnimalType.ts';
+import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts';
 import PieChart from '../../commons/components/PieChart.tsx'
 import './SaleCard.css'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
@@ -30,11 +30,11 @@ export default function SaleCardBeefProduction({production: production}) {
         <div className='sale-card-production'>
             <div>
                 <Typography component="div">
-                    Abattage bovin
+                    Colis de viande de boeuf
                 </Typography>
                 <Typography>
                     <div>
-                        {AnimalTypeUtils.getAnimalTypeLabel(beefProduction?.animalType)} n° {beefProduction?.animalIdentifier}
+                        {new AnimalTypeUtils().getLabel(beefProduction?.animalType)} n° {beefProduction?.animalIdentifier}
                     </div>
                 </Typography>
                 <Typography>

@@ -14,6 +14,9 @@ export class AuthenticationService {
     }
 
     async isAuthenticatedAsProducer(): Promise<boolean> {
+        if(process.env.REACT_APP_MOCK_API && process.env.REACT_APP_MODE === 'CUSTOMER' ) {
+            return false
+        }
         if (this.isAuthenticated()) {
             try {
                 const userEmail = this.getCurrentUserEmail()
@@ -31,6 +34,9 @@ export class AuthenticationService {
     }
 
     async isAuthenticatedAsCustomer(): Promise<boolean> {
+        if(process.env.REACT_APP_MOCK_API && process.env.REACT_APP_MODE === 'PRODUCER' ) {
+            return false
+        }
         if (this.isAuthenticated()) {
             try {
                 const userEmail = this.getCurrentUserEmail()

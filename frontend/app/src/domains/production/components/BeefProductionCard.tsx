@@ -30,7 +30,7 @@ export default function BeefProductionCard({
             <CardActionArea onClick={onClick || (() => navigate(`/beefProduction/${production.id}`))}>
                 <CardContent>
                     <Typography color="text.secondary" gutterBottom>
-                        Abattage bovin
+                        Colis de viande de boeuf
                     </Typography>
                     <Typography variant="subtitle1" component="div">
                         Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}

@@ -4,23 +4,13 @@ import { CheckboxElement, DatePickerElement, FormContainer, SelectElement, TextF
 
 import dayjs from "dayjs"
 import '../../../../../resources/styles/form.css'
+import { AnimalTypeUtils } from "../../../../../enum/AnimalTypeUtils.ts"
+import { CattleBreedUtils } from "../../../../../enum/CattleBreedUtils.ts"
 
 export function BreedingPropertiesForm({
     form: form, 
     disabled: disabled = false,
     maxBirthDate: maxBirthDate = undefined}) {
-
-    const animalTypeList = [
-        { id: 'BEEF_COW', label: 'vache' },
-        { id: 'BEEF_HEIFER', label: 'génisse' },
-        { id: 'BEEF_VEAL', label: 'veau' },
-        { id: 'BEEF_BULL', label: 'taureau' }
-    ]
-
-    const cattleBreedList = [
-        { id: 'LIMOUSINE', label: 'limousine' },
-        { id: 'CHAROLAISE', label: 'charolaise' }
-    ]
 
     return <>
         <FormContainer formContext={form}>
@@ -69,7 +59,7 @@ export function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Type d'animal" 
                         variant="standard" 
-                        options={animalTypeList}
+                        options={new AnimalTypeUtils().getLabels()}
                         disabled={disabled}
                         className={disabled ? 'disabled' : ''}/>
                 </div>
@@ -80,7 +70,7 @@ export function BreedingPropertiesForm({
                         validation={{ required: 'Champ obligatoire' }} 
                         label="Race bovine" 
                         variant="standard" 
-                        options={cattleBreedList}
+                        options={new CattleBreedUtils().getLabels()}
                         disabled={disabled}
                         className={disabled ? 'disabled' : ''}/>
                 </div>

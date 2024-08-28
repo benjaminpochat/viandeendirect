@@ -15,6 +15,8 @@ import { BeefProductionService } from "../../service/BeefProductionService.ts"
 import {BeefProduction} from "@viandeendirect/api/dist/models/BeefProduction.js"
 import { useLoaderData, useNavigate } from "react-router-dom"
 import { PackageTemplate } from "@viandeendirect/api/dist/models/PackageTemplate"
+import { AnimalTypeUtils } from "../../../../enum/AnimalTypeUtils.ts"
+import { CattleBreedUtils } from "../../../../enum/CattleBreedUtils.ts"
 
 export default function BeefProductionCreator() {
 
@@ -58,13 +60,13 @@ export default function BeefProductionCreator() {
     }})
 
     return <>
-            <Typography variant="h6">Nouvel abattage bovin</Typography>
+            <Typography variant="h6">Nouveaux colis de viande de boeuf</Typography>
             <Stepper activeStep={activeStep} orientation="vertical">
                 <Step 
                     active={activeStep === BREEDING_PROPERTIES_STEP} 
                     disabled={!(completedSteps?.includes(BREEDING_PROPERTIES_STEP))}
                     completed={completedSteps?.includes(BREEDING_PROPERTIES_STEP)}>
-                    <StepButton onClick={() => setActiveStep(BREEDING_PROPERTIES_STEP)}>Informations sur l'élevage</StepButton>
+                    <StepButton onClick={() => setActiveStep(BREEDING_PROPERTIES_STEP)}>{getBreedingPropertiesStepLabel()}</StepButton>
                     <StepContent>
                         <BreedingPropertiesForm form={breedingPropertiesForm}/>
                         <ButtonGroup>
@@ -77,7 +79,7 @@ export default function BeefProductionCreator() {
                     active={activeStep === SLAUGHTER_PROPERTIES_STEP}
                     disabled={!(completedSteps?.includes(SLAUGHTER_PROPERTIES_STEP))}
                     completed={completedSteps?.includes(SLAUGHTER_PROPERTIES_STEP)}>
-                    <StepButton onClick={() => setActiveStep(SLAUGHTER_PROPERTIES_STEP)}>Informations sur l'abattage</StepButton>
+                    <StepButton onClick={() => setActiveStep(SLAUGHTER_PROPERTIES_STEP)}>{getSlaughterPropertiesStepLabel()}</StepButton>
                     <StepContent>
                         <SlaughterPropertiesForm form={slaughterPropertiesForm} minSlaughterDate={beefProduction.birthDate}/>
                         <ButtonGroup>
@@ -90,7 +92,7 @@ export default function BeefProductionCreator() {
                     active={activeStep === CUTTING_PROPERTIES_STEP}
                     disabled={!(completedSteps?.includes(CUTTING_PROPERTIES_STEP))}
                     completed={completedSteps?.includes(CUTTING_PROPERTIES_STEP)}>
-                    <StepButton onClick={() => setActiveStep(CUTTING_PROPERTIES_STEP)}>Information sur la découpe</StepButton>
+                    <StepButton onClick={() => setActiveStep(CUTTING_PROPERTIES_STEP)}>{getCuttingPropertiesStepLabel()}</StepButton>
                     <StepContent onClick={() => setActiveStep(CUTTING_PROPERTIES_STEP)}>
                         <CuttingPropertiesForm form={cuttingPropertiesForm} minCuttingDate={beefProduction.slaughterDate}/>
                         <ButtonGroup>
@@ -120,6 +122,31 @@ export default function BeefProductionCreator() {
                 </Step>
             </Stepper>
         </>            
+
+    function getBreedingPropertiesStepLabel(): string {
+        if (completedSteps.includes(BREEDING_PROPERTIES_STEP)) {
+            const animalType = new AnimalTypeUtils().getLabel(beefProduction.animalType, true)
+            const cattleBreed = new CattleBreedUtils().getLabel(beefProduction.cattleBreed)
+            return `${animalType} de race ${cattleBreed} n° ${beefProduction.animalIdentifier}`
+        }
+        return 'Informations sur l\'élevage'
+    }
+
+    function getSlaughterPropertiesStepLabel(): string {
+        if (completedSteps.includes(SLAUGHTER_PROPERTIES_STEP)) {
+            const slaughterDate = dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')
+            return `Abattage le ${slaughterDate} - ${beefProduction.warmCarcassWeight} kg de carcasse estimés`
+        }
+        return 'Informations sur l\'abattage'
+    }
+
+    function getCuttingPropertiesStepLabel(): string {
+        if (completedSteps.includes(CUTTING_PROPERTIES_STEP)) {
+            const cuttingDate = dayjs(beefProduction.cuttingDate).format('DD/MM/YYYY')
+            return `Découpé le ${cuttingDate} par ${beefProduction.cuttingButcher}`
+        }
+        return 'Informations sur la découpe'
+    }
 
     function validateBreedingProperties(breedingFormData) {
         setBeefProduction(mapBreedingFormDataToBeefProduction(breedingFormData, beefProduction))

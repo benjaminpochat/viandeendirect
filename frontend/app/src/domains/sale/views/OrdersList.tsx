@@ -8,9 +8,10 @@ import dayjs from 'dayjs'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 
 import { Order } from "@viandeendirect/api/dist/models/Order"
-import { OrderStatus, OrderStatusUtils } from '../../../enum/OrderStatus.ts';
+import { OrderStatusUtils } from '../../../enum/OrderStatusUtils.ts';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Sale } from '@viandeendirect/api/dist/models/Sale';
+import { OrderStatus } from '@viandeendirect/api/dist/models/OrderStatus';
 
 export default function OrdersList() {
 
@@ -38,7 +39,7 @@ export default function OrdersList() {
         return {
             id: order.id,
             customerName: order.customer.user.lastName + ' ' + order.customer.user.firstName,
-            orderStatus: OrderStatusUtils.getOrderStatusLabel(order.status)
+            orderStatus: new OrderStatusUtils().getLabel(order.status)
         }
     })
 

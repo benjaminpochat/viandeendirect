@@ -54,7 +54,7 @@ export default function BeefProductionView() {
     }})
 
     return <>
-        <Typography variant="h6">Abattage bovin</Typography>
+        <Typography variant="h6">Colis de viande de boeuf</Typography>
             <Tabs value={currentTab} onChange={changeTab} variant='scrollable' allowScrollButtonsMobile >
                 <Tab label="Elevage" disabled={!readOnly}/>
                 <Tab label="Abattage" disabled={!readOnly}/>

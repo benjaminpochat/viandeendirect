@@ -127,7 +127,7 @@ export default function SaleForm() {
                 <StepLabel>Récapitulatif</StepLabel>
                 <StepContent>
                     <div>
-                        <div>Production vendue : abattage bovin</div>
+                        <div>Production vendue : colis de viande de boeuf</div>
                         <div>Lieu de livraison : {sale.deliveryAddressName}</div>
                         <div>Livraison le {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} entre {dayjs(sale.deliveryStart).format('HH:mm')} et {dayjs(sale.deliveryStop).format('HH:mm')}
                         </div>

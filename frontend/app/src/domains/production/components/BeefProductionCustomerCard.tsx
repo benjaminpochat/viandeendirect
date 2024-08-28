@@ -5,7 +5,7 @@ import { Typography } from "@mui/material"
 
 import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction.js'
 import { PackageLot } from '@viandeendirect/api/dist/models/PackageLot.js'
-import { AnimalTypeUtils } from '../../../enum/AnimalType.ts'
+import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts'
 import PieChart from '../../commons/components/PieChart.tsx'
 import PackageLotDescription from './PackageLotDescription.tsx'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
@@ -38,7 +38,7 @@ export default function BeefProductionCustomerCard({production: production}) {
                 <div className="sale-customer-card__animal">
                     <i className="icon cow-icon"></i>
                     <span>
-                        {AnimalTypeUtils.getAnimalTypeLabel(beefProduction.animalType)}
+                        {new AnimalTypeUtils().getLabel(beefProduction.animalType)}
                     </span>
                 </div>
                 <div className="sale-customer-card__animal-id">

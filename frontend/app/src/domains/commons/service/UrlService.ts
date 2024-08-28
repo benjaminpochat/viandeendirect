@@ -26,10 +26,16 @@ export class UrlService {
     }
 
     private async loadUrls() {
-        let response = await fetch(window.location.origin + '/config/viandeendirect.json')
-        let config = await response.json()
-        this.backendUrl = config.backendUrl
-        this.customerFrontendUrl = config.customerFrontendUrl
-        this.producerFrontendUrl = config.producerFrontendUrl
+        if (process.env.REACT_APP_MOCK_API) {
+            this.backendUrl = undefined
+            this.customerFrontendUrl = '.'
+            this.producerFrontendUrl = '.'
+        } else {
+            let response = await fetch(window.location.origin + '/config/viandeendirect.json')
+            let config = await response.json()
+            this.backendUrl = config.backendUrl
+            this.customerFrontendUrl = config.customerFrontendUrl
+            this.producerFrontendUrl = config.producerFrontendUrl
+        }
     }
 }
