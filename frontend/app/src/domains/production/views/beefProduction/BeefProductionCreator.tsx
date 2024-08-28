@@ -60,7 +60,7 @@ export default function BeefProductionCreator() {
     }})
 
     return <>
-            <Typography variant="h6">Nouveaux colis de viande de boeuf</Typography>
+            <Typography variant="h6">Nouvelle production de colis de viande de boeuf</Typography>
             <Stepper activeStep={activeStep} orientation="vertical">
                 <Step 
                     active={activeStep === BREEDING_PROPERTIES_STEP} 
