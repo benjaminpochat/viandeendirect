@@ -72,7 +72,7 @@ export async function loadCustomerLayoutData(keycloak) {
     const authenticatedAsProducer = await authenticationService.isAuthenticatedAsProducer()
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloak)
-    if(authenticationService.isAuthenticated()) {
+    if(!authenticatedAsProducer && authenticationService.isAuthenticated()) {
         const customer = await api.getCustomer({email: authenticationService.getCurrentUserEmail()})
         return {authenticatedAsProducer: authenticatedAsProducer, customer: customer}
     }
