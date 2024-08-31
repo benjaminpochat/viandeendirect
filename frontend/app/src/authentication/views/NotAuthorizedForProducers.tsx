@@ -33,7 +33,7 @@ export default function NotAuthorizedForProducers() {
                 <Toolbar/>
                 <Typography>Vous êtes dans l'espace client de viandeendirect.eu</Typography>
                 <Typography>Votre compte est un compte producteur.</Typography>
-                <Typography>Il est impossible d'utiliser un compte producteur pour s'identifier à l'espace client avec un compte producteur</Typography>
+                <Typography>Il est impossible d'utiliser un compte producteur pour s'identifier à l'espace client.</Typography>
                 <ButtonGroup>
                     <Button size="small" variant="outlined" onClick={() => {
                         keycloak.logout()
