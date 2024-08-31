@@ -35,7 +35,7 @@ export default function CustomerOrderForm() {
     const productions: Array<Production> = data.productions
     const sale: Sale = data.sale
 
-    const [order, setOrder] = useState<Order>({sale: sale, items: []})
+    const [order, setOrder] = useState<Order | undefined>({sale: sale, items: []})
     const [completedSteps, setCompletedSteps] = useState<Array<number>>([])
     const [activeStep, setActiveStep] = useState(SET_ITEMS_STEP)
     const [conditionApproved, setConditionApproved] = useState<boolean>(false)
@@ -43,16 +43,27 @@ export default function CustomerOrderForm() {
     const [cookies, setCookie, removeCookie] = useCookies(['pendingOrder']);
 
     useEffect(() => {
-        if (cookies.pendingOrder) {
-            setOrder({...order, items: cookies.pendingOrder.items})
-            if(authenticationService.isAuthenticated()) {
-                setCompletedSteps([SET_ITEMS_STEP, AUTHENTICATION_STEP])
-                setActiveStep(CONFIRMATION_STEP)
-            } else {
-                setCompletedSteps([SET_ITEMS_STEP])
-                setActiveStep(AUTHENTICATION_STEP)
-            }
+        const completedSteps: Array<number> = []
+        let activeStep: number = SET_ITEMS_STEP
+        let updatedOrder: Order | undefined = {...order}
+        if (cookies.pendingOrder && cookies.pendingOrder.items.length > 0) {
+            updatedOrder.items = cookies.pendingOrder.items
+            completedSteps.push(SET_ITEMS_STEP)
+            activeStep = AUTHENTICATION_STEP
         }
+        if (authenticationService.isAuthenticated()) {
+            const customer: Customer = {
+                user: {
+                    email: authenticationService.getCurrentUserEmail()
+                }
+            }
+            updatedOrder.customer = customer
+            completedSteps.push(AUTHENTICATION_STEP)
+            activeStep = completedSteps.includes(SET_ITEMS_STEP) ? CONFIRMATION_STEP : SET_ITEMS_STEP
+        }
+        setOrder(updatedOrder)
+        setCompletedSteps(completedSteps)
+        setActiveStep(activeStep)
     }, [])
 
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -131,7 +142,7 @@ export default function CustomerOrderForm() {
     }
 
     function packageSelector(lot: PackageLot) {
-        return <PackageSelector lot={lot} orderItems={order.items} updateItemsCallback={items => setOrder({...order, items: items})}></PackageSelector>
+        return <PackageSelector key={`selector-lot-${lot.id}`} lot={lot} orderItems={order.items} updateItemsCallback={items => setOrder({...order, items: items})}></PackageSelector>
     }
 
     function validateItems() {
@@ -191,7 +202,7 @@ export default function CustomerOrderForm() {
     }
 
     function cancel() {
-        removeCookie('pendingOrder')
+        removeCookie('pendingOrder', {path: "/", maxAge: 3600})
         navigate('/')
     }
 
@@ -216,7 +227,7 @@ export default function CustomerOrderForm() {
     function redirectToStripePayment(url: string) {
         console.log(`payment created for order ${order.id}`)
         window.location.href = url
-        removeCookie('pendingOrder')
+        removeCookie('pendingOrder', {path: "/", maxAge: 3600})
     }
 }
 
