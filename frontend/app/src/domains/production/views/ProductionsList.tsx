@@ -27,8 +27,9 @@ export default function ProductionsList() {
     function getProductionCards() {
         return productions.map(production => <div className='card-clickable'>
                                                 <ProductionCard 
-                                                    production={production} 
-                                                    showActions={true} > 
+                                                    production={production}
+                                                    showActions={true} 
+                                                    onClick={undefined} > 
                                                 </ProductionCard>
                                             </div>)
     }
@@ -37,6 +38,6 @@ export default function ProductionsList() {
 export async function loadProductionListData(keycloakClient): Promise<Array<Production>> {
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
-    const productions: Array<Production> = await api.getProductions()
+    const productions: Array<Production> = await api.getProductions({})
     return productions
 }

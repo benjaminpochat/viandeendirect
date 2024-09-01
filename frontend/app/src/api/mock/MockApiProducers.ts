@@ -33,8 +33,8 @@ export class MockApiProducers {
     getProducerSales(): Array<Sale> {
         const sale1: Sale = {
             id: 1,
-            deliveryStart: new Date('2023-11-15T18:00:00'),
-            deliveryStop: new Date('2023-11-15T20:00:00'),
+            deliveryStart: new Date('2025-11-15T18:00:00'),
+            deliveryStop: new Date('2025-11-15T20:00:00'),
             deliveryAddressName: 'ESL Rémilly',
             deliveryAddressLine1: '1 rue De Gaulle',
             deliveryAddressLine2: undefined,
@@ -44,7 +44,7 @@ export class MockApiProducers {
                 {
                     id: 1,
                     productionType: 'BeefProduction',
-                    slaughterDate: new Date('2023-10-01T10:00:00'),
+                    slaughterDate: new Date('2025-10-01T10:00:00'),
                     animalLiveWeight: 450,
                     animalType: 'BEEF_HEIFER',
                     animalIdentifier: '9876'
@@ -93,8 +93,8 @@ export class MockApiProducers {
         }
         const sale2: Sale = {
             id: 2,
-            deliveryStart: new Date('2023-11-20T16:00:00'),
-            deliveryStop: new Date('2023-11-20T18:00:00'),
+            deliveryStart: new Date('2024-11-20T16:00:00'),
+            deliveryStop: new Date('2024-11-20T18:00:00'),
             deliveryAddressName: 'Place de l\'Etoile',
             deliveryAddressLine1: '1 place de l\'Etoile',
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
@@ -104,7 +104,7 @@ export class MockApiProducers {
                 {
                     id: 2,
                     productionType: 'BeefProduction',
-                    slaughterDate: new Date('2023-11-01T10:00:00'),
+                    slaughterDate: new Date('2024-11-01T10:00:00'),
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
                     animalIdentifier: '0987'
@@ -168,8 +168,8 @@ export class MockApiProducers {
         }
         const sale3: Sale = {
             id: 3,
-            deliveryStart: new Date('2024-01-15T16:00:00'),
-            deliveryStop: new Date('2024-01-15T18:00:00'),
+            deliveryStart: new Date('2025-01-15T16:00:00'),
+            deliveryStop: new Date('2025-01-15T18:00:00'),
             deliveryAddressName: 'Place de l\'Etoile',
             deliveryAddressLine1: '1 place de l\'Etoile',
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
@@ -179,7 +179,7 @@ export class MockApiProducers {
                 {
                     id: 3,
                     productionType: 'BeefProduction',
-                    slaughterDate: new Date('2024-01-01T10:00:00'),
+                    slaughterDate: new Date('2025-01-01T10:00:00'),
                     animalLiveWeight: 400,
                     animalType: 'BEEF_COW',
                     animalIdentifier: '1234'
