@@ -1,4 +1,5 @@
 import { OrderStatus } from "@viandeendirect/api/dist/models/OrderStatus";
+import { EnumUtils } from "./EnumUtils";
 
 export class OrderStatusUtils implements EnumUtils<OrderStatus>{
   getLabel(orderStatus: OrderStatus | undefined, capitalized: boolean = false): string {

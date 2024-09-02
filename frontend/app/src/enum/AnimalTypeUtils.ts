@@ -1,4 +1,5 @@
 import { BeefProductionAnimalTypeEnum } from "@viandeendirect/api/dist/models/BeefProduction";
+import { EnumUtils } from "./EnumUtils";
 
 export class AnimalTypeUtils implements EnumUtils<BeefProductionAnimalTypeEnum> {
 

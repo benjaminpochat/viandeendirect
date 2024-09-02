@@ -1,4 +1,5 @@
 import { BeefProductionCattleBreedEnum } from "@viandeendirect/api/dist/models/BeefProduction"
+import { EnumUtils } from "./EnumUtils"
 
 export class CattleBreedUtils implements EnumUtils<BeefProductionCattleBreedEnum> {
 

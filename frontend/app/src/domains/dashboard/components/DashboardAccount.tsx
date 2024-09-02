@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Typography } from "@mui/material"
+import { Button, Stack, Typography } from "@mui/material"
 import { Producer } from '@viandeendirect/api/dist/models/Producer.js'
 import { useKeycloak } from '@react-keycloak/web'
 import { ProducerService } from '../../commons/service/ProducerService.ts'
 import { useNavigate } from 'react-router-dom'
+import { PersonOutlineOutlined } from '@mui/icons-material'
 
 
 function DashboardAccount() {
@@ -19,8 +20,11 @@ function DashboardAccount() {
 
 
   return <>
-    <div>Bienvenue {producer?.user.firstName}</div>
-    <Button onClick={() => navigate('/account')}>Gérer mon compte</Button>
+    <Stack alignItems="center" direction="row" gap={2}>
+      <PersonOutlineOutlined/>
+      <Typography variant="subtitle1" component="span">Bienvenue {producer?.user.firstName}</Typography>
+    </Stack>
+    <Button size='small' onClick={() => navigate('/account')}>Gérer mon compte</Button>
   </>
 }
 
