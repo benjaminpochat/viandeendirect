@@ -117,6 +117,26 @@ paths:
                 $ref: '#/components/schemas/StripeAccount'
           description: Successful response - returns a Stripe account
       operationId: getStripeAccount
+  /producers/{producerId}/payments/summary:
+    parameters:
+    - name: producerId
+      description: the id of the producer related to the payments summary
+      schema:
+        type: integer
+      in: path
+      required: true
+    get:
+      security:  
+      - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentsSummary'
+          description: Summary of payments made to the producer.
+      operationId: getProducerPaymentsSummary
+      summary: Get the payments summary for a producer
 
   /sales:
     summary: Path used to manage the list of all public sales.
@@ -489,6 +509,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Order'
         required: true
+
 
 components:
   securitySchemes:
@@ -908,3 +929,23 @@ components:
     OrderStatus:
       type: string
       enum: [BOOKED_WITHOUT_PAYMENT, PAYMENT_PENDING, PAYMENT_COMPLETED, PAYMENT_ABORTED, DELIVERED]
+    PaymentsSummary:
+      description: "the summary of payments made"
+      type: object
+      properties:
+        daylyTotal:
+          type: number
+          format: float
+          description: "the total amount paid for last day"
+        weeklyTotal:
+          type: number
+          format: float
+          description: "the total amount paid for last week"
+        monthlyTotal:
+          type: number
+          format: float
+          description: "the total amount paid for last month"
+        yearlyTotal:
+          type: number
+          format: float
+          description: "the total amount paid for last year"

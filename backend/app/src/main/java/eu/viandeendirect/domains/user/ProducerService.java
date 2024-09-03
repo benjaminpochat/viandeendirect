@@ -3,10 +3,7 @@ package eu.viandeendirect.domains.user;
 import eu.viandeendirect.api.ProducersApiDelegate;
 import eu.viandeendirect.domains.payment.StripeService;
 import eu.viandeendirect.domains.sale.SaleRepository;
-import eu.viandeendirect.model.Customer;
-import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.model.Sale;
-import eu.viandeendirect.model.StripeAccount;
+import eu.viandeendirect.model.*;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,5 +109,20 @@ public class ProducerService implements ProducersApiDelegate {
             LOGGER.error("An error occurred when loading Stripe account data using Stripe API", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du lien vers le compte Stripe", e);
         }
+    }
+
+    @Override
+    public ResponseEntity<PaymentsSummary> getProducerPaymentsSummary(Integer producerId) {
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        //TODO : calculer les montant à partir des API Stripe (https://docs.stripe.com/api/balance_transactions/object)
+        PaymentsSummary paymentsSummary = new PaymentsSummary();
+        paymentsSummary.setDaylyTotal(100f);
+        paymentsSummary.setWeeklyTotal(1000f);
+        paymentsSummary.setMonthlyTotal(4000f);
+        paymentsSummary.setYearlyTotal(12000f);
+        return new ResponseEntity<>(paymentsSummary, OK);
     }
 }
