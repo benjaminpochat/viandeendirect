@@ -5,7 +5,6 @@ import {Producer} from '@viandeendirect/api/dist/models/Producer.js'
 import { useKeycloak } from '@react-keycloak/web'
 import { Production } from '@viandeendirect/api/dist/models/Production'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
-import { ProducerService } from '../../commons/service/ProducerService.ts'
 import { ProductionService } from '../../production/service/ProductionService.ts'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -21,8 +20,6 @@ function DashboardProductions() {
 
   useEffect(() => {
     const loadNextProduction = async () => {
-      const producerService = new ProducerService(keycloak)
-      const producer: Producer = await producerService.loadProducer()
       const api = await apiBuilder.getAuthenticatedApi(keycloak)
       const producerProductions = await api.getProductions({})
       const productionService = new ProductionService(keycloak)

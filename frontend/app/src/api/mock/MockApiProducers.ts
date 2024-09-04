@@ -275,4 +275,13 @@ export class MockApiProducers {
         }
         return [customer1, customer2, customer3]
     }
+
+    getProducerPaymentsSummary() {
+        return {
+            daylyTotal: 123,
+            weeklyTotal: 321,
+            monthlyTotal: 456,
+            yearlyTotal: 789
+        }
+    }
 }

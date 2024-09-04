@@ -114,4 +114,8 @@ export class MockApi {
         return this.mockApiProducers.getStripeAccount()
     }
 
+    getProducerPaymentsSummary(args) {
+        this.log('getProducerPaymentsSummary', args)
+        return this.mockApiProducers.getProducerPaymentsSummary()
+    }
 }
