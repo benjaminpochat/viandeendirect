@@ -3,6 +3,7 @@ import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button } fr
 import { useKeycloak } from '@react-keycloak/web'
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import Footer from '../../domains/commons/components/Footer.tsx';
 
 export default function AnonymousLayout() {
 
@@ -61,6 +62,7 @@ export default function AnonymousLayout() {
                 </Grid>
 
             </Box>
+            <Footer/>
         </Box>
     }
 

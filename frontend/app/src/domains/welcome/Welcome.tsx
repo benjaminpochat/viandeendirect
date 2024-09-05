@@ -1,5 +1,4 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
 
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
 

@@ -8,6 +8,7 @@ import { Login, Logout } from '@mui/icons-material'
 import { Navigate, Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
 import { UrlService } from '../../domains/commons/service/UrlService.ts'
+import Footer from '../../domains/commons/components/Footer.tsx'
 
 
 export default function CustomerLayout() {
@@ -47,23 +48,26 @@ export default function CustomerLayout() {
     }
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-            >
-                <Toolbar>
-                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                        Viande en direct
-                    </Typography>
-                    {displayAuthenticationButton()}
-                </Toolbar>
-            </AppBar>
-            <Outlet/>
-        </Box>
+        <>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                >
+                    <Toolbar>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                            Viande en direct
+                        </Typography>
+                        {displayAuthenticationButton()}
+                    </Toolbar>
+                </AppBar>
+                <Outlet/>
+            </Box>
+            <Footer/>
+        </>
     )
 }
 
