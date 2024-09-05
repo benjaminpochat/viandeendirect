@@ -107,7 +107,7 @@ public class ProducerService implements ProducersApiDelegate {
             return new ResponseEntity<>(stripeAccount, OK);
         } catch (Exception e) {
             LOGGER.error("An error occurred when loading Stripe account data using Stripe API", e);
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite à la création du lien vers le compte Stripe", e);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite au chargement du compte Stripe", e);
         }
     }
 
@@ -117,12 +117,12 @@ public class ProducerService implements ProducersApiDelegate {
         if (!producer.getId().equals(producerId)) {
             return new ResponseEntity<>(FORBIDDEN);
         }
-        //TODO : calculer les montant à partir des API Stripe (https://docs.stripe.com/api/balance_transactions/object)
-        PaymentsSummary paymentsSummary = new PaymentsSummary();
-        paymentsSummary.setDaylyTotal(100f);
-        paymentsSummary.setWeeklyTotal(1000f);
-        paymentsSummary.setMonthlyTotal(4000f);
-        paymentsSummary.setYearlyTotal(12000f);
-        return new ResponseEntity<>(paymentsSummary, OK);
+        try {
+            PaymentsSummary paymentsSummary = stripeService.loadStripePaymentSummary(producer);
+            return new ResponseEntity<>(paymentsSummary, OK);
+        } catch (Exception e) {
+            LOGGER.error("An error occurred when loading Stripe payments summary data using Stripe API", e);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite au chargement du résumé des paiements Stripe", e);
+        }
     }
 }

@@ -7,10 +7,7 @@ import com.stripe.model.AccountLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
 import eu.viandeendirect.common.ViandeEnDirectConfiguration;
-import eu.viandeendirect.model.Order;
-import eu.viandeendirect.model.Producer;
-import eu.viandeendirect.model.StripeAccount;
-import eu.viandeendirect.model.StripePayment;
+import eu.viandeendirect.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,9 @@ public class StripeService {
     @Autowired
     @Qualifier("StripeDirectPaymentManager")
     StripePaymentManager stripePaymentManager;
+
+    @Autowired
+    StripeBalanceManager stripeBalanceManager;
 
     public StripeAccount createStripeAccount(Producer producer) throws StripeException {
         Account account = Account.create(
@@ -78,5 +78,9 @@ public class StripeService {
 
     public void processPaymentValidation(Order order) {
         stripePaymentManager.processPaymentValidation(order);
+    }
+
+    public PaymentsSummary loadStripePaymentSummary(Producer producer) throws StripeException {
+        return stripeBalanceManager.getPaymentsSummary(producer);
     }
 }
