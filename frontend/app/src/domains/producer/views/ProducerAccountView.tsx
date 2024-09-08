@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
 
-import { Button, Typography, CircularProgress } from "@mui/material"
+import { Button, Typography, CircularProgress, Stack, TextField, InputAdornment } from "@mui/material"
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 
 import { useKeycloak } from '@react-keycloak/web';
 import { Producer } from '@viandeendirect/api/dist/models/Producer.js';
@@ -9,6 +11,8 @@ import { ProducerService } from '../../commons/service/ProducerService.ts';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 import { StripeAccount } from '@viandeendirect/api/dist/models/StripeAccount';
 import { useLoaderData } from 'react-router-dom';
+import { CheckOutlined } from '@mui/icons-material';
+import EditableTextField from '../../commons/components/EditableTextField.tsx';
 
 
 export default function ProducerAccountView() {
@@ -18,10 +22,44 @@ export default function ProducerAccountView() {
   const loadedProducer: Producer = useLoaderData()  
   const [producer, setProducer] = useState<Producer>(loadedProducer)
   const [stripeAccountCreationPending, setStripeAccountCreationPending] = useState<boolean>(false)
+  const [websiteUrlWritable, setWebsiteUrlWritable] = useState<boolean>(false)
+  const [currentlyEditedField, setCurrentlyEditedField] = useState<string | undefined>(undefined)
 
   return <>
             <Typography variant="h6">Gestion du compte</Typography>
+            <Typography variant='subtitle1'>Configuration des paiements</Typography>
             {displayStripeAccount()}
+
+            <Typography variant='subtitle1'>Présentation de la ferme</Typography>
+            
+            <EditableTextField 
+              label='adresse du site web' 
+              initialValue={producer.websiteUrl}
+              validateCallback={() => console.log('test')}
+              editable={currentlyEditedField === undefined || currentlyEditedField === 'websiteUrl'}
+              toggleCallback={() => {
+                if(currentlyEditedField) {
+                  setCurrentlyEditedField(undefined)
+                } else {
+                  setCurrentlyEditedField('websiteUrl')
+                }
+              }}
+              />
+
+            <EditableTextField 
+              label='adresse du diaporama' 
+              initialValue={producer.slideShowUrl}
+              validateCallback={() => console.log('test')}
+              editable={currentlyEditedField === undefined || currentlyEditedField === 'slideShowUrl'}
+              toggleCallback={() => {
+                if(currentlyEditedField) {
+                  setCurrentlyEditedField(undefined)
+                } else {
+                  setCurrentlyEditedField('slideShowUrl')
+                }
+              }}
+              />
+
           </>
 
   function displayStripeAccount() {
