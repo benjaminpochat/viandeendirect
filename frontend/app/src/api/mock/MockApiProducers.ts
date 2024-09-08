@@ -27,7 +27,7 @@ export class MockApiProducers {
             productions: undefined,
             stripeAccount: undefined,
             slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing',
-            websiteUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing'
+            websiteUrl: 'https://www.lemonde.fr'
         }
     }
 
