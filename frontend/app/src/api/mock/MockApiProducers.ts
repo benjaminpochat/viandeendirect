@@ -23,10 +23,11 @@ export class MockApiProducers {
                 email: "bob.marcel@email.eu"
             },
             status: 'ACTIVE',
-            salesCredits: undefined,
             sales: undefined,
             productions: undefined,
-            stripeAccount: undefined
+            stripeAccount: undefined,
+            slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing',
+            websiteUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing'
         }
     }
 

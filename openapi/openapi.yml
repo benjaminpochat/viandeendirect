@@ -885,9 +885,6 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.Id'
         status:
           $ref: '#/components/schemas/ProducerStatus'
-        salesCredits:
-          description: "the number of sales available"
-          type: integer
         productions:
           type: array
           items:
@@ -900,6 +897,12 @@ components:
           x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "seller")'
         stripeAccount:
           $ref: '#/components/schemas/StripeAccount'
+        slideShowUrl:
+          description: 'url of a slide show to present the producer'
+          type: string
+        websiteUrl:
+          description: "url of the producer's website"
+          type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")'
     Address:
       description: "an address for delivering orders"
