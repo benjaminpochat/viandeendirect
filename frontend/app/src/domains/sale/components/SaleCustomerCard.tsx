@@ -37,8 +37,7 @@ export default function SaleCustomerCard({ sale: sale }) {
             {sale.productions.map(getProductionContent)}
         </CardContent>
         <CardActions>
-            <Button onClick={() => navigate(`/sale/${sale.id}/order/creation`)}>Je commande</Button>
-            <Button>Je visite la ferme</Button>
+            <Button variant='contained' onClick={() => navigate(`/sale/${sale.id}/order/creation`)}>Je commande</Button>
         </CardActions>
     </Card>
 

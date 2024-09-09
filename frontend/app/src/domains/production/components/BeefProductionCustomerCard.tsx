@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-import { Typography } from "@mui/material"
+import { Button, Dialog, Link, Stack, Typography } from "@mui/material"
 
 import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction.js'
 import { PackageLot } from '@viandeendirect/api/dist/models/PackageLot.js'
@@ -9,6 +9,8 @@ import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts'
 import PieChart from '../../commons/components/PieChart.tsx'
 import PackageLotDescription from './PackageLotDescription.tsx'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
+import VisitFarmButton from '../../commons/components/VisitFarmButton.tsx'
+import { Producer } from '@viandeendirect/api/dist/models/Producer'
 
 export default function BeefProductionCustomerCard({production: production}) {
 
@@ -26,7 +28,6 @@ export default function BeefProductionCustomerCard({production: production}) {
         }
         loadData()
     }, [])
-
 
     return <>
         <div className="sale-customer-card__product-information">
@@ -48,10 +49,13 @@ export default function BeefProductionCustomerCard({production: production}) {
                     </span>
                 </div>
                 <div className="sale-customer-card__farm">
-                    <i className="icon farm-icon"></i>
-                    <span>
-                        {beefProduction.birthFarm}
-                    </span>
+                <i className="icon farm-icon"></i>
+                    <Stack alignItems="center" direction="row" gap={2}>
+                        <span>
+                            {displayFarmName(beefProduction?.producer)}
+                        </span>
+                        <VisitFarmButton producer={beefProduction?.producer}></VisitFarmButton>
+                    </Stack>
                 </div>
             </div>
         </div>
@@ -59,6 +63,13 @@ export default function BeefProductionCustomerCard({production: production}) {
             {beefProduction.lots?.map(getLot)}
         </div>
     </>
+
+    function displayFarmName(producer: Producer): React.ReactNode {
+        if(producer?.websiteUrl) {
+            return <Link sx={{color: 'black'}} href={producer?.websiteUrl} target='_blank'>{producer?.farmName}</Link>
+        } 
+        return <>{producer?.farmName}</>
+    }
 
     function getLot(lot: PackageLot) {
         return <PackageLotDescription key={`package-lot-description-${lot.id}`} lot={lot}></PackageLotDescription>

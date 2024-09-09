@@ -903,6 +903,9 @@ components:
         websiteUrl:
           description: "url of the producer's website"
           type: string
+        farmName:
+          description: "public name of the farm"
+          type: string
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")'
     Address:
       description: "an address for delivering orders"
