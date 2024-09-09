@@ -33,6 +33,11 @@ export class MockApiProductions {
             warmCarcassWeight: 450,
             animalType: 'BEEF_COW',
             birthFarm: 'La ferme du puis',
+            producer: {
+                farmName: 'La ferme des Marronniers',
+                slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/embed?start=true&loop=true&delayms=3000',
+                websiteUrl: 'https://www.lemonde.fr'
+                },
             lots: [
                 {
                     id: 1,

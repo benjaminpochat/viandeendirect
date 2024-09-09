@@ -20,7 +20,8 @@ export default function Footer() {
 
     function displayGeneralTermsAndConditions() {
         if (generalTermsAndConditionsShown) {
-            return <GeneralTermsAndConditions closeCallback={() => setGeneralTermsAndConditionsShown(false)}/>
+            return <GeneralTermsAndConditions closeCallback={() => setGeneralTermsAndConditionsShown(false)}
+            />
         }
         return <></>
     }
