@@ -437,6 +437,34 @@ paths:
       operationId: getProducer
       summary: Get a producer identified by its email.
       description: Gets a `Producer` entities.
+    
+  /producers/{producerId}:
+    post:
+      parameters:
+        - in: path
+          name: producerId
+          description: A unique identifier for a producer.
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: producer
+          description: The updated producer details.
+          schema:
+            $ref: '#/components/schemas/Producer'
+          required: true
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producer'
+          description: Successful response - returns a `Producer` entities.
+      operationId: updateProducer
+      summary: Update a producer identified by its id.
+      description: Update a `Producer` entities.
 
   /orders:
     summary: Path used to manage orders.

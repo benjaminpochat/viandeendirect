@@ -31,6 +31,25 @@ export class MockApiProducers {
         }
     }
 
+    updateProducer(args: any) {
+        return {
+            id: 1,
+            user: {
+                id: 1,
+                firstName: "Bob",
+                lastName: "MARCEL",
+                email: "bob.marcel@email.eu"
+            },
+            status: 'ACTIVE',
+            sales: undefined,
+            productions: undefined,
+            stripeAccount: undefined,
+            slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing',
+            websiteUrl: 'https://www.lemonde.fr'
+        }
+    }
+
+
     getProducerSales(): Array<Sale> {
         const sale1: Sale = {
             id: 1,

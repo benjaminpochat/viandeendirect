@@ -46,9 +46,6 @@ public class Producer {
   @JsonProperty("status")
   private ProducerStatus status;
 
-  @JsonProperty("salesCredits")
-  private Integer salesCredits;
-
   @JsonProperty("productions")
   @JsonIgnore
   @jakarta.persistence.OneToMany(mappedBy = "producer")
@@ -66,6 +63,15 @@ public class Producer {
   @OneToOne
   @JoinColumn(name = "stripe_account_id")
   private StripeAccount stripeAccount;
+
+  @JsonProperty("slideShowUrl")
+  private String slideShowUrl;
+
+  @JsonProperty("websiteUrl")
+  private String websiteUrl;
+
+  @JsonProperty("farmName")
+  private String farmName;
 
   public Producer user(User user) {
     this.user = user;
@@ -122,25 +128,6 @@ public class Producer {
 
   public void setStatus(ProducerStatus status) {
     this.status = status;
-  }
-
-  public Producer salesCredits(Integer salesCredits) {
-    this.salesCredits = salesCredits;
-    return this;
-  }
-
-  /**
-   * the number of sales available
-   * @return salesCredits
-  */
-
-  @Schema(name = "salesCredits", description = "the number of sales available", required = false)
-  public Integer getSalesCredits() {
-    return salesCredits;
-  }
-
-  public void setSalesCredits(Integer salesCredits) {
-    this.salesCredits = salesCredits;
   }
 
   public Producer productions(List<Production> productions) {
@@ -216,6 +203,63 @@ public class Producer {
     this.stripeAccount = stripeAccount;
   }
 
+  public Producer slideShowUrl(String slideShowUrl) {
+    this.slideShowUrl = slideShowUrl;
+    return this;
+  }
+
+  /**
+   * url of a slide show to present the producer
+   * @return slideShowUrl
+  */
+
+  @Schema(name = "slideShowUrl", description = "url of a slide show to present the producer", required = false)
+  public String getSlideShowUrl() {
+    return slideShowUrl;
+  }
+
+  public void setSlideShowUrl(String slideShowUrl) {
+    this.slideShowUrl = slideShowUrl;
+  }
+
+  public Producer websiteUrl(String websiteUrl) {
+    this.websiteUrl = websiteUrl;
+    return this;
+  }
+
+  /**
+   * url of the producer's website
+   * @return websiteUrl
+  */
+
+  @Schema(name = "websiteUrl", description = "url of the producer's website", required = false)
+  public String getWebsiteUrl() {
+    return websiteUrl;
+  }
+
+  public void setWebsiteUrl(String websiteUrl) {
+    this.websiteUrl = websiteUrl;
+  }
+
+  public Producer farmName(String farmName) {
+    this.farmName = farmName;
+    return this;
+  }
+
+  /**
+   * public name of the farm
+   * @return farmName
+  */
+
+  @Schema(name = "farmName", description = "public name of the farm", required = false)
+  public String getFarmName() {
+    return farmName;
+  }
+
+  public void setFarmName(String farmName) {
+    this.farmName = farmName;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -228,15 +272,17 @@ public class Producer {
     return Objects.equals(this.user, producer.user) &&
         Objects.equals(this.id, producer.id) &&
         Objects.equals(this.status, producer.status) &&
-        Objects.equals(this.salesCredits, producer.salesCredits) &&
         Objects.equals(this.productions, producer.productions) &&
         Objects.equals(this.sales, producer.sales) &&
-        Objects.equals(this.stripeAccount, producer.stripeAccount);
+        Objects.equals(this.stripeAccount, producer.stripeAccount) &&
+        Objects.equals(this.slideShowUrl, producer.slideShowUrl) &&
+        Objects.equals(this.websiteUrl, producer.websiteUrl) &&
+        Objects.equals(this.farmName, producer.farmName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, id, status, salesCredits, productions, sales, stripeAccount);
+    return Objects.hash(user, id, status, productions, sales, stripeAccount, slideShowUrl, websiteUrl, farmName);
   }
 
   @Override
@@ -246,10 +292,12 @@ public class Producer {
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    salesCredits: ").append(toIndentedString(salesCredits)).append("\n");
     sb.append("    productions: ").append(toIndentedString(productions)).append("\n");
     sb.append("    sales: ").append(toIndentedString(sales)).append("\n");
     sb.append("    stripeAccount: ").append(toIndentedString(stripeAccount)).append("\n");
+    sb.append("    slideShowUrl: ").append(toIndentedString(slideShowUrl)).append("\n");
+    sb.append("    websiteUrl: ").append(toIndentedString(websiteUrl)).append("\n");
+    sb.append("    farmName: ").append(toIndentedString(farmName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
