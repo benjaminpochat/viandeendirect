@@ -67,8 +67,8 @@ export default function EditableTextField({
         toggleCallback()
     }
 
-    function validate(): void {
-        validateCallback()
+    async function validate(): Promise<void> {
+        await validateCallback(value)
         setWritable(false)
         toggleCallback()
     }

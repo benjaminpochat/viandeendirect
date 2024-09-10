@@ -104,6 +104,11 @@ export class MockApi {
         return this.mockApiProducers.getProducer()
     }
 
+    updateProducer(args) {
+        this.log('updateProducer', args)
+        return this.mockApiProducers.updateProducer(args)
+    }
+
     getStripeAccount(args) {
         this.log('getStripeAccount', args)
         return this.mockApiProducers.getStripeAccount()

@@ -54,6 +54,15 @@ public class ProducerService implements ProducersApiDelegate {
     }
 
     @Override
+    public ResponseEntity<Producer> updateProducer(Integer producerId, Producer producer) {
+        Producer authenticatedProducer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId) || !authenticatedProducer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        return new ResponseEntity<>(producerRepository.save(producer), OK);
+    }
+
+    @Override
     public ResponseEntity<List<Sale>> getProducerSales(Integer producerId) {
         Producer producer = authenticationService.getAuthenticatedProducer();
         if (!producer.getId().equals(producerId)) {

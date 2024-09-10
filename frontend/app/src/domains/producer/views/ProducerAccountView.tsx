@@ -1,9 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-import { Button, Typography, CircularProgress, Stack, TextField, InputAdornment } from "@mui/material"
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
+import { Button, Typography, CircularProgress } from "@mui/material"
 
 import { useKeycloak } from '@react-keycloak/web';
 import { Producer } from '@viandeendirect/api/dist/models/Producer.js';
@@ -11,18 +9,19 @@ import { ProducerService } from '../../commons/service/ProducerService.ts';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 import { StripeAccount } from '@viandeendirect/api/dist/models/StripeAccount';
 import { useLoaderData } from 'react-router-dom';
-import { CheckOutlined } from '@mui/icons-material';
 import EditableTextField from '../../commons/components/EditableTextField.tsx';
 
 
 export default function ProducerAccountView() {
+
+  const WEB_SITE_URL_FIELD = 'websiteUrl';
+  const SLIDE_SHOW_URL_FIELD = 'slideShowUrl';
 
   const {keycloak} = useKeycloak()
   const apiBuilder = new ApiBuilder()
   const loadedProducer: Producer = useLoaderData()  
   const [producer, setProducer] = useState<Producer>(loadedProducer)
   const [stripeAccountCreationPending, setStripeAccountCreationPending] = useState<boolean>(false)
-  const [websiteUrlWritable, setWebsiteUrlWritable] = useState<boolean>(false)
   const [currentlyEditedField, setCurrentlyEditedField] = useState<string | undefined>(undefined)
 
   return <>
@@ -35,13 +34,16 @@ export default function ProducerAccountView() {
             <EditableTextField 
               label='adresse du site web' 
               initialValue={producer.websiteUrl}
-              validateCallback={() => console.log('test')}
-              editable={currentlyEditedField === undefined || currentlyEditedField === 'websiteUrl'}
+              validateCallback={(updatedWebSiteUrl) => {
+                setProducer({...producer, websiteUrl: updatedWebSiteUrl})
+                updateProducer()
+              }}
+              editable={currentlyEditedField === undefined || currentlyEditedField === WEB_SITE_URL_FIELD}
               toggleCallback={() => {
                 if(currentlyEditedField) {
                   setCurrentlyEditedField(undefined)
                 } else {
-                  setCurrentlyEditedField('websiteUrl')
+                  setCurrentlyEditedField(WEB_SITE_URL_FIELD)
                 }
               }}
               />
@@ -50,16 +52,15 @@ export default function ProducerAccountView() {
               label='adresse du diaporama' 
               initialValue={producer.slideShowUrl}
               validateCallback={() => console.log('test')}
-              editable={currentlyEditedField === undefined || currentlyEditedField === 'slideShowUrl'}
+              editable={currentlyEditedField === undefined || currentlyEditedField === SLIDE_SHOW_URL_FIELD}
               toggleCallback={() => {
                 if(currentlyEditedField) {
                   setCurrentlyEditedField(undefined)
                 } else {
-                  setCurrentlyEditedField('slideShowUrl')
+                  setCurrentlyEditedField(SLIDE_SHOW_URL_FIELD)
                 }
               }}
               />
-
           </>
 
   function displayStripeAccount() {
@@ -93,6 +94,11 @@ export default function ProducerAccountView() {
     if (stripeAccountCreationPending) {
       return <CircularProgress/>
     }
+  }
+
+  async function updateProducer() {
+    const api = await apiBuilder.getAuthenticatedApi(keycloak)
+    await api.updateProducer({producerId: producer.id, producer: producer})
   }
 
   async function createStripeAccount() {

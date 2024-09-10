@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: viandeendirect-2024-09-10
+      author: benjamin
+      changes:
+        - addColumn:
+          tableName: producers
+          columns:
+            - column:
+              name: slideShowUrl
+              type: VARCHAR(255)
+            - column:
+              name: websiteUrl
+              type: VARCHAR(255)
+            - column:
+              name: farmName
+              type: VARCHAR(255)
+        - dropColumn:
+          tableName: producers
+          columnName: saleCredits
