@@ -20,7 +20,7 @@ export default function VisitFarmButton({producer}) {
                     <Button variant='contained' onClick={() => setSlideShowDisplayed(false)}>Fermer</Button>
                 </DialogActions>
             </Dialog>
-            <Button size='small' onClick={() => setSlideShowDisplayed(true)}>Je visite la ferme</Button>
+            <Button variant='outlined' size='small' onClick={() => setSlideShowDisplayed(true)}>Je visite la ferme</Button>
         </>
     }
     return <></>

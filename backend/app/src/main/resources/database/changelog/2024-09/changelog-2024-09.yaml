@@ -4,17 +4,17 @@ databaseChangeLog:
       author: benjamin
       changes:
         - addColumn:
-          tableName: producers
-          columns:
-            - column:
-              name: slideShowUrl
-              type: VARCHAR(255)
-            - column:
-              name: websiteUrl
-              type: VARCHAR(255)
-            - column:
-              name: farmName
-              type: VARCHAR(255)
+            tableName: producers
+            columns:
+              - column:
+                  name: slide_show_url
+                  type: VARCHAR(255)
+              - column:
+                  name: website_url
+                  type: VARCHAR(255)
+              - column:
+                  name: farm_name
+                  type: VARCHAR(255)
         - dropColumn:
-          tableName: producers
-          columnName: saleCredits
+            tableName: producers
+            columnName: sales_credits

@@ -22,6 +22,8 @@ export default function BeefProductionCustomerCard({production: production}) {
         const loadData = async () => {
             const api = await apiBuilder.getAnonymousApi()
             const loadedBeefProduction = await api.getBeefProduction({beefProductionId: production.id})
+            const producer = await api.getProductionProducerPublicData({productionId: production.id})
+            loadedBeefProduction.producer = producer
             setBeefProduction(loadedBeefProduction)
             const loadedPercentageSold = await api.getProductionPercentageSold({productionId: production.id})
             setPercentageSold(+loadedPercentageSold)
@@ -33,7 +35,7 @@ export default function BeefProductionCustomerCard({production: production}) {
         <div className="sale-customer-card__product-information">
             <Typography variant="h5">Viande de boeuf</Typography>
             <PieChart percentage={percentageSold} description={<><div>{percentageSold}%</div><div>déjà vendu</div></>}></PieChart>
-        </div>        
+        </div>
         <div className="sale-customer-card__general-information">
             <div className="sale-customer-card__animal-information">
                 <div className="sale-customer-card__animal">
