@@ -47,4 +47,15 @@ public class ProductionService implements ProductionsApiDelegate {
         return new ResponseEntity<>(roundedPercentageSold, OK);
     }
 
+    @Override
+    public ResponseEntity<Producer> getProductionProducerPublicData(Integer productionId) {
+        Production production = productionRepository.findById(productionId).get();
+        Producer producer = production.getProducer();
+        var producerWithPublicData = new Producer();
+        producerWithPublicData.setFarmName(producer.getFarmName());
+        producerWithPublicData.setSlideShowUrl(producer.getSlideShowUrl());
+        producerWithPublicData.setWebsiteUrl(producer.getWebsiteUrl());
+        return new ResponseEntity<>(producerWithPublicData, OK);
+    }
+
 }

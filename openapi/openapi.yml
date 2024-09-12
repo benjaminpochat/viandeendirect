@@ -276,6 +276,29 @@ paths:
       in: path
       required: true
 
+  /productions/{productionId}/producer/publicData:
+    summary: Path used to access producers public data for a given production
+    get:
+      parameters:
+        - in: path
+          name: productionId
+          schema: 
+            type: integer
+          description: "the id of the Production"
+          required: true
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producer'
+          description: Successful response - returns a `Producer` entities, with only public data.
+      operationId: getProductionProducerPublicData
+      summary: Get a producer's public data for a production identified by its id.
+      description: Gets a `Producer` entities, with only public data for a production identified by its id.
+
   /beefProductions:
     post:
       requestBody:
@@ -447,12 +470,13 @@ paths:
           schema:
             type: integer
           required: true
-        - in: query
-          name: producer
-          description: The updated producer details.
-          schema:
-            $ref: '#/components/schemas/Producer'
-          required: true
+      requestBody:
+        description: A new `customer` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producer'
+        required: true
       security:
         - oAuth2ForViandeEnDirect: [read]
       responses:

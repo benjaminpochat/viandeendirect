@@ -3,6 +3,7 @@ import { MockApiCustomers } from "./MockApiCustomers.ts"
 import { MockApiProductions } from "./MockApiProductions.ts"
 import { MockApiSales } from "./MockApiSales.ts"
 import { MockApiProducers } from "./MockApiProducers.ts"
+import { getPopoverUtilityClass } from "@mui/material"
 
 export class MockApi {
 
@@ -28,6 +29,11 @@ export class MockApi {
     getProductionPercentageSold(args) {
         this.log('getProductionPercentageSold', args)
         return this.mockApiProductions.getProductionPercentageSold()
+    }
+
+    getProductionProducerPublicData(args) {
+        this.log('getProducerPublicData', args)
+        return this.mockApiProductions.getProductionProducerPublicData()
     }
 
     getBeefProduction(args) {

@@ -1,6 +1,7 @@
 package eu.viandeendirect.domains.production;
 
 import eu.viandeendirect.api.BeefProductionsApiDelegate;
+import eu.viandeendirect.domains.user.ProducerRepository;
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Production;
@@ -29,6 +30,8 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
     AuthenticationServiceSpecs producerService;
     @Autowired
     private SaleRepository saleRepository;
+    @Autowired
+    private ProducerRepository producerRepository;
 
     @Override
     public ResponseEntity<BeefProduction> getBeefProduction(Integer beefProductionId) {

@@ -16,6 +16,7 @@ export default function ProducerAccountView() {
 
   const WEB_SITE_URL_FIELD = 'websiteUrl';
   const SLIDE_SHOW_URL_FIELD = 'slideShowUrl';
+  const FARM_NAME_FIELD = 'farmeName';
 
   const {keycloak} = useKeycloak()
   const apiBuilder = new ApiBuilder()
@@ -26,17 +27,39 @@ export default function ProducerAccountView() {
 
   return <>
             <Typography variant="h6">Gestion du compte</Typography>
+            <br/>
             <Typography variant='subtitle1'>Configuration des paiements</Typography>
             {displayStripeAccount()}
 
             <Typography variant='subtitle1'>Présentation de la ferme</Typography>
             
             <EditableTextField 
+              label="nom de l'exploitation agricole"
+              initialValue={producer.farmName}
+              validateCallback={async (updatedFarmName) => {
+                const updatedProducer = { ...producer, farmName: updatedFarmName };
+                await updateProducer(updatedProducer)
+                setProducer(updatedProducer)
+              }}
+              editable={currentlyEditedField === undefined || currentlyEditedField === FARM_NAME_FIELD}
+              toggleCallback={() => {
+                if(currentlyEditedField) {
+                  setCurrentlyEditedField(undefined)
+                } else {
+                  setCurrentlyEditedField(FARM_NAME_FIELD)
+                }
+              }}
+              />
+            
+            <br/>
+
+            <EditableTextField 
               label='adresse du site web' 
               initialValue={producer.websiteUrl}
-              validateCallback={(updatedWebSiteUrl) => {
-                setProducer({...producer, websiteUrl: updatedWebSiteUrl})
-                updateProducer()
+              validateCallback={async (updatedWebSiteUrl) => {
+                const updatedProducer = { ...producer, websiteUrl: updatedWebSiteUrl };
+                await updateProducer(updatedProducer)
+                setProducer(updatedProducer)
               }}
               editable={currentlyEditedField === undefined || currentlyEditedField === WEB_SITE_URL_FIELD}
               toggleCallback={() => {
@@ -48,10 +71,16 @@ export default function ProducerAccountView() {
               }}
               />
 
+            <br/>
+
             <EditableTextField 
               label='adresse du diaporama' 
               initialValue={producer.slideShowUrl}
-              validateCallback={() => console.log('test')}
+              validateCallback={async (updatedSlideShowUrl) => {
+                const updatedProducer = { ...producer, slideShowUrl: updatedSlideShowUrl };
+                await updateProducer(updatedProducer)
+                setProducer(updatedProducer)
+              }}
               editable={currentlyEditedField === undefined || currentlyEditedField === SLIDE_SHOW_URL_FIELD}
               toggleCallback={() => {
                 if(currentlyEditedField) {
@@ -70,7 +99,7 @@ export default function ProducerAccountView() {
         {displayStripeAccountLink()}
         </>
     } else {
-      return <Button disabled={stripeAccountCreationPending} onClick={createStripeAccount}>
+      return <Button variant='outlined' size='small' disabled={stripeAccountCreationPending} onClick={createStripeAccount}>
         Créer un compte de paiement Stripe
           {displayStripeAccountCreationProgress()}
         </Button>
@@ -83,8 +112,14 @@ export default function ProducerAccountView() {
         return <Button onClick={() => window.location.href = producer.stripeAccount.accountLink}>Saisissez votre RIB et vos informations réglementaires sur Stripe</Button>
       } else {
         return <>
-          <Button onClick={() => window.open('https://dashboard.stripe.com/', '_blank')}>Consultez vos encaissements sur Stripe</Button>
-          <Button onClick={() => window.open(producer.stripeAccount.accountLink, '_self')}>Modifier votre RIB et vos informations réglementaires sur Stripe</Button>
+          <div>
+          <Button size='small' variant='outlined' onClick={() => window.open('https://dashboard.stripe.com/', '_blank')}>Consultez vos encaissements sur Stripe</Button>
+          </div>
+          <br/>
+          <div>
+          <Button size='small' variant='outlined' onClick={() => window.open(producer.stripeAccount.accountLink, '_self')}>Modifiez votre RIB et vos informations réglementaires sur Stripe</Button>
+          </div>
+          <br/>
         </>
       }
     }
@@ -96,9 +131,9 @@ export default function ProducerAccountView() {
     }
   }
 
-  async function updateProducer() {
+  async function updateProducer(updatedProducer: Producer) {
     const api = await apiBuilder.getAuthenticatedApi(keycloak)
-    await api.updateProducer({producerId: producer.id, producer: producer})
+    await api.updateProducer({producerId: producer.id, producer: updatedProducer})
   }
 
   async function createStripeAccount() {
