@@ -30,7 +30,7 @@ export default function Welcome() {
 
     function getWelcomeMessage() {
         if (sales.length > 0) {
-            return <Typography>Nos prochaines ventes :</Typography>
+            return <Typography variant='h5'>Nos prochaines ventes :</Typography>
         }
         return <>
             <Box sx={{
