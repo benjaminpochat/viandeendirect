@@ -108,8 +108,8 @@ export class MockApiProductions {
     getProductionProducerPublicData() {
         return {
             id: 1,
-            slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/edit?usp=sharing',
-            websiteUrl: 'https://www.lemonde.fr',
+            slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/embed?start=true&loop=true&delayms=3000',
+            websiteUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/embed?start=true&loop=true&delayms=3000',
             farmName: 'La ferme des Marronniers'
         }
     }

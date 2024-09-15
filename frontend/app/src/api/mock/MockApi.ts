@@ -36,6 +36,11 @@ export class MockApi {
         return this.mockApiProductions.getProductionProducerPublicData()
     }
 
+    getRandomProducerPublicData(args) {
+        this.log('getRandomProducerPublicData', args)
+        return this.mockApiProducers.getRandomProducerPublicData()
+    }
+
     getBeefProduction(args) {
         this.log('getBeefProduction', args)
         return this.mockApiProductions.getBeefProduction()

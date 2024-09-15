@@ -138,6 +138,20 @@ paths:
       operationId: getProducerPaymentsSummary
       summary: Get the payments summary for a producer
 
+  /producers/random/publicData:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producer'
+          description: "public data of the producer"
+      operationId: getRandomProducerPublicData
+      summary: Get the public data for a random producer
+
   /sales:
     summary: Path used to manage the list of all public sales.
     get:

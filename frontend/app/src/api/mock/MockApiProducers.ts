@@ -4,6 +4,14 @@ import {Producer} from "@viandeendirect/api/dist/models/Producer"
 import {Sale} from "@viandeendirect/api/dist/models/Sale"
 
 export class MockApiProducers {
+    getRandomProducerPublicData() {
+        return {
+            id: 1,
+            slideShowUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/embed?start=true&loop=true&delayms=3000',
+            websiteUrl: 'https://docs.google.com/presentation/d/1sqDR1v9AZLQYVJo2iT1gAVZ4UX25RamEBXeTmiUWRa4/embed?start=true&loop=true&delayms=3000',
+            farmName: 'La ferme des Marronniers'
+        }
+    }
     getStripeAccount(): StripeAccount {
         return {
             id: 1,
