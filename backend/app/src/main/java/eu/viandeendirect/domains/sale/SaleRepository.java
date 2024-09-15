@@ -6,6 +6,7 @@ import eu.viandeendirect.model.Sale;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface SaleRepository extends CrudRepository<Sale, Integer> {
                 where p = :production
                 """)
     List<Sale> findByProduction(@Param("production") Production production);
+
+    List<Sale> findByPrivateAccessKeyIgnoreCase(@NonNull String privateAccessKey);
 }

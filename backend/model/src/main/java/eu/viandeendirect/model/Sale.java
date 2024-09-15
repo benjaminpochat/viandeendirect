@@ -71,6 +71,9 @@ public class Sale {
   @JsonProperty("deliveryZipCode")
   private String deliveryZipCode;
 
+  @JsonProperty("privateAccessKey")
+  private String privateAccessKey;
+
   public Sale id(Integer id) {
     this.id = id;
     return this;
@@ -169,11 +172,11 @@ public class Sale {
   }
 
   /**
-   *
+   * Get deliveryStart
    * @return deliveryStart
   */
   @Valid
-  @Schema(name = "deliveryStart", description = "", required = false)
+  @Schema(name = "deliveryStart", required = false)
   public OffsetDateTime getDeliveryStart() {
     return deliveryStart;
   }
@@ -188,11 +191,11 @@ public class Sale {
   }
 
   /**
-   *
+   * Get deliveryStop
    * @return deliveryStop
   */
   @Valid
-  @Schema(name = "deliveryStop", description = "", required = false)
+  @Schema(name = "deliveryStop", required = false)
   public OffsetDateTime getDeliveryStop() {
     return deliveryStop;
   }
@@ -296,6 +299,25 @@ public class Sale {
     this.deliveryZipCode = deliveryZipCode;
   }
 
+  public Sale privateAccessKey(String privateAccessKey) {
+    this.privateAccessKey = privateAccessKey;
+    return this;
+  }
+
+  /**
+   * if this key is not null, the sale is private, and the user must enter this key to access the sale
+   * @return privateAccessKey
+  */
+
+  @Schema(name = "privateAccessKey", description = "if this key is not null, the sale is private, and the user must enter this key to access the sale", required = false)
+  public String getPrivateAccessKey() {
+    return privateAccessKey;
+  }
+
+  public void setPrivateAccessKey(String privateAccessKey) {
+    this.privateAccessKey = privateAccessKey;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -315,12 +337,13 @@ public class Sale {
         Objects.equals(this.deliveryAddressLine1, sale.deliveryAddressLine1) &&
         Objects.equals(this.deliveryAddressLine2, sale.deliveryAddressLine2) &&
         Objects.equals(this.deliveryCity, sale.deliveryCity) &&
-        Objects.equals(this.deliveryZipCode, sale.deliveryZipCode);
+        Objects.equals(this.deliveryZipCode, sale.deliveryZipCode) &&
+        Objects.equals(this.privateAccessKey, sale.privateAccessKey);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, seller, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode);
+    return Objects.hash(id, seller, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode, privateAccessKey);
   }
 
   @Override
@@ -338,6 +361,7 @@ public class Sale {
     sb.append("    deliveryAddressLine2: ").append(toIndentedString(deliveryAddressLine2)).append("\n");
     sb.append("    deliveryCity: ").append(toIndentedString(deliveryCity)).append("\n");
     sb.append("    deliveryZipCode: ").append(toIndentedString(deliveryZipCode)).append("\n");
+    sb.append("    privateAccessKey: ").append(toIndentedString(privateAccessKey)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -36,9 +36,13 @@ public class SaleService implements SalesApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<Sale>> getSales() {
+    public ResponseEntity<List<Sale>> getSales(String privateAccessKey) {
         List<Sale> sales = new ArrayList<>();
-        saleRepository.findAll().forEach(sales::add);
+        if (privateAccessKey == null || privateAccessKey.isBlank()) {
+            saleRepository.findAll().forEach(sales::add);
+        } else {
+            saleRepository.findByPrivateAccessKeyIgnoreCase(privateAccessKey).forEach(sales::add);
+        }
         return new ResponseEntity<>(sales, OK);
     }
 

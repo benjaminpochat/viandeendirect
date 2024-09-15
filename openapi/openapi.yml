@@ -154,6 +154,13 @@ paths:
 
   /sales:
     summary: Path used to manage the list of all public sales.
+    parameters:
+      - name: privateAccessKey
+        description: the key to access private sales
+        schema:
+          type: string
+        in: query
+        required: false
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -886,11 +893,9 @@ components:
             $ref: '#/components/schemas/Order'
             x-field-extra-annotation: '@jakarta.persistence.OneToMany(mappedBy = "sale")'
         deliveryStart:
-          description: ""
           type: string
           format: date-time
         deliveryStop:
-          description: ""
           type: string
           format: date-time
         deliveryAddressName:
@@ -903,6 +908,9 @@ components:
           type: string
         deliveryZipCode:
           type: string
+        privateAccessKey:
+          type: string
+          description: "if this key is not null, the sale is private, and the user must enter this key to access the sale"
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "sales")'
     StripeAccount:
       description: an acount for Stripe payment service

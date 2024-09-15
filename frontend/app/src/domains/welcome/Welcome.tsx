@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
+import { Box, Button, Stack, TextField, Toolbar, Typography } from '@mui/material'
+import ForwardIcon from '@mui/icons-material/Forward';
 
 import { useLoaderData } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ import { Sale } from '@viandeendirect/api/dist/models/Sale.js'
 import SaleCustomerCard from '../../domains/sale/components/SaleCustomerCard.tsx'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
 import { Producer } from '@viandeendirect/api/dist/models/Producer';
+import { FormContainer } from 'react-hook-form-mui';
 
 
 export default function Welcome() {
@@ -16,20 +18,35 @@ export default function Welcome() {
     const loadedData = useLoaderData();
     const sales: Array<Sale> = loadedData.sales
     const randomProducer: Producer = loadedData.randomProducer
+    const [privateAccessKey, setPrivateAccessKey] = useState<string | undefined>(undefined)
+    const [displayedSales, setDisplayedSales] = useState<Array<Sale>>(sales)
 
     return <Box
         component="main"
         sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        {getWelcomeMessage()}
-        <br/>
-        {sales.map(getSaleCard)}
+            <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap'
+                }}>
+                {getWelcomeMessage()}
+                    
+                <TextField size='small' 
+                    label="Clé d'accès vente privée" 
+                    onChange={(event) => setPrivateAccessKey(event.target.value)}
+                    onKeyDown={(event) => {if (event.key === 'Enter') {reloadDisplayedSales(privateAccessKey)}}}
+                    InputProps={{endAdornment: (<ForwardIcon sx={{':hover': {cursor: "pointer"}}} onClick={() => reloadDisplayedSales(privateAccessKey)}/>)}}/>                        
+                
+            </Box>
+        {displayedSales.map(getSaleCard)}
         {getRandomProducerSlideshow()}
     </Box>
 
     function getWelcomeMessage() {
-        if (sales.length > 0) {
-            return <Typography variant='h5'>Nos prochaines ventes :</Typography>
+        if (displayedSales.length > 0) {
+            return <Typography sx={{marginBottom: '1rem'}} variant='h5'>Nos prochaines ventes :</Typography>
         }
         return <>
             <Box sx={{
@@ -44,7 +61,7 @@ export default function Welcome() {
     }
 
     function getRandomProducerSlideshow() {
-        if (sales.length === 0) {
+        if (displayedSales.length === 0) {
         return <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <div style={{width: '-webkit-fill-available', maxWidth: '50rem', aspectRatio: '165/100'}}>
                     <iframe title="randomProducerSlideshow"
@@ -64,6 +81,12 @@ export default function Welcome() {
         return <SaleCustomerCard key={`sale-card-${sale.id}`} sale={sale}></SaleCustomerCard>
     }
 
+    async function reloadDisplayedSales(privateAccessKey: string | undefined) {
+        const apiBuilder = new ApiBuilder()
+        const api = await apiBuilder.getAnonymousApi()
+        const reloadedSales = await api.getSales({privateAccessKey: privateAccessKey})
+        setDisplayedSales(reloadedSales)
+    }
 }
 
 export async function loadWelcomeData(): Promise<Array<Sale>> {

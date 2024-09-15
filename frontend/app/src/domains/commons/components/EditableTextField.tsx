@@ -53,7 +53,6 @@ export default function EditableTextField({
             InputProps={{ readOnly: !writable }}
             disabled={!writable && !(value?.length > 0)}
             onChange={(event) => setValue(event.target.value)}
-            
             fullWidth
         />
         {getActions()}

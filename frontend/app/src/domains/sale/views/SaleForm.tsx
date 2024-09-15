@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useKeycloak } from '@react-keycloak/web'
-import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete } from "@mui/material"
+import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete, Switch } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'
 import 'dayjs/locale/fr';
@@ -25,6 +25,7 @@ export default function SaleForm() {
     const SET_DELIVERY_DATE_STEP = 'SET_DELIVERY_DATE_STEP'
     const SET_DELIVERY_ADDRESS_STEP = 'SET_DELIVERY_ADDRESS_STEP'
     const CONFIRMATION_STEP = 'CONFIRMATION_STEP'
+    const ACCESS_TYPE_STEP = 'ACCESS_TYPE_STEP'
 
     const { keycloak } = useKeycloak()
     const navigate = useNavigate()
@@ -37,6 +38,7 @@ export default function SaleForm() {
     const [activeStep, setActiveStep] = useState(SELECT_PRODUCTION_STEP)
     const [sale, setSale] = useState<Sale>({})
     const [selectedAddress, setSelectedAddress] = useState(undefined)
+    const [privateSale, setPrivateSale] = useState<boolean>(false)
 
     return <>
         <Typography variant='h6'>Nouvelle vente</Typography>
@@ -123,6 +125,27 @@ export default function SaleForm() {
                     </div>
                 </StepContent>
             </Step>
+            <Step active={activeStep === ACCESS_TYPE_STEP}>
+                <StepLabel>Type d'accès</StepLabel>
+                <StepContent>
+                    <div>
+                        <FormContainer onSuccess={validateAccessType}>
+                            <div>
+                                Vente publique 
+                                <Switch onChange={(event) => setPrivateSale(event.target.checked)}></Switch>
+                                Vente privée
+                            </div>
+                            {displayPrivateAccessField()}
+                            <div>
+                                <ButtonGroup>
+                                    <Button type='submit' variant="contained" size="small">Valider</Button>
+                                    <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
+                                </ButtonGroup>
+                            </div>
+                        </FormContainer>
+                    </div>    
+                </StepContent>
+            </Step>
             <Step active={activeStep === CONFIRMATION_STEP}>
                 <StepLabel>Récapitulatif</StepLabel>
                 <StepContent>
@@ -176,6 +199,22 @@ export default function SaleForm() {
         sale.deliveryStop.setMinutes(deliveryDateFormData.stopTime.toDate().getMinutes())
 
         setSale(sale) 
+        setActiveStep(ACCESS_TYPE_STEP)
+    }
+
+    function displayPrivateAccessField(): React.ReactNode {
+        if (privateSale) {
+            return <div>
+                <TextFieldElement required={privateSale} name="privateAccessCode" label="Code accès vente privée" variant="standard" />
+            </div>
+        }
+        return <></>
+    }
+
+    function validateAccessType(accessTypeFormData) {
+        sale.privateAccessKey = privateSale ? accessTypeFormData.privateAccessCode : undefined
+        
+        setSale(sale)
         setActiveStep(CONFIRMATION_STEP)
     }
 
