@@ -1,6 +1,7 @@
 package eu.viandeendirect.domains.production;
 
 import eu.viandeendirect.api.ProductionsApiDelegate;
+import eu.viandeendirect.domains.user.ProducerPublicDataService;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
@@ -23,11 +24,14 @@ public class ProductionService implements ProductionsApiDelegate {
     PackageLotRepository packageLotRepository;
 
     @Autowired
-    AuthenticationServiceSpecs producerService;
+    AuthenticationServiceSpecs authenticationService;
+
+    @Autowired
+    ProducerPublicDataService producerPublicDataService;
 
     @Override
     public ResponseEntity<List<Production>> getProductions(Boolean forSale) {
-        Producer producer = producerService.getAuthenticatedProducer();
+        Producer producer = authenticationService.getAuthenticatedProducer();
         List<Production> productions = productionRepository.findByProducer(producer);
         return new ResponseEntity<>(productions, OK);
     }
@@ -51,11 +55,7 @@ public class ProductionService implements ProductionsApiDelegate {
     public ResponseEntity<Producer> getProductionProducerPublicData(Integer productionId) {
         Production production = productionRepository.findById(productionId).get();
         Producer producer = production.getProducer();
-        var producerWithPublicData = new Producer();
-        producerWithPublicData.setFarmName(producer.getFarmName());
-        producerWithPublicData.setSlideShowUrl(producer.getSlideShowUrl());
-        producerWithPublicData.setWebsiteUrl(producer.getWebsiteUrl());
+        var producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
         return new ResponseEntity<>(producerWithPublicData, OK);
     }
-
 }

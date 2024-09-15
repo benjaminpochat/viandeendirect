@@ -50,6 +50,7 @@ class SecurityConfiguration {
                         .requestMatchers("/beefProductions", "/beefProductions/**").permitAll()
                         .requestMatchers("/honneyProductions", "/honneyProductions/**").permitAll()
                         .requestMatchers("/customers", "/customers/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
+                        .requestMatchers("/producers/random/publicData").permitAll()
                         .requestMatchers("/producers", "/producers/**").hasRole(ROLE_PRODUCER)
                         .requestMatchers("/orders", "/orders/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
                         .requestMatchers("/error").permitAll()

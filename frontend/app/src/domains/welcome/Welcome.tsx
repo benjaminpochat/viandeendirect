@@ -14,8 +14,7 @@ import { Producer } from '@viandeendirect/api/dist/models/Producer';
 export default function Welcome() {
 
     const loadedData = useLoaderData();
-    //const sales: Array<Sale> = loadedData.sales
-    const sales: Array<Sale> = []
+    const sales: Array<Sale> = loadedData.sales
     const randomProducer: Producer = loadedData.randomProducer
 
     return <Box
@@ -47,10 +46,10 @@ export default function Welcome() {
     function getRandomProducerSlideshow() {
         if (sales.length === 0) {
         return <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <div style={{width: '-webkit-fill-available', maxWidth: '60rem', aspectRatio: '165/100'}}>
+                <div style={{width: '-webkit-fill-available', maxWidth: '50rem', aspectRatio: '165/100'}}>
                     <iframe title="randomProducerSlideshow"
                         src={randomProducer.slideShowUrl}
-                        allowfullscreen="true"
+                        allowFullScreen={true}
                         mozallowfullscreen="true"
                         webkitallowfullscreen="true"
                         width="100%"
@@ -71,6 +70,6 @@ export async function loadWelcomeData(): Promise<Array<Sale>> {
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAnonymousApi()
     const sales = await api.getSales()
-    const randomProducer = await api.getRandomProducerPublicData()
+    const randomProducer = await api.getRandomProducerPublicData({})
     return {sales: sales, randomProducer: randomProducer}
 }

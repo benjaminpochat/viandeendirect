@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -36,6 +37,9 @@ public class ProducerService implements ProducersApiDelegate {
 
     @Autowired
     StripeService stripeService;
+
+    @Autowired
+    ProducerPublicDataService producerPublicDataService;
 
     @Override
     public ResponseEntity<Sale> createProducerSale(Integer producerId, Sale sale) {
@@ -133,5 +137,30 @@ public class ProducerService implements ProducersApiDelegate {
             LOGGER.error("An error occurred when loading Stripe payments summary data using Stripe API", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Une erreur s'est produite au chargement du résumé des paiements Stripe", e);
         }
+    }
+
+    @Override
+    public ResponseEntity<Producer> getRandomProducerPublicData() {
+        long producerCount = producerRepository.count();
+        var producersIterator = producerRepository.findAll().iterator();
+        Producer producer = getRandomProducer(producerCount, producersIterator);
+        Producer producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
+        return new ResponseEntity<>(producerWithPublicData, OK);
+    }
+
+    Producer getRandomProducer(long producerCount, Iterator<Producer> producersIterator) {
+        long randomProducerIndex = (long) (getRandom() * producerCount);
+        if(!producersIterator.hasNext()) {
+            return null;
+        }
+        Producer producer = producersIterator.next();
+        for (long i = 0 ; i < randomProducerIndex ; i++) {
+            producer = producersIterator.next();
+        }
+        return producer;
+    }
+
+    double getRandom() {
+        return Math.random();
     }
 }
