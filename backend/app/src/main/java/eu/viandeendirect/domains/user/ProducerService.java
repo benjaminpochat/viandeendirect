@@ -2,12 +2,14 @@ package eu.viandeendirect.domains.user;
 
 import eu.viandeendirect.api.ProducersApiDelegate;
 import eu.viandeendirect.domains.payment.StripeService;
+import eu.viandeendirect.domains.production.ProductionRepository;
 import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.model.*;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +42,8 @@ public class ProducerService implements ProducersApiDelegate {
 
     @Autowired
     ProducerPublicDataService producerPublicDataService;
+    @Autowired
+    private ProductionRepository productionRepository;
 
     @Override
     public ResponseEntity<Sale> createProducerSale(Integer producerId, Sale sale) {
@@ -146,6 +150,22 @@ public class ProducerService implements ProducersApiDelegate {
         Producer producer = getRandomProducer(producerCount, producersIterator);
         Producer producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
         return new ResponseEntity<>(producerWithPublicData, OK);
+    }
+
+    @Override
+    public ResponseEntity<Sale> addProductionToSale(Integer producerId, Integer saleId, Production production) {
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        Sale sale = saleRepository.findById(saleId).orElseThrow();
+        Production loadedProduction = productionRepository.findById(production.getId()).orElseThrow();
+        if (sale.getProductions().contains(loadedProduction)) {
+            return new ResponseEntity<>(CONFLICT);
+        }
+        sale.getProductions().add(loadedProduction);
+        saleRepository.save(sale);
+        return new ResponseEntity<>(sale, OK);
     }
 
     Producer getRandomProducer(long producerCount, Iterator<Producer> producersIterator) {
