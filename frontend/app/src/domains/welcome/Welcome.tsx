@@ -67,8 +67,6 @@ export default function Welcome() {
                     <iframe title="randomProducerSlideshow"
                         src={randomProducer.slideShowUrl}
                         allowFullScreen={true}
-                        mozallowfullscreen="true"
-                        webkitallowfullscreen="true"
                         width="100%"
                         height="100%" />
                     </div>

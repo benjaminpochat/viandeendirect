@@ -74,6 +74,9 @@ public class Sale {
   @JsonProperty("privateAccessKey")
   private String privateAccessKey;
 
+  @JsonProperty("publishedToCustomers")
+  private Boolean publishedToCustomers;
+
   public Sale id(Integer id) {
     this.id = id;
     return this;
@@ -318,6 +321,25 @@ public class Sale {
     this.privateAccessKey = privateAccessKey;
   }
 
+  public Sale publishedToCustomers(Boolean publishedToCustomers) {
+    this.publishedToCustomers = publishedToCustomers;
+    return this;
+  }
+
+  /**
+   * if false, the sale is not visible by customer
+   * @return publishedToCustomers
+  */
+
+  @Schema(name = "publishedToCustomers", description = "if false, the sale is not visible by customer", required = false)
+  public Boolean getPublishedToCustomers() {
+    return publishedToCustomers;
+  }
+
+  public void setPublishedToCustomers(Boolean publishedToCustomers) {
+    this.publishedToCustomers = publishedToCustomers;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -338,12 +360,13 @@ public class Sale {
         Objects.equals(this.deliveryAddressLine2, sale.deliveryAddressLine2) &&
         Objects.equals(this.deliveryCity, sale.deliveryCity) &&
         Objects.equals(this.deliveryZipCode, sale.deliveryZipCode) &&
-        Objects.equals(this.privateAccessKey, sale.privateAccessKey);
+        Objects.equals(this.privateAccessKey, sale.privateAccessKey) &&
+        Objects.equals(this.publishedToCustomers, sale.publishedToCustomers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, seller, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode, privateAccessKey);
+    return Objects.hash(id, seller, productions, orders, deliveryStart, deliveryStop, deliveryAddressName, deliveryAddressLine1, deliveryAddressLine2, deliveryCity, deliveryZipCode, privateAccessKey, publishedToCustomers);
   }
 
   @Override
@@ -362,6 +385,7 @@ public class Sale {
     sb.append("    deliveryCity: ").append(toIndentedString(deliveryCity)).append("\n");
     sb.append("    deliveryZipCode: ").append(toIndentedString(deliveryZipCode)).append("\n");
     sb.append("    privateAccessKey: ").append(toIndentedString(privateAccessKey)).append("\n");
+    sb.append("    publishedToCustomers: ").append(toIndentedString(publishedToCustomers)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -74,6 +74,10 @@ export class MockApi {
         this.log('addProductionToSale', args)
     }
 
+    setSalePublishedToCustomers(args) {
+        this.log('setSalePublishedToCustomers', args)
+    }
+
     getProducerSales(args) {
         this.log('getProducerSales', args)
         return this.mockApiProducers.getProducerSales()

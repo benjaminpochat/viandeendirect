@@ -11,9 +11,7 @@ export default function VisitFarmButton({producer}) {
                 onClose={() => setSlideShowDisplayed(false)}>
                 <iframe 
                     src={producer.slideShowUrl} 
-                    allowfullscreen="true" 
-                    mozallowfullscreen="true" 
-                    webkitallowfullscreen="true" 
+                    allowFullScreen={true}
                     width="100%" 
                     height="100%"/>
                 <DialogActions>

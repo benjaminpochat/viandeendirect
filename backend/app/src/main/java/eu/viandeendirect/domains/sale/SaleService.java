@@ -43,7 +43,8 @@ public class SaleService implements SalesApiDelegate {
         } else {
             saleRepository.findByPrivateAccessKeyIgnoreCase(privateAccessKey).forEach(sales::add);
         }
-        return new ResponseEntity<>(sales, OK);
+        List publishedSales = sales.stream().filter(sale -> sale.getPublishedToCustomers() != null && sale.getPublishedToCustomers()).toList();
+        return new ResponseEntity<>(publishedSales, OK);
     }
 
     @Override

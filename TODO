@@ -1,8 +1,0 @@
-Fonction mettre en vente
-
-Frontend : dans le formulaire de création d'une vente, indiquer dans le titre des steps les données saisies (notamment la production sélectionnée)
-
-Fonction publier la vente
-
-Backend : modèlen : ajouter un attrbut pour indiquer si une vente est publiée ou notamment
-Frontend : appel de service pour publier / dépublier la vente

@@ -94,6 +94,37 @@ paths:
           description: Successful response - returns the sale updated.
       operationId: addProductionToSale
 
+
+  /producers/{producerId}/sales/{saleId}/publishedToCustomers/{publishedToCustomers}:
+    summary: Path used to manage publication of the sale for customers.
+    patch:
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "204":
+          description: Successful response - no content.
+      operationId: setSalePublishedToCustomers
+    parameters:
+      - name: producerId
+        description: A unique identifier for a `producer`.
+        schema:
+          type: integer
+        in: path
+        required: true
+      - name: saleId
+        description: A unique identifier for a `sale`.
+        schema:
+          type: integer
+        in: path
+        required: true
+      - name: publishedToCustomers
+        description: A boolean value indicating whether the sale should be published to customers or not.
+        schema:
+          type: boolean
+        in: path
+        required: true
+
+
   /producers/{producerId}/customers:
     summary: Path used to manage the list of customers related to a particular producer.
     description: "The REST endpoint/path used to list zero or more customers"
@@ -944,6 +975,9 @@ components:
         privateAccessKey:
           type: string
           description: "if this key is not null, the sale is private, and the user must enter this key to access the sale"
+        publishedToCustomers:
+          type: boolean
+          description: "if false, the sale is not visible by customer"
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "sales")'
     StripeAccount:
       description: an acount for Stripe payment service

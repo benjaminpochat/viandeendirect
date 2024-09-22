@@ -9,7 +9,6 @@ import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,6 +41,7 @@ public class ProducerService implements ProducersApiDelegate {
 
     @Autowired
     ProducerPublicDataService producerPublicDataService;
+
     @Autowired
     private ProductionRepository productionRepository;
 
@@ -52,6 +52,7 @@ public class ProducerService implements ProducersApiDelegate {
             return new ResponseEntity<>(FORBIDDEN);
         }
         sale.setSeller(producer);
+        sale.setPublishedToCustomers(true);
         return new ResponseEntity<>(saleRepository.save(sale), CREATED);
     }
 
@@ -166,6 +167,18 @@ public class ProducerService implements ProducersApiDelegate {
         sale.getProductions().add(loadedProduction);
         saleRepository.save(sale);
         return new ResponseEntity<>(sale, OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> setSalePublishedToCustomers(Integer producerId, Integer saleId, Boolean publishedToCustomers) {
+        Producer producer = authenticationService.getAuthenticatedProducer();
+        if (!producer.getId().equals(producerId)) {
+            return new ResponseEntity<>(FORBIDDEN);
+        }
+        Sale sale = saleRepository.findById(saleId).orElseThrow();
+        sale.setPublishedToCustomers(publishedToCustomers);
+        saleRepository.save(sale);
+        return new ResponseEntity<>(NO_CONTENT);
     }
 
     Producer getRandomProducer(long producerCount, Iterator<Producer> producersIterator) {
