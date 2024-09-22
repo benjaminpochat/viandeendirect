@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, ButtonGroup, Card, CardActions, CardContent, Typography } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Chip, Typography, Stack } from "@mui/material"
+import LockIcon from '@mui/icons-material/Lock';
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
 import { useKeycloak } from '@react-keycloak/web';
@@ -32,10 +33,15 @@ export default function SaleCard({sale: sale}) {
 
     return (
         <Card>
+            <CardHeader 
+                title={<Stack alignItems="center" direction="row" gap={2} justifyContent='space-between'>
+                    <div>{`Vente du ${dayjs(sale.deliveryStart).format('DD/MM/YYYY')}`}</div>
+                    {getPrivateAccessKeyChip()}
+                    </Stack>
+                } 
+                subheader={sale.deliveryAddressName}>
+            </CardHeader>
             <CardContent>
-                <Typography variant="subtitle1" gutterBottom>
-                    Vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}
-                </Typography>
                 <div className='sale-card-line-1'>
                     <div>
                         <Typography color="text.secondary">
@@ -104,5 +110,12 @@ export default function SaleCard({sale: sale}) {
             .flatMap(order => order.items)
             .map(item => item.unitPrice * item.quantity)
             .reduce((totalAmout, orderItemAmout) => totalAmout + orderItemAmout, 0)
+    }
+
+    function getPrivateAccessKeyChip() {
+        if (sale.privateAccessKey) {
+            return <Chip icon={<LockIcon/>} size='small' color='warning' label={`code accès privé : ${sale.privateAccessKey}`}/>
+        }
+        return <></>
     }
 }

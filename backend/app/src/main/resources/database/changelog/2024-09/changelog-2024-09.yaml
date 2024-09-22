@@ -18,3 +18,13 @@ databaseChangeLog:
         - dropColumn:
             tableName: producers
             columnName: sales_credits
+  - changeSet:
+      id: viandeendirect-2024-09-20
+      author: benjamin
+      changes:
+        - addColumn:
+            tableName: sales
+            columns:
+              - column:
+                  name: private_access_key
+                  type: VARCHAR(255)

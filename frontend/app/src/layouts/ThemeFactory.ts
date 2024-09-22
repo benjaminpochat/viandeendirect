@@ -8,6 +8,9 @@ export class ThemeFactory {
               //mode: 'dark',
               primary: {
                 main: '#556b2f',
+              },
+              warning: {
+                main: '#ff3333'
               }
             },
             typography: {
