@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
 import { useKeycloak } from '@react-keycloak/web'
 import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete, Switch } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
@@ -39,6 +39,15 @@ export default function SaleForm() {
     const [sale, setSale] = useState<Sale>({})
     const [selectedAddress, setSelectedAddress] = useState(undefined)
     const [privateSale, setPrivateSale] = useState<boolean>(false)
+    const [queryParams] = useSearchParams()
+
+    useEffect(() => {
+        if (queryParams.get('productionId')) {
+            const selectedProductionId = Number(queryParams.get('productionId'))
+            const selectedProduction = productions.filter(production => production.id === selectedProductionId).pop()
+            selectProduction(selectedProduction)
+        }
+    })
 
     return <>
         <Typography variant='h6'>Nouvelle vente</Typography>

@@ -1,2 +1,9 @@
-Revoir le fonctionnement du contrôle producteur / client
-Finir la migration avec react-router pour l'espace client
+Fonction mettre en vente
+
+Backend : enregistrer une vente avec une nouvelle production si 'mettre en vente' sur une vent existante
+Frontend : dans le formulaire de création d'une vente, indiquer dans le titre des steps les données saisies (notamment la production sélectionnée)
+
+Fonction publier la vente
+
+Backend : modèlen : ajouter un attrbut pour indiquer si une vente est publiée ou notamment
+Frontend : appel de service pour publier / dépublier la vente

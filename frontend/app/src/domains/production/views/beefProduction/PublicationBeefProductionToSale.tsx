@@ -8,6 +8,7 @@ import { Box, Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, Sn
 import { AnimalTypeUtils } from "../../../../enum/AnimalTypeUtils.ts";
 import dayjs from "dayjs";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { useSnackbar } from "../../../commons/components/SnackbarProvider.tsx";
 
 export default function PublicationBeefProductionToSale(){
 
@@ -18,15 +19,15 @@ export default function PublicationBeefProductionToSale(){
     const [publishToNewSale, setPublishToNewSale] = useState<boolean>(true)
     const [selectedSale, setSelectedSale] = useState<Sale | undefined>(undefined)
     const [selectedSaleMissing, setSelectedSaleMissing] = useState<boolean>(false)
-    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+    const showSnackbar = useSnackbar()
     const navigate = useNavigate()
 
     return <Stack direction='column' gap='1rem'>
             <Typography variant="h6">Mise en vente de colis de viande de boeuf</Typography>
             <Typography>{`${new AnimalTypeUtils().getLabel(beefProduction.animalType, true)} n°${beefProduction.animalIdentifier}` }</Typography>
             <Typography>{`Découpée le ${dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}` }</Typography>
-            <Stack alignItems="center" direction="row" justifyContent='center'>
-                Créer une nouvelle vente 
+            <Stack alignItems="center" direction="row" justifyContent='flex-start'>
+                Créer une nouvelle vente
                 <Switch checked={!publishToNewSale} onChange={event => setPublishToNewSale(!event.target.checked)}/> 
                 Publier pour une vente existante
             </Stack>
@@ -35,11 +36,6 @@ export default function PublicationBeefProductionToSale(){
                 <Button size='small' variant='contained' onClick={() => validatePublication()}>{getPublicationValidationLabel()}</Button>
                 <Button size='small' variant='outlined' onClick={() => navigate(-1)}>Abandonner</Button>
             </ButtonGroup>
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={5000}
-                    message="This Snackbar will be dismissed in 5 seconds."
-                />
     </Stack>
 
     function getPublicationValidationLabel(): React.ReactNode {
@@ -66,18 +62,24 @@ export default function PublicationBeefProductionToSale(){
 
     function validatePublication() {
         if(publishToNewSale) {
-            console.log('create new sale')
-            setSnackbarOpen(true)
-            navigate(-1)
+            validatePublicationToNewSale()
         } else {
-            if(!selectedSale) {
-                setSelectedSaleMissing(true)
-            } else {
-                console.log(`publish to sale ${selectedSale?.id}`)
-            }
-            
+            validatePublicationToExistingSale()
         }
-        
+    }
+
+    function validatePublicationToNewSale() {
+        navigate(`/sales/creation?productionId=${beefProduction.id}`)
+    }
+
+    function validatePublicationToExistingSale() {
+        if(!selectedSale) {
+            setSelectedSaleMissing(true)
+        } else {
+            showSnackbar(`Les colis de viande de boeuf pour l'animal ${beefProduction.animalIdentifier} sont mis en vente pour la livraison du ${dayjs(selectedSale.deliveryStart).format('DD/MM/YYYY')} - ${selectedSale.deliveryAddressName}`, 'success');
+            console.log(`publish to sale ${selectedSale?.id}`)
+            navigate(-1)
+        }
     }
 
 }

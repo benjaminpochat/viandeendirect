@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import AuthenticatedLayout, { loadAuthenticatedLayoutData } from "./AuthenticatedLayout.tsx";
-import CustomerController from "../../domains/customer/CustomerController.tsx";
+
 import ProducerAccountView, { loadProducerAccountViewData } from "../../domains/producer/views/ProducerAccountView.tsx";
 import Dashboard from "../../domains/dashboard/views/Dashboard.tsx";
 import AnonymousLayout from "./AnonymousLayout.tsx";
