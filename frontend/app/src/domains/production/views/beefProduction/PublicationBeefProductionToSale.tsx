@@ -8,7 +8,6 @@ import { Box, Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, Sn
 import { AnimalTypeUtils } from "../../../../enum/AnimalTypeUtils.ts";
 import dayjs from "dayjs";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useSnackbar } from "../../../commons/components/SnackbarProvider.tsx";
 
 export default function PublicationBeefProductionToSale(){
 
@@ -16,6 +15,7 @@ export default function PublicationBeefProductionToSale(){
     const beefProduction = data.beefProduction
     const existingSales = data.existingSales
 
+    const {keycloak} = useKeycloak()
     const [publishToNewSale, setPublishToNewSale] = useState<boolean>(true)
     const [selectedSale, setSelectedSale] = useState<Sale | undefined>(undefined)
     const [selectedSaleMissing, setSelectedSaleMissing] = useState<boolean>(false)
@@ -53,7 +53,7 @@ export default function PublicationBeefProductionToSale(){
                     setSelectedSale(existingSales?.filter(sale => sale.id === event.target.value).pop())
                     setSelectedSaleMissing(false)
                     }}>
-                    {existingSales?.map(sale => <MenuItem value={sale.id}>Vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</MenuItem>)}
+                    {existingSales?.map(sale => <MenuItem key={`option-sale-${sale.id}`} value={sale.id}>Vente du {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - {sale.deliveryAddressName}</MenuItem>)}
                 </Select>
             </FormControl>
         }
@@ -72,13 +72,24 @@ export default function PublicationBeefProductionToSale(){
         navigate(`/sales/creation?productionId=${beefProduction.id}`)
     }
 
-    function validatePublicationToExistingSale() {
+    async function validatePublicationToExistingSale() {
         if(!selectedSale) {
             setSelectedSaleMissing(true)
         } else {
-            showSnackbar(`Les colis de viande de boeuf pour l'animal ${beefProduction.animalIdentifier} sont mis en vente pour la livraison du ${dayjs(selectedSale.deliveryStart).format('DD/MM/YYYY')} - ${selectedSale.deliveryAddressName}`, 'success');
-            console.log(`publish to sale ${selectedSale?.id}`)
-            navigate(-1)
+            const apiBuilder = new ApiBuilder()
+            const producerService = new ProducerService(keycloak)
+            const producer: Producer = await producerService.loadProducer()
+
+            const api = await apiBuilder.getAuthenticatedApi(keycloak)
+            try {
+                await api.addProductionToSale({producerId: +producer.id, saleId: +selectedSale.id, production: beefProduction})
+                showSnackbar(`Les colis de viande de boeuf pour l'animal ${beefProduction.animalIdentifier} sont mis en vente pour la livraison du ${dayjs(selectedSale.deliveryStart).format('DD/MM/YYYY')} - ${selectedSale.deliveryAddressName}`, 'success');
+                console.log(`publish to sale ${selectedSale?.id}`)
+                navigate(-1)
+            } catch (error) {
+                showSnackbar(`Une erreur s'est produite`, 'error');
+            }
+
         }
     }
 

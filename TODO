@@ -1,6 +1,5 @@
 Fonction mettre en vente
 
-Backend : enregistrer une vente avec une nouvelle production si 'mettre en vente' sur une vent existante
 Frontend : dans le formulaire de création d'une vente, indiquer dans le titre des steps les données saisies (notamment la production sélectionnée)
 
 Fonction publier la vente

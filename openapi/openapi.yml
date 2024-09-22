@@ -61,6 +61,39 @@ paths:
       summary: Create a sale owned by a specific producer.
       description: Creates a new instance of a `sale`.
 
+  /producers/{producerId}/sales/{saleId}/productions:
+    summary: Path used to manage the productions of a specific sale related to a particular producer.
+    parameters:
+    - name: producerId
+      description: A unique identifier for a `producer`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    - name: saleId
+      description: A unique identifier for a `sale`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    patch:
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      requestBody:
+        description: Add an existing production to the sale
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Production'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+          description: Successful response - returns the sale updated.
+      operationId: addProductionToSale
+
   /producers/{producerId}/customers:
     summary: Path used to manage the list of customers related to a particular producer.
     description: "The REST endpoint/path used to list zero or more customers"

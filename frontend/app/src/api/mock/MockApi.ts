@@ -70,6 +70,10 @@ export class MockApi {
         this.log('createProducerSale', args)
     }
 
+    addProductionToSale(args) {
+        this.log('addProductionToSale', args)
+    }
+
     getProducerSales(args) {
         this.log('getProducerSales', args)
         return this.mockApiProducers.getProducerSales()
