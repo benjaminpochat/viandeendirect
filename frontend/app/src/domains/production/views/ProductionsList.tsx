@@ -25,13 +25,12 @@ export default function ProductionsList() {
 
 
     function getProductionCards() {
-        return productions.map(production => <div className='card-clickable'>
-                                                <ProductionCard 
+        return productions.map(production => <ProductionCard 
+                                                    key={`production-card-${production.id}`}
                                                     production={production}
                                                     showActions={true} 
                                                     onClick={undefined} > 
-                                                </ProductionCard>
-                                            </div>)
+                                              </ProductionCard>)
     }
 }
 

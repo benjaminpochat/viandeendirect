@@ -16,6 +16,7 @@ import OrdersList, { loadOrdersListData } from "../../domains/sale/views/OrdersL
 import OrderView, { loadOrderViewData } from "../../domains/sale/views/OrderView.tsx";
 import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale/views/ProducerOrderForm.tsx";
 import CustomersList, { loadCustomersListData } from "../../domains/customer/views/CustomersList.tsx";
+import PublicationBeefProductionToSale, { loadPublicationBeefProductionToSaleData } from "../../domains/production/views/beefProduction/PublicationBeefProductionToSale.tsx";
 
 export class ProducerRouterFactory {
     getRouter(keycloak) {
@@ -47,6 +48,11 @@ export class ProducerRouterFactory {
                         path: '/beefProduction/creation',
                         element: <BeefProductionCreator/>,
                         loader: async () => loadBeefProductionCreatorData(keycloak)
+                    },
+                    {
+                        path: '/beefProduction/:productionId/publicationToSale',
+                        element: <PublicationBeefProductionToSale/>,
+                        loader: async ({params}) => loadPublicationBeefProductionToSaleData(+params.productionId, keycloak)
                     },
                     {
                         path: '/sales',

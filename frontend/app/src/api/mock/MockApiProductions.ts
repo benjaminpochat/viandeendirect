@@ -9,6 +9,7 @@ export class MockApiProductions {
             id: 1,
             productionType: 'BeefProduction',
             producer: undefined,
+            animalType: "BEEF_COW",
             lots: undefined,
             sales: undefined
         }
@@ -18,7 +19,8 @@ export class MockApiProductions {
             productionType: 'BeefProduction',
             producer: undefined,
             lots: undefined,
-            sales: undefined
+            sales: undefined,
+            animalType: "BEEF_HEIFER"
         }
         return [production1, production2]
     }
