@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Chip, Typography, Stack } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
 import { useKeycloak } from '@react-keycloak/web';
@@ -9,23 +11,29 @@ import { useNavigate } from 'react-router-dom';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 import { Order } from '@viandeendirect/api/dist/models/Order'
 import { Production } from '@viandeendirect/api/dist/models/Production'
+import { ProducerService } from '../../commons/service/ProducerService.ts';
+import { useSnackbar } from '../../commons/components/SnackbarProvider.tsx'
+import { Sale } from '@viandeendirect/api/dist/models/Sale';
 
 
 export default function SaleCard({sale: sale}) {
 
-    const [orders, setOrders] = useState<Array<Order>>([])
-    const [productions, setProductions] = useState<Array<Production>>([])
     const {keycloak} = useKeycloak()
     const navigate = useNavigate()
     const apiBuilder = new ApiBuilder()
+    const showSnackbar = useSnackbar()
+
+    const [orders, setOrders] = useState<Array<Order>>([])
+    const [productions, setProductions] = useState<Array<Production>>([])
+    const [currentSale, setCurrentSale] = useState<Sale>(sale)
 
 
     useEffect(() => {
         const loadData = async () => {
             const api = await apiBuilder.getAuthenticatedApi(keycloak)
-            const loadedOrders = await api.getSaleOrders({saleId: sale.id})
+            const loadedOrders = await api.getSaleOrders({saleId: currentSale.id})
             setOrders(loadedOrders)
-            const loadedProductions = await api.getSaleProductions({saleId: sale.id})
+            const loadedProductions = await api.getSaleProductions({saleId: currentSale.id})
             setProductions(loadedProductions)
         }
         loadData()
@@ -35,11 +43,11 @@ export default function SaleCard({sale: sale}) {
         <Card>
             <CardHeader 
                 title={<Stack alignItems="center" direction="row" gap={2} justifyContent='space-between'>
-                    <div>{`Vente du ${dayjs(sale.deliveryStart).format('DD/MM/YYYY')}`}</div>
-                    {getPrivateAccessKeyChip()}
+                    <div>{`Vente du ${dayjs(currentSale.deliveryStart).format('DD/MM/YYYY')}`}</div>
+                    {getChips()}
                     </Stack>
                 } 
-                subheader={sale.deliveryAddressName}>
+                subheader={currentSale.deliveryAddressName}>
             </CardHeader>
             <CardContent>
                 <div className='sale-card-line-1'>
@@ -48,10 +56,10 @@ export default function SaleCard({sale: sale}) {
                             Livraison
                         </Typography>
                         <Typography>
-                            <div>{sale.deliveryAddressLine1}</div>
-                            <div>{sale.deliveryAddressLine2}</div>
-                            <div>{sale.deliveryZipCode} - {sale.deliveryCity}</div>
-                            <div>entre {dayjs(sale.deliveryStart).format('HH:mm')} et {dayjs(sale.deliveryStop).format('HH:mm')}</div>
+                            <div>{currentSale.deliveryAddressLine1}</div>
+                            <div>{currentSale.deliveryAddressLine2}</div>
+                            <div>{currentSale.deliveryZipCode} - {currentSale.deliveryCity}</div>
+                            <div>entre {dayjs(currentSale.deliveryStart).format('HH:mm')} et {dayjs(currentSale.deliveryStop).format('HH:mm')}</div>
                         </Typography>
                     </div>
                     <div>
@@ -80,8 +88,8 @@ export default function SaleCard({sale: sale}) {
             </CardContent>
             <CardActions>
                 <ButtonGroup>
-                    <Button size="small">Publier la vente</Button>
-                    <Button size="small" onClick={() => navigate(`/sale/${sale.id}/orders`)}>Gérer les commandes</Button>
+                    {getPublicationButton()}                    
+                    <Button size="small" onClick={() => navigate(`/sale/${currentSale.id}/orders`)}>Gérer les commandes</Button>
                     <Button size="small">Préparer la livraison</Button>
                 </ButtonGroup>
             </CardActions>
@@ -94,7 +102,6 @@ export default function SaleCard({sale: sale}) {
                 return <SaleCardBeefProduction key={`beef-production-card-${production.id}`} production={production}/>
             default:
                 return <></>
-
         }
     }
 
@@ -112,10 +119,43 @@ export default function SaleCard({sale: sale}) {
             .reduce((totalAmout, orderItemAmout) => totalAmout + orderItemAmout, 0)
     }
 
-    function getPrivateAccessKeyChip() {
-        if (sale.privateAccessKey) {
-            return <Chip icon={<LockIcon/>} size='small' color='warning' label={`code accès privé : ${sale.privateAccessKey}`}/>
+    function getChips() {
+        let publishStatutChip = <></>
+        if (currentSale.publishedToCustomers) {
+            publishStatutChip = <Chip icon={<VisibilityIcon/>} size='small' color='success' label="publié"/>
+        } else {
+            publishStatutChip = <Chip icon={<VisibilityOffIcon/>} size='small' color='warning' label='non publié'/>
         }
-        return <></>
+        let privateAccessChip = <></>
+        if (currentSale.privateAccessKey) {
+            privateAccessChip = <Chip icon={<LockIcon/>} size='small' color='warning' label={(`${currentSale.privateAccessKey}`)}/>
+        }
+        return <Stack direction='column' alignItems='flex-end' gap='0.2rem'>{publishStatutChip}{privateAccessChip}</Stack>
+    }
+
+    function getPublicationButton(): React.ReactNode {
+        if (currentSale.publishedToCustomers) {
+            return <Button size="small" onClick={() => setPublishedToCustomers(false)}>Retirer la vente</Button>
+        }
+        return <Button size="small" onClick={() => setPublishedToCustomers(true)}>Publier la vente</Button>
+    }
+
+
+
+    async function setPublishedToCustomers(published: boolean): Promise<void> {
+        const producerService = new ProducerService(keycloak)
+        const producer = await producerService.loadProducer()
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        try {
+            await api.setSalePublishedToCustomers({saleId: currentSale.id, producerId: +producer.id, publishedToCustomers: published})
+            setCurrentSale({...currentSale, publishedToCustomers: published})
+            if (published) {
+                showSnackbar(`La vente livrée le ${dayjs(currentSale.deliveryStart).format('DD/MM/YYYY')} - ${currentSale.deliveryAddressName} a été publiée sur l'espace client`, 'success');
+            } else {
+                showSnackbar(`La vente livrée le ${dayjs(currentSale.deliveryStart).format('DD/MM/YYYY')} - ${currentSale.deliveryAddressName} a été retirée de l'espace client`, 'success');
+            }
+        } catch {
+            showSnackbar(`Oops... une erreur s'est produite`, 'error');
+        }
     }
 }

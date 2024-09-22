@@ -68,6 +68,7 @@ export class MockApiProducers {
             deliveryAddressLine2: undefined,
             deliveryCity: 'Rémilly',
             deliveryZipCode: '57580',
+            publishedToCustomers: true,
             productions: [
                 {
                     id: 1,
@@ -128,6 +129,7 @@ export class MockApiProducers {
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
             deliveryCity: 'Paris',
             deliveryZipCode: '75000',
+            publishedToCustomers: false,
             productions: [
                 {
                     id: 2,
@@ -203,6 +205,8 @@ export class MockApiProducers {
             deliveryAddressLine2: 'Derrière l\'Arc de Triomphe',
             deliveryCity: 'Paris',
             deliveryZipCode: '75000',
+            privateAccessKey: 'm0td3p4zz',
+            publishedToCustomers: true,
             productions: [
                 {
                     id: 3,

@@ -14,6 +14,9 @@ import { Address } from '@viandeendirect/api/dist/models/Address'
 import { Production } from '@viandeendirect/api/dist/models/Production'
 import { Producer } from '@viandeendirect/api/dist/models/Producer'
 import { ProducerService } from '../../commons/service/ProducerService.ts'
+import { BeefProduction, instanceOfBeefProduction } from "@viandeendirect/api/dist/models/BeefProduction.js"
+import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts'
+import { useSnackbar } from '../../commons/components/SnackbarProvider.tsx'
 
 /**
  * @param {Production} production 
@@ -36,10 +39,13 @@ export default function SaleForm() {
 
 
     const [activeStep, setActiveStep] = useState(SELECT_PRODUCTION_STEP)
+    const [completedSteps, setCompletedSteps] = useState<Array<string>>([])
     const [sale, setSale] = useState<Sale>({})
+    const [selectProductionStepLabel, setSelectProductionStepLabel] = useState<string>('Choisir une production')
     const [selectedAddress, setSelectedAddress] = useState(undefined)
     const [privateSale, setPrivateSale] = useState<boolean>(false)
     const [queryParams] = useSearchParams()
+    const showSnackbar = useSnackbar()
 
     useEffect(() => {
         if (queryParams.get('productionId')) {
@@ -53,7 +59,7 @@ export default function SaleForm() {
         <Typography variant='h6'>Nouvelle vente</Typography>
         <Stepper activeStep={activeStep} orientation="vertical">
             <Step active={activeStep === SELECT_PRODUCTION_STEP}>
-                <StepLabel>Choisir une production</StepLabel>
+                <StepLabel>{getSelectProductionStepLabel()}</StepLabel>
                 <StepContent>
                     <div>
                         <SaleProductionSelector selectProduction={selectProduction} productions={productions}></SaleProductionSelector>
@@ -64,7 +70,7 @@ export default function SaleForm() {
                 </StepContent>
             </Step>
             <Step active={activeStep === SET_DELIVERY_ADDRESS_STEP}>
-                <StepLabel>Définir le lieu de livraison</StepLabel>
+                <StepLabel>{getSetDeliveryAddressStepLabel()}</StepLabel>
                 <StepContent>
                     <div>
                         <FormContainer values={{
@@ -109,7 +115,7 @@ export default function SaleForm() {
                 </StepContent>
             </Step>
             <Step active={activeStep === SET_DELIVERY_DATE_STEP}>
-                <StepLabel>Définir l'heure de livraison</StepLabel>
+                <StepLabel>{getSetDeliveryDateStepLabel()}</StepLabel>
                 <StepContent>
                     <div>
                         <FormContainer onSuccess={validateDeliveryDate}>
@@ -135,7 +141,7 @@ export default function SaleForm() {
                 </StepContent>
             </Step>
             <Step active={activeStep === ACCESS_TYPE_STEP}>
-                <StepLabel>Type d'accès</StepLabel>
+                <StepLabel>{getAccessTypeStepLabel()}</StepLabel>
                 <StepContent>
                     <div>
                         <FormContainer onSuccess={validateAccessType}>
@@ -156,30 +162,52 @@ export default function SaleForm() {
                 </StepContent>
             </Step>
             <Step active={activeStep === CONFIRMATION_STEP}>
-                <StepLabel>Récapitulatif</StepLabel>
+                <StepLabel>Validation</StepLabel>
                 <StepContent>
+                    <div>Veuillez contrôler les information de la vente avant de valider.</div>
                     <div>
-                        <div>Production vendue : colis de viande de boeuf</div>
-                        <div>Lieu de livraison : {sale.deliveryAddressName}</div>
-                        <div>Livraison le {dayjs(sale.deliveryStart).format('DD/MM/YYYY')} entre {dayjs(sale.deliveryStart).format('HH:mm')} et {dayjs(sale.deliveryStop).format('HH:mm')}
-                        </div>
-                        <div>
-                            <ButtonGroup>
-                                <Button type='submit' variant="contained" size="small" onClick={() => validate()}>Valider</Button>
-                                <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
-                            </ButtonGroup>
-                        </div>
+                        <ButtonGroup>
+                            <Button type='submit' variant="contained" size="small" onClick={() => validate()}>Valider</Button>
+                            <Button variant="outlined" size="small" onClick={() => cancel()}>Abandonner</Button>
+                        </ButtonGroup>
                     </div>
                 </StepContent>
             </Step>
         </Stepper>
     </>
     
+    function getSelectProductionStepLabel(): string {
+        return selectProductionStepLabel
+    }
+
+    function getSetDeliveryAddressStepLabel(): string {
+        if(completedSteps.includes(SET_DELIVERY_ADDRESS_STEP)) {
+            return `Lieu de livraison : ${sale.deliveryAddressName}`
+        }
+        return 'Définir le lieu de livraison'
+    }
+
+    function getSetDeliveryDateStepLabel(): string {
+        if(completedSteps.includes(SET_DELIVERY_DATE_STEP)) {
+            return `Livraison le ${dayjs(sale.deliveryStart).format('DD/MM/YYYY')} entre ${dayjs(sale.deliveryStart).format('HH:mm')} et ${dayjs(sale.deliveryStop).format('HH:mm')}`
+        }
+        return `Définir la date et l'heure de livraison`
+    }
+
+    function getAccessTypeStepLabel(): string {
+        if(completedSteps.includes(ACCESS_TYPE_STEP)) {
+            return sale.privateAccessKey ? `Vente privée - code d'accès = '${sale.privateAccessKey}'` : 'Vente publique'
+        }
+        return `Définir le type d'accès`
+    }
+
     function selectProduction(production) {
         console.log('production selected for sale : ' + production)
-        sale.productions = [production]
+        sale.productions = sale.productions ? [...sale.productions, production] : [production]
         setSale(sale)
         setActiveStep(SET_DELIVERY_ADDRESS_STEP)
+        setCompletedSteps([...completedSteps, SELECT_PRODUCTION_STEP])
+        updateSelectProductionStepLabel(production)
     }
 
     function validateDeliveryAddress(deliveryAddressFormData) {
@@ -189,6 +217,7 @@ export default function SaleForm() {
         sale.deliveryCity = deliveryAddressFormData.city
         sale.deliveryZipCode = deliveryAddressFormData.zipCode
         setSale(sale)
+        setCompletedSteps([...completedSteps, SET_DELIVERY_ADDRESS_STEP])
         setActiveStep(SET_DELIVERY_DATE_STEP)
     }
 
@@ -208,6 +237,7 @@ export default function SaleForm() {
         sale.deliveryStop.setMinutes(deliveryDateFormData.stopTime.toDate().getMinutes())
 
         setSale(sale) 
+        setCompletedSteps([...completedSteps, SET_DELIVERY_DATE_STEP])
         setActiveStep(ACCESS_TYPE_STEP)
     }
 
@@ -222,9 +252,9 @@ export default function SaleForm() {
 
     function validateAccessType(accessTypeFormData) {
         sale.privateAccessKey = privateSale ? accessTypeFormData.privateAccessCode : undefined
-        
         setSale(sale)
         setActiveStep(CONFIRMATION_STEP)
+        setCompletedSteps([...completedSteps, ACCESS_TYPE_STEP])
     }
 
     async function validate() {
@@ -232,15 +262,31 @@ export default function SaleForm() {
         const api = await apiBuilder.getAuthenticatedApi(keycloak)
         try {
             await api.createProducerSale({producerId: +producer.id, sale: sale})
-            console.log('API called successfully. Returned data: ' + data)
+            showSnackbar(`Vos productions sont mises en vente dans l'espace client pour la livraison du ${dayjs(sale.deliveryStart).format('DD/MM/YYYY')} - ${sale.deliveryAddressName}`, 'success');
             navigate(-1)
         } catch (error) {
+            showSnackbar(`Oops... une erreur s'est produite`, 'error');
             console.error(error)
         }
     }
 
     function cancel() {
         navigate(-1)
+    }
+
+    async function updateSelectProductionStepLabel(selectedProduction: Production) {
+        if (selectedProduction) {
+            if (selectedProduction?.productionType === 'BeefProduction') {
+                const apiBuilder = new ApiBuilder()
+                const api = await apiBuilder.getAuthenticatedApi(keycloak)
+                const beefProduction = await api.getBeefProduction({beefProductionId: +selectedProduction.id})
+                setSelectProductionStepLabel(`Mise en vente de colis de viande de boeuf pour ${new AnimalTypeUtils().getLabel(beefProduction.animalType)} n° ${beefProduction.animalIdentifier} découpée le ${dayjs(beefProduction.cuttingDate).format('DD/MM/YYYY')}`)
+                return
+            }
+            setSelectProductionStepLabel(`Production sélectionnée`)
+            return
+        }
+        setSelectProductionStepLabel(`Choisir une production`)
     }
 }
 

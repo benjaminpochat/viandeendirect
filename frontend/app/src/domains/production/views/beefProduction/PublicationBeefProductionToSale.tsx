@@ -4,10 +4,12 @@ import { ProducerService } from "../../../commons/service/ProducerService.ts";
 import { Producer } from "@viandeendirect/api/dist/models/Producer.ts";
 import { BeefProduction } from "@viandeendirect/api/dist/models/BeefProduction.ts";
 import { Sale } from "@viandeendirect/api/dist/models/Sale.ts";
-import { Box, Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Typography } from "@mui/material";
+import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Typography } from "@mui/material";
 import { AnimalTypeUtils } from "../../../../enum/AnimalTypeUtils.ts";
 import dayjs from "dayjs";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
+import { useSnackbar } from '../../../commons/components/SnackbarProvider.tsx'
 
 export default function PublicationBeefProductionToSale(){
 
@@ -87,7 +89,7 @@ export default function PublicationBeefProductionToSale(){
                 console.log(`publish to sale ${selectedSale?.id}`)
                 navigate(-1)
             } catch (error) {
-                showSnackbar(`Une erreur s'est produite`, 'error');
+                showSnackbar(`Oops... une erreur s'est produite`, 'error');
             }
 
         }
