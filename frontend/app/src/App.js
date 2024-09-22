@@ -11,6 +11,8 @@ import './App.css'
 import { ThemeFactory } from './layouts/ThemeFactory.ts'
 
 import ViandeEnDirectRouterProvider from './layouts/ViandeEnDirectRouterProvider.tsx'
+import SnackbarProvider from './domains/commons/components/SnackbarProvider.tsx';
+
 
 
 function App() {
@@ -29,7 +31,9 @@ function App() {
       <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
         <ThemeProvider theme={themeFactory.createTheme()}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-            <ViandeEnDirectRouterProvider></ViandeEnDirectRouterProvider>
+            <SnackbarProvider>
+              <ViandeEnDirectRouterProvider></ViandeEnDirectRouterProvider>
+              </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
       </ReactKeycloakProvider>
