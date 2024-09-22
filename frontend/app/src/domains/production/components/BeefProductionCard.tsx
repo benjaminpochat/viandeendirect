@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Typography } from "@mui/material"
 import { useEffect, useState } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom';
+import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction';
+import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts';
 
 export default function BeefProductionCard({
     production: production, 
@@ -12,8 +14,8 @@ export default function BeefProductionCard({
     onClick: onClick = undefined}) {
 
     const navigate = useNavigate()
-    const [beefProduction, setBeefProduction] = useState(production)
-    const { keycloak, initialized } = useKeycloak()
+    const [beefProduction, setBeefProduction] = useState<BeefProduction>(production)
+    const { keycloak } = useKeycloak()
     const apiBuilder = new ApiBuilder()
     
     useEffect(() => {
@@ -26,28 +28,31 @@ export default function BeefProductionCard({
     }, [keycloak])
 
     return (
-        <Card>
-            <CardActionArea onClick={onClick || (() => navigate(`/beefProduction/${production.id}`))}>
+        <>
+            <Card>
+                <CardHeader title='Colis de viande de boeuf'
+                    subheader={`${new AnimalTypeUtils().getLabel(beefProduction.animalType)} n°${beefProduction.animalIdentifier}` }/>
                 <CardContent>
-                    <Typography color="text.secondary" gutterBottom>
-                        Colis de viande de boeuf
-                    </Typography>
                     <Typography variant="subtitle1" component="div">
                         Abattage le {dayjs(beefProduction.slaughterDate).format('DD/MM/YYYY')}
                     </Typography>
                     <Typography component="div">
-                        Poids de carcasse chaude : {beefProduction.warmCarcassWeight} kg
+                        Poids de carcasse chaude estimé : {beefProduction.warmCarcassWeight} kg
                     </Typography>
                 </CardContent>
-            </CardActionArea>
-            {getActions()}
-        </Card>
+                {getActions()}
+            </Card>
+        </>
+        
     )
 
     function getActions() {
         if (showActions) {
             return <CardActions>
-                <Button size="small">Mettre en vente</Button>
+                <ButtonGroup>
+                    <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}`)}>Voir le détail</Button>
+                    <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}/publicationToSale`)}>Mettre en vente</Button>
+                </ButtonGroup>
             </CardActions>
         }
     }

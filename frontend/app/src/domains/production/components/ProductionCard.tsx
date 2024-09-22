@@ -7,15 +7,21 @@ export default function ProductionCard({
     onClick: onClick
 }) {
 
-    switch (production.productionType) {
-        case 'BeefProduction':
-            return <BeefProductionCard 
-                        key={production.id}
-                        production={production} 
-                        showActions={showActions}
-                        onClick={onClick}>
-                    </BeefProductionCard>
-        default :
-            return <></>
+    return <div className={onClick ? 'card-clickable' : ''} onClick={onClick}>
+        {getProductionCard()}
+    </div>
+
+    function getProductionCard() {
+        switch (production.productionType) {
+            case 'BeefProduction':
+                return <BeefProductionCard 
+                            key={production.id}
+                            production={production} 
+                            showActions={showActions}
+                            onClick={onClick}>
+                        </BeefProductionCard>
+            default :
+                return <></>
+        }
     }
 }

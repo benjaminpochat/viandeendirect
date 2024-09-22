@@ -9,7 +9,6 @@ export default function EditableTextField({
     editable: initialEditable,
     toggleCallback}) {
 
-    const [editable, setEditable] = useState<boolean>(initialEditable)
     const [writable, setWritable] = useState<boolean>(false)
     const [value, setValue] = useState<string>(initialValue)
 

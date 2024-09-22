@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import dayjs from "dayjs"
 import 'dayjs/locale/fr'
 import { useKeycloak } from '@react-keycloak/web'
 
-import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton, Alert } from "@mui/material"
+import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton } from "@mui/material"
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import PackageLotsCreator from "../PackageLotsCreator.tsx"
 import {BreedingPropertiesForm, mapBreedingFormDataToBeefProduction as mapBreedingFormDataToBeefProduction} from "./forms/BreedingPropertiesForm.tsx"
