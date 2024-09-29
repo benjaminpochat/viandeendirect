@@ -17,8 +17,6 @@ import SnackbarProvider from './domains/commons/components/SnackbarProvider.tsx'
 
 function App() {
 
-  document.body.style.overflow = null;
-
   const themeFactory = new ThemeFactory()
 
   const keycloakClient = new Keycloak(window.location.origin + '/config/keycloak.json')
@@ -28,15 +26,14 @@ function App() {
     silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
   }
 
-
   return (
     <CookiesProvider>
       <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
         <ThemeProvider theme={themeFactory.createTheme()}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
             <SnackbarProvider>
-              <ViandeEnDirectRouterProvider/>
-            </SnackbarProvider>
+              <ViandeEnDirectRouterProvider></ViandeEnDirectRouterProvider>
+              </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
       </ReactKeycloakProvider>
