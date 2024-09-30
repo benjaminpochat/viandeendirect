@@ -427,6 +427,48 @@ paths:
       in: path
       required: true
 
+  /labels/packageElements/beefProduction/{beefProductionId}:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          description: get the pdf file of labels for package elements of a given beef production
+      operationId: getBeefProductionPackageElementsLabels
+    parameters:
+      - name: beefProductionId
+        description: A unique identifier for a `beefProduction`.
+        schema: 
+          type: integer
+        in: path
+        required: true
+
+  /labels/orders/sale/{saleId}:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          description: get the pdf file of labels for orders of a given sale
+      operationId: getSaleOrderLabels
+    parameters:
+      - name: saleId
+        description: A unique identifier for a `sale`.
+        schema: 
+          type: integer
+        in: path
+        required: true  
+
   /packageTemplates:
     get:
       security:

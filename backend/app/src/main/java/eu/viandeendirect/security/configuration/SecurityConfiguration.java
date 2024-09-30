@@ -55,6 +55,7 @@ class SecurityConfiguration {
                         .requestMatchers("/orders", "/orders/**").hasAnyRole(ROLE_PRODUCER, ROLE_CUSTOMER)
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/payments/stripeAccountEvents", "/payments/stripeConnectEvents").permitAll()
+                        .requestMatchers("/labels/**").hasRole(ROLE_PRODUCER)
                 );
         http.oauth2Login(Customizer.withDefaults());
         http.logout(logoutCustomizer -> logoutCustomizer.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));

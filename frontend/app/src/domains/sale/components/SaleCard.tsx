@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Chip, Typography, Stack } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Chip, Typography, Stack, Menu, MenuItem } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -27,13 +27,12 @@ export default function SaleCard({sale: sale}) {
     const [productions, setProductions] = useState<Array<Production>>([])
     const [currentSale, setCurrentSale] = useState<Sale>(sale)
 
-
     useEffect(() => {
         const loadData = async () => {
             const api = await apiBuilder.getAuthenticatedApi(keycloak)
-            const loadedOrders = await api.getSaleOrders({saleId: currentSale.id})
+            const loadedOrders = await api.getSaleOrders({saleId: +currentSale.id})
             setOrders(loadedOrders)
-            const loadedProductions = await api.getSaleProductions({saleId: currentSale.id})
+            const loadedProductions = await api.getSaleProductions({saleId: +currentSale.id})
             setProductions(loadedProductions)
         }
         loadData()
@@ -89,10 +88,10 @@ export default function SaleCard({sale: sale}) {
             <CardActions>
                 <ButtonGroup>
                     {getPublicationButton()}                    
-                    <Button size="small" onClick={() => navigate(`/sale/${currentSale.id}/orders`)}>Gérer les commandes</Button>
-                    <Button size="small">Préparer la livraison</Button>
+                    <Button size="small" onClick={() => navigate(`/sale/${currentSale.id}/orders`)}>Voir les commandes</Button>
                 </ButtonGroup>
             </CardActions>
+
         </Card>
     )
 
@@ -139,8 +138,6 @@ export default function SaleCard({sale: sale}) {
         }
         return <Button size="small" onClick={() => setPublishedToCustomers(true)}>Publier la vente</Button>
     }
-
-
 
     async function setPublishedToCustomers(published: boolean): Promise<void> {
         const producerService = new ProducerService(keycloak)
