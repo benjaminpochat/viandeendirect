@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Typography } from "@mui/material"
+import React, { MouseEvent } from 'react';
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Menu, MenuItem, Typography } from "@mui/material"
 import { useEffect, useState } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
@@ -15,6 +15,7 @@ export default function BeefProductionCard({
 
     const navigate = useNavigate()
     const [beefProduction, setBeefProduction] = useState<BeefProduction>(production)
+    const [orderPreparationMenuAnchor, setOrderPreparationMenuAnchor] = useState<HTMLElement | undefined>(undefined)
     const { keycloak } = useKeycloak()
     const apiBuilder = new ApiBuilder()
     
@@ -27,9 +28,7 @@ export default function BeefProductionCard({
         loadBeefProduction()
     }, [keycloak])
 
-    return (
-        <>
-            <Card>
+    return <Card>
                 <CardHeader title='Colis de viande de boeuf'
                     subheader={`${new AnimalTypeUtils().getLabel(beefProduction.animalType)} n°${beefProduction.animalIdentifier}` }/>
                 <CardContent>
@@ -41,10 +40,8 @@ export default function BeefProductionCard({
                     </Typography>
                 </CardContent>
                 {getActions()}
+                {getOrderPreparationMenu()}
             </Card>
-        </>
-        
-    )
 
     function getActions() {
         if (showActions) {
@@ -52,8 +49,29 @@ export default function BeefProductionCard({
                 <ButtonGroup>
                     <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}`)}>Voir le détail</Button>
                     <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}/publicationToSale`)}>Mettre en vente</Button>
+                    <Button size="small" onClick={handleClickOrderPreparationMenu}>Préparer les colis</Button>
                 </ButtonGroup>
             </CardActions>
         }
+    }
+
+
+    function getOrderPreparationMenu(): React.ReactNode {
+        return <Menu
+            id={`package-preparation-menu-${beefProduction.id}`}
+            anchorEl={orderPreparationMenuAnchor}
+            open={Boolean(orderPreparationMenuAnchor)}
+            onClose={handleCloseOrderPreparationMenu}>
+            <MenuItem onClick={handleCloseOrderPreparationMenu}>Etiquettes des colis</MenuItem>
+            <MenuItem onClick={handleCloseOrderPreparationMenu}>Etiquette des paquets</MenuItem>
+        </Menu>
+    }
+
+    function handleClickOrderPreparationMenu(event: MouseEvent<HTMLElement>): void {
+        setOrderPreparationMenuAnchor(event.currentTarget)
+    }
+
+    function handleCloseOrderPreparationMenu(): void {
+        setOrderPreparationMenuAnchor(undefined)
     }
 }
