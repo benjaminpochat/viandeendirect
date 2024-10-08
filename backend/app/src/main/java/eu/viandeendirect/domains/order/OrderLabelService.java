@@ -3,15 +3,15 @@ package eu.viandeendirect.domains.order;
 import eu.viandeendirect.common.PDFService;
 import eu.viandeendirect.domains.production.AnimalTypeLabelManager;
 import eu.viandeendirect.domains.production.CattleBreedLabelManager;
-import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Order;
-import eu.viandeendirect.model.Sale;
+import eu.viandeendirect.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Locale.FRENCH;
@@ -43,13 +43,12 @@ public class OrderLabelService extends PDFService<Sale> {
         return "html/pdf/order_label_template.css";
     }
 
-
-
     @Override
     protected String getContentAsHtml(Sale sale) {
         var htmlStart = String.format("<html><meta charset=\"UTF-8\"/><head><style type=\"text/css\">%s</style></head><body>", labelCSS);
         var htmlEnd = "</body></html>";
         return sale.getOrders().stream()
+                .filter(order -> List.of(OrderStatus.PAYMENT_COMPLETED, OrderStatus.BOOKED_WITHOUT_PAYMENT).contains(order.getStatus()))
                 .map(order -> this.getOrderLabel(order, sale))
                 .collect(Collectors.joining("", htmlStart, htmlEnd));
     }
@@ -59,7 +58,9 @@ public class OrderLabelService extends PDFService<Sale> {
                 sale.getDeliveryStart(),
                 order.getId(),
                 String.format("%s %s (%s)", order.getCustomer().getUser().getFirstName(), order.getCustomer().getUser().getLastName(), order.getCustomer().getUser().getPhone()),
-                order.getItems().stream().map(orderItem -> String.format("""
+                order.getItems().stream()
+                        .sorted(Comparator.comparing(OrderItem::getId))
+                        .map(orderItem -> String.format("""
                                         <tr>
                                             <td>%1$s</td>
                                             <td>x %2$s</td>
@@ -99,23 +100,6 @@ public class OrderLabelService extends PDFService<Sale> {
                                 ((BeefProduction)orderItem.getPackageLot().getProduction()).getCuttingPlace()
                         ))
                         .collect(Collectors.joining()),
-                /*
-                sale.getCuttingDate().plusDays(10),
-                sale.getCuttingDate().plusYears(1),
-                sale.getAnimal().getAnimalType().getLabel(FRENCH),
-                sale.getAnimal().getBreed().getLabel(FRENCH),
-                sale.getAnimal().getIdentificationNumber(),
-                getLabelRougeLogoAsBase64(slaughter.getAnimal()),
-                sale.getAnimal().getBirthDate(),
-                sale.getAnimal().getBirthFarm(),
-                sale.getAnimal().getBirthPlace(),
-                sale.getSlaughterDate(),
-                sale.getSlaughterHouse(),
-                sale.getSlaughterPlace(),
-                sale.getCuttingDate(),
-                sale.getCuttingButcher(),
-                sale.getCuttingPlace(),
-                */
                 getViandeEnDirectLogoAsBase64());
     }
 

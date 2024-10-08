@@ -427,7 +427,7 @@ paths:
       in: path
       required: true
 
-  /labels/packageElements/beefProduction/{beefProductionId}:
+  /beefProductions/{beefProductionId}/packageElementsLabel:
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -448,7 +448,7 @@ paths:
         in: path
         required: true
 
-  /labels/orders/sale/{saleId}:
+  /sales/{saleId}/ordersSummaries:
     get:
       security:
         - oAuth2ForViandeEnDirect: [read]
@@ -459,8 +459,29 @@ paths:
               schema:
                 type: string
                 format: binary
-          description: get the pdf file of labels for orders of a given sale
-      operationId: getSaleOrderLabels
+          description: get the pdf file of summaries for orders of a given sale
+      operationId: getSaleOrdersSummaries
+    parameters:
+      - name: saleId
+        description: A unique identifier for a `sale`.
+        schema: 
+          type: integer
+        in: path
+        required: true
+
+  /sales/{saleId}/ordersInvoices:
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          description: get the pdf file of invoices for orders of a given sale
+      operationId: getSaleOrdersInvoices
     parameters:
       - name: saleId
         description: A unique identifier for a `sale`.
@@ -1089,6 +1110,15 @@ components:
         farmName:
           description: "public name of the farm"
           type: string
+        legalName:
+          description: "legal name of the company"
+          type: string
+        legalIdentificationNumber:
+          description: "legal identification of the company"
+          type: string
+        address:
+          description: "address of the company"
+          $ref: '#/components/schemas/Address'
       x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name = "producers")'
     Address:
       description: "an address for delivering orders"

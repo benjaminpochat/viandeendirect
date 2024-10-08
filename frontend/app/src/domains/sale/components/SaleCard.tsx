@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, MouseEvent } from 'react'
 
 import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Chip, Typography, Stack, Menu, MenuItem } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
@@ -14,6 +14,7 @@ import { Production } from '@viandeendirect/api/dist/models/Production'
 import { ProducerService } from '../../commons/service/ProducerService.ts';
 import { useSnackbar } from '../../commons/components/SnackbarProvider.tsx'
 import { Sale } from '@viandeendirect/api/dist/models/Sale';
+import { DownloadFileService } from '../../commons/service/DownloadFileService.ts';
 
 
 export default function SaleCard({sale: sale}) {
@@ -26,6 +27,8 @@ export default function SaleCard({sale: sale}) {
     const [orders, setOrders] = useState<Array<Order>>([])
     const [productions, setProductions] = useState<Array<Production>>([])
     const [currentSale, setCurrentSale] = useState<Sale>(sale)
+    const [salePreparationMenuAnchor, setSalePreparationMenuAnchor] = useState<HTMLElement | undefined>(undefined)
+
 
     useEffect(() => {
         const loadData = async () => {
@@ -89,9 +92,10 @@ export default function SaleCard({sale: sale}) {
                 <ButtonGroup>
                     {getPublicationButton()}                    
                     <Button size="small" onClick={() => navigate(`/sale/${currentSale.id}/orders`)}>Voir les commandes</Button>
+                    <Button size="small" onClick={openSalePreparationMenu}>Préparer la vente</Button>
                 </ButtonGroup>
             </CardActions>
-
+            {getSalePreparationMenu()}
         </Card>
     )
 
@@ -154,5 +158,38 @@ export default function SaleCard({sale: sale}) {
         } catch {
             showSnackbar(`Oops... une erreur s'est produite`, 'error');
         }
+    }
+
+    function getSalePreparationMenu(): React.ReactNode {
+        return <Menu
+            id={`sale-preparation-menu-${currentSale.id}`}
+            anchorEl={salePreparationMenuAnchor}
+            open={Boolean(salePreparationMenuAnchor)}
+            onClose={closeSalePreparationMenu}>
+            <MenuItem onClick={downloadOrdersSummaries}>Imprimer les récapitulatifs des commandes</MenuItem>
+            <MenuItem onClick={downloadOrdersInvoices}>Imprimer les factures</MenuItem>
+        </Menu>
+    }
+
+    function openSalePreparationMenu(event: MouseEvent<HTMLElement>): void {
+        setSalePreparationMenuAnchor(event.currentTarget)
+    }
+
+    function closeSalePreparationMenu(): void {
+        setSalePreparationMenuAnchor(undefined)
+    }
+
+    async function downloadOrdersSummaries(): Promise<void> {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak);
+        const pdfByteArray = await api.getSaleOrdersSummaries({saleId: currentSale.id})
+        DownloadFileService.produceDownloadPdfFile(pdfByteArray, 'recapitulatifs_commandes.pdf');
+        closeSalePreparationMenu()
+    }
+
+    async function downloadOrdersInvoices(): Promise<void> {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak);
+        const pdfByteArray = await api.getSaleOrdersInvoices({saleId: currentSale.id})
+        DownloadFileService.produceDownloadPdfFile(pdfByteArray, 'factures_commandes.pdf');
+        closeSalePreparationMenu()
     }
 }
