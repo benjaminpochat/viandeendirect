@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: viandeendirect-2024-10-06
+      author: benjamin
+      changes:
+        - addColumn:
+            tableName: producers
+            columns:
+              - column:
+                  name: legal_name
+                  type: VARCHAR(255)
+              - column:
+                  name: legal_identification_number
+                  type: VARCHAR(255)
+              - column:
+                  name: address_id
+                  type: INTEGER

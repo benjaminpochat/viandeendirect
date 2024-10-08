@@ -46,6 +46,21 @@ export class MockApi {
         return this.mockApiProductions.getBeefProduction()
     }
 
+    getBeefProductionPackageElementsLabels(args) {
+        this.log('getBeefProductionPackageElementsLabels', args)
+        return []
+    }
+
+    getSaleOrdersSummaries(args) {
+        this.log('getSaleOrdersSummaries', args)
+        return []
+    }
+
+    getSaleOrdersInvoices(args) {
+        this.log('getSaleOrdersInvoices', args)
+        return []
+    }
+
     getPackageTemplates(args) {
         this.log('getPackageTemplates', args)
         return this.mockApiProductions.getPackageTemplates()

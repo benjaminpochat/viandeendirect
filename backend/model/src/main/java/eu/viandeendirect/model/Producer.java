@@ -24,7 +24,7 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * 
+ * a producer
  */
 
 @Schema(name = "Producer", description = "a producer")
@@ -72,6 +72,16 @@ public class Producer {
 
   @JsonProperty("farmName")
   private String farmName;
+
+  @JsonProperty("legalName")
+  private String legalName;
+
+  @JsonProperty("legalIdentificationNumber")
+  private String legalIdentificationNumber;
+
+  @JsonProperty("address")
+  @OneToOne
+  private Address address;
 
   public Producer user(User user) {
     this.user = user;
@@ -260,6 +270,63 @@ public class Producer {
     this.farmName = farmName;
   }
 
+  public Producer legalName(String legalName) {
+    this.legalName = legalName;
+    return this;
+  }
+
+  /**
+   * legal name of the company
+   * @return legalName
+  */
+
+  @Schema(name = "legalName", description = "legal name of the company", required = false)
+  public String getLegalName() {
+    return legalName;
+  }
+
+  public void setLegalName(String legalName) {
+    this.legalName = legalName;
+  }
+
+  public Producer legalIdentificationNumber(String legalIdentificationNumber) {
+    this.legalIdentificationNumber = legalIdentificationNumber;
+    return this;
+  }
+
+  /**
+   * legal identification of the company
+   * @return legalIdentificationNumber
+  */
+
+  @Schema(name = "legalIdentificationNumber", description = "legal identification of the company", required = false)
+  public String getLegalIdentificationNumber() {
+    return legalIdentificationNumber;
+  }
+
+  public void setLegalIdentificationNumber(String legalIdentificationNumber) {
+    this.legalIdentificationNumber = legalIdentificationNumber;
+  }
+
+  public Producer address(Address address) {
+    this.address = address;
+    return this;
+  }
+
+  /**
+   * Get address
+   * @return address
+  */
+  @Valid
+  @Schema(name = "address", required = false)
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -277,12 +344,15 @@ public class Producer {
         Objects.equals(this.stripeAccount, producer.stripeAccount) &&
         Objects.equals(this.slideShowUrl, producer.slideShowUrl) &&
         Objects.equals(this.websiteUrl, producer.websiteUrl) &&
-        Objects.equals(this.farmName, producer.farmName);
+        Objects.equals(this.farmName, producer.farmName) &&
+        Objects.equals(this.legalName, producer.legalName) &&
+        Objects.equals(this.legalIdentificationNumber, producer.legalIdentificationNumber) &&
+        Objects.equals(this.address, producer.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, id, status, productions, sales, stripeAccount, slideShowUrl, websiteUrl, farmName);
+    return Objects.hash(user, id, status, productions, sales, stripeAccount, slideShowUrl, websiteUrl, farmName, legalName, legalIdentificationNumber, address);
   }
 
   @Override
@@ -298,6 +368,9 @@ public class Producer {
     sb.append("    slideShowUrl: ").append(toIndentedString(slideShowUrl)).append("\n");
     sb.append("    websiteUrl: ").append(toIndentedString(websiteUrl)).append("\n");
     sb.append("    farmName: ").append(toIndentedString(farmName)).append("\n");
+    sb.append("    legalName: ").append(toIndentedString(legalName)).append("\n");
+    sb.append("    legalIdentificationNumber: ").append(toIndentedString(legalIdentificationNumber)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");
     return sb.toString();
   }

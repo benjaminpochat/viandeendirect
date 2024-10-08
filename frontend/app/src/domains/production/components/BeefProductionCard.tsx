@@ -7,6 +7,8 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom';
 import { BeefProduction } from '@viandeendirect/api/dist/models/BeefProduction';
 import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts';
+import { DownloadFileService } from '../../commons/service/DownloadFileService.ts';
+ 
 
 export default function BeefProductionCard({
     production: production, 
@@ -49,29 +51,34 @@ export default function BeefProductionCard({
                 <ButtonGroup>
                     <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}`)}>Voir le détail</Button>
                     <Button variant='outlined' size="small" onClick={() => navigate(`/beefProduction/${production.id}/publicationToSale`)}>Mettre en vente</Button>
-                    <Button size="small" onClick={handleClickOrderPreparationMenu}>Préparer les colis</Button>
+                    <Button size="small" onClick={openOrderPreparationMenu}>Préparer les colis</Button>
                 </ButtonGroup>
             </CardActions>
         }
     }
-
 
     function getOrderPreparationMenu(): React.ReactNode {
         return <Menu
             id={`package-preparation-menu-${beefProduction.id}`}
             anchorEl={orderPreparationMenuAnchor}
             open={Boolean(orderPreparationMenuAnchor)}
-            onClose={handleCloseOrderPreparationMenu}>
-            <MenuItem onClick={handleCloseOrderPreparationMenu}>Etiquettes des colis</MenuItem>
-            <MenuItem onClick={handleCloseOrderPreparationMenu}>Etiquette des paquets</MenuItem>
+            onClose={closeOrderPreparationMenu}>
+            <MenuItem onClick={downloadLabels}>Imprimer les étiquettes</MenuItem>
         </Menu>
     }
 
-    function handleClickOrderPreparationMenu(event: MouseEvent<HTMLElement>): void {
+    function openOrderPreparationMenu(event: MouseEvent<HTMLElement>): void {
         setOrderPreparationMenuAnchor(event.currentTarget)
     }
 
-    function handleCloseOrderPreparationMenu(): void {
+    function closeOrderPreparationMenu(): void {
         setOrderPreparationMenuAnchor(undefined)
+    }
+
+    async function downloadLabels(): Promise<void> {
+        const api = await apiBuilder.getAuthenticatedApi(keycloak)
+        const pdfByteArray = await api.getBeefProductionPackageElementsLabels({beefProductionId: production.id})
+        DownloadFileService.produceDownloadPdfFile(pdfByteArray, 'etiquettes_colis.pdf')
+        closeOrderPreparationMenu()
     }
 }

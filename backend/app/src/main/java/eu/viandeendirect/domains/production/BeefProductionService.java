@@ -1,6 +1,7 @@
 package eu.viandeendirect.domains.production;
 
 import eu.viandeendirect.api.BeefProductionsApiDelegate;
+import eu.viandeendirect.common.ApplicationContextVerifyer;
 import eu.viandeendirect.domains.user.ProducerRepository;
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.PackageLot;
@@ -8,17 +9,27 @@ import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class BeefProductionService implements BeefProductionsApiDelegate {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeefProductionService.class);
 
     @Autowired
     ProductionRepository productionRepository;
@@ -28,14 +39,23 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
 
     @Autowired
     AuthenticationServiceSpecs producerService;
+
     @Autowired
     private SaleRepository saleRepository;
+
     @Autowired
     private ProducerRepository producerRepository;
 
+    @Autowired
+    private PackageElementLabelService packageElementLabelService;
+
+    @Autowired
+    private BeefProductionRepository beefProductionRepository;
+
+
     @Override
     public ResponseEntity<BeefProduction> getBeefProduction(Integer beefProductionId) {
-        Production production = productionRepository.findById(beefProductionId).get();
+        BeefProduction production = beefProductionRepository.findById(beefProductionId).get();
         production.setLots(packageLotRepository.findByProduction(production));
         return new ResponseEntity(production, HttpStatus.OK);
     }
@@ -51,6 +71,21 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
         lotsCreated.forEach(lotsCreatedAsList::add);
         productionCreated.setLots(lotsCreatedAsList);
         return new ResponseEntity<>(productionCreated, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Resource> getBeefProductionPackageElementsLabels(Integer beefProductionId) {
+        BeefProduction beefProduction = beefProductionRepository.findById(beefProductionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        try {
+            ByteArrayOutputStream pdf = packageElementLabelService.generatePDF(
+                    new PackageElementLabelService.Arguments(
+                            beefProduction,
+                            List.of("Bavette", "Bourguignon", "Côte", "Faux filet", "Filet", "Hachi", "Hampe", "Queue", "Jarret", "Joues", "Onglet", "Osso buco", "Paleron", "Pot-au-feu", "Rosbeef", "Roti", "Rumsteak", "Steaks", "Steaks burger")));
+            return new ResponseEntity<>(new ByteArrayResource(pdf.toByteArray()), HttpStatus.OK);
+        } catch (IOException e) {
+            LOGGER.error("Error generating labels as pdf for package elements", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     void checkBeefProduction(BeefProduction beefProduction) {

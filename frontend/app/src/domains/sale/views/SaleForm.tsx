@@ -53,7 +53,7 @@ export default function SaleForm() {
             const selectedProduction = productions.filter(production => production.id === selectedProductionId).pop()
             selectProduction(selectedProduction)
         }
-    })
+    }, [keycloak])
 
     return <>
         <Typography variant='h6'>Nouvelle vente</Typography>
