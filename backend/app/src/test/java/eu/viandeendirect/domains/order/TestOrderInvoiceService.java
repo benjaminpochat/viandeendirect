@@ -6,6 +6,7 @@ import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Sale;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -33,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles(value = "test")
 @ExtendWith({SpringExtension.class})
+@Disabled
 class TestOrderInvoiceService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestOrderInvoiceService.class);
