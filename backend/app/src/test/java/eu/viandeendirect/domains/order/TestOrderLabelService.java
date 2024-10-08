@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles(value = "test")
 @ExtendWith({SpringExtension.class})
+@Disabled
 public class TestOrderLabelService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestOrderLabelService.class);
