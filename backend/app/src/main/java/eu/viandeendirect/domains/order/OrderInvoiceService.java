@@ -105,7 +105,8 @@ public class OrderInvoiceService extends PDFService<Sale> {
                 getTotalPriceWithoutTax(orderItems),
                 getTotalTax(orderItems),
                 getTotalPriceWithTax(orderItems),
-                sale.getDeliveryStart()
+                sale.getDeliveryStart(),
+                getPayedStampStyleClass(orderItems)
         );
     }
 
@@ -126,6 +127,13 @@ public class OrderInvoiceService extends PDFService<Sale> {
 
     private float getItemPriceWithoutTax(OrderItem item) {
         return item.getUnitPrice() * item.getPackageLot().getNetWeight() / 1.055f;
+    }
+
+    private String getPayedStampStyleClass(List<OrderItem> orderItems) {
+        boolean allOrdersPayed = orderItems.stream()
+                .map(OrderItem::getOrder)
+                .allMatch(order -> (List.of(PAYMENT_COMPLETED, DELIVERED)).contains(order.getStatus()));
+        return allOrdersPayed ? "payed" : "not-payed";
     }
 
     record ProducerCustomerOrderItems(Producer producer, Customer customer, List<OrderItem> orderItems) {

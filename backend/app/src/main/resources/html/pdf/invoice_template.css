@@ -49,3 +49,7 @@ body {
     transform: rotate(10deg);
     width: 3cm;
 }
+
+.not-payed {
+    visibility: collapse;
+}

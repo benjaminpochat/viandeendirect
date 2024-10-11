@@ -2,10 +2,7 @@ package eu.viandeendirect.domains.order;
 
 import de.redsix.pdfcompare.CompareResult;
 import de.redsix.pdfcompare.PdfComparator;
-import eu.viandeendirect.model.BeefProduction;
-import eu.viandeendirect.model.Order;
-import eu.viandeendirect.model.PackageLot;
-import eu.viandeendirect.model.Sale;
+import eu.viandeendirect.model.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +26,7 @@ import java.util.Map;
 
 import static eu.viandeendirect.domains.order.OrderTestUtils.*;
 import static eu.viandeendirect.domains.order.OrderTestUtils.createCustomer;
+import static eu.viandeendirect.model.OrderStatus.BOOKED_WITHOUT_PAYMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -59,6 +57,7 @@ class TestOrderInvoiceService {
 
         Order order1 = createOrder(123, createCustomer("Valentine", "DURAND", "0601020304"), Map.of(packageLot1, 1, packageLot2, 2));
         Order order2 = createOrder(124, createCustomer("Thibaut", "ENCOSTUME-MONFISS", "0304050607"), Map.of(packageLot1, 2));
+        order2.setStatus(BOOKED_WITHOUT_PAYMENT);
         sale.setOrders(List.of(order1, order2));
 
         // when
