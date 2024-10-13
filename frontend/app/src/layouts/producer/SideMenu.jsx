@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List';
@@ -7,7 +8,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import { Link } from 'react-router-dom';
 
-function SideMenu({width, open, onClose}) {
+export default function SideMenu({width, open, onClose}) {
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
     function sideMenuContent() {
         return (
@@ -54,9 +58,15 @@ function SideMenu({width, open, onClose}) {
         )
     }
 
-    return (
-        <Box>
-            <Drawer
+    function getDrawer() {
+        if (isSmallScreen) {
+            return getTemporaryMenuDrawer()
+        }
+        return getPermanentMenuDrawer()
+    }
+
+    function getTemporaryMenuDrawer() {
+        return <Drawer
                 variant="temporary"
                 open={open}
                 onClose={onClose}
@@ -64,28 +74,29 @@ function SideMenu({width, open, onClose}) {
                     keepMounted: true, // Better open performance on mobile.
                 }}
                 sx={{
-                    display: { xs: 'block', sm: 'none' },
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: width },
                 }}
             >
-                {sideMenuContent()}
-            </Drawer>
-            <Drawer
+            {sideMenuContent()}
+        </Drawer>
+    }
+
+    function getPermanentMenuDrawer() {
+        return <Drawer
                 variant="permanent"
                 sx={{
-                    display: { 
-                        xs: 'none', 
-                        sm: 'block',
-                    },
                     width: width,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: width },
                 }}
             >
-                {sideMenuContent()}
-            </Drawer>
+            {sideMenuContent()}
+        </Drawer>
+    }
+
+    return (
+        <Box>
+            {getDrawer()}
         </Box>
     )
 }
-
-export default SideMenu

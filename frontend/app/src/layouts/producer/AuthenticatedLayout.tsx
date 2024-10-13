@@ -23,8 +23,8 @@ export default function AuthenticatedLayout() {
   const sideMenuWidth = 240;
 
   const handleSideMenuToggle = () => {
-    setSideMenuOpen(!sideMenuOpen);
-  };
+    setSideMenuOpen(!sideMenuOpen)
+  }
 
   function getIcon() {
     if (sideMenuOpen) {
