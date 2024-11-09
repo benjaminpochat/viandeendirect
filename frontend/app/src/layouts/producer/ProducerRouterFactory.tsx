@@ -17,6 +17,7 @@ import OrderView, { loadOrderViewData } from "../../domains/sale/views/OrderView
 import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale/views/ProducerOrderForm.tsx";
 import CustomersList, { loadCustomersListData } from "../../domains/customer/views/CustomersList.tsx";
 import PublicationBeefProductionToSale, { loadPublicationBeefProductionToSaleData } from "../../domains/production/views/beefProduction/PublicationBeefProductionToSale.tsx";
+import RegistrationForm from "./RegistrationForm.tsx";
 
 export class ProducerRouterFactory {
     getRouter(keycloak) {
@@ -94,6 +95,10 @@ export class ProducerRouterFactory {
             {
                 path: '/authentication',
                 element: <AnonymousLayout/>
+            },
+            {
+                path: '/registration',
+                element: <RegistrationForm/>
             },
             {
                 path: '/unauthorized',

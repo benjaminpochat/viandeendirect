@@ -1,20 +1,17 @@
 package eu.viandeendirect.domains.production;
 
 import eu.viandeendirect.api.BeefProductionsApiDelegate;
-import eu.viandeendirect.common.ApplicationContextVerifyer;
+import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.domains.user.ProducerRepository;
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.PackageLot;
-import eu.viandeendirect.model.Production;
 import eu.viandeendirect.model.Sale;
-import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

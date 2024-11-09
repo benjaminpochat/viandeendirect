@@ -2,12 +2,13 @@ import { styled } from '@mui/material/styles';
 import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button } from "@mui/material";
 import { useKeycloak } from '@react-keycloak/web'
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Footer from '../../domains/commons/components/Footer.tsx';
 
 export default function AnonymousLayout() {
 
     const { keycloak, initialized } = useKeycloak()
+    const navigate = useNavigate()
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,7 +23,7 @@ export default function AnonymousLayout() {
     }
 
     function register() {
-        keycloak.register()
+        navigate('/registration')
     }
 
     function getAnonymousLayout() {

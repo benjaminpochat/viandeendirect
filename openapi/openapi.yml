@@ -216,6 +216,24 @@ paths:
       operationId: getRandomProducerPublicData
       summary: Get the public data for a random producer
 
+  /registrations:
+    post:
+      requestBody:
+        description: New producer's registration data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registration'
+        required: true
+      security:
+        - oAuth2ForViandeEnDirect: [write]
+      responses:
+        "201":
+          description: Successful response.
+      operationId: processRegistration
+      summary: Process a new producer registration
+
+
   /sales:
     summary: Path used to manage the list of all public sales.
     parameters:
@@ -1168,3 +1186,11 @@ components:
           type: number
           format: float
           description: "the total amount paid for last year"
+    Registration:
+      description: the registration of new producer
+      type: object
+      properties:
+        producer:
+          $ref: '#/components/schemas/Producer'
+        productionDescription:
+          type: string
