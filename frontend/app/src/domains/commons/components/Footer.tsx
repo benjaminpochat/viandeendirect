@@ -46,15 +46,15 @@ export default function Footer() {
             </div>
             <div className="footer-item">
                 Icones par&ensp;
-                <a href="https://www.flaticon.com/authors/freepik" title="feepik">freepik</a> 
-                &ensp;,
-                <a href="https://www.flaticon.com/authors/smashicons" title="feepik">smashicons</a>
-                &ensp;,
-                <a href="https://www.flaticon.com/authors/monkik" title="feepik">monkik</a> 
-                &ensp;,
-                <a href="https://www.flaticon.com/authors/kiranshastry" title="feepik">kiranshastry</a> 
+                <a target='_blank' href="https://www.flaticon.com/authors/freepik" title="feepik">freepik</a> 
+                ,&ensp;
+                <a target='_blank' href="https://www.flaticon.com/authors/smashicons" title="feepik">smashicons</a>
+                ,&ensp;
+                <a target='_blank' href="https://www.flaticon.com/authors/monkik" title="feepik">monkik</a> 
+                ,&ensp;
+                <a target='_blank' href="https://www.flaticon.com/authors/kiranshastry" title="feepik">kiranshastry</a> 
                 &ensp;sur&ensp;
-                <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                <a target='_blank' href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
             </div>
         </div>
         {displayGeneralTermsAndConditions()}

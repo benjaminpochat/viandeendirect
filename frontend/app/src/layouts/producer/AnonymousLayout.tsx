@@ -69,7 +69,12 @@ export default function AnonymousLayout() {
                     gap: '1rem',
                     margin: '1rem'
                 }}>
-                    <Box sx={{marginBottom: '2rem'}}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginBottom: '2rem'
+                        }}>
                         <Typography variant='h3'>Simplifiez la vente directe de votre viande !</Typography>
                         <Typography variant='h5'>Transformez votre étable en boutique en ligne avec viandeendirect.eu</Typography>
                     </Box>
