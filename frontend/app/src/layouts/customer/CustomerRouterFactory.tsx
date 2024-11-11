@@ -8,6 +8,7 @@ import CustomerCreationForm, { loadCustomerCreationFormData } from "../../domain
 import NotAuthorizedForProducers, { loadNotAuthorizedForProducerData } from "../../authentication/views/NotAuthorizedForProducers.tsx";
 import Welcome, { loadWelcomeData } from "../../domains/welcome/Welcome.tsx";
 import PaymentLayout from "./PaymentLayout.tsx";
+import { ErrorLayout } from "../ErrorLayout.tsx";
 
 export class CustomerRouterFactory {
     getRouter(keycloak) {
@@ -16,6 +17,7 @@ export class CustomerRouterFactory {
                 path: "/",
                 element: <CustomerLayout/>,
                 loader: async () => loadCustomerLayoutData(keycloak),
+                errorElement: <ErrorLayout message=''/>,
                 children: [
                     {
                         index: true,

@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, useRouteError } from "react-router-dom";
 
 import AuthenticatedLayout, { loadAuthenticatedLayoutData } from "./AuthenticatedLayout.tsx";
 
@@ -18,6 +18,7 @@ import ProducerOrderForm, { loadProducerOrderFormData } from "../../domains/sale
 import CustomersList, { loadCustomersListData } from "../../domains/customer/views/CustomersList.tsx";
 import PublicationBeefProductionToSale, { loadPublicationBeefProductionToSaleData } from "../../domains/production/views/beefProduction/PublicationBeefProductionToSale.tsx";
 import RegistrationForm from "./RegistrationForm.tsx";
+import { ErrorLayout } from "../ErrorLayout.tsx";
 
 export class ProducerRouterFactory {
     getRouter(keycloak) {
@@ -26,6 +27,7 @@ export class ProducerRouterFactory {
             path: "/",
             element: <AuthenticatedLayout/>,
             loader: async () => loadAuthenticatedLayoutData(keycloak),
+            errorElement: <ErrorLayout message=''/>,
             children: [
                     {
                         index: true,
@@ -108,5 +110,4 @@ export class ProducerRouterFactory {
         ])
         
     }
-
 }

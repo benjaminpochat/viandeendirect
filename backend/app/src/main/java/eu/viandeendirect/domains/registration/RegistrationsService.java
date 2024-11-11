@@ -60,7 +60,7 @@ public class RegistrationsService implements RegistrationsApiDelegate {
                                     <b>Description de la production :</b><br>
                                      %s<br>
                                 </div>
-                            </html>
+                            </html> 
                             """,
                             registration.getProducer().getUser().getFirstName(),
                             registration.getProducer().getUser().getLastName(),
