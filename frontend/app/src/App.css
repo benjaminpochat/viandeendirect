@@ -256,3 +256,27 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+.secure-payment-icon {
+  background: url(resources/images/icons/png/secure_payment.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.invoices-icon {
+  background: url(resources/images/icons/png/invoices.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.stock-availability-icon {
+  background: url(resources/images/icons/png/stock_availability.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.package-label-icon {
+  background: url(resources/images/icons/png/package_label.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
