@@ -44,7 +44,7 @@ export default function AnonymousLayout() {
             marginTop: '1rem',
             gap: '1rem'
         };
-        return <Box>
+        return <>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -113,7 +113,7 @@ export default function AnonymousLayout() {
                 </Box>
             </Box>
             <Footer/>
-        </Box>
+        </>
     }
 
     return (
