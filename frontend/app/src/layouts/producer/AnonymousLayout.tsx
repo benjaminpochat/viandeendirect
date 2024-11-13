@@ -76,7 +76,7 @@ export default function AnonymousLayout() {
                         marginBottom: '2rem'
                         }}>
                         <Typography variant='h3'>Simplifiez la vente directe de votre viande !</Typography>
-                        <Typography variant='h5'>Transformez votre étable en boutique en ligne avec viandeendirect.eu</Typography>
+                        <Typography>Transformez votre étable en boutique en ligne avec viandeendirect.eu</Typography>
                     </Box>
 
                     <Box sx={functionDescriptionStyle}>
