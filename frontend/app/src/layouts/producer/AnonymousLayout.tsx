@@ -85,7 +85,7 @@ export default function AnonymousLayout() {
                     </Box>
 
                     <Box sx={functionDescriptionStyle}>
-                        <Typography variant='h5'>Gestion du stock simplifié</Typography>
+                        <Typography variant='h5'>Gestion du stock simplifiée</Typography>
                         <i style={{width:'3rem', height:'3rem'}} className="icon stock-availability-icon"></i>
                     </Box>
 

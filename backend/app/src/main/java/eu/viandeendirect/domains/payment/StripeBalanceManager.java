@@ -47,7 +47,7 @@ public class StripeBalanceManager {
     }
 
     private void updatePaymentSummary(PaymentsSummary paymentsSummary, BalanceTransaction balanceTransaction, Instant oneDayAgo, Instant oneWeekAgo, Instant oneMonthAgo, Instant oneYearAgo) {
-        if (balanceTransaction.getType().equals("charge") && balanceTransaction.getStatus().equals("available")) {
+        if (balanceTransaction.getType().equals("charge")) {
             if (balanceTransaction.getCreated() > oneDayAgo.getEpochSecond()) {
                 paymentsSummary.setDaylyTotal(paymentsSummary.getDaylyTotal() + balanceTransaction.getAmount() / 100);
             }

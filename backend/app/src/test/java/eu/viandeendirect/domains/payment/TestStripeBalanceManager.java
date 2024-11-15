@@ -26,8 +26,8 @@ class TestStripeBalanceManager {
         // then
         Assertions.assertThat(paymentsSummary.getDaylyTotal()).isEqualTo(1000f);
         Assertions.assertThat(paymentsSummary.getWeeklyTotal()).isEqualTo(1500f);
-        Assertions.assertThat(paymentsSummary.getMonthlyTotal()).isEqualTo(1700f);
-        Assertions.assertThat(paymentsSummary.getYearlyTotal()).isEqualTo(2400f);
+        Assertions.assertThat(paymentsSummary.getMonthlyTotal()).isEqualTo(2450f);
+        Assertions.assertThat(paymentsSummary.getYearlyTotal()).isEqualTo(3150f);
     }
 
     private Iterable<BalanceTransaction> getBalanceTransations() {
