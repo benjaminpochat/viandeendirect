@@ -5,6 +5,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
 import eu.viandeendirect.common.ViandeEnDirectConfiguration;
+import eu.viandeendirect.domains.order.OrderAmountService;
 import eu.viandeendirect.domains.production.PackageLotRepository;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.OrderItem;
@@ -37,6 +38,9 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
     @Autowired
     PackageLotRepository packageLotRepository;
 
+    @Autowired
+    OrderAmountService orderAmountService;
+
     @Override
     public StripePayment createPayment(Order order) throws StripeException {
         SessionCreateParams.Builder builder = SessionCreateParams.builder();
@@ -44,7 +48,7 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
         SessionCreateParams params = builder
                 .setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder()
                         .setDescription(String.format("Commande viandeendirect.eu n° %s de %s %s", order.getId(), order.getCustomer().getUser().getFirstName(), order.getCustomer().getUser().getLastName()))
-                        .setApplicationFeeAmount(1L).build())
+                        .setApplicationFeeAmount(getViandeEnDirectFee(order) * 100).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(order.getCustomer().getUser().getEmail())
                 .setSuccessUrl(viandeEnDirectConfiguration.getCustomerFrontendUrl() + "/order/" + order.getId() + "/payment")
@@ -57,6 +61,10 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
         stripePayment.setCheckoutSessionId(session.getId());
         stripePayment.setPaymentUrl(session.getUrl());
         return stripePayment;
+    }
+
+    private Long getViandeEnDirectFee(Order order) {
+        return (long) orderAmountService.calculateTotalOrderAmount(order) / 100;
     }
 
     private Producer getProducerStripeAccount(Order order) {
