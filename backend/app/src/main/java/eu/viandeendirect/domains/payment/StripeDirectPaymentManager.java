@@ -48,7 +48,7 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
         SessionCreateParams params = builder
                 .setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder()
                         .setDescription(String.format("Commande viandeendirect.eu n° %s de %s %s", order.getId(), order.getCustomer().getUser().getFirstName(), order.getCustomer().getUser().getLastName()))
-                        .setApplicationFeeAmount(getViandeEnDirectFee(order) * 100).build())
+                        .setApplicationFeeAmount((long)(getViandeEnDirectFee(order) * 100)).build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(order.getCustomer().getUser().getEmail())
                 .setSuccessUrl(viandeEnDirectConfiguration.getCustomerFrontendUrl() + "/order/" + order.getId() + "/payment")
@@ -63,8 +63,8 @@ public class StripeDirectPaymentManager implements StripePaymentManager {
         return stripePayment;
     }
 
-    private Long getViandeEnDirectFee(Order order) {
-        return (long) orderAmountService.calculateTotalOrderAmount(order) / 100;
+    float getViandeEnDirectFee(Order order) {
+        return orderAmountService.calculateTotalOrderAmount(order) / 100;
     }
 
     private Producer getProducerStripeAccount(Order order) {

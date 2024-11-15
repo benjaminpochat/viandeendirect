@@ -1,21 +1,33 @@
-package eu.viandeendirect.domains.order;
-
+package eu.viandeendirect.domains.payment;
 
 import eu.viandeendirect.model.BeefProduction;
 import eu.viandeendirect.model.Order;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Sale;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 import static eu.viandeendirect.domains.order.OrderTestUtils.*;
+import static eu.viandeendirect.domains.order.OrderTestUtils.createCustomer;
+import static org.junit.jupiter.api.Assertions.*;
 
-class TestOrderAmountService {
+@SpringBootTest
+@ActiveProfiles(value = "test")
+@ExtendWith({SpringExtension.class})
+class TestStripeDirectPaymentManager_getViandeEnDirectFee {
+
+    @Autowired
+    private StripeDirectPaymentManager stripeDirectPaymentManager;
+
     @Test
-    void should_return_the_right_amount() {
+    void should_return_the_correct_fee() {
         // given
         BeefProduction beefProduction = getBeefProduction();
         PackageLot packageLot1 = getPackageLot(1, beefProduction, "Colis tradition", "Un colis avec plein de trucs délicieux", 10f);
@@ -27,13 +39,12 @@ class TestOrderAmountService {
 
         Order order = createOrder(123, createCustomer("Valentine", "DURAND", "0601020304"), Map.of(packageLot1, 1, packageLot2, 2));
 
-        OrderAmountService orderAmountService = new OrderAmountService();
-
         // when
-        float amount = orderAmountService.calculateTotalOrderAmount(order);
+        float fee = stripeDirectPaymentManager.getViandeEnDirectFee(order);
 
         // then
-        Assertions.assertThat(amount).isEqualTo(110f);
+        assertEquals(1.1f, fee);
+        assertEquals(110, (long)(fee * 100));
     }
 
 }
