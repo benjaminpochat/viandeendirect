@@ -24,6 +24,7 @@
   display: flex;
   flex-flow: wrap;
   justify-content: left;
+  align-items: flex-start;
 }
 
 .sale-customer-card__product-information {

@@ -27,3 +27,8 @@
 .package-lot__unit_price {
   font-size: smaller;
 }
+
+.package-lot__image {
+  max-width: 15rem;
+  grid-column: 1/-1;
+}

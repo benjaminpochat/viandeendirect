@@ -16,7 +16,7 @@ export default function PackageLotDescription({ lot: lot }) {
 
     function getImage() {
         if (lot.photo) {
-            return <img src={'data:image/png;base64,' + lot.photo} ></img>
+            return <img className='package-lot__image' src={'data:image/png;base64,' + lot.photo} ></img>
         } else {
             return <></>
         }

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: viandeendirect-2024-11-28
+      author: benjamin
+      changes:
+        - dropColumn:
+            tableName: package_templates
+            columns:
+              - column:
+                  name: photo
+        - dropColumn:
+            tableName: package_lots
+            columns:
+              - column:
+                  name: photo
+  - changeSet:
+      id: viandeendirect-2024-11-29
+      author: benjamin
+      changes:
+        - addColumn:
+            tableName: package_templates
+            columns:
+              - column:
+                  name: photo
+                  type: TEXT
+        - addColumn:
+            tableName: package_lots
+            columns:
+              - column:
+                  name: photo
+                  type: TEXT
