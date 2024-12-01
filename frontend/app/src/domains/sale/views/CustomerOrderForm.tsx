@@ -148,6 +148,7 @@ export default function CustomerOrderForm() {
     function validateItems() {
         setCompletedSteps([...completedSteps, SET_ITEMS_STEP])
         setActiveStep(AUTHENTICATION_STEP)
+        order?.items?.forEach(item => item.packageLot.photo = '')
         setCookie('pendingOrder', order, {path: "/", maxAge: 3600})        
     }
 
