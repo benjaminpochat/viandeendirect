@@ -280,3 +280,9 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+.low-price-icon {
+  background: url(resources/images/icons/png/low_price.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}

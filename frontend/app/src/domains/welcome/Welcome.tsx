@@ -63,7 +63,7 @@ export default function Welcome() {
     function getRandomProducerSlideshow() {
         if (displayedSales.length === 0) {
         return <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <div style={{width: '-webkit-fill-available', maxWidth: '50rem', aspectRatio: '165/100'}}>
+                <div style={{maxWidth: '50rem', aspectRatio: '165/100', width: 'inherit', marginTop: '1rem'}}>
                     <iframe title="randomProducerSlideshow"
                         src={randomProducer.slideShowUrl}
                         allowFullScreen={true}

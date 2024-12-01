@@ -20,3 +20,5 @@ frontend/app/coverage
 !frontend/gen/src/model/*
 
 data
+
+scripts/exploit

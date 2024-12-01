@@ -100,6 +100,13 @@ export default function AnonymousLayout() {
                         <i style={{width:'3rem', height:'3rem'}} className="icon invoices-icon"></i>
                     </Box>
 
+                    <Box sx={functionDescriptionStyle}>
+                        <i style={{width:'3rem', height:'3rem'}} className="icon low-price-icon"></i>
+                        <div>
+                            <Typography variant='h5'>Commission : 2,5% + 0,25 €/commande</Typography>
+                        </div>
+                    </Box>
+
                     <Box sx={{ marginTop: '1rem' }}>
                         <Box sx={authenticationActionStyle}>
                             <Typography variant='h6'>Je n'ai pas encore de compte</Typography>

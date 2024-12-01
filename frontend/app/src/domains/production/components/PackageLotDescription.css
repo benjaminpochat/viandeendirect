@@ -12,6 +12,8 @@
 .package-lot__description {
   font-size: smaller;
   grid-column: 1/-1;
+  white-space: pre-wrap;
+  max-width: 15rem;
 }
 
 .package-lot__icon {
