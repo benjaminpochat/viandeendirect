@@ -21,6 +21,7 @@ export default function CustomerLayout() {
     const data = useLoaderData()
     const authenticatedAsProducer = data.authenticatedAsProducer
     const customer = data.customer
+    const environmentType = data.environmentType
     
     if (authenticatedAsProducer) {
         return <Navigate to='/unauthorized'/>
