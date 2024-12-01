@@ -1,15 +1,26 @@
 import { styled } from '@mui/material/styles';
 import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button, IconButton } from "@mui/material";
 import { useKeycloak } from '@react-keycloak/web'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Footer from '../../domains/commons/components/Footer.tsx';
 import { Login } from '@mui/icons-material';
+import { EnvironmentTypeService } from '../../domains/commons/service/EnvironmentTypeService.ts';
 
 export default function AnonymousLayout() {
 
+    const environmentTypeService = new EnvironmentTypeService()
     const { keycloak, initialized } = useKeycloak()
+    const [environmentType, setEnvironmentType] = useState<{label: String, color: String} | undefined>(undefined)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const loadEnvironmentType = async () => {
+            setEnvironmentType(await environmentTypeService.getEnvironmentType())
+        }
+        console.log('loadEnvironmentType')
+        loadEnvironmentType()
+    }, [environmentTypeService])
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,6 +29,16 @@ export default function AnonymousLayout() {
         textAlign: 'center',
         color: theme.palette.text.secondary,
     }));
+
+    function getTitle() {
+        if(environmentType) {
+            return <>
+                <span>Viande en direct</span>
+                <span style={{color: environmentType.color, marginLeft: '1rem'}}>{environmentType.label}</span>
+            </>
+        }
+        return <>Viande en direct</>
+    }
 
     function login() {
         keycloak.login()
@@ -51,7 +72,7 @@ export default function AnonymousLayout() {
             >
                 <Toolbar>
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                        Viande en direct
+                        {getTitle()}
                     </Typography>
                     <IconButton onClick={login} color="inherit">
                         <Login/>

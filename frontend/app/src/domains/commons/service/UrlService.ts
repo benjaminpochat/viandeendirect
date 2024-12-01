@@ -1,8 +1,8 @@
 export class UrlService {
 
-    backendUrl = undefined
-    customerFrontendUrl = undefined
-    producerFrontendUrl = undefined
+    backendUrl: String | undefined = undefined
+    customerFrontendUrl: String | undefined = undefined
+    producerFrontendUrl: String | undefined = undefined
 
     async getBackendUrl() {
         if (!this.backendUrl) {

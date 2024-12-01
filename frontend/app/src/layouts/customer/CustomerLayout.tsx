@@ -9,6 +9,7 @@ import { Navigate, Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
 import { UrlService } from '../../domains/commons/service/UrlService.ts'
 import Footer from '../../domains/commons/components/Footer.tsx'
+import { EnvironmentTypeService } from '../../domains/commons/service/EnvironmentTypeService.ts'
 
 
 export default function CustomerLayout() {
@@ -26,6 +27,16 @@ export default function CustomerLayout() {
     }
     if (authenticationService.isAuthenticated() && !customer.id) {
         return <Navigate to='/customer/registration'/>
+    }
+
+    function getTitle() {
+        if(environmentType) {
+            return <>
+                <span>Viande en direct</span>
+                <span style={{color: environmentType.color, marginLeft: '1rem'}}>{environmentType.label}</span>
+            </>
+        }
+        return <>Viande en direct</>
     }
 
     async function logout() {
@@ -59,7 +70,7 @@ export default function CustomerLayout() {
                 >
                     <Toolbar>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                            Viande en direct
+                            {getTitle()}
                         </Typography>
                         {displayAuthenticationButton()}
                     </Toolbar>
@@ -76,9 +87,19 @@ export async function loadCustomerLayoutData(keycloak) {
     const authenticatedAsProducer = await authenticationService.isAuthenticatedAsProducer()
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloak)
+    const environmentTypeService = new EnvironmentTypeService();
+    const environmentType = await environmentTypeService.getEnvironmentType()  
     if(!authenticatedAsProducer && authenticationService.isAuthenticated()) {
         const customer = await api.getCustomer({email: authenticationService.getCurrentUserEmail()})
-        return {authenticatedAsProducer: authenticatedAsProducer, customer: customer}
+        return {
+            authenticatedAsProducer: authenticatedAsProducer, 
+            customer: customer,
+            environmentType: environmentType,
+        }
     }
-    return {authenticatedAsProducer: authenticatedAsProducer, customer: undefined}
+    return {
+        authenticatedAsProducer: authenticatedAsProducer, 
+        customer: undefined,
+        environmentType: environmentType
+    }
 }

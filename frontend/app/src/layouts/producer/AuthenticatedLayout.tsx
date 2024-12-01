@@ -10,6 +10,7 @@ import SideMenu from './SideMenu.jsx'
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts';
 import { Navigate, Outlet, useLoaderData } from 'react-router-dom';
 import { UrlService } from '../../domains/commons/service/UrlService.ts';
+import { EnvironmentTypeService } from '../../domains/commons/service/EnvironmentTypeService.ts';
 
 
 export default function AuthenticatedLayout() {
@@ -18,7 +19,7 @@ export default function AuthenticatedLayout() {
   const authenticationService = new AuthenticationService(keycloak)
   const urlService = new UrlService()
 
-  const authenticatedAsCustomer: boolean = useLoaderData()
+  const {authenticatedAsCustomer, environmentType}: {isAuthenticatedAsCustomer: boolean, environmentType: {label: String, color: String} | undefined} = useLoaderData()
 
   const sideMenuWidth = 240;
 
@@ -32,6 +33,16 @@ export default function AuthenticatedLayout() {
     } else {
       return <Menu />
     }
+  }
+
+  function getTitle() {
+    if(environmentType) {
+        return <>
+            <span>Viande en direct</span>
+            <span style={{color: environmentType.color, marginLeft: '1rem'}}>{environmentType.label}</span>
+        </>
+    }
+    return <>Viande en direct</>
   }
 
   async function logout() {
@@ -63,7 +74,7 @@ export default function AuthenticatedLayout() {
             {getIcon()}
           </IconButton>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            Viande en direct
+            {getTitle()}
           </Typography>
           <Typography>{authenticationService.getCurrentUserFirstName()} {authenticationService.getCurrentUserLastName()}</Typography>
           <IconButton onClick={logout} color="inherit">
@@ -96,7 +107,10 @@ export default function AuthenticatedLayout() {
   return getAuthenticatedLayout()
 }
 
-export async function loadAuthenticatedLayoutData(keycloak): Promise<boolean> {
+export async function loadAuthenticatedLayoutData(keycloak): Promise<{isAuthenticatedAsCustomer: boolean, environmentType: {label: String, color: String} | undefined}> {
   const authenticationService = new AuthenticationService(keycloak)
-  return await authenticationService.isAuthenticatedAsCustomer()
+  const isAuthenticatedAsCustomer = await authenticationService.isAuthenticatedAsCustomer()
+  const environmentTypeService = new EnvironmentTypeService();
+  const environmentType = await environmentTypeService.getEnvironmentType()
+  return { isAuthenticatedAsCustomer: isAuthenticatedAsCustomer, environmentType: environmentType }
 }
