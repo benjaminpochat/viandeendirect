@@ -148,8 +148,10 @@ export default function CustomerOrderForm() {
     function validateItems() {
         setCompletedSteps([...completedSteps, SET_ITEMS_STEP])
         setActiveStep(AUTHENTICATION_STEP)
-        order?.items?.forEach(item => item.packageLot.photo = '')
-        setCookie('pendingOrder', order, {path: "/", maxAge: 3600})        
+        const orderLight = {...order}
+        orderLight.items.forEach(item => item.packageLot.photo = undefined)
+        orderLight.sale.productions = undefined
+        setCookie('pendingOrder', orderLight, {path: "/", maxAge: 3600})        
     }
 
     function getAuthenticationStepLabel(): string {
