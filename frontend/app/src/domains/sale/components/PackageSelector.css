@@ -1,11 +1,13 @@
 .package-selector {
   margin: 1rem;
   display: grid;
+  height: fit-content;
 }
 
 .package-selector__actions {
   grid-column: 1/-1;
   width: 100%;
+  height: fit-content;
   display: flex;
   justify-content: space-around;
 }
