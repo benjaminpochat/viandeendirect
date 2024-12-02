@@ -17,7 +17,7 @@ public interface StripePaymentManager {
     void processPaymentValidation(Order order);
 
     default SessionCreateParams.LineItem getLineItem(OrderItem orderItem) {
-        long unitAmount = orderItem.getUnitPrice().longValue() * orderItem.getPackageLot().getNetWeight().longValue() * 100;
+        long unitAmount = getUnitAmount(orderItem);
         long quantity = orderItem.getQuantity().longValue();
         LOGGER.debug("creating Stripe payment's line item for order item {} x{} for {} euro-cents each", orderItem.getPackageLot().getLabel(), quantity, unitAmount);
         return SessionCreateParams.LineItem.builder()
@@ -33,6 +33,10 @@ public interface StripePaymentManager {
                 )
                 .setQuantity(quantity)
                 .build();
+    }
+
+    default long getUnitAmount(OrderItem orderItem) {
+        return Float.valueOf(orderItem.getUnitPrice() * orderItem.getPackageLot().getNetWeight() * 100).longValue();
     }
 
 }
