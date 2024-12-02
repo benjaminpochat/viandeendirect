@@ -100,11 +100,11 @@ export default function AuthenticatedLayout() {
 
   if (!authenticationService.isAuthenticated()) {
     return <Navigate to='/authentication' />
-  }
-  if (authenticatedAsCustomer) {
+  } else if (authenticatedAsCustomer) {
     return <Navigate to='/unauthorized' />
+  } else {
+    return getAuthenticatedLayout()
   }
-  return getAuthenticatedLayout()
 }
 
 export async function loadAuthenticatedLayoutData(keycloak): Promise<{isAuthenticatedAsCustomer: boolean, environmentType: {label: String, color: String} | undefined}> {
