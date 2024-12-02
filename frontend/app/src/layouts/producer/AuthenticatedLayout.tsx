@@ -19,7 +19,9 @@ export default function AuthenticatedLayout() {
   const authenticationService = new AuthenticationService(keycloak)
   const urlService = new UrlService()
 
-  const {authenticatedAsCustomer, environmentType}: {isAuthenticatedAsCustomer: boolean, environmentType: {label: String, color: String} | undefined} = useLoaderData()
+  const data = useLoaderData()
+  const authenticatedAsCustomer: boolean = data.isAuthenticatedAsCustomer
+  const environmentType = data.environmentType
 
   const sideMenuWidth = 240;
 
@@ -100,11 +102,11 @@ export default function AuthenticatedLayout() {
 
   if (!authenticationService.isAuthenticated()) {
     return <Navigate to='/authentication' />
-  } else if (authenticatedAsCustomer) {
+  } 
+  if (authenticatedAsCustomer) {
     return <Navigate to='/unauthorized' />
-  } else {
-    return getAuthenticatedLayout()
   }
+  return getAuthenticatedLayout()
 }
 
 export async function loadAuthenticatedLayoutData(keycloak): Promise<{isAuthenticatedAsCustomer: boolean, environmentType: {label: String, color: String} | undefined}> {

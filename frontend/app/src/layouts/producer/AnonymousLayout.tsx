@@ -20,7 +20,7 @@ export default function AnonymousLayout() {
         }
         console.log('loadEnvironmentType')
         loadEnvironmentType()
-    }, [environmentTypeService])
+    }, [])
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
