@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: viandeendirect-2024-12-03
+      author: benjamin
+      changes:
+        - dropColumn:
+            tableName: package_templates
+            columns:
+              - column:
+                  name: photo
+        - dropColumn:
+            tableName: package_lots
+            columns:
+              - column:
+                  name: photo
+        - addColumn:
+            tableName: package_templates
+            columns:
+              - column:
+                  name: photo_id
+                  type: INTEGER
+        - addColumn:
+            tableName: package_lots
+            columns:
+              - column:
+                  name: photo_id
+                  type: INTEGER
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: images_pkey
+              - column:
+                  name: content
+                  type: TEXT
+              - column:
+                  name: description
+                  type: TEXT
+        - createSequence:
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 1
+            maxValue: 9223372036854775807
+            minValue: 1
+            sequenceName: image_id_seq
+            startValue: 1
+        - addForeignKeyConstraint:
+            baseColumnNames: photo_id
+            baseTableName: package_lots
+            constraintName: fk_package_lots_image_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: images
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: photo_id
+            baseTableName: package_templates
+            constraintName: fk_package_templates_image_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: images
+            validate: true

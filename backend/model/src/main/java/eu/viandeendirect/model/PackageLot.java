@@ -6,12 +6,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.viandeendirect.model.Image;
 import eu.viandeendirect.model.Production;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -49,8 +47,13 @@ public class PackageLot {
   @JsonProperty("description")
   private String description;
 
-  @JsonProperty("photo")
-  private String photo;
+  @JsonIgnore
+  @OneToOne(fetch = FetchType.LAZY)
+  private Image photo;
+
+  @Transient
+  @JsonProperty("photoToUpload")
+  private Image photoToUpload;
 
   @JsonProperty("netWeight")
   private Float netWeight;
@@ -140,23 +143,42 @@ public class PackageLot {
     this.description = description;
   }
 
-  public PackageLot photo(String photo) {
+  public PackageLot photo(Image photo) {
     this.photo = photo;
     return this;
   }
 
   /**
-   * The photo of the package template, encoded as base64
+   * Get photo
    * @return photo
   */
-  
-  @Schema(name = "photo", description = "The photo of the package template, encoded as base64", required = false)
-  public String getPhoto() {
+  @Valid
+  @Schema(name = "photo", required = false)
+  public Image getPhoto() {
     return photo;
   }
 
-  public void setPhoto(String photo) {
+  public void setPhoto(Image photo) {
     this.photo = photo;
+  }
+
+  public PackageLot photoToUpload(Image photoToUpload) {
+    this.photoToUpload = photoToUpload;
+    return this;
+  }
+
+  /**
+   * Get photoToUpload
+   * @return photoToUpload
+  */
+  @Valid
+  @Schema(name = "photoToUpload", required = false)
+  public Image getPhotoToUpload() {
+    return photoToUpload;
+  }
+
+  public void setPhotoToUpload(Image photoToUpload) {
+    this.photoToUpload = photoToUpload;
   }
 
   public PackageLot netWeight(Float netWeight) {
@@ -249,6 +271,7 @@ public class PackageLot {
         Objects.equals(this.label, packageLot.label) &&
         Objects.equals(this.description, packageLot.description) &&
         Objects.equals(this.photo, packageLot.photo) &&
+        Objects.equals(this.photoToUpload, packageLot.photoToUpload) &&
         Objects.equals(this.netWeight, packageLot.netWeight) &&
         Objects.equals(this.unitPrice, packageLot.unitPrice) &&
         Objects.equals(this.quantity, packageLot.quantity) &&
@@ -257,7 +280,7 @@ public class PackageLot {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, production, label, description, photo, netWeight, unitPrice, quantity, quantitySold);
+    return Objects.hash(id, production, label, description, photo, photoToUpload, netWeight, unitPrice, quantity, quantitySold);
   }
 
   @Override
@@ -268,7 +291,6 @@ public class PackageLot {
     sb.append("    production: ").append(toIndentedString(production)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    photo: ").append(toIndentedString(photo)).append("\n");
     sb.append("    netWeight: ").append(toIndentedString(netWeight)).append("\n");
     sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");

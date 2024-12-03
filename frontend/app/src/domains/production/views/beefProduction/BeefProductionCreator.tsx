@@ -37,7 +37,11 @@ export default function BeefProductionCreator() {
                     ...template,
                     id: undefined,
                     quantity: 0,
-                    quantitySold: 0
+                    quantitySold: 0,
+                    photoToUpload: {
+                        ...template.photo,
+                        id: undefined
+                    }
                 }
             })
         })
@@ -192,5 +196,11 @@ export async function loadBeefProductionCreatorData(keycloakClient) {
     const apiBuilder = new ApiBuilder()
     const api = await apiBuilder.getAuthenticatedApi(keycloakClient)
     const packageTemplates = await api.getPackageTemplates()
+    await Promise.all(packageTemplates.map(async (packageTemplate) => {
+        const photo = await api.getPackageTemplatePhoto({templateId: packageTemplate.id})
+        if (photo.content) {
+            packageTemplate.photo = photo
+        }
+    }));
     return packageTemplates
 }

@@ -2,11 +2,12 @@ package eu.viandeendirect.model;
 
 import java.net.URI;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
+import eu.viandeendirect.model.Image;
+import jakarta.persistence.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -38,8 +39,9 @@ public class PackageTemplate {
   @JsonProperty("description")
   private String description;
 
-  @JsonProperty("photo")
-  private String photo;
+  @JsonIgnore
+  @OneToOne(fetch = FetchType.LAZY)
+  private Image photo;
 
   @JsonProperty("netWeight")
   private Float netWeight;
@@ -104,22 +106,22 @@ public class PackageTemplate {
     this.description = description;
   }
 
-  public PackageTemplate photo(String photo) {
+  public PackageTemplate photo(Image photo) {
     this.photo = photo;
     return this;
   }
 
   /**
-   * The photo of the package template, encoded as base64
+   * Get photo
    * @return photo
   */
-  
-  @Schema(name = "photo", description = "The photo of the package template, encoded as base64", required = false)
-  public String getPhoto() {
+  @Valid
+  @Schema(name = "photo", required = false)
+  public Image getPhoto() {
     return photo;
   }
 
-  public void setPhoto(String photo) {
+  public void setPhoto(Image photo) {
     this.photo = photo;
   }
 

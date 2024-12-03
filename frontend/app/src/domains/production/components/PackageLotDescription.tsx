@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './PackageLotDescription.css'
+import { ApiBuilder } from '../../../api/ApiBuilder.ts'
+import { Image } from '@viandeendirect/api/dist/models/Image';
 
-export default function PackageLotDescription({ lot: lot }) {
+export default function PackageLotDescription({ lot: lot, production: production }) {
+
+    const apiBuilder = new ApiBuilder()
+
+    const [photo, setPhoto] = useState<Image |undefined>(undefined)
+
+    useEffect(() => {
+        const loadPhoto = async () => {
+            const api = await apiBuilder.getAnonymousApi()
+            const image = await api.getProductLotPhoto({productionId: production.id, lotId: lot.id})
+            setPhoto(image)            
+        }
+        loadPhoto()
+    }, [])
+
+
     return <div className='package-lot'>
         <div className='package-lot__label'>{lot.label}</div>
         <div className='package-lot__description'>{lot.description}</div>
@@ -15,8 +32,8 @@ export default function PackageLotDescription({ lot: lot }) {
     </div>
 
     function getImage() {
-        if (lot.photo) {
-            return <img className='package-lot__image' src={'data:image/png;base64,' + lot.photo} ></img>
+        if (photo) {
+            return <img className='package-lot__image' src={'data:image/png;base64,' + photo.content} ></img>
         } else {
             return <></>
         }

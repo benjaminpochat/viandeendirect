@@ -402,6 +402,34 @@ paths:
       summary: Get a producer's public data for a production identified by its id.
       description: Gets a `Producer` entities, with only public data for a production identified by its id.
 
+  /productions/{productionId}/lots/{lotId}/photo:
+    summary: Path used to manage the photo of a package lot
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: Successful response - returns an `Image`.
+      operationId: getProductLotPhoto
+      summary: Get an Image
+    parameters:
+    - name: productionId
+      description: A unique identifier for an `Production`.
+      schema:
+        type: integer
+      in: path
+      required: true
+    - name: lotId
+      description: A unique identifier for an `PackageLot`.
+      schema:
+        type: integer
+      in: path
+      required: true
+
   /beefProductions:
     post:
       requestBody:
@@ -524,6 +552,28 @@ paths:
       operationId: getPackageTemplates
       summary: Get all package templates
       description: Get all package templates
+
+  /packageTemplates/{templateId}/photo:
+    summary: Path used to manage the photo of a package template
+    get:
+      security:
+        - oAuth2ForViandeEnDirect: [read]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: Successful response - returns an `Image`.
+      operationId: getPackageTemplatePhoto
+      summary: Get an Image
+    parameters:
+    - name: templateId
+      description: A unique identifier for an `PackageTemplate`.
+      schema:
+        type: integer
+      in: path
+      required: true
 
   /addresses:
     get:
@@ -695,11 +745,11 @@ paths:
                 $ref: '#/components/schemas/Order'
           description: Successful response - returns a single `Order`.
       operationId: getOrder
-      summary: Get a Order
+      summary: Get an Order
       description: Gets the details of a single instance of a `Order`.
     parameters:
     - name: orderId
-      description: A unique identifier for a `Order`.
+      description: A unique identifier for an `Order`.
       schema:
         type: integer
       in: path
@@ -761,8 +811,11 @@ components:
           description: "Long description of the package template"
           type: string
         photo:
-          description: "The photo of the package template, encoded as base64"
-          type: string
+          description: "The photo of the package lot, encoded as base64"
+          $ref: '#/components/schemas/Image'
+        photoToUpload:
+          description: "The photo to set, defined at the package lot defnition, encoded as base64 - no persisted in database"
+          $ref: '#/components/schemas/Image'
         netWeight:
           description: ""
           type: number
@@ -798,7 +851,7 @@ components:
           type: string
         photo:
           description: "The photo of the package template, encoded as base64"
-          type: string
+          $ref: '#/components/schemas/Image'
         netWeight:
           description: ""
           type: number
@@ -1194,3 +1247,16 @@ components:
           $ref: '#/components/schemas/Producer'
         productionDescription:
           type: string
+    Image:
+      description: an image
+      type: object
+      properties:
+        id: 
+          type: integer
+          x-field-extra-annotation: '@jakarta.persistence.Id'
+        content: 
+          type: string
+          description: the image content, encoded as base64
+        description:
+          type: string
+          description: description of the image

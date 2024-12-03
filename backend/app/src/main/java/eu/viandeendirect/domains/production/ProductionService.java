@@ -2,16 +2,23 @@ package eu.viandeendirect.domains.production;
 
 import eu.viandeendirect.api.ProductionsApiDelegate;
 import eu.viandeendirect.domains.user.ProducerPublicDataService;
+import eu.viandeendirect.model.Image;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Producer;
 import eu.viandeendirect.model.Production;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
@@ -57,5 +64,15 @@ public class ProductionService implements ProductionsApiDelegate {
         Producer producer = production.getProducer();
         var producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
         return new ResponseEntity<>(producerWithPublicData, OK);
+    }
+
+    @Override
+    public ResponseEntity<Image> getProductLotPhoto(Integer productionId, Integer lotId) {
+        PackageLot lot = packageLotRepository.findById(lotId).get();
+        if (!lot.getProduction().getId().equals(productionId)) {
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        Image photo = Hibernate.unproxy(lot.getPhoto(), Image.class);
+        return new ResponseEntity<>(Objects.requireNonNullElseGet(photo, Image::new), OK);
     }
 }

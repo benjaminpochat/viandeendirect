@@ -4,6 +4,7 @@ import eu.viandeendirect.api.BeefProductionsApiDelegate;
 import eu.viandeendirect.domains.sale.SaleRepository;
 import eu.viandeendirect.domains.user.ProducerRepository;
 import eu.viandeendirect.model.BeefProduction;
+import eu.viandeendirect.model.Image;
 import eu.viandeendirect.model.PackageLot;
 import eu.viandeendirect.model.Sale;
 import eu.viandeendirect.security.specs.AuthenticationServiceSpecs;
@@ -40,6 +41,9 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
     private SaleRepository saleRepository;
 
     @Autowired
+    ImageRepository imageRepository;
+
+    @Autowired
     private ProducerRepository producerRepository;
 
     @Autowired
@@ -62,9 +66,20 @@ public class BeefProductionService implements BeefProductionsApiDelegate {
         beefProduction.setProducer(producerService.getAuthenticatedProducer());
         BeefProduction productionCreated = productionRepository.save(beefProduction);
         beefProduction.getLots().forEach(lot -> lot.setProduction(productionCreated));
-        Iterable<PackageLot> lotsCreated = packageLotRepository.saveAll(beefProduction.getLots());
         List<PackageLot> lotsCreatedAsList = new ArrayList<>();
-        lotsCreated.forEach(lotsCreatedAsList::add);
+        for (PackageLot lot : beefProduction.getLots().stream().filter(lot -> lot.getQuantity() > 0).toList()) {
+            if(lot.getQuantity() > 0) {
+                Image photo = lot.getPhotoToUpload();
+                if (photo != null && photo.getContent() != null && !photo.getContent().isEmpty()) {
+                    Image photoCreated = imageRepository.save(photo);
+                    lot.setPhoto(photoCreated);
+                } else {
+                    lot.setPhoto(null);
+                }
+                PackageLot lotCreated = packageLotRepository.save(lot);
+                lotsCreatedAsList.add(lotCreated);
+            }
+        }
         productionCreated.setLots(lotsCreatedAsList);
         return new ResponseEntity<>(productionCreated, HttpStatus.OK);
     }

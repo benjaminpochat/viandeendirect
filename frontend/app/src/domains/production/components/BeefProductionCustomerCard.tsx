@@ -74,7 +74,7 @@ export default function BeefProductionCustomerCard({production: production}) {
     }
 
     function getLot(lot: PackageLot) {
-        return <PackageLotDescription key={`package-lot-description-${lot.id}`} lot={lot}></PackageLotDescription>
+        return <PackageLotDescription key={`package-lot-description-${lot.id}`} lot={lot} production={production}></PackageLotDescription>
     }
 }
 

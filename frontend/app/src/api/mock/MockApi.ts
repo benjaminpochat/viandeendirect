@@ -35,6 +35,11 @@ export class MockApi {
         return this.mockApiProductions.getProductionProducerPublicData()
     }
 
+    getProductLotPhoto(args) {
+        this.log('getProductLotPhoto', args)
+        return this.mockApiProductions.getProductLotPhoto()
+    }
+
     getRandomProducerPublicData(args) {
         this.log('getRandomProducerPublicData', args)
         return this.mockApiProducers.getRandomProducerPublicData()
@@ -63,6 +68,11 @@ export class MockApi {
     getPackageTemplates(args) {
         this.log('getPackageTemplates', args)
         return this.mockApiProductions.getPackageTemplates()
+    }
+
+    getPackageTemplatePhoto(args) {
+        this.log('getPackageTemplatePhoto', args)
+        return this.mockApiProductions.getPackageTemplatePhoto()
     }
 
     getAddresses(args) {
