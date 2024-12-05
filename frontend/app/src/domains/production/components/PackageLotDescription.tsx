@@ -14,7 +14,9 @@ export default function PackageLotDescription({ lot: lot, production: production
         const loadPhoto = async () => {
             const api = await apiBuilder.getAnonymousApi()
             const image = await api.getProductLotPhoto({productionId: production.id, lotId: lot.id})
-            setPhoto(image)            
+            if (image.content) {
+                setPhoto(image)            
+            }
         }
         loadPhoto()
     }, [])
