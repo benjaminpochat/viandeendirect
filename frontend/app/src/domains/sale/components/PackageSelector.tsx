@@ -18,7 +18,7 @@ export default function PackageSelector({ lot: lot, orderItems: orderItems, upda
         
     return <>
         <div className='package-selector'>
-            <PackageLotDescription lot={lot}></PackageLotDescription>
+            <PackageLotDescription lot={lot} production={lot.production}></PackageLotDescription>
             <div className='package-selector__actions'>{isAddToOrderDisplayed ? getAddToOrderButton() : getChangeQuantityActions()}</div>
         </div>
     </>

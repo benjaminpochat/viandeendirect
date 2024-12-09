@@ -130,7 +130,8 @@ export default function CustomerOrderForm() {
     </Box>
 
     function packageLots() {
-        return productions.flatMap(production => production.lots).map(lot => packageSelector(lot))
+        const lots = productions.map(production => production.lots?.map(lot => {return {...lot, production: production}})).flatMap(lots => lots)
+        return lots.map(lot => packageSelector(lot))
     }
 
     function itemsValidationButton(){
