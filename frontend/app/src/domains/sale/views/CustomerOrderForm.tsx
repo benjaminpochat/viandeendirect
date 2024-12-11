@@ -19,7 +19,6 @@ import { useLoaderData, useNavigate } from 'react-router-dom'
 import { Sale } from '@viandeendirect/api/dist/models/Sale'
 
 export default function CustomerOrderForm() {
-    window.scroll(0,0)
 
     const SET_ITEMS_STEP = 1
     const AUTHENTICATION_STEP = 2
@@ -64,6 +63,7 @@ export default function CustomerOrderForm() {
         setOrder(updatedOrder)
         setCompletedSteps(completedSteps)
         setActiveStep(activeStep)
+        window.scrollTo(0,0)
     }, [])
 
     return <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
