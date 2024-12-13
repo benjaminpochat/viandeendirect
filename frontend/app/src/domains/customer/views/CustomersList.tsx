@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { DataGrid, GridRowsProp, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
@@ -27,7 +27,7 @@ export default function CustomersList() {
         { field: 'email', headerName: 'Email', flex: 1, disableColumnMenu: true },
     ]
 
-    return (<>
+    return (<Box sx={{display: 'grid'}}>
         <Typography variant='h6'>Clients</Typography>
         <DataGrid
             rows={rows}
@@ -41,7 +41,7 @@ export default function CustomersList() {
                     showQuickFilter: true,
                 },
             }} />
-    </>
+    </Box>
     )
 
 }
