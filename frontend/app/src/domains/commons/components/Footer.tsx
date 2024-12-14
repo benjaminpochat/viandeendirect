@@ -26,6 +26,11 @@ export default function Footer() {
         return <></>
     }
 
+    function displayVersion() {
+        const versionLabel = process.env?.REACT_APP_VERSION || ' indéfinie'
+        return `version ${versionLabel}`
+    }
+
     return <>
         <div className="footer">
             <div>
@@ -56,7 +61,7 @@ export default function Footer() {
                 &ensp;sur&ensp;
                 <a target='_blank' href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
             </div>
-            <div>{process?.env?.REACT_APP_MODE || 'version indéfinie'}</div>
+            <div className="footer-item">{displayVersion()}</div>
         </div>
         {displayGeneralTermsAndConditions()}
     </>
