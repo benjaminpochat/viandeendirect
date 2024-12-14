@@ -56,6 +56,7 @@ export default function Footer() {
                 &ensp;sur&ensp;
                 <a target='_blank' href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
             </div>
+            <div>{process?.env?.REACT_APP_MODE || 'version indéfinie'}</div>
         </div>
         {displayGeneralTermsAndConditions()}
     </>

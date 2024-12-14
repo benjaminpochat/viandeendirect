@@ -37,7 +37,6 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=${keycloak_admin_password:-admin}
-      #- KEYCLOAK_IMPORT=/opt/keycloak/realm/realm.json
       - KC_DB=postgres
       - KC_DB_URL=jdbc:postgresql://database:5432/identity
       - KC_DB_USERNAME=identity
@@ -88,6 +87,7 @@ services:
         - benjaminpochat/viandeendirect-frontend-producer:latest
       args:
         REACT_APP_MODE: PRODUCER
+        REACT_APP_VERSION: ${DOCKER_IMAGE_TAG}
     image: benjaminpochat/viandeendirect-frontend-producer:${DOCKER_IMAGE_TAG}
     volumes:
       - ${frontend_producer_config_path:-./frontend-producer-config}:/usr/local/apache2/htdocs/config
@@ -103,6 +103,7 @@ services:
         - benjaminpochat/viandeendirect-frontend-customer:latest
       args:
         REACT_APP_MODE: CUSTOMER
+        REACT_APP_VERSION: ${DOCKER_IMAGE_TAG}
     image: benjaminpochat/viandeendirect-frontend-customer:${DOCKER_IMAGE_TAG}
     volumes:
       - ${frontend_customer_config_path:-./frontend-customer-config}:/usr/local/apache2/htdocs/config
