@@ -22,5 +22,5 @@ public interface SaleRepository extends CrudRepository<Sale, Integer> {
                 """)
     List<Sale> findByProduction(@Param("production") Production production);
 
-    List<Sale> findByPrivateAccessKeyIgnoreCase(@NonNull String privateAccessKey);
+    List<Sale> findByPrivateAccessKeyIgnoreCase(String privateAccessKey);
 }
