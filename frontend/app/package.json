@@ -1,10 +1,11 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "viandeendirect-frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.9",
     "@mui/lab": "^5.0.0-alpha.165",
     "@mui/material": "^5.14.11",
@@ -13,38 +14,38 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.2",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "@viandeendirect/api": "file:../gen",
     "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
     "keycloak-js": "^21.1.1",
     "querystring": "^0.2.1",
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
-    "react-cookie": "^7.0.2",
     "react-dom": "^18.2.0",
-    "react-google-recaptcha-v3": "^1.10.1",
-    "react-hook-form": "^7.46.1",
-    "react-hook-form-mui": "^6.8.0",
-    "react-router-dom": "^6.23.0",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "5.0.1",
+    "react-test-renderer": "^18.2.0",
     "typescript": "^5.2.2",
     "web-vitals": "^2.1.4"
   },
-  "overrides": {
-    "typescript": "^5.2.2"
-  },
   "scripts": {
-    "generate:api": "rm -Rf ../gen && openapi-generator-cli generate -i ../../openapi/openapi.yml -g typescript-fetch -o ../gen --skip-validate-spec --additional-properties=npmName=@viandeendirect/api,npmVersion=0.1.0",
-    "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
-    "install:api": "rm -Rf ./node_modules/@viandeendirect/api && npm install ../gen",
     "start": "react-scripts start",
     "start:mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --coverage",
     "test:update": "react-scripts test --watchAll=false -u",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:api": "npm install --prefix ../gen && npm run build --prefix ../gen",
+    "install:api": "rm -Rf ./node_modules/@viandeendirect/api && npm install ../gen",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
-  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -58,27 +59,12 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 firefox version",
       "last 1 chrome version",
+      "last 1 firefox version",
       "last 1 safari version"
     ]
   },
   "devDependencies": {
-    "@mui/x-data-grid": "^6.18.1",
-    "@openapitools/openapi-generator-cli": "^2.7.0",
-    "@types/jest": "^29.5.8",
-    "@types/node": "^20.9.2",
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "dotenv": "^16.3.1",
-    "react-test-renderer": "^18.2.0",
-    "typescript": "^5.2.2"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
-    ]
+    "@playwright/test": "^1.40.0"
   }
 }
