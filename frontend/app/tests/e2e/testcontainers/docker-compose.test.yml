@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: viandeendirect-frontend:test
+    build:
+      context: ../../../..
+      dockerfile: frontend/app/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE_URL=http://backend:8080
+      - REACT_APP_KEYCLOAK_URL=http://keycloak:8080
+    depends_on:
+      - backend
+      - keycloak
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: viandeendirect-backend:test
+    build:
+      context: ../../../../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/viandeendirect
+    depends_on:
+      database:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+
+  database:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: viandeendirect
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d viandeendirect"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/keycloak
+      KC_DB_USERNAME: testuser
+      KC_DB_PASSWORD: testpass
+      KC_HOSTNAME: keycloak
+    command: ["start-dev", "--import-realm"]
+    volumes:
+      - ../../../../identity/realm:/opt/keycloak/data/import
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      database:
+        condition: service_healthy

@@ -1,0 +1,32 @@
+# Testcontainers generated files
+*.log
+*.tmp
+
+# Docker related
+*.tar
+*.docker
+
+# Environment files
+.env
+.env.local
+
+# IDE specific
+.idea/
+.vscode/
+
+# Node modules
+node_modules/
+
+# Test artifacts
+test-results/
+coverage/
+
+# Authentication state
+authSetup.json
+
+# Build artifacts
+dist/
+build/
+
+# Dependency directories
+vendor/

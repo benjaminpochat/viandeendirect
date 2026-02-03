@@ -44,7 +44,11 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:containers": "USE_TESTCONTAINERS=true playwright test",
+    "test:e2e:containers:build": "docker build -t viandeendirect-frontend:test -f Dockerfile . && docker build -t viandeendirect-backend:test -f ../../backend/Dockerfile ..",
+    "test:e2e:containers:full": "npm run test:e2e:containers:build && npm run test:e2e:containers",
+    "test:prepare:containers": "npm run test:e2e:containers:build && npm run generate:test-data"
   },
   "eslintConfig": {
     "extends": [
@@ -65,6 +69,7 @@
     ]
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0"
+    "@playwright/test": "^1.40.0",
+    "testcontainers": "^10.7.0"
   }
 }
