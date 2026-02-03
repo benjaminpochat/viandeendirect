@@ -15,6 +15,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import ViandeEnDirectRouterProvider from './layouts/ViandeEnDirectRouterProvider.tsx'
 import SnackbarProvider from './domains/commons/components/SnackbarProvider.tsx';
 import { AuthCallback } from './authentication/AuthCallback.tsx';
+import { getEnv } from './config/env';
 
 
 
@@ -22,6 +23,8 @@ function App() {
 
   const themeFactory = new ThemeFactory()
 
+  // Use environment configuration for API base URL
+  const env = getEnv();
   const userManager = createOidcUserManager();
 
   return (
