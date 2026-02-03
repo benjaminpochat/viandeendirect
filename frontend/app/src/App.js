@@ -2,8 +2,8 @@ import { ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import Keycloak from 'keycloak-js'
-import { ReactKeycloakProvider } from '@react-keycloak/web'
+import { AuthProvider } from 'react-oidc-context'
+import { createOidcUserManager } from './authentication/oidc-config'
 
 import { CookiesProvider } from 'react-cookie'
 
@@ -14,6 +14,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import ViandeEnDirectRouterProvider from './layouts/ViandeEnDirectRouterProvider.tsx'
 import SnackbarProvider from './domains/commons/components/SnackbarProvider.tsx';
+import { AuthCallback } from './authentication/AuthCallback.tsx';
 
 
 
@@ -21,24 +22,20 @@ function App() {
 
   const themeFactory = new ThemeFactory()
 
-  const keycloakClient = new Keycloak(window.location.origin + '/config/keycloak.json')
-  const keycloakInitOptions = {
-    checkLoginIframe: false,
-    onLoad: 'check-sso',
-    silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
-  }
+  const userManager = createOidcUserManager();
 
   return (
     <CookiesProvider>
-      <ReactKeycloakProvider authClient={keycloakClient} initOptions={keycloakInitOptions}>
+      <AuthProvider userManager={userManager}>
         <ThemeProvider theme={themeFactory.createTheme()}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
             <SnackbarProvider>
               <ViandeEnDirectRouterProvider/>
+              <AuthCallback />
             </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
-      </ReactKeycloakProvider>
+      </AuthProvider>
     </CookiesProvider>
   )
 }

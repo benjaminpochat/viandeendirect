@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useLoaderData, useParams } from 'react-router-dom';
 
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { ApiBuilder } from '../../api/ApiBuilder.ts'
 
 import { AppBar, Box, Button, CircularProgress, CssBaseline, Toolbar, Typography } from '@mui/material'

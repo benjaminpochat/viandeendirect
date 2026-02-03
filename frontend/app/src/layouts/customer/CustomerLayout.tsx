@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppBar, Box, Button, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 
 import { AuthenticationService } from '../../authentication/service/AuthenticationService.ts'
 

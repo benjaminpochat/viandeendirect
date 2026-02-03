@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SavingsOutlined } from '@mui/icons-material'
 import { CircularProgress, Stack, Typography } from '@mui/material'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { PaymentsSummary, Producer } from '@viandeendirect/api/dist/models'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { ProducerService } from '../../commons/service/ProducerService.ts'

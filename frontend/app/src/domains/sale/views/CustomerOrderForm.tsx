@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button, Checkbox, Stepper, Step, StepLabel, StepContent, Typography, Box, Toolbar, ButtonGroup, StepButton } from "@mui/material"
 import dayjs from 'dayjs'
 
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 
 import { Customer } from "@viandeendirect/api/dist/models/Customer"
 import { Order } from "@viandeendirect/api/dist/models/Order"

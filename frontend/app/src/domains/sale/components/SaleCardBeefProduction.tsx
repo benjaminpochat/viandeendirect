@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { Typography } from "@mui/material"
 import { AnimalTypeUtils } from '../../../enum/AnimalTypeUtils.ts';
 import PieChart from '../../commons/components/PieChart.tsx'

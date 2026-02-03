@@ -8,7 +8,7 @@ import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, Snackba
 import { AnimalTypeUtils } from "../../../../enum/AnimalTypeUtils.ts";
 import dayjs from "dayjs";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
+import { useKeycloak } from "../../authentication/keycloak-adapter";
 import { useSnackbar } from '../../../commons/components/SnackbarProvider.tsx'
 
 export default function PublicationBeefProductionToSale(){

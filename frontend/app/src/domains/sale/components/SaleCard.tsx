@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import dayjs from 'dayjs'
 import SaleCardBeefProduction from './SaleCardBeefProduction.tsx';
-import { useKeycloak } from '@react-keycloak/web';
+import { useKeycloak } from '../../authentication/keycloak-adapter';
 import { useNavigate } from 'react-router-dom';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';
 import { Order } from '@viandeendirect/api/dist/models/Order'

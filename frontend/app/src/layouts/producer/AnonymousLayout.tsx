@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { AppBar, Box, Typography, CssBaseline, Toolbar, Grid, Paper, Button, IconButton } from "@mui/material";
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Footer from '../../domains/commons/components/Footer.tsx';

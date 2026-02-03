@@ -1,11 +1,27 @@
-import Keycloak from "keycloak-js"
 import { ApiBuilder } from "../../api/ApiBuilder.ts"
 import { Producer } from "@viandeendirect/api/dist/models/Producer"
 
-export class AuthenticationService {
-    keycloak: Keycloak
+interface KeycloakAdapter {
+    authenticated: boolean;
+    token?: string;
+    tokenParsed?: any;
+    username?: string;
+    roles?: string[];
+    hasRealmRole: (role: string) => boolean;
+    hasResourceRole: (role: string, resource?: string) => boolean;
+    login: () => void;
+    logout: () => void;
+    register: () => void;
+    accountManagement: () => void;
+    loadUserProfile: () => Promise<any>;
+    updateToken: (minValidity?: number) => Promise<boolean>;
+    clearToken: () => void;
+}
 
-    constructor(keycloak: Keycloak) {
+export class AuthenticationService {
+    keycloak: KeycloakAdapter
+
+    constructor(keycloak: KeycloakAdapter) {
         this.keycloak = keycloak
     }
 

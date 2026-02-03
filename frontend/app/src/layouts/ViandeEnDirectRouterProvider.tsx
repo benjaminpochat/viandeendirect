@@ -1,5 +1,5 @@
 import React from "react";
-import { useKeycloak } from "@react-keycloak/web";
+import { useKeycloak } from "../../authentication/keycloak-adapter";
 import { RouterProvider } from "react-router-dom";
 
 import {RouterFactory} from './RouterFactory.tsx'

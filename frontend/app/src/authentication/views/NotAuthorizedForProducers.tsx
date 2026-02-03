@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Toolbar, Typography, Button, ButtonGroup, CssBaseline, AppBar } from '@mui/material'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { UrlService } from '../../domains/commons/service/UrlService.ts'
 import { AuthenticationService } from '../service/AuthenticationService.ts'
 import { Navigate, useLoaderData } from 'react-router-dom'

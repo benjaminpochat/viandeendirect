@@ -8,7 +8,7 @@ import SlaughterPropertiesForm, { mapSlaughterFormDataToBeefProduction } from '.
 import CuttingPropertiesForm, { mapCuttingFormDataToBeefProduction } from './forms/CuttingPropertiesForm.tsx'
 import { BeefProduction } from "@viandeendirect/api/dist/models/BeefProduction.js"
 import PackageLotsCreator from '../PackageLotsCreator.tsx'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'
 import { Production } from '@viandeendirect/api/dist/models/Production'

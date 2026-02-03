@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Menu, MenuItem, Typography } from "@mui/material"
 import { useEffect, useState } from 'react'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom';

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import dayjs from "dayjs"
 import 'dayjs/locale/fr'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 
 import { Button, ButtonGroup, Typography, Stepper, Step, StepContent, StepButton } from "@mui/material"
 import { ApiBuilder } from '../../../../api/ApiBuilder.ts'

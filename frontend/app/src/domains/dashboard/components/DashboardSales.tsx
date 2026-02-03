@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { Button, Stack, Typography } from "@mui/material"
 import { Producer, Sale } from '@viandeendirect/api/dist/models'
 import SaleCard from '../../sale/components/SaleCard.tsx'

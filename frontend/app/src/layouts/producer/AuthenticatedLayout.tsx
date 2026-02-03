@@ -1,5 +1,5 @@
 import React from 'react'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { useState, useEffect } from 'react';
 
 import { AppBar, Box, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material'

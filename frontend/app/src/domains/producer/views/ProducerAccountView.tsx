@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Button, Typography, CircularProgress } from "@mui/material"
 
-import { useKeycloak } from '@react-keycloak/web';
+import { useKeycloak } from '../../authentication/keycloak-adapter';
 import { Producer } from '@viandeendirect/api/dist/models/Producer.js';
 import { ProducerService } from '../../commons/service/ProducerService.ts';
 import { ApiBuilder } from '../../../api/ApiBuilder.ts';

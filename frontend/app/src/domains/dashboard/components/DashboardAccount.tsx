@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Stack, Typography } from "@mui/material"
 import { Producer } from '@viandeendirect/api/dist/models/Producer.js'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { ProducerService } from '../../commons/service/ProducerService.ts'
 import { useNavigate } from 'react-router-dom'
 import { PersonOutlineOutlined } from '@mui/icons-material'

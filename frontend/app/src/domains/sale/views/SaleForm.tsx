@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { Button, ButtonGroup, Stepper, Step, StepLabel, StepContent, Typography, Autocomplete, Switch } from "@mui/material"
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { DatePickerElement, TextFieldElement, FormContainer, TimePickerElement } from 'react-hook-form-mui'

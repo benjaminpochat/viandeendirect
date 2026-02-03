@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Stack, Typography } from "@mui/material"
 import { Inventory2Outlined } from "@mui/icons-material"
 import {Producer} from '@viandeendirect/api/dist/models/Producer.js'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import { Production } from '@viandeendirect/api/dist/models/Production'
 import { ApiBuilder } from '../../../api/ApiBuilder.ts'
 import { ProductionService } from '../../production/service/ProductionService.ts'

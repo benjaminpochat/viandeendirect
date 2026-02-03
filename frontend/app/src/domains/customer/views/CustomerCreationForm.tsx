@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Stepper, Toolbar, Typography } from '@mui/material'
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from '../../authentication/keycloak-adapter'
 import React from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
 import { Customer } from '@viandeendirect/api/dist/models/Customer'
