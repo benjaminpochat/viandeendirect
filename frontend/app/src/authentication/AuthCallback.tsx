@@ -14,11 +14,21 @@ export const AuthCallback = () => {
 
     if (auth.error) {
       console.error('Authentication error:', auth.error);
+      // Dans v3.1.0, l'erreur peut avoir une structure différente
+      const errorMessage = auth.error?.message || 'Unknown authentication error';
+      console.error('Detailed error:', errorMessage);
       navigate('/login-error');
       return;
     }
 
     if (auth.isAuthenticated) {
+      // Dans v3.1.0, nous pouvons accéder à plus d'informations utilisateur
+      console.log('User authenticated:', {
+        username: auth.user?.profile?.preferred_username,
+        email: auth.user?.profile?.email,
+        roles: auth.user?.profile?.realm_access?.roles
+      });
+      
       // Rediriger vers la page d'accueil ou la page précédente
       const returnUrl = localStorage.getItem('returnUrl') || '/';
       localStorage.removeItem('returnUrl');
