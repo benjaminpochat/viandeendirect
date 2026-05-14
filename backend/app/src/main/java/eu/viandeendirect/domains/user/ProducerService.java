@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -148,7 +149,7 @@ public class ProducerService implements ProducersApiDelegate {
     public ResponseEntity<Producer> getRandomProducerPublicData() {
         long producerCount = producerRepository.count();
         var producersIterator = producerRepository.findAll().iterator();
-        Producer producer = getRandomProducer(producerCount, producersIterator);
+        Optional<Producer> producer = getRandomProducer(producerCount, producersIterator);
         Producer producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
         return new ResponseEntity<>(producerWithPublicData, OK);
     }
@@ -181,16 +182,16 @@ public class ProducerService implements ProducersApiDelegate {
         return new ResponseEntity<>(NO_CONTENT);
     }
 
-    Producer getRandomProducer(long producerCount, Iterator<Producer> producersIterator) {
+    Optional<Producer> getRandomProducer(long producerCount, Iterator<Producer> producersIterator) {
         long randomProducerIndex = (long) (getRandom() * producerCount);
         if(!producersIterator.hasNext()) {
-            return null;
+            return Optional.empty();
         }
         Producer producer = producersIterator.next();
         for (long i = 0 ; i < randomProducerIndex ; i++) {
             producer = producersIterator.next();
         }
-        return producer;
+        return Optional.of(producer);
     }
 
     double getRandom() {

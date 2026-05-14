@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -61,7 +62,7 @@ public class ProductionService implements ProductionsApiDelegate {
     @Override
     public ResponseEntity<Producer> getProductionProducerPublicData(Integer productionId) {
         Production production = productionRepository.findById(productionId).get();
-        Producer producer = production.getProducer();
+        Optional<Producer> producer = Optional.of(production.getProducer());
         var producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
         return new ResponseEntity<>(producerWithPublicData, OK);
     }
