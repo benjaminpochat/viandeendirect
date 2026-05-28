@@ -54,7 +54,7 @@ class TestProducerService_getRandomProducer {
         doReturn(random).when(service).getRandom();
 
         // when
-        Producer randomProducer = service.getRandomProducer(producerCount, producerIterator).orElseThrow();
+        Producer randomProducer = service.getRandomProducer(producerCount, producerIterator).orElse(null);
 
         // then
         Assertions.assertThat(randomProducer).isEqualTo(expectedProducer);
