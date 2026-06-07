@@ -62,8 +62,7 @@ public class ProductionService implements ProductionsApiDelegate {
     @Override
     public ResponseEntity<Producer> getProductionProducerPublicData(Integer productionId) {
         Production production = productionRepository.findById(productionId).get();
-        Optional<Producer> producer = Optional.of(production.getProducer());
-        var producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
+        var producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(production.getProducer());
         return new ResponseEntity<>(producerWithPublicData, OK);
     }
 

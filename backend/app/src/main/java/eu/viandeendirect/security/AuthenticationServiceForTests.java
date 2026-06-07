@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Profile("test")
-public class AuthenticationProducerServiceForTests implements AuthenticationServiceSpecs {
+public class AuthenticationServiceForTests implements AuthenticationServiceSpecs {
 
     @Override
     public Producer getAuthenticatedProducer() {

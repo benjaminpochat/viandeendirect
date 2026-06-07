@@ -149,9 +149,10 @@ public class ProducerService implements ProducersApiDelegate {
     public ResponseEntity<Producer> getRandomProducerPublicData() {
         long producerCount = producerRepository.count();
         var producersIterator = producerRepository.findAll().iterator();
-        Optional<Producer> producer = getRandomProducer(producerCount, producersIterator);
-        Producer producerWithPublicData = producerPublicDataService.getProducerWithOnlyPublicData(producer);
-        return new ResponseEntity<>(producerWithPublicData, OK);
+        Optional<Producer> producerOptional = getRandomProducer(producerCount, producersIterator);
+        return producerOptional.map(producer ->  new ResponseEntity<>(producerPublicDataService.getProducerWithOnlyPublicData(producer), OK))
+                .orElse(ResponseEntity.noContent().build());
+
     }
 
     @Override

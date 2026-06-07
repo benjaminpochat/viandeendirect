@@ -7,13 +7,11 @@ import java.util.Optional;
 
 @Service
 public class ProducerPublicDataService {
-    public Producer getProducerWithOnlyPublicData(Optional<Producer> producer) {
-        return producer.map(producerWithAllData -> {
-            var producerWithOnlyPublicData = new Producer();
-            producerWithOnlyPublicData.setFarmName(producerWithAllData.getFarmName());
-            producerWithOnlyPublicData.setSlideShowUrl(producerWithAllData.getSlideShowUrl());
-            producerWithOnlyPublicData.setWebsiteUrl(producerWithAllData.getWebsiteUrl());
-            return producerWithOnlyPublicData;
-        }).orElse(null);
+    public Producer getProducerWithOnlyPublicData(Producer producer) {
+        var producerWithOnlyPublicData = new Producer();
+        producerWithOnlyPublicData.setFarmName(producer.getFarmName());
+        producerWithOnlyPublicData.setSlideShowUrl(producer.getSlideShowUrl());
+        producerWithOnlyPublicData.setWebsiteUrl(producer.getWebsiteUrl());
+        return producerWithOnlyPublicData;
     }
 }

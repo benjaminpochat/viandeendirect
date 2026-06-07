@@ -213,6 +213,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Producer'
           description: "public data of the producer"
+        "204":
+          description: "there is no existing producer"
+          content: {}
       operationId: getRandomProducerPublicData
       summary: Get the public data for a random producer
 
