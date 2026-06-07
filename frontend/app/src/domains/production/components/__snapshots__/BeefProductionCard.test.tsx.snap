@@ -18,7 +18,7 @@ exports[`should render without error 1`] = `
       <span
         className="MuiTypography-root MuiTypography-body1 MuiCardHeader-subheader css-nrdprl-MuiTypography-root"
       >
-         n°undefined
+        vache n°undefined
       </span>
     </div>
   </div>
